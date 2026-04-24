@@ -14,7 +14,8 @@ source: "raw/papers/zhang2026aibuildai.pdf"
 added: "2026-04-24"
 relevance: 5
 status: skimmed
-related_experiments: []
+related_experiments:
+  - per-role-model-downgrade
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/hybrid-model-backends]]"

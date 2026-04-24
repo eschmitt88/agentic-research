@@ -15,3 +15,7 @@ skills; read by `/lint`.
 2026-04-24 04:06 fetch-paper 2604.14455 → raw/papers/zhang2026aibuildai.pdf
 2026-04-24 04:06 ingest raw/papers/zhang2026aibuildai.pdf
 2026-04-24 04:11 concepts: seed 10 importable architectural patterns
+2026-04-24 04:13 derive-experiment literature/papers/hambardzumyan2026aira.md → hce-discipline-ablation
+2026-04-24 04:13 derive-experiment literature/papers/nam2025mle.md → ablation-guided-refinement-on-toy-mle
+2026-04-24 04:13 derive-experiment literature/papers/mitchener2025kosmos.md → world-model-at-short-horizons
+2026-04-24 04:13 derive-experiment literature/papers/zhang2026aibuildai.md → per-role-model-downgrade

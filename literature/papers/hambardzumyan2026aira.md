@@ -34,7 +34,8 @@ source: "raw/papers/hambardzumyan2026aira.pdf"
 added: "2026-04-24"
 relevance: 5
 status: skimmed
-related_experiments: []
+related_experiments:
+  - hce-discipline-ablation
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/pass-at-k]]"
