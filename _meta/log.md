@@ -19,3 +19,4 @@ skills; read by `/lint`.
 2026-04-24 04:13 derive-experiment literature/papers/nam2025mle.md → ablation-guided-refinement-on-toy-mle
 2026-04-24 04:13 derive-experiment literature/papers/mitchener2025kosmos.md → world-model-at-short-horizons
 2026-04-24 04:13 derive-experiment literature/papers/zhang2026aibuildai.md → per-role-model-downgrade
+2026-04-24 13:58 digest n=3 window_since=2026-04-10
