@@ -19,7 +19,6 @@ related_experiments:
   - ablation-guided-refinement-on-toy-mle
 related_concepts:
   - "[[concepts/web-grounded-literature]]"
-  - "[[concepts/ablation-guided-refinement]]"
   - "[[concepts/evolutionary-expansion]]"
 tags:
   - mle-bench

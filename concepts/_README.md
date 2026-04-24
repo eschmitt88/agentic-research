@@ -20,7 +20,7 @@ source_papers:
   - <citekey>              # e.g. hambardzumyan2026aira
   - <citekey>
 sources:
-  - "[[literature/papers/<citekey>]]"   # wikilink to local lit note
+  - "literature/papers/<citekey>"       # actual entries wrap the path in double-bracket wikilink syntax; shown unwrapped here so this schema example does not resolve
 used_by: []                # populated by /ingest on downstream side
 related_concepts: []
 related_experiments: []
