@@ -5,17 +5,46 @@ principles; this file refines them for this project.
 
 ## What this project is about
 
-One or two sentences. Fill in when the project stops being exploratory.
+Research-about-research: curated literature and importable architectural
+concepts for autonomous ML research.
 
-## Layout (see user CLAUDE.md for the full rationale)
+## Role
 
-- `raw/` — immutable source material. Read only.
-- `literature/` — processed notes on papers, repos, posts.
-- `concepts/` — atomic ideas. Promote to `mocs/` when ≥5 cluster.
-- `experiments/YYYY-MM-DD-<slug>/` — self-contained runs.
-- `docs/decisions/` — lightweight ADRs.
-- `journal/` — daily session files (hook-written).
-- `_meta/` — index, log, templates.
+This project is the research hub for every other project on this box.
+Downstream projects `@import` files from `./concepts/` and `./literature/`
+by absolute path (see the import contract below), so concept notes and
+literature notes here are a read interface, not only internal artifacts.
+When `/ingest` processes a file on a downstream project that imports a
+concept from here, it appends a `used_by:` back-reference to the target
+concept so the meta project can see which concepts are load-bearing.
+Evolution here propagates to downstream projects at their next session
+start — no copy-paste.
+
+## Import contract
+
+Canonical downstream usage — add lines like these to any other
+project's `CLAUDE.md`:
+
+```
+# In ~/projects/research/<other-project>/CLAUDE.md
+
+## Inherited architecture
+@import ~/projects/research/agentic-research/concepts/hce-evaluation.md
+@import ~/projects/research/agentic-research/concepts/citation-anchoring.md
+```
+
+On the downstream side, `/ingest` detects these `@import` directives and
+appends a `used_by:` list entry to each referenced concept note with:
+
+```yaml
+used_by:
+  - project_slug: <downstream-slug>
+    imported_on: <YYYY-MM-DD>
+```
+
+The append is idempotent — re-ingesting does not duplicate entries for
+the same `project_slug`. If the target concept's `status:` is
+`retired`, `/ingest` warns on the downstream side but allows the import.
 
 ## Scoped rules
 
@@ -28,24 +57,14 @@ touch matching paths:
 
 ## Budget & compute
 
-Autonomous runs read `budget.yaml` at this project's root for hard
-ceilings (wall time, tokens, disk) and model roles (ideator vs
-implementer). Before proposing anything with non-trivial resource
-demands — multi-hour training, large downloads, many seeds — read
-`budget.yaml` and make sure the ask fits under the remaining headroom.
-If it doesn't fit, say so in the proposal's `risks:` and either scope
-down or explicitly flag the need to raise a ceiling.
+Ceilings and model roles live in `budget.yaml`. This project auto-pushes
+to GitHub (`git.auto_push: true`) so overnight curation persists off-box.
 
 @budget.yaml
-
-## Project-specific facts
-
-- Primary language: (fill in)
-- Environment: managed by `uv`; run `make env` to sync.
-- Data: tracked by DVC. Large artifacts on SN850X via `~/projects/`.
 
 ## Housekeeping
 
 - End sessions with `/wrap`. The SessionEnd hook backstops this.
-- Use `/new-experiment <slug>` — don't hand-roll experiment folders.
 - Run `/lint` weekly.
+- No `/implement` or `/iterate` in this project — the meta project
+  curates literature and concepts; experiments live downstream.

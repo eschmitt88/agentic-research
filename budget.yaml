@@ -19,3 +19,10 @@ hardware:
   system_ram_gb: 64    # edit to match
   storage_path: "/mnt/projects"
   storage_free_gb: 3400
+
+# Git behavior. Meta project auto-pushes so overnight curation lands
+# on GitHub without manual intervention. No skill reads this yet —
+# the flag is read by the SessionEnd hook (when installed) or by
+# /wrap; until then it documents intent.
+git:
+  auto_push: true
