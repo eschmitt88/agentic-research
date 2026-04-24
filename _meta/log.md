@@ -14,3 +14,4 @@ skills; read by `/lint`.
 2026-04-24 04:06 ingest raw/papers/hambardzumyan2026aira.pdf
 2026-04-24 04:06 fetch-paper 2604.14455 → raw/papers/zhang2026aibuildai.pdf
 2026-04-24 04:06 ingest raw/papers/zhang2026aibuildai.pdf
+2026-04-24 04:11 concepts: seed 10 importable architectural patterns

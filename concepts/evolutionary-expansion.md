@@ -1,0 +1,84 @@
+---
+kind: concept
+name: "evolutionary-expansion"
+status: experimental
+added: "2026-04-24"
+source_papers:
+  - li2025fm
+  - nam2025mle
+sources:
+  - "[[literature/papers/li2025fm]]"
+  - "[[literature/papers/nam2025mle]]"
+used_by: []
+related_concepts:
+  - "[[concepts/budget-as-ceiling]]"
+  - "[[concepts/pass-at-k]]"
+related_experiments: []
+tags: [search, evolution, mcts, proposals, expansion]
+---
+
+# evolutionary-expansion
+
+## Definition
+
+Proposal-space search that maintains a population of candidate
+experiments, scores them by fitness, selects the strongest, and
+mutates them to produce the next generation. Variants include MCTS
+over an experiment tree and islands-based evolutionary sampling. The
+unifying move is: do not pick one idea and commit; grow many in
+parallel and let the fitness signal winnow them.
+
+## Why it matters
+
+FM Agent ([[literature/papers/li2025fm]]) builds its entire
+autonomous pipeline around evolutionary sampling and reports
+43.56% on MLE-bench (plus strong results in operations research,
+GPU kernels, mathematics) with the same recipe across domains — the
+generic search plus a swapped domain evaluator is what generalizes.
+
+MLE-STAR ([[literature/papers/nam2025mle]]) achieves a related effect
+via ablation-guided targeted refinement: rather than mutating whole
+solutions, it identifies which component carries the most signal and
+explores variants within that component. Same principle at finer
+grain.
+
+In both cases the losing alternative is flat single-proposal search
+— commit to one design, run it, iterate linearly. The evolutionary
+move expands the frontier earlier, so bad trajectories are cheaper
+to abandon.
+
+## Implementation guidance
+
+1. **`/expand` is the natural entry point.** Given a proposal,
+   produce N child proposals that share the hypothesis but differ
+   in approach (architecture, training regime, feature plan,
+   evaluation strategy). Each child records `parent:` in
+   frontmatter so the tree is reconstructable.
+
+2. **Fitness = validation metric, not final metric.** Evolutionary
+   search is inside the HCE search loop; selection signal is
+   `metrics.json`, never `final_metrics.json`.
+
+3. **Cap the branching factor per level.** N=3 is a reasonable
+   default for `/expand`; above N=5 the context cost of evaluating
+   children exceeds the diversity payoff for most budgets.
+
+4. **Mutation operators are explicit.** A child proposal states
+   what it changed from the parent and why in its `rationale:`
+   field. Opaque mutation ("try a different approach") is not
+   useful signal later.
+
+5. **Pruning cadence.** After each generation, lock in the top-k
+   children (by validation metric) and discard the rest rather
+   than hedging — the search budget for later generations needs
+   the headroom.
+
+## Open questions
+
+- Mutation operators for ML-engineering proposals are underspecified
+  in both source papers. The right set probably depends on task —
+  feature-heavy tasks need feature-mutation operators; architecture-
+  heavy tasks need layer-swap operators.
+- Whether MCTS over experiment trees meaningfully outperforms flat
+  evolutionary sampling at realistic compute budgets is an open
+  empirical question — candidate for a downstream experiment.
