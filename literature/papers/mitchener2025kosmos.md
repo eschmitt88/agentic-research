@@ -46,7 +46,8 @@ source: "raw/papers/mitchener2025kosmos.pdf"
 added: "2026-04-24"
 relevance: 5
 status: skimmed
-related_experiments: []
+related_experiments:
+  - world-model-at-short-horizons
 related_concepts:
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/structured-world-model]]"
