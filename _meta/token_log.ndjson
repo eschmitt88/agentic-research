@@ -350,3 +350,43 @@
     "Agent": 1
   }
 }
+{
+  "timestamp": "2026-04-26T03:25:42Z",
+  "session_id": "6880246d-6eba-4b26-9a19-d6581ef5e135",
+  "input_tokens": 424,
+  "output_tokens": 158651,
+  "cache_read_tokens": 17559048,
+  "cache_creation_tokens": 1729250,
+  "tools_used_summary": {
+    "Bash": 35,
+    "Read": 14,
+    "Skill": 3,
+    "ToolSearch": 2,
+    "WebFetch": 3,
+    "TaskCreate": 3,
+    "Edit": 21,
+    "TaskUpdate": 6,
+    "Write": 5,
+    "Agent": 1
+  }
+}
+{
+  "timestamp": "2026-04-26T03:29:26Z",
+  "session_id": "6880246d-6eba-4b26-9a19-d6581ef5e135",
+  "input_tokens": 470,
+  "output_tokens": 178284,
+  "cache_read_tokens": 22393582,
+  "cache_creation_tokens": 1761558,
+  "tools_used_summary": {
+    "Bash": 45,
+    "Read": 15,
+    "Skill": 3,
+    "ToolSearch": 2,
+    "WebFetch": 3,
+    "TaskCreate": 3,
+    "Edit": 22,
+    "TaskUpdate": 6,
+    "Write": 5,
+    "Agent": 1
+  }
+}
