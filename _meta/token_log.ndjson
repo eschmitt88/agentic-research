@@ -290,3 +290,23 @@
     "Agent": 1
   }
 }
+{
+  "timestamp": "2026-04-26T03:16:28Z",
+  "session_id": "6880246d-6eba-4b26-9a19-d6581ef5e135",
+  "input_tokens": 367,
+  "output_tokens": 136758,
+  "cache_read_tokens": 14552123,
+  "cache_creation_tokens": 1087337,
+  "tools_used_summary": {
+    "Bash": 32,
+    "Read": 13,
+    "Skill": 3,
+    "ToolSearch": 2,
+    "WebFetch": 3,
+    "TaskCreate": 3,
+    "Edit": 19,
+    "TaskUpdate": 6,
+    "Write": 5,
+    "Agent": 1
+  }
+}
