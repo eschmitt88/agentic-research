@@ -6,7 +6,12 @@ principles; this file refines them for this project.
 ## What this project is about
 
 Research-about-research: curated literature and importable architectural
-concepts for autonomous ML research.
+concepts for **autonomous research agents** — primarily ML-research
+agents (the dominant focus, e.g. MLE-bench / PaperBench / AIRA) but
+including general scientific-research automation (e.g. Kosmos in
+biology) where the architectural patterns transfer. Pure
+software-engineering agents (ChatDev, etc.) are out of scope unless
+they directly inform research-agent architecture.
 
 ## Role
 

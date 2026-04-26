@@ -5,12 +5,15 @@ status: experimental
 added: "2026-04-24"
 source_papers:
   - zhang2026aibuildai
+  - chen2026toward
 sources:
   - "[[literature/papers/zhang2026aibuildai]]"
+  - "[[literature/papers/chen2026toward]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/structured-world-model]]"
+  - "[[concepts/file-as-bus]]"
 related_experiments: []
 tags: [agent-architecture, delegation, roles, coordination]
 ---
@@ -68,11 +71,23 @@ per-role focus. At MLE-bench scale the trade is strongly positive.
 
 ## Open questions
 
-- The four-role split is the one AIBuildAI validated. Whether
-  three roles (collapse designer + coder) or five (split tuner
-  into "trainer" and "hyperparameter-searcher") would work better
-  is unknown.
+- The four-role split is the one AIBuildAI validated. AiScientist
+  ([[literature/papers/chen2026toward]]) validates a different,
+  task-shape-driven split — Paper Comprehension / Prioritization /
+  Implementation / Experimentation specialists — exposed to a
+  Tier-0 Orchestrator via Agent-as-Tool. The convergence across
+  two papers is on *hierarchy itself*, not on a specific role list;
+  the right split likely depends on task shape.
+- AiScientist's *Agent-as-Tool* design (specialists are callable
+  from the Orchestrator's native tool space, so delegation is
+  *selective* rather than mandatory) is a refinement worth noting:
+  the Orchestrator can handle lightweight ops directly and only
+  invoke a specialist when the expected benefit clears coordination
+  cost. This is distinct from a fixed handoff pipeline.
+- Whether three roles (collapse designer + coder) or five (split
+  tuner into "trainer" and "hyperparameter-searcher") would work
+  better is still unknown.
 - Status is `experimental` because our current skills do not spawn
   sub-agent hierarchies — `/implement` uses one subagent, not a
-  manager. A downstream project that reproduces AIBuildAI's
-  architecture would move this to `active`.
+  manager. A downstream project that reproduces AIBuildAI's or
+  AiScientist's architecture would move this to `active`.

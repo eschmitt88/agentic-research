@@ -7,7 +7,9 @@ source_papers:
   - mitchener2025kosmos
 sources:
   - "[[literature/papers/mitchener2025kosmos]]"
-used_by: []
+used_by:
+  - project_slug: mle-bench
+    imported_on: 2026-04-24
 related_concepts:
   - "[[concepts/structured-world-model]]"
 related_experiments: []
