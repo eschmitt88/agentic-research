@@ -9,7 +9,11 @@ source_papers:
 sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/chan2024mle]]"
-used_by: []
+used_by:
+  - project_slug: _scratch
+    imported_on: 2026-04-24
+  - project_slug: mle-bench
+    imported_on: 2026-04-24
 related_concepts:
   - "[[concepts/pass-at-k]]"
   - "[[concepts/citation-anchoring]]"

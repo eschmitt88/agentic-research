@@ -9,7 +9,9 @@ source_papers:
 sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
-used_by: []
+used_by:
+  - project_slug: mle-bench
+    imported_on: 2026-04-24
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/evolutionary-expansion]]"

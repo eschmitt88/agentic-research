@@ -5,12 +5,16 @@ status: experimental
 added: "2026-04-24"
 source_papers:
   - mitchener2025kosmos
+  - chen2026toward
 sources:
   - "[[literature/papers/mitchener2025kosmos]]"
+  - "[[literature/papers/chen2026toward]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/hierarchical-delegation]]"
+  - "[[concepts/file-as-bus]]"
+  - "[[concepts/agent-native-memory]]"
 related_experiments: []
 tags: [world-model, long-horizon, coordination, shared-state]
 ---
@@ -78,6 +82,15 @@ consistency across rounds.
 - Kosmos does not publish the schema. Re-deriving a good one from
   the paper's reported behavior is partly inference; the right
   schema likely varies by domain.
+- AiScientist ([[literature/papers/chen2026toward]]) takes a
+  related but distinct stance: the durable state lives as
+  *heterogeneous artifacts in a workspace* (paper analyses, code,
+  configs, append-only logs) rather than as a single field-indexed
+  object. Its File-as-Bus ablation drops PaperBench by 6.41 points
+  and MLE-Bench Lite Any Medal% by 31.82 points — strong evidence
+  that *durable state continuity* is what matters, with the schema
+  vs. workspace question being a design knob within that. See
+  [[concepts/file-as-bus]] for the workspace variant.
 - Whether the structured-world-model approach is load-bearing at
   shorter horizons (1-2 hours) or only at 12h+ is unknown — could
   be the kind of ablation a downstream project runs.
