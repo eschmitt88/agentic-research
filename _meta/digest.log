@@ -1,0 +1,12 @@
+/home/eschmitt/.claude/schedule/agentic-research-digest.sh: line 5: claude: command not found
+/home/eschmitt/.claude/schedule/agentic-research-digest.sh: line 5: claude: command not found
+WebSearch is still blocked. I'll stop retrying and leave state untouched (no candidates file, no `_meta/last_digest` update) — silently writing an `n_returned: 0` digest would mean "no news," which would be misleading; this is a permission failure, not absent results.
+
+To proceed: grant WebSearch permission (e.g., `/permissions add WebSearch` or via the permissions UI) and re-run `/digest`. The window is 2026-04-24T13:58:26Z → now (~14 days), and I'd plan 4 queries covering the project's active fronts:
+
+1. Autonomous ML-research agents / MLE-bench / AIRA-style benchmarks
+2. Agent skill libraries + agent-native memory (byterover/skilldex direction)
+3. Evolutionary search / parallel proposal expansion for code agents
+4. Scientific-discovery agents beyond ML (Kosmos-style world models)
+
+No files were modified.
