@@ -458,3 +458,20 @@
     "Skill": 1
   }
 }
+{
+  "timestamp": "2026-05-11T20:21:40Z",
+  "session_id": "3492f833-5080-4a5c-93f8-04b9bcc8dd74",
+  "input_tokens": 18110,
+  "output_tokens": 44859,
+  "cache_read_tokens": 1367708,
+  "cache_creation_tokens": 319136,
+  "tools_used_summary": {
+    "Bash": 9,
+    "ToolSearch": 1,
+    "WebSearch": 4,
+    "WebFetch": 4,
+    "Write": 4,
+    "Read": 1,
+    "Edit": 1
+  }
+}
