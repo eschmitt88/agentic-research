@@ -36,3 +36,25 @@ Sources:
 - [arXiv 2605.02801 — RL for LLM Multi-Agent via Orchestration Traces](https://arxiv.org/abs/2605.02801)
 - [arXiv 2605.03310 — Coordination as an Architectural Layer](https://arxiv.org/abs/2605.03310)
 - [arXiv 2604.12285 — GAM (excluded, pre-window)](https://arxiv.org/abs/2604.12285)
+Digest complete. 6 in-window candidates landed in `raw/_candidates/2026-05-11-digest.md`; `_meta/last_digest` and `_meta/log.md` updated.
+
+**Summary of the batch (window 2026-04-24 → 2026-05-11):**
+
+| # | Paper | Themes touched | Priority |
+|---|---|---|---|
+| 1 | AutoResearchBench (2604.25256) | web-grounded-literature, citation-anchoring | high |
+| 2 | GSAR — typed grounding for hallucination recovery (2604.23366) | citation-anchoring, hce-evaluation | high |
+| 3 | ExpWeaver — experience utilization (2605.07164) | agent-native-memory, evolutionary-expansion | medium |
+| 4 | SkillOS — RL skill curator (2605.06614) | hybrid-model-backends, extends saha2026skilldex | medium |
+| 5 | Skill1 — unified skill RL (2605.06130) | hybrid-model-backends | medium |
+| 6 | SkillRet — skill retrieval benchmark (2605.05726) | web-grounded-literature | low |
+
+**Signal worth flagging:** three independent skill-library papers (SkillOS / Skill1 / SkillRet) all posted 2026-05-07, all extending the saha2026skilldex thread you ingested last cycle. If curation bandwidth is tight, one composite literature note across the three may be more efficient than three separate ones. Excluded MAGE (2605.03228) as adversarial-memory defense — out of scope per CLAUDE.md.
+
+Sources:
+- [AutoResearchBench](https://arxiv.org/abs/2604.25256)
+- [GSAR](https://arxiv.org/abs/2604.23366)
+- [ExpWeaver / Rethinking Experience Utilization](https://arxiv.org/abs/2605.07164)
+- [SkillOS](https://arxiv.org/abs/2605.06614)
+- [Skill1](https://arxiv.org/abs/2605.06130)
+- [SkillRet](https://arxiv.org/abs/2605.05726)
