@@ -10,3 +10,4 @@ To proceed: grant WebSearch permission (e.g., `/permissions add WebSearch` or vi
 4. Scientific-discovery agents beyond ML (Kosmos-style world models)
 
 No files were modified.
+API Error: Unable to connect to API (FailedToOpenSocket)
