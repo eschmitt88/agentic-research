@@ -11,3 +11,28 @@ To proceed: grant WebSearch permission (e.g., `/permissions add WebSearch` or vi
 
 No files were modified.
 API Error: Unable to connect to API (FailedToOpenSocket)
+The writes are blocked pending permission. Two files would be written:
+
+1. **`raw/_candidates/2026-05-11-digest.md`** — the new digest candidates file (3 in-window items).
+2. **`_meta/last_digest`** — update from `2026-04-24T13:58:26Z` → `2026-05-11T20:19:03Z`.
+3. **`_meta/log.md`** — append `2026-05-11 20:19 digest n=3 window_since=2026-04-24T13:58:26Z`.
+
+### Digest summary — 3 in-window arXiv candidates (2026-04-24 → 2026-05-11)
+
+| # | arXiv | Date | Title | Hooks into |
+|---|-------|------|-------|------------|
+| 1 | [2604.20133](https://arxiv.org/abs/2604.20133) | 2026-04-22 (v1), **2026-04-24 (v2)** | EvoAgent: Evolvable Agent Framework with Skill Learning & Multi-Agent Delegation | `hierarchical-delegation`, `agent-native-memory`, `evolutionary-expansion` |
+| 2 | [2605.02801](https://arxiv.org/abs/2605.02801) | 2026-05-04 | RL for LLM-based Multi-Agent Systems through Orchestration Traces | `hierarchical-delegation`, `file-as-bus` |
+| 3 | [2605.03310](https://arxiv.org/abs/2605.03310) | 2026-05-05 | Coordination as an Architectural Layer for LLM-Based Multi-Agent Systems | `file-as-bus`, `hierarchical-delegation`, `hce-evaluation` |
+
+**Excluded but flagged:** GAM (2604.12285, Apr 14) is a strong `agent-native-memory` hit but pre-window — re-surface with `/discover` if wanted.
+
+**Strongest decision-useful claim** from candidate #3: "multi-agent LLM systems fail in production at 41–87%, mostly due to coordination defects rather than base-model capability." Worth verifying and citing.
+
+Please grant the pending write permissions (or tell me to skip the writes), and I'll finish the bookkeeping (`last_digest` + `_meta/log.md` append).
+
+Sources:
+- [arXiv 2604.20133 — EvoAgent](https://arxiv.org/abs/2604.20133)
+- [arXiv 2605.02801 — RL for LLM Multi-Agent via Orchestration Traces](https://arxiv.org/abs/2605.02801)
+- [arXiv 2605.03310 — Coordination as an Architectural Layer](https://arxiv.org/abs/2605.03310)
+- [arXiv 2604.12285 — GAM (excluded, pre-window)](https://arxiv.org/abs/2604.12285)
