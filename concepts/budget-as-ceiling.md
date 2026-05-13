@@ -6,15 +6,18 @@ added: "2026-04-24"
 source_papers:
   - li2025fm
   - hambardzumyan2026aira
+  - kamelhar2026gsar
 sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
+  - "[[literature/papers/kamelhar2026gsar]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/evolutionary-expansion]]"
+  - "[[concepts/typed-claim-partition]]"
 related_experiments: []
 tags: [budget, halting, resources, autonomy]
 ---

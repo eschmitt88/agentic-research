@@ -6,9 +6,11 @@ added: "2026-04-24"
 source_papers:
   - hambardzumyan2026aira
   - chan2024mle
+  - kamelhar2026gsar
 sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/chan2024mle]]"
+  - "[[literature/papers/kamelhar2026gsar]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -17,6 +19,7 @@ used_by:
 related_concepts:
   - "[[concepts/pass-at-k]]"
   - "[[concepts/citation-anchoring]]"
+  - "[[concepts/typed-claim-partition]]"
 related_experiments: []
 tags: [evaluation, discipline, overfitting, hce]
 ---
