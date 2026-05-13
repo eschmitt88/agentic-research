@@ -10,7 +10,11 @@ and `/new-experiment`.
 
 ## Maps of Content
 
-(promote a cluster of ≥5 related concepts into `mocs/<theme>.md`)
+- [[mocs/knowledge-organization-for-research-agents]] — substrate /
+  write-side / read-side of agent memory; 8 concepts spanning
+  agent-native-memory, file-as-bus, structured-world-model,
+  skill-library-lifecycle, typed-claim-partition, citation-anchoring,
+  selective-memory-retrieval, web-grounded-literature.
 
 ## Active experiments
 

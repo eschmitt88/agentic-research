@@ -6,13 +6,16 @@ added: "2026-04-24"
 source_papers:
   - zhang2026aibuildai
   - hambardzumyan2026aira
+  - ouyang2026skillos
 sources:
   - "[[literature/papers/zhang2026aibuildai]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
+  - "[[literature/papers/ouyang2026skillos]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/budget-as-ceiling]]"
+  - "[[concepts/skill-library-lifecycle]]"
 related_experiments: []
 tags: [model-selection, budget, ideator-implementer, agent-architecture]
 ---
@@ -79,3 +82,13 @@ mechanical tasks.
 - Whether Haiku or a smaller model can serve as implementer for
   simple tasks (scaffolding, boilerplate edits) is an open question;
   downstream projects are encouraged to try it and report back.
+- **Trained role-specific small models can beat frontier defaults.**
+  SkillOS ([[literature/papers/ouyang2026skillos]]) reports that a
+  GRPO-trained 8B *curator* (the ideator-role in their architecture)
+  outperforms Gemini-2.5-Pro used directly as curator on the same
+  executor. The standard "stronger model on the strategic side"
+  default is wrong when the strategic side benefits from being
+  *calibrated to the executor's actual usage patterns*. Worth
+  testing in this project's own ideator/implementer split — a
+  smaller model trained on this project's ideation patterns may
+  outperform Opus 4.7 used out-of-the-box.

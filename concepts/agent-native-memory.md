@@ -5,13 +5,21 @@ status: experimental
 added: "2026-04-26"
 source_papers:
   - nguyen2026byterover
+  - zhao2026expweaver
+  - ouyang2026skillos
+  - cho2026skillret
 sources:
   - "[[literature/papers/nguyen2026byterover]]"
+  - "[[literature/papers/zhao2026expweaver]]"
+  - "[[literature/papers/ouyang2026skillos]]"
+  - "[[literature/papers/cho2026skillret]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
   - "[[concepts/file-as-bus]]"
   - "[[concepts/citation-anchoring]]"
+  - "[[concepts/selective-memory-retrieval]]"
+  - "[[concepts/skill-library-lifecycle]]"
 related_experiments: []
 tags: [memory, knowledge-graph, agent-architecture, hierarchical, retrieval, lifecycle]
 ---
@@ -122,6 +130,14 @@ otherwise default to bolting on a vector store.
 - Pairs with [[concepts/citation-anchoring]]: every write benefits
   from an anchor (source paper, run id, snippet) so future
   retrievals carry provenance.
+- Pairs with [[concepts/selective-memory-retrieval]]: this concept
+  covers the *write-side and storage substrate* (where memory
+  lives, how it's organized, how it's curated); selective-retrieval
+  covers the *read-side policy* (when the agent decides to consult
+  it during a reasoning trajectory). ExpWeaver
+  ([[literature/papers/zhao2026expweaver]]) shows that the two
+  axes are largely orthogonal — improvements on one side don't
+  obviate the other.
 
 ## Open questions
 

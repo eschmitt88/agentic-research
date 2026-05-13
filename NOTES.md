@@ -66,3 +66,132 @@ SessionEnd hook backstops this if you forget.
 - Phase 5 (`setup_smoke_test.md`) is the next planned milestone.
 - Curation cadence: Monday `/digest` drops candidates into
   `raw/_candidates/`; skim and promote to `/fetch-paper` as warranted.
+
+## 2026-05-12
+
+### Did
+
+- Diagnosed and fixed a three-layer cron failure that had silently
+  prevented `/digest` from running since installation:
+  1. Added `export PATH="$HOME/.local/bin:$PATH"` to
+     `~/.claude/schedule/agentic-research-digest.sh` so cron's
+     restricted PATH can find `claude`.
+  2. Added `permissions.allow: ["WebSearch", "WebFetch"]` to
+     user-level `~/.claude/settings.json` (via the symlink target)
+     so headless `/digest` and `/discover` don't fail closed.
+  3. Added `--permission-mode bypassPermissions` to the cron
+     `claude -p "/digest"` invocation so file writes persist in
+     headless mode.
+- Re-ran `/digest` manually end-to-end. Produced 6 in-window
+  arXiv candidates in `raw/_candidates/2026-05-11-digest.md`;
+  `_meta/last_digest` updated to 2026-05-11T20:26:13Z.
+- Triaged the 6 candidates against the project's CLAUDE.md scope
+  plus the user's expanded interest in *knowledge organization
+  for research agents in practice*. Ingested 5 of 6:
+  - `kamelhar2026gsar` (GSAR, relevance 5) — typed claim partition
+    + tiered recovery as a control signal for grounding.
+  - `zhao2026expweaver` (ExpWeaver, relevance 5) — uncertainty-gated
+    `[Retrieve]` trigger as decision-time read-side policy.
+  - `ouyang2026skillos` (SkillOS, relevance 5) — RL-trained skill
+    curator over a markdown skill library; Skill1
+    ([arXiv 2605.06130](https://arxiv.org/abs/2605.06130)) folded
+    in as architectural-alternative reference, not separate note.
+  - `cho2026skillret` (SkillRet, relevance 4) — 17.8K-skill
+    retrieval benchmark; empirical scale anchor.
+  - `xiong2026autoresearchbench` (AutoResearchBench, relevance 4) —
+    1,000-query literature-discovery benchmark with SOTA at ~9%.
+- Seeded 3 new concepts (one per architectural layer surfaced by
+  the batch):
+  - `concepts/typed-claim-partition.md` (write-side: typed
+    grounding + tiered recovery, from GSAR).
+  - `concepts/selective-memory-retrieval.md` (read-side:
+    uncertainty-gated retrieval, from ExpWeaver).
+  - `concepts/skill-library-lifecycle.md` (curation policy:
+    insert/update/delete as learned operations, from SkillOS).
+- Updated 6 existing concepts with new `source_papers:`,
+  `related_concepts:`, and body extensions:
+  `citation-anchoring`, `hce-evaluation`, `budget-as-ceiling`,
+  `agent-native-memory`, `hybrid-model-backends`,
+  `web-grounded-literature`.
+- Promoted the cluster to `mocs/knowledge-organization-for-research-agents.md` —
+  the project's first MoC. Ties 8 concepts across substrate /
+  write-side / read-side layers; includes a paper-by-layer table
+  showing no batch paper covers all three. `_meta/index.md`
+  updated to point to the MoC.
+
+### Findings
+
+- **Stacked silent failures in the cron pipeline.** Three
+  independent gating issues (PATH, permissions, write-mode) each
+  individually plausible; together they explain weeks of "running"
+  cron with zero output. The diagnostic value of running the
+  script manually in an `env -i` cron-like environment was high —
+  the failure was invisible from the cron logs alone.
+- **The May-11 batch papers cluster cleanly into a 3-layer
+  architecture** (substrate / write-side / read-side of agent
+  memory). This emerged from reading them together, not from any
+  individual paper's framing. None of the five papers attacks more
+  than one layer — combining a trained write-side curator (SkillOS)
+  with a trained read-side gate (ExpWeaver) over an agent-native
+  substrate is the natural next research direction and shows up
+  in none of the published work.
+- **"Good curation is reader-specific"** (SkillOS's strongest
+  finding: an 8B trained curator beats Gemini-2.5-Pro used directly
+  as curator on the same executor) is the most generalizable single
+  insight from the batch. For research-memory projects this implies
+  notes should be calibrated to *what future-Claude consulting the
+  graph actually retrieves and uses*, not to what looks clean to a
+  current human reader. The project's `relevance:` and
+  `related_concepts:` frontmatter are the current calibration
+  mechanism; making them empirically-driven (which notes do future
+  sessions actually pull?) is an open question.
+- **AutoResearchBench validates the curator-in-the-loop pattern.**
+  Frontier models max out at ~9% on autonomous literature
+  discovery; full automation isn't credible at current SOTA. The
+  project's design — automated recall (digest), human precision
+  verification (user triage + `/fetch-paper`) — matches what the
+  evidence supports.
+- **Skill1 (2605.06130) is concurrent with SkillOS** (both
+  2026-05-07) and takes the inverse architectural bet: unified RL
+  policy over selection/application/extraction vs. decoupled
+  curator/executor. Neither paper cites the other. A direct
+  head-to-head doesn't exist in the literature yet.
+- **MoC threshold was already met implicitly before this batch** —
+  agent-native-memory, citation-anchoring, web-grounded-literature,
+  file-as-bus, structured-world-model are already 5 concepts on
+  the knowledge-org theme. The batch added 3 more and made the
+  thematic coherence undeniable, which is what made this the right
+  moment to promote.
+
+### Next
+
+- **Monday 2026-05-18 7am cron `/digest` validation.** The manual
+  run works; cron path *should* work (env-stripped manual
+  invocation succeeded), but worth a glance at
+  `_meta/digest.log` and `_meta/last_digest` Monday morning.
+- **Three high-leverage read-side tweaks for `/digest` and
+  `/iterate`** (the highest-leverage improvement frontier per the
+  MoC's cross-layer analysis):
+  1. Revise `/digest`'s query synthesis to produce longer,
+     scenario-rich queries (AutoResearchBench finding: short
+     keyword queries degrade scientific search).
+  2. Investigate swapping `/digest`'s WebSearch backend for
+     arxiv-specialized full-text retrieval (AutoResearchBench
+     finding: DeepXiv beats Jina open-web by 1.45pp Deep /
+     2.55pp Wide). Natural follow-up read is the DeepXiv-SDK
+     paper (`qian2026deepxiv`, arXiv 2603.00084).
+  3. Add an explicit `[Retrieve]` trigger mechanism to sub-agents
+     in `/iterate` and `/implement` — emit when proposals stall or
+     when reasoning entropy spikes, rather than always loading
+     top-5 related lit notes upfront (ExpWeaver finding).
+- **`/lint` extension** to track insert/update/delete operation
+  ratio over time as a knowledge-graph health metric (SkillOS
+  finding: a library that's always insert-dominant signals
+  under-pruning). Today's `/lint` catches structural defects
+  (orphans, dead wikilinks); doesn't characterize lifecycle
+  health.
+- **No `/implement` calls** on any of the 4 seed proposals —
+  Phase 4 of project setup remains in design space, per
+  CLAUDE.md ("No `/implement` or `/iterate` in this project").
+- **Curation cadence unchanged.** Monday `/digest` → skim
+  candidates → promote to `/fetch-paper` as warranted.

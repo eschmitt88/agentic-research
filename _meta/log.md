@@ -49,3 +49,16 @@ skills; read by `/lint`.
 2026-05-11 20:21 session_end session=3492f833-5080-4a5c-93f8-04b9bcc8dd74
 2026-05-11 20:26 digest n=6 window_since=2026-04-24T13:58:26Z
 2026-05-11 20:28 session_end session=a0f9c2dd-dd8a-413f-842d-93b263b4716f
+2026-05-11 20:45 fetch-paper 2604.23366 → raw/papers/kamelhar2026gsar.pdf
+2026-05-11 20:49 ingest raw/papers/kamelhar2026gsar.pdf
+2026-05-11 20:49 fetch-paper 2605.07164 → raw/papers/zhao2026expweaver.pdf
+2026-05-11 20:51 ingest raw/papers/zhao2026expweaver.pdf
+2026-05-11 20:52 fetch-paper 2605.06614 → raw/papers/ouyang2026skillos.pdf
+2026-05-11 20:55 ingest raw/papers/ouyang2026skillos.pdf
+2026-05-11 20:56 fetch-paper 2605.05726 → raw/papers/cho2026skillret.pdf
+2026-05-11 20:58 ingest raw/papers/cho2026skillret.pdf
+2026-05-11 20:59 fetch-paper 2604.25256 → raw/papers/xiong2026autoresearchbench.pdf
+2026-05-11 21:01 ingest raw/papers/xiong2026autoresearchbench.pdf
+2026-05-12 16:52 wrap-skip-structured reason=cwd-not-in-experiment
+2026-05-12 16:52 wrap diagnosed+fixed digest cron stack (PATH/permissions/bypass); ingested 5 papers (GSAR/ExpWeaver/SkillOS/SkillRet/AutoResearchBench); seeded 3 concepts; promoted knowledge-organization MoC
+2026-05-13 02:41 session_end session=556ffe41-cd53-4e0e-bc81-047fb9b989ec

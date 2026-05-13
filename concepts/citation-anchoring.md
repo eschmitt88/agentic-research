@@ -5,13 +5,16 @@ status: active
 added: "2026-04-24"
 source_papers:
   - mitchener2025kosmos
+  - kamelhar2026gsar
 sources:
   - "[[literature/papers/mitchener2025kosmos]]"
+  - "[[literature/papers/kamelhar2026gsar]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
 related_concepts:
   - "[[concepts/structured-world-model]]"
+  - "[[concepts/typed-claim-partition]]"
 related_experiments: []
 tags: [evaluation, provenance, diagnostics, hallucination]
 ---
@@ -61,6 +64,15 @@ explicit anchors moves the defect from invisible to grepable.
    `/ingest` processes a note that itself cites anchored claims
    from a source, preserve the anchors verbatim in the processed
    note's body — never paraphrase away the provenance.
+
+5. **Promote anchors from passive flag to control signal.** GSAR
+   ([[literature/papers/kamelhar2026gsar]]) extends anchoring from
+   "is this claim sourced?" to a four-way typology
+   (grounded / ungrounded / contradicted / complementary) with
+   evidence-type weights and a tiered recovery action — see
+   [[concepts/typed-claim-partition]]. For autonomous loops, the
+   typed version is what turns provenance into something the
+   planner can act on.
 
 ## Open questions
 
