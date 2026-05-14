@@ -62,3 +62,5 @@ skills; read by `/lint`.
 2026-05-12 16:52 wrap-skip-structured reason=cwd-not-in-experiment
 2026-05-12 16:52 wrap diagnosed+fixed digest cron stack (PATH/permissions/bypass); ingested 5 papers (GSAR/ExpWeaver/SkillOS/SkillRet/AutoResearchBench); seeded 3 concepts; promoted knowledge-organization MoC
 2026-05-13 02:41 session_end session=556ffe41-cd53-4e0e-bc81-047fb9b989ec
+2026-05-13 02:41 auto_push attempted but failed (see /home/eschmitt/.claude/hooks/auto-push.err)
+2026-05-14 11:25 session_end session=d7b60701-89cd-42ec-81e7-ff06284550de
