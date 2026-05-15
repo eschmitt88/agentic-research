@@ -64,3 +64,4 @@ skills; read by `/lint`.
 2026-05-13 02:41 session_end session=556ffe41-cd53-4e0e-bc81-047fb9b989ec
 2026-05-13 02:41 auto_push attempted but failed (see /home/eschmitt/.claude/hooks/auto-push.err)
 2026-05-14 11:25 session_end session=d7b60701-89cd-42ec-81e7-ff06284550de
+2026-05-15 15:15 discover agent-harnesses n=10
