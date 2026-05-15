@@ -12,6 +12,7 @@ related_concepts:
   - "[[concepts/agent-native-memory]]"
   - "[[concepts/typed-claim-partition]]"
   - "[[concepts/evolutionary-expansion]]"
+  - "[[concepts/context-eviction-policy]]"
 related_experiments: []
 tags: [memory, retrieval-policy, knowledge-organization, uncertainty-gating, runtime-decisions]
 ---
