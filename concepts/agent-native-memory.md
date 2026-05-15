@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/zhao2026expweaver]]"
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/cho2026skillret]]"
+  - "[[literature/repos/nousresearch-hermes-agent]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
