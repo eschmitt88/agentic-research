@@ -70,3 +70,4 @@ skills; read by `/lint`.
 2026-05-15 15:25 fetch-paper https://github.com/HKUDS/OpenHarness → raw/repos/hkuds-openharness.md
 2026-05-15 15:32 ingest raw/repos/hkuds-openharness.md → literature/repos/hkuds-openharness.md; seeded concepts/shared-skill-namespace; updated agent-native-memory + skill-library-lifecycle + hierarchical-delegation + hybrid-model-backends
 2026-05-15 15:37 fetch-paper https://paddo.dev/blog/claude-code-leak-harness-exposed/ → raw/web/paddo-dev-claude-code-leak-harness-exposed.md
+2026-05-15 15:44 ingest raw/web/paddo-dev-claude-code-leak-harness-exposed.md → literature/posts/paddo-dev-claude-code-leak-harness-exposed.md; seeded concepts/context-eviction-policy; updated agent-native-memory + selective-memory-retrieval
