@@ -9,6 +9,8 @@ source_papers:
 sources:
   - "[[literature/papers/zhang2026aibuildai]]"
   - "[[literature/papers/chen2026toward]]"
+  - "[[literature/repos/nousresearch-hermes-agent]]"
+  - "[[literature/repos/hkuds-openharness]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
