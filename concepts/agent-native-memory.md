@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/cho2026skillret]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
+  - "[[literature/repos/hkuds-openharness]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"

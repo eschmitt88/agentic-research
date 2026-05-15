@@ -11,6 +11,8 @@ sources:
   - "[[literature/papers/zhang2026aibuildai]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/ouyang2026skillos]]"
+  - "[[literature/repos/nousresearch-hermes-agent]]"
+  - "[[literature/repos/hkuds-openharness]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
