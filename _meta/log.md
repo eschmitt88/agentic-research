@@ -67,3 +67,4 @@ skills; read by `/lint`.
 2026-05-15 15:15 discover agent-harnesses n=10
 2026-05-15 15:17 fetch-paper https://github.com/nousresearch/hermes-agent → raw/repos/nousresearch-hermes-agent.md
 2026-05-15 15:22 ingest raw/repos/nousresearch-hermes-agent.md → literature/repos/nousresearch-hermes-agent.md; seeded concepts/scripted-tool-pipelines; updated agent-native-memory + skill-library-lifecycle
+2026-05-15 15:25 fetch-paper https://github.com/HKUDS/OpenHarness → raw/repos/hkuds-openharness.md
