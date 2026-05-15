@@ -195,3 +195,100 @@ SessionEnd hook backstops this if you forget.
   CLAUDE.md ("No `/implement` or `/iterate` in this project").
 - **Curation cadence unchanged.** Monday `/digest` → skim
   candidates → promote to `/fetch-paper` as warranted.
+
+## 2026-05-15
+
+### Did
+
+- **`/discover` on agent harnesses.** Wrote
+  `raw/_candidates/2026-05-15-agent-harnesses.md` — 10 ranked
+  entries covering Claude Code (leaked), OpenClaw, Hermes,
+  OpenHarness, Claw Code, plus synthesis writeups. Triage commit
+  `6a6e874`. Primary sources (Hermes / OpenHarness GitHub + the
+  Paddo leak walkthrough) tagged top-tier; synthesis pieces
+  ranked below them.
+- **Fetched 3 of the 10 candidates** — the two open-source primary
+  repos plus the best public account of the Claude Code leak.
+  Skipped the seven synthesis/comparison/profile pieces as
+  redundant once primary sources were in `literature/`.
+- **Ingested all 3** into the knowledge graph. Three new seedling
+  concepts: `scripted-tool-pipelines`, `shared-skill-namespace`,
+  `context-eviction-policy`. Five existing concepts gained
+  sources: `agent-native-memory`, `skill-library-lifecycle` (with
+  a new "execution-time curation" subsection per the Hermes
+  evidence), `hierarchical-delegation`, `hybrid-model-backends`,
+  `selective-memory-retrieval`.
+- **Commit chain:** `6a6e874` (discover) → `1250ca3` /
+  `14bac19` (Hermes fetch + ingest) → `5c1452c` / `73b3508`
+  (OpenHarness) → `0f271c2` / `5a18fed` (Paddo).
+
+### Findings
+
+- **`context-eviction-policy` is the missing fourth memory axis.**
+  The project had `agent-native-memory` (where memory lives),
+  `skill-library-lifecycle` (when to write), and
+  `selective-memory-retrieval` (when to read). What was missing
+  was *what stays in the prompt when the working set overflows*.
+  Attested in all four harnesses surveyed today (Claude Code per
+  Paddo, OpenHarness auto-compact, Hermes `/compress` + v0.1.6
+  release note, ByteRover hierarchical store as the destination).
+  Four independent attestations = consensus, not coincidence.
+- **`shared-skill-namespace` is real and the project is already
+  in it.** OpenHarness reads skills from `~/.claude/skills/`,
+  `~/.agents/skills/`, and `~/.openharness/skills/` (and the
+  project-level equivalents). Hermes declares agentskills.io
+  compatibility. The project's own skills under `~/.claude/skills/`
+  are portable across harnesses *by accident* — by virtue of
+  following the SKILL.md schema and the canonical layout. This is
+  inherited architecture worth being explicit about.
+- **Typed-tools vs dynamic-registry is a stable design axis.**
+  Claude Code (typed `Tool` interface, Zod) and OpenHarness
+  (Pydantic + JSON Schema) sit on one side; Hermes (dynamic
+  registry with lambda handlers) on the other. Both ship and pass
+  tests — the choice is design philosophy, not capability. Worth
+  flagging when the project considers its own tool surface
+  evolution.
+- **Permission-gate-as-architecture is 3-of-4 attested.** Claude
+  Code (19 permission-gated tools), OpenHarness (three permission
+  modes + PreToolUse/PostToolUse hooks), Bara's writeup framing
+  it as "first-class architecture not bolt-on safety." Held off
+  seeding as a concept — one more direct attestation and it's
+  worth promoting.
+- **Hermes's "trajectory compression for next-gen training" is a
+  meta-feedback dynamic** I hadn't seen named: the harness's
+  runs *become training data for the next harness model*. If this
+  generalizes, the harness's behavioral biases get baked into
+  successor models, and the curator/executor split blurs over
+  generations. Worth tracking but not actionable here.
+- **The harness-architecture cluster is at 3 concepts**
+  (`scripted-tool-pipelines`, `shared-skill-namespace`,
+  `context-eviction-policy`). Two short of the MoC threshold.
+  If/when claw-code or the Claude Code architecture docs get
+  fetched, expect a fourth or fifth concept to crystallize and
+  trigger MoC promotion.
+
+### Next
+
+- **Test the `shared-skill-namespace` claim empirically.** Drop a
+  no-op SKILL.md in `~/.claude/skills/` and verify it loads under
+  OpenHarness. If true at the path level, downstream projects can
+  rely on one canonical skill directory. If false, the concept
+  needs a softer framing.
+- **Watch for KAIROS.** Paddo flags 150+ source references to an
+  unreleased Claude Code daemon mode. If/when it ships, re-examine
+  this project's cron-based `/digest` cadence — KAIROS may be the
+  right substrate for what's currently glued together with cron +
+  manual session resumption.
+- **Defer claw-code fetch.** It's the architecturally most
+  substantive of the remaining 7 candidates (clean-room Rust+Python
+  rewrite of Claude Code), but the DMCA status is uncertain. Check
+  whether the repo is still up before fetching; if it is, the
+  fourth concept seed likely lives there.
+- **One more attestation and `permission-gate-as-architecture`
+  promotes.** Most likely path: read claw-code's permission system
+  or the Claude Code MCP transport list more carefully.
+- **Items from prior wraps still standing:** Monday 2026-05-18 7am
+  cron `/digest` validation; three read-side tweaks to `/digest` +
+  `/iterate` (longer queries, arxiv-specialized retrieval,
+  `[Retrieve]` triggers); `/lint` extension for insert/update/delete
+  ratio. None addressed today.
