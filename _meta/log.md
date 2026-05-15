@@ -66,3 +66,4 @@ skills; read by `/lint`.
 2026-05-14 11:25 session_end session=d7b60701-89cd-42ec-81e7-ff06284550de
 2026-05-15 15:15 discover agent-harnesses n=10
 2026-05-15 15:17 fetch-paper https://github.com/nousresearch/hermes-agent → raw/repos/nousresearch-hermes-agent.md
+2026-05-15 15:22 ingest raw/repos/nousresearch-hermes-agent.md → literature/repos/nousresearch-hermes-agent.md; seeded concepts/scripted-tool-pipelines; updated agent-native-memory + skill-library-lifecycle

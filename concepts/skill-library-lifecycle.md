@@ -9,6 +9,7 @@ source_papers:
 sources:
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/cho2026skillret]]"
+  - "[[literature/repos/nousresearch-hermes-agent]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -111,6 +112,17 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
    periodic auditor) should track the ratio of insert/update/delete
    operations over time as a health metric, not just structural
    defects.
+
+6. **Execution-time curation, not only batch-time.** SkillOS curates
+   between task groups; ExpWeaver curates implicitly through gated
+   retrieval. Hermes Agent
+   ([[literature/repos/nousresearch-hermes-agent]]) adds a third
+   mode: **skills self-improve during use** — a skill executed
+   today may be edited (by the agent) as a side-effect of execution,
+   not as a separate curation pass. This is closer to continuous
+   refinement (ReasoningBank-style) than to scheduled curation. The
+   three modes — execution-time, retrieval-time, batch-time — are
+   not mutually exclusive; a mature library likely uses all three.
 
 6. **Empirical reference point for what a library looks like at
    scale.** SkillRet ([[literature/papers/cho2026skillret]]) curated
