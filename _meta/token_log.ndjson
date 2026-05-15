@@ -598,3 +598,20 @@
   "cache_creation_tokens": 0,
   "tools_used_summary": {}
 }
+{
+  "timestamp": "2026-05-15T15:16:58Z",
+  "session_id": "e4554eb8-56cb-4759-938a-934e62d27c4a",
+  "input_tokens": 19963,
+  "output_tokens": 23841,
+  "cache_read_tokens": 1097689,
+  "cache_creation_tokens": 222042,
+  "tools_used_summary": {
+    "Bash": 6,
+    "ToolSearch": 1,
+    "WebSearch": 3,
+    "WebFetch": 9,
+    "Write": 1,
+    "Edit": 2,
+    "Read": 1
+  }
+}
