@@ -75,3 +75,5 @@ skills; read by `/lint`.
 2026-05-15 15:48 wrap agent-harnesses session: discover→3 fetch+ingest cycles; 3 new concepts (scripted-tool-pipelines, shared-skill-namespace, context-eviction-policy)
 2026-05-16 01:44 fetch-paper 2506.13131 → raw/papers/novikov2025alphaevolve.pdf
 2026-05-16 01:47 ingest raw/papers/novikov2025alphaevolve.pdf → literature/papers/novikov2025alphaevolve.md
+2026-05-16 01:51 fetch-paper deepmind/funsearch-pdf → raw/papers/romeraparedes2024funsearch.pdf
+2026-05-16 01:51 ingest raw/papers/romeraparedes2024funsearch.pdf → literature/papers/romeraparedes2024funsearch.md
