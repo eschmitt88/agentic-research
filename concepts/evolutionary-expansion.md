@@ -7,10 +7,12 @@ source_papers:
   - li2025fm
   - nam2025mle
   - novikov2025alphaevolve
+  - romeraparedes2024funsearch
 sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/nam2025mle]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
+  - "[[literature/papers/romeraparedes2024funsearch]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -59,6 +61,18 @@ scheduling, GPU kernels, and Verilog hardware design. The agent
 architecture is domain-agnostic; the evaluator carries the domain.
 This generalizes the FM Agent observation — evolutionary sampling
 plus a swapped evaluator is the unit of cross-domain transfer.
+
+FunSearch ([[literature/papers/romeraparedes2024funsearch]]) is the
+foundational ancestor of this lineage (Nature 2024): the first
+LLM-driven evolutionary program-search system, with an islands-based
+programs database for diversity, function-grain mutation, and an
+evaluator that doubles as the hallucination filter. The four-subsystem
+architecture (programs database, prompt sampler, LLM, evaluator) that
+AlphaEvolve later scales to whole-file evolution originates here.
+The lineage shows the search pattern is robust across model
+generations — PaLM 2 (FunSearch) through Gemini Pro (AlphaEvolve)
+through Opus-class agents (FM Agent), the same architecture
+produces the same kind of result.
 
 ## Implementation guidance
 

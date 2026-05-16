@@ -148,23 +148,28 @@ flagship example) and sixth attestation for [[concepts/hybrid-model-backends]]
 (Gemini Flash + Pro = explore/exploit at the model-tier level, a
 distinct framing from ideator/implementer role split).
 
-**Candidate concepts deferred pending second attestation:**
+**Concepts seeded on this ingest** (jointly with FunSearch
+[[literature/papers/romeraparedes2024funsearch]]):
 
-- **`programmable-evaluator-oracle`** — the discipline that the
-  evaluator function *defines* what the agent can optimize, and
+- [[concepts/programmable-evaluator-oracle]] — the discipline that
+  the evaluator function *defines* what the agent can optimize, and
   framing the problem as a scoring function is the dominant work.
-  FunSearch ([[literature/papers/romera-paredes2024funsearch]] —
-  pending ingest) will be the second attestation; FM Agent partially
-  attests as well. Promote to seedling on FunSearch ingest.
-- **`whole-file-program-search`** — programs as full files vs single
-  functions. AlphaEvolve positions this as the scope extension over
-  FunSearch. After FunSearch ingest this becomes a 2-source contrast
-  worth seeding.
-- **`prompt-as-population-bus`** — the Prompt Sampler injects
-  past best programs into the LLM context as in-context exemplars,
+  Three attestations: FunSearch + AlphaEvolve + FM Agent.
+- [[concepts/evolutionary-search-grain]] — programs-as-whole-files
+  (AlphaEvolve) vs programs-as-single-functions (FunSearch). The
+  grain is a deliberate design dimension with consequences for
+  LLM strength, interpretability, and solution scope.
+
+**Candidate concept still deferred:**
+
+- **`prompt-as-population-bus`** — the Prompt Sampler injects past
+  best programs into the LLM context as in-context exemplars,
   making the prompt itself the carrier between generations. Distinct
-  from typical evolutionary algorithms where genetic information lives
-  in a structured population. Speculative; wait for second attestation.
+  from typical evolutionary algorithms where genetic information
+  lives in a structured population. FunSearch attests this too, but
+  the mechanism is largely implicit in evolutionary-expansion's
+  population dynamics — wait for a third explicit attestation
+  before seeding.
 
 **Connections to track:**
 - The Flash:Pro ratio question is the **explore-exploit budget split**
