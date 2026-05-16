@@ -7,10 +7,12 @@ source_papers:
   - zhang2026aibuildai
   - hambardzumyan2026aira
   - ouyang2026skillos
+  - novikov2025alphaevolve
 sources:
   - "[[literature/papers/zhang2026aibuildai]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/ouyang2026skillos]]"
+  - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
@@ -50,6 +52,17 @@ In practice, the `budget.yaml` pattern already encodes this split:
 for execution-heavy skills (`/implement`). The pattern shows up
 organically because the cost-per-quality curve flattens steeply on
 mechanical tasks.
+
+AlphaEvolve ([[literature/papers/novikov2025alphaevolve]]) attests
+the same split at a different axis: an **explore/exploit** model
+ensemble where Gemini Flash supplies high-volume cheap proposals
+("maximizes the breadth of ideas explored") and Gemini Pro supplies
+fewer but higher-quality refinements ("provides critical depth").
+This is the same hybrid-backend principle (use the right tier for
+the right work) re-cast as breadth-vs-depth rather than
+ideator-vs-implementer. Downstream projects with evolutionary search
+loops should consider both axes — role split *and* tier split within
+a role.
 
 ## Implementation guidance
 
