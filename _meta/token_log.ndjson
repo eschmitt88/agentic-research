@@ -633,3 +633,43 @@
     "Skill": 7
   }
 }
+{
+  "timestamp": "2026-05-15T16:15:21Z",
+  "session_id": "e4554eb8-56cb-4759-938a-934e62d27c4a",
+  "input_tokens": 20178,
+  "output_tokens": 180159,
+  "cache_read_tokens": 13169555,
+  "cache_creation_tokens": 541776,
+  "tools_used_summary": {
+    "Bash": 26,
+    "ToolSearch": 1,
+    "WebSearch": 3,
+    "WebFetch": 10,
+    "Write": 8,
+    "Edit": 20,
+    "Read": 17,
+    "Skill": 7
+  }
+}
+{
+  "timestamp": "2026-05-16T01:42:02Z",
+  "session_id": "17d1cedc-f89b-464f-95d0-4317272d89a9",
+  "input_tokens": 18,
+  "output_tokens": 1335,
+  "cache_read_tokens": 51771,
+  "cache_creation_tokens": 49635,
+  "tools_used_summary": {
+    "Bash": 2
+  }
+}
+{
+  "timestamp": "2026-05-16T01:42:24Z",
+  "session_id": "17d1cedc-f89b-464f-95d0-4317272d89a9",
+  "input_tokens": 37,
+  "output_tokens": 2714,
+  "cache_read_tokens": 191797,
+  "cache_creation_tokens": 52150,
+  "tools_used_summary": {
+    "Bash": 4
+  }
+}

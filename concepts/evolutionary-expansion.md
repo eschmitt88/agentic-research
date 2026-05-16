@@ -6,9 +6,11 @@ added: "2026-04-24"
 source_papers:
   - li2025fm
   - nam2025mle
+  - novikov2025alphaevolve
 sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/nam2025mle]]"
+  - "[[literature/papers/novikov2025alphaevolve]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -46,6 +48,17 @@ In both cases the losing alternative is flat single-proposal search
 — commit to one design, run it, iterate linearly. The evolutionary
 move expands the frontier earlier, so bad trajectories are cheaper
 to abandon.
+
+AlphaEvolve ([[literature/papers/novikov2025alphaevolve]]) is the
+canonical attestation of this pattern outside ML engineering: an
+evolutionary loop with Gemini Flash + Pro as the mutation operators,
+a programs database as the population manager, and user-supplied
+evaluators as the fitness signal. Same recipe, applied to pure
+mathematics (Strassen-beating matrix multiplication), datacenter
+scheduling, GPU kernels, and Verilog hardware design. The agent
+architecture is domain-agnostic; the evaluator carries the domain.
+This generalizes the FM Agent observation — evolutionary sampling
+plus a swapped evaluator is the unit of cross-domain transfer.
 
 ## Implementation guidance
 
