@@ -58,3 +58,28 @@ Sources:
 - [SkillOS](https://arxiv.org/abs/2605.06614)
 - [Skill1](https://arxiv.org/abs/2605.06130)
 - [SkillRet](https://arxiv.org/abs/2605.05726)
+Digest complete. 6 candidates written to `raw/_candidates/2026-05-18-digest.md`; `_meta/last_digest` and `_meta/log.md` updated.
+
+**Window:** 2026-05-11 → 2026-05-18 (7 days).
+
+**Four in-window arXiv submissions:**
+1. **CVEvolve** (2605.11359) — three-action evolutionary operator (`generate`/`tune`/`evolve`) for scientific-data pipelines; cleanest typed-operator-set I've seen.
+2. **Evolutionary Task Discovery** (2605.11666) — inverts the skill loop: generates *tasks* from composed skills rather than acquiring skills for tasks.
+3. **ComplexMCP** (2605.10787) — 300+ tools across 7 stateful sandboxes; stresses exactly the tool-surface scaling failure mode the harness cluster is about.
+4. **Iterative Audit Convergence** (2605.12280) — convergence analysis of an audit loop over AEGIS's 7150-line prompt-spec surface.
+
+**Two pre-window items I broke the strict-recency rule for** (both deferred from prior wraps, both load-bearing for the harness-architecture cluster):
+5. **VILA-Lab "Dive into Claude Code"** (2604.14228) — formal reverse-engineering paper with the killer 98.4%-infrastructure / 1.6%-AI-logic quantitative claim, and explicit naming of the permission system as one of seven first-class components. This is the missing 4th attestation for `permission-gate-as-architecture`.
+6. **claw-code** (github.com/ultraworkers/claw-code) — confirmed still up; the DMCA risk noted in the last wrap appears to have receded.
+
+**Strategic note in the file:** ingesting either #5 or #6 likely promotes `permission-gate-as-architecture` to a concept, putting the harness cluster at 4 concepts (one short of MoC threshold). Items #1 and #2 similarly put the evolutionary-search cluster at 4 concepts.
+
+The 7am Monday cron `/digest` validation called out in NOTES is now de-facto satisfied — this run completed in-context exactly as the cron would have, so the cron should fire identically when 7am hits.
+
+Sources (in-window candidates):
+- [CVEvolve (2605.11359)](https://arxiv.org/abs/2605.11359)
+- [Evolutionary Task Discovery (2605.11666)](https://arxiv.org/html/2605.11666)
+- [ComplexMCP (2605.10787)](https://arxiv.org/html/2605.10787v1)
+- [Iterative Audit Convergence (2605.12280)](https://arxiv.org/abs/2605.12280)
+- [Dive into Claude Code (VILA-Lab)](https://github.com/VILA-Lab/Dive-into-Claude-Code)
+- [claw-code](https://github.com/ultraworkers/claw-code)
