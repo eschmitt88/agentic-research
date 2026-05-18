@@ -77,3 +77,5 @@ skills; read by `/lint`.
 2026-05-16 01:47 ingest raw/papers/novikov2025alphaevolve.pdf → literature/papers/novikov2025alphaevolve.md
 2026-05-16 01:51 fetch-paper deepmind/funsearch-pdf → raw/papers/romeraparedes2024funsearch.pdf
 2026-05-16 01:51 ingest raw/papers/romeraparedes2024funsearch.pdf → literature/papers/romeraparedes2024funsearch.md
+2026-05-18 07:02 digest n=6 window_since=2026-05-11T20:26:13Z
+2026-05-18 07:04 session_end session=5e98afb3-28b7-4c5d-9af5-44123fd951e2

@@ -673,3 +673,37 @@
     "Bash": 4
   }
 }
+{
+  "timestamp": "2026-05-16T01:51:51Z",
+  "session_id": "17d1cedc-f89b-464f-95d0-4317272d89a9",
+  "input_tokens": 177,
+  "output_tokens": 103649,
+  "cache_read_tokens": 4186258,
+  "cache_creation_tokens": 265800,
+  "tools_used_summary": {
+    "Bash": 14,
+    "Skill": 2,
+    "ToolSearch": 3,
+    "WebFetch": 6,
+    "Read": 7,
+    "Write": 4,
+    "Edit": 7,
+    "WebSearch": 1
+  }
+}
+{
+  "timestamp": "2026-05-18T07:04:29Z",
+  "session_id": "5e98afb3-28b7-4c5d-9af5-44123fd951e2",
+  "input_tokens": 88,
+  "output_tokens": 51405,
+  "cache_read_tokens": 1555026,
+  "cache_creation_tokens": 380002,
+  "tools_used_summary": {
+    "Bash": 12,
+    "Grep": 2,
+    "ToolSearch": 1,
+    "WebSearch": 8,
+    "Write": 3,
+    "Read": 1
+  }
+}
