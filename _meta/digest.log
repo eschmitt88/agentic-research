@@ -83,3 +83,17 @@ Sources (in-window candidates):
 - [Iterative Audit Convergence (2605.12280)](https://arxiv.org/abs/2605.12280)
 - [Dive into Claude Code (VILA-Lab)](https://github.com/VILA-Lab/Dive-into-Claude-Code)
 - [claw-code](https://github.com/ultraworkers/claw-code)
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Digest complete. Wrote `raw/_candidates/2026-05-25-digest.md` with 8 items, updated `_meta/last_digest` and `_meta/log.md`.
+
+**Headline finding:** `2605.20086` — *"What Do Evolutionary Coding Agents Evolve?"* (Pelleriti et al., 2026-05-19, in window) introduces EvoTrace/EvoReplay and argues that ~30% of "added lines" in evolutionary coding agents are recycled previously-deleted code, with gains coming from re-tuning and recombining rather than novel structure. This directly challenges how the project should read the entire evolutionary-search cluster (CVEvolve, ToolMol, CodeEvolve, AlphaEvolve, FunSearch).
+
+**Other in-window items (2026-05-18 → 2026-05-25):**
+- `2605.19952` TriMem — three-granularity memory (raw / atomic / synthesized profiles)
+- `2605.21240` APEX — names "exploration collapse" in self-evolving agents
+
+**Pre-window catches missed by 2026-05-18 digest** (each load-bearing per NOTES.md): `2605.12239` (Harness Engineering as Categorical Architecture), `2605.15871` (AIRA-Compose/Design), `2605.15701` (H-Mem), `2605.05258` (PARNESS — a "paper harness" architecturally similar to this project).
+
+**Deferred-item movement:** claw-code is unlocked (100K stars, no DMCA against the clean-room rewrite). The fetch the prior wrap deferred is now unblocked.
+
+Cross-batch: two converging memory-multi-granularity attestations (TriMem + H-Mem) and two converging critiques-of-self-improvement (EvoTrace + APEX) appeared in the same week.
