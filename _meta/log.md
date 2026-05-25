@@ -79,3 +79,5 @@ skills; read by `/lint`.
 2026-05-16 01:51 ingest raw/papers/romeraparedes2024funsearch.pdf → literature/papers/romeraparedes2024funsearch.md
 2026-05-18 07:02 digest n=6 window_since=2026-05-11T20:26:13Z
 2026-05-18 07:04 session_end session=5e98afb3-28b7-4c5d-9af5-44123fd951e2
+2026-05-25 17:00 digest n=8 window_since=2026-05-18T07:02:50Z
+2026-05-25 07:04 session_end session=fb46cbc7-bf0e-4c29-bc69-a60c51dec242
