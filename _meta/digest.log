@@ -97,3 +97,22 @@ Digest complete. Wrote `raw/_candidates/2026-05-25-digest.md` with 8 items, upda
 **Deferred-item movement:** claw-code is unlocked (100K stars, no DMCA against the clean-room rewrite). The fetch the prior wrap deferred is now unblocked.
 
 Cross-batch: two converging memory-multi-granularity attestations (TriMem + H-Mem) and two converging critiques-of-self-improvement (EvoTrace + APEX) appeared in the same week.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Digest complete. Wrote `raw/_candidates/2026-06-01-digest.md` with 6 candidates, bumped `_meta/last_digest`, appended `_meta/log.md`.
+
+**Headline:** two threads `NOTES.md` was tracking are now unblock-ready.
+
+- **Harness-architecture cluster crosses MoC threshold.** Three new attestations in this batch: #3 AHI-security (2605.24309) directly attests `permission-gate-as-architecture`, #4 HASP (2605.17734) frames skills-as-executable-guardrails with a 4-check sandbox, #5 Code-as-Agent-Harness (2605.18747) is a 42-author survey of the whole space. Fetching any two likely promotes the cluster.
+- **Multi-granularity-memory has its 3rd attestation.** MemORAI (2605.01386) joins TriMem and H-Mem with the dual-layer-compression / fact-origin-graph / PageRank-retrieval variant. Concept seed ready to write.
+- **`shared-skill-namespace` gets empirical backing.** SkillOpt v2 (2605.23904) reports skill documents transferring across direct chat, Codex, and Claude Code — the in-window v2 revision lands May 25.
+- **No KAIROS state change.** Still leak-only, no official Anthropic announcement.
+
+Top-priority fetches in order: #1 SkillOpt → #3 AHI-security → #5 Code-as-Agent-Harness.
+
+Sources:
+- [SkillOpt (2605.23904)](https://arxiv.org/abs/2605.23904)
+- [Agent Skills Survey (2605.07358)](https://arxiv.org/abs/2605.07358)
+- [Reframing LLM Agent Security as AHI (2605.24309)](https://arxiv.org/abs/2605.24309)
+- [HASP (2605.17734)](https://arxiv.org/abs/2605.17734)
+- [Code as Agent Harness (2605.18747)](https://arxiv.org/abs/2605.18747)
+- [MemORAI (2605.01386)](https://arxiv.org/abs/2605.01386)

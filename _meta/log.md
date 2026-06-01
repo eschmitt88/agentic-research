@@ -81,3 +81,5 @@ skills; read by `/lint`.
 2026-05-18 07:04 session_end session=5e98afb3-28b7-4c5d-9af5-44123fd951e2
 2026-05-25 17:00 digest n=8 window_since=2026-05-18T07:02:50Z
 2026-05-25 07:04 session_end session=fb46cbc7-bf0e-4c29-bc69-a60c51dec242
+2026-06-01 07:00 digest n=6 window_since=2026-05-25T17:00:00Z
+2026-06-01 07:04 session_end session=eb1b84fa-65f4-4d94-b4c4-9d8bc37120d0
