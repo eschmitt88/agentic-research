@@ -724,3 +724,22 @@
     "Edit": 1
   }
 }
+{
+  "timestamp": "2026-06-01T07:04:23Z",
+  "session_id": "eb1b84fa-65f4-4d94-b4c4-9d8bc37120d0",
+  "input_tokens": 34412,
+  "output_tokens": 52831,
+  "cache_read_tokens": 2756311,
+  "cache_creation_tokens": 453027,
+  "tools_used_summary": {
+    "Bash": 6,
+    "Glob": 2,
+    "Read": 4,
+    "Grep": 2,
+    "ToolSearch": 1,
+    "WebSearch": 11,
+    "WebFetch": 7,
+    "Write": 2,
+    "Edit": 1
+  }
+}
