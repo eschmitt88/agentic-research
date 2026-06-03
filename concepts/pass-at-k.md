@@ -8,6 +8,7 @@ source_papers:
   - chan2024mle
   - starace2025paperbench
 sources:
+  - "[[literature/papers/edwards2025rexbench]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/chan2024mle]]"
   - "[[literature/papers/starace2025paperbench]]"

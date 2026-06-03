@@ -6,6 +6,7 @@ added: "2026-05-11"
 source_papers:
   - kamelhar2026gsar
 sources:
+  - "[[literature/papers/calboreanu2026iterative]]"
   - "[[literature/papers/kamelhar2026gsar]]"
 used_by: []
 related_concepts:

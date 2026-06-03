@@ -5,6 +5,9 @@ status: seedling
 added: "2026-05-15"
 source_papers: []
 sources:
+  - "[[literature/papers/banu2026harness]]"
+  - "[[literature/papers/yang2026skillopt]]"
+  - "[[literature/papers/zhou2026comprehensive]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []

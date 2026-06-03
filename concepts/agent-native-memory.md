@@ -12,6 +12,12 @@ source_papers:
   - wu2026gam
   - du2026memory
 sources:
+  - "[[literature/papers/lam2026governing]]"
+  - "[[literature/papers/pham2026memorai]]"
+  - "[[literature/papers/sun2026rethinking]]"
+  - "[[literature/papers/wang2026parness]]"
+  - "[[literature/papers/wu2026memory]]"
+  - "[[literature/papers/yu2026hmem]]"
   - "[[literature/papers/nguyen2026byterover]]"
   - "[[literature/papers/zhao2026expweaver]]"
   - "[[literature/papers/ouyang2026skillos]]"

@@ -8,6 +8,7 @@ source_papers:
   - mitchener2025kosmos
   - xiong2026autoresearchbench
 sources:
+  - "[[literature/papers/wang2026parness]]"
   - "[[literature/papers/nam2025mle]]"
   - "[[literature/papers/mitchener2025kosmos]]"
   - "[[literature/papers/xiong2026autoresearchbench]]"
