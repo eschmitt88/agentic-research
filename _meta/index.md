@@ -19,6 +19,7 @@ and `/new-experiment`.
 ## Literature / papers
 
 - [[literature/papers/yang2026graph]] — Graph-based Agent Memory (survey)
+- [[literature/papers/wu2026gam]] — GAM: Hierarchical Graph-based Agentic Memory
 
 ## Active experiments
 

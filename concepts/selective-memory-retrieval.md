@@ -6,9 +6,11 @@ added: "2026-05-11"
 source_papers:
   - zhao2026expweaver
   - yang2026graph
+  - wu2026gam
 sources:
   - "[[literature/papers/zhao2026expweaver]]"
   - "[[literature/papers/yang2026graph]]"
+  - "[[literature/papers/wu2026gam]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

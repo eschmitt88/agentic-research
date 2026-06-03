@@ -9,12 +9,14 @@ source_papers:
   - ouyang2026skillos
   - cho2026skillret
   - yang2026graph
+  - wu2026gam
 sources:
   - "[[literature/papers/nguyen2026byterover]]"
   - "[[literature/papers/zhao2026expweaver]]"
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/cho2026skillret]]"
   - "[[literature/papers/yang2026graph]]"
+  - "[[literature/papers/wu2026gam]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
