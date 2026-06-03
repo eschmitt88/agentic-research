@@ -20,7 +20,7 @@ authors:
   - Xinrun Wang
   - Yi Chang
   - Xiao Huang
-institutions: []
+institutions: ["Hong Kong Polytechnic University"]
 year: 2026
 venue: "arXiv:2602.05665 [cs.AI]"
 peer_reviewed: false

@@ -14,7 +14,7 @@ authors:
   - Xue Liu
   - Philip S. Yu
   - Hongwei Wang
-institutions: []
+institutions: ["Zhejiang University", "University of Illinois Chicago", "Rutgers University", "MBZUAI", "McGill University"]
 year: 2026
 venue: "arXiv:2604.12285 [cs.AI]"
 peer_reviewed: false

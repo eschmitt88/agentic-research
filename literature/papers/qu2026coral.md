@@ -19,7 +19,7 @@ authors:
   - Bryan Kian Hsiang Low
   - Jinhua Zhao
   - Paul Pu Liang
-institutions: []
+institutions: ["MIT", "National University of Singapore", "Stanford University", "McGill University", "Meta", "Microsoft", "Amazon"]
 year: 2026
 venue: "arXiv:2604.01658 [cs.AI]"
 peer_reviewed: false
