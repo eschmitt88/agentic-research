@@ -6,9 +6,11 @@ added: "2026-04-24"
 source_papers:
   - hambardzumyan2026aira
   - chan2024mle
+  - starace2025paperbench
 sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/chan2024mle]]"
+  - "[[literature/papers/starace2025paperbench]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
