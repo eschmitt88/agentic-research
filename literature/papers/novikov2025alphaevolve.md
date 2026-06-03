@@ -20,12 +20,17 @@ authors:
   - Sebastian Nowozin
   - Pushmeet Kohli
   - Matej Balog
+institutions: ["Google DeepMind"]
 year: 2025
 venue: "arXiv:2506.13131"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2506.13131"
+code_url: "https://github.com/google-deepmind/alphaevolve_results"
+citations:
 source: "raw/papers/novikov2025alphaevolve.pdf"
 added: "2026-05-16"
 relevance: 5
+credibility: 4
 status: skimmed
 related_experiments: []
 related_concepts:
@@ -139,6 +144,16 @@ tied to a fixed AST or DSL.
   speedup each likely consumed substantial compute — wall-time and
   token cost per discovery would help calibrate when this approach is
   economical vs. human algorithm design.
+
+## Trust signals
+
+- **Credibility:** 4 — Google DeepMind (top-tier lab), high-profile
+  and widely cited; an arXiv white paper rather than a peer-reviewed
+  publication. Results notebooks are released
+  (github.com/google-deepmind/alphaevolve_results) but the
+  orchestrator code and model weights are closed, so the headline
+  discoveries are attestable yet the system is not directly
+  reproducible — held to 4 by the closed core and absent peer review.
 
 ## Follow-up
 

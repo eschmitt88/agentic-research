@@ -7,12 +7,17 @@ authors:
   - Qi Cao
   - Li Zhang
   - Pengtao Xie
+institutions: ["UC San Diego"]
 year: 2026
 venue: "arXiv:2604.14455 [cs.AI]"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2604.14455"
+code_url:
+citations:
 source: "raw/papers/zhang2026aibuildai.pdf"
 added: "2026-04-24"
 relevance: 5
+credibility: 3
 status: skimmed
 related_experiments:
   - per-role-model-downgrade
@@ -78,6 +83,13 @@ sub-agent is an LLM agent with its own multi-step reasoning and tools.
 - No mention of a HCE-style separation; if the tuner sees test-split
   metrics during its loop, the 63.1% may be partly driven by
   validation-signal overfitting.
+
+## Trust signals
+
+- **Credibility:** 3 — University of California San Diego (single
+  reputable academic group); arXiv preprint, not peer-reviewed; no
+  code URL located. Rank-1 MLE-bench medal-rate claim is strong but
+  rests on a preprint with no released artifact to verify it.
 
 ## Follow-up
 

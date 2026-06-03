@@ -4,12 +4,17 @@ title: "Skilldex: A Package Manager and Registry for Agent Skill Packages with H
 authors:
   - Sampriti Saha
   - Pranav Hemanth
+institutions: ["Pandemonium Research"]
 year: 2026
 venue: "arXiv:2604.16911 [cs.SE]"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2604.16911"
+code_url:
+citations:
 source: "raw/papers/saha2026skilldex.pdf"
 added: "2026-04-26"
 relevance: 2
+credibility: 2
 status: skimmed
 related_experiments: []
 related_concepts: []
@@ -100,6 +105,15 @@ hosted on GitHub.
   signal once you're outside the verified set.
 - Tangential to autonomous ML research per se; this is agent
   *infrastructure*, not agent capability.
+
+## Trust signals
+
+- **Credibility:** 2 — Pandemonium Research, a small/unknown group
+  (two authors); arXiv preprint, not peer-reviewed. A system/artifact
+  paper with no benchmark evaluation; the TypeScript CLI is stated to
+  be open-source (helping reproducibility) but the scanned text gave
+  only a placeholder repo URL, and the central conformance-scoring
+  claim is asserted, not measured.
 
 ## Follow-up
 

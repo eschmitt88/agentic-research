@@ -2,12 +2,17 @@
 kind: paper
 title: "Rethinking Experience Utilization in Self-Evolving Language Model Agents"
 authors: ["Weixiang Zhao", "Yingshuo Wang", "Yichen Zhang", "Yanyan Zhao", "Yu Zhang", "Yang Wu", "Dandan Tu", "Bing Qin", "Ting Liu"]
+institutions: ["Harbin Institute of Technology", "Huawei"]
 year: 2026
 venue: "arXiv 2605.07164"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2605.07164"
+code_url:
+citations:
 source: "raw/papers/zhao2026expweaver.pdf"
 added: "2026-05-11"
 relevance: 5
+credibility: 4
 status: read
 related_experiments: []
 related_concepts:
@@ -134,6 +139,15 @@ frameworks, 7 LLM backbones, and 3 environments.
   contains biased or stale content, the gate is now also a
   vulnerability surface (own cited follow-up: zhao2026safety,
   shao2025misevolve).
+
+## Trust signals
+
+- **Credibility:** 4 — Harbin Institute of Technology (a strong NLP
+  lab) with Huawei; arXiv preprint, not yet peer-reviewed; no code
+  URL located. Unusually broad validation (4 frameworks × 7 backbones
+  × 3 environments) plus causal/entropy ablations gives it strong
+  empirical footing; held below 5 only by the absence of peer review
+  and a located public artifact.
 
 ## Follow-up
 

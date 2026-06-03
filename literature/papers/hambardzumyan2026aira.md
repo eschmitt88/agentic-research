@@ -27,12 +27,17 @@ authors:
   - Jakob Nicolaus Foerster
   - Yoram Bachrach
   - Martin Josifoski
+institutions: ["Meta AI", "University College London", "University of Oxford"]
 year: 2026
 venue: "arXiv:2603.26499 [cs.AI]"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2603.26499"
+code_url:
+citations:
 source: "raw/papers/hambardzumyan2026aira.pdf"
 added: "2026-04-24"
 relevance: 5
+credibility: 4
 status: skimmed
 related_experiments:
   - hce-discipline-ablation
@@ -108,6 +113,15 @@ rank on MLE-bench-30 at 24h, 83.1% at 72h, versus 72.7% best baseline.
   (63.1% medal) requires care.
 - Async worker infrastructure is heavy — at-home reproduction may
   need to trade parallelism for simpler sync loops.
+
+## Trust signals
+
+- **Credibility:** 4 — FAIR at Meta, with University College London
+  and University of Oxford; arXiv preprint (v2), not yet
+  peer-reviewed; no released code located on the front matter. A
+  major-lab work with careful ablations and a transferable scaling
+  law — strong on most signals, short only on peer review and a
+  public artifact.
 
 ## Follow-up
 

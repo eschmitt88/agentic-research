@@ -2,12 +2,17 @@
 kind: paper
 title: "SkillRet: A Large-Scale Benchmark for Skill Retrieval in LLM Agents"
 authors: ["Hongcheol Cho", "Ryangkyung Kang", "Youngeun Kim"]
+institutions: ["ThakiCloud"]
 year: 2026
 venue: "arXiv 2605.05726"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2605.05726"
+code_url:
+citations:
 source: "raw/papers/cho2026skillret.pdf"
 added: "2026-05-11"
 relevance: 4
+credibility: 3
 status: read
 related_experiments: []
 related_concepts:
@@ -152,6 +157,14 @@ poorly because the signal locus is different.
   is a *general* skill-retrieval finding rather than a
   domain-overfit-helps finding would benefit from cross-corpus
   evaluation.
+
+## Trust signals
+
+- **Credibility:** 3 — ThakiCloud, a small commercial lab (three
+  authors); arXiv preprint, not peer-reviewed. Lifted by the fact
+  that the benchmark, code, and 0.6B/8B model checkpoints are
+  publicly released (HuggingFace), which is the right reproducibility
+  move; offset by the single-lab origin and not-yet-independent re-run.
 
 ## Follow-up
 

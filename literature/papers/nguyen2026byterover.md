@@ -13,12 +13,17 @@ authors:
   - Cuong Do
   - Phat Nguyen
   - Toan Nguyen
+institutions: ["ByteRover"]
 year: 2026
 venue: "arXiv:2604.01599 [cs.AI]"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2604.01599"
+code_url:
+citations:
 source: "raw/papers/nguyen2026byterover.pdf"
 added: "2026-04-26"
 relevance: 5
+credibility: 2
 status: skimmed
 related_experiments: []
 related_concepts:
@@ -150,6 +155,14 @@ with **zero external infrastructure**.
   dialogue retention, not the kind of cross-session research-graph
   use case this project actually has — generalization to durable
   research notes is plausible but extrapolated.
+
+## Trust signals
+
+- **Credibility:** 2 — ByteRover, a single commercial startup
+  (byterover.dev); arXiv preprint, not peer-reviewed. Strong SOTA
+  claims on LoCoMo/LongMemEval but no open code located (the system
+  is a commercial product exposed via MCP tools), so results are not
+  independently reproducible. Vendor-paper framing warrants caution.
 
 ## Follow-up
 

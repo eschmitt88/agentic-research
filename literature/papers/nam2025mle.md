@@ -8,12 +8,17 @@ authors:
   - Jinwoo Shin
   - Sercan Ö. Arık
   - Tomas Pfister
+institutions: ["Google Cloud", "KAIST"]
 year: 2025
 venue: "arXiv:2506.15692 [cs.LG]"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2506.15692"
+code_url:
+citations:
 source: "raw/papers/nam2025mle.pdf"
 added: "2026-04-24"
 relevance: 5
+credibility: 4
 status: skimmed
 related_experiments:
   - ablation-guided-refinement-on-toy-mle
@@ -78,6 +83,13 @@ carry the most signal. Medals on 64% of MLE-bench Lite competitions.
 - "Agent-suggested ensembling strategy" risks optimizing to the
   validation signal — HCE discipline (see [[literature/papers/hambardzumyan2026aira]])
   becomes load-bearing.
+
+## Trust signals
+
+- **Credibility:** 4 — Google Cloud and KAIST; arXiv preprint (v3),
+  not yet peer-reviewed; no code URL located on the scanned front
+  matter. Strong MLE-bench Lite result from a major lab + reputable
+  university; short only on peer review and a located public artifact.
 
 ## Follow-up
 
