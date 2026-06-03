@@ -5,8 +5,10 @@ status: seedling
 added: "2026-05-11"
 source_papers:
   - zhao2026expweaver
+  - yang2026graph
 sources:
   - "[[literature/papers/zhao2026expweaver]]"
+  - "[[literature/papers/yang2026graph]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

@@ -16,6 +16,10 @@ and `/new-experiment`.
   skill-library-lifecycle, typed-claim-partition, citation-anchoring,
   selective-memory-retrieval, web-grounded-literature.
 
+## Literature / papers
+
+- [[literature/papers/yang2026graph]] — Graph-based Agent Memory (survey)
+
 ## Active experiments
 
 (list of `experiments/YYYY-MM-DD-<slug>/` folders currently in flight)
