@@ -7,10 +7,12 @@ source_papers:
   - nguyen2026byterover
   - yang2026graph
   - wu2026gam
+  - du2026memory
 sources:
   - "[[literature/papers/nguyen2026byterover]]"
   - "[[literature/papers/yang2026graph]]"
   - "[[literature/papers/wu2026gam]]"
+  - "[[literature/papers/du2026memory]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"

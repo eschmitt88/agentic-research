@@ -87,3 +87,4 @@ skills; read by `/lint`.
 2026-06-03 19:18 digest n=10 window_since=2026-06-01T07:00:11Z
 2026-06-03 19:20 ingest yang2026graph (digest auto-advance)
 2026-06-03 19:21 ingest wu2026gam (digest auto-advance)
+2026-06-03 19:22 ingest du2026memory (digest auto-advance)
