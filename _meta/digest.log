@@ -116,3 +116,4 @@ Sources:
 - [HASP (2605.17734)](https://arxiv.org/abs/2605.17734)
 - [Code as Agent Harness (2605.18747)](https://arxiv.org/abs/2605.18747)
 - [MemORAI (2605.01386)](https://arxiv.org/abs/2605.01386)
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
