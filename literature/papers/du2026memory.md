@@ -3,7 +3,7 @@ kind: paper
 title: "Memory for Autonomous LLM Agents: Mechanisms, Evaluation, and Emerging Frontiers"
 authors:
   - Pengfei Du
-institutions: []
+institutions: ["Hong Kong Research Institute of Technology"]
 year: 2026
 venue: "arXiv:2603.07670 [cs.AI]"
 peer_reviewed: false
