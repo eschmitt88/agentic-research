@@ -5,8 +5,10 @@ status: seedling
 added: "2026-05-15"
 source_papers:
   - nguyen2026byterover
+  - yang2026graph
 sources:
   - "[[literature/papers/nguyen2026byterover]]"
+  - "[[literature/papers/yang2026graph]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"

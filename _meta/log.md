@@ -85,3 +85,4 @@ skills; read by `/lint`.
 2026-06-01 07:04 session_end session=eb1b84fa-65f4-4d94-b4c4-9d8bc37120d0
 2026-06-03 13:26 session_end session=16addd9d-7322-4355-bbe5-5f883bc14b64
 2026-06-03 19:18 digest n=10 window_since=2026-06-01T07:00:11Z
+2026-06-03 19:20 ingest yang2026graph (digest auto-advance)
