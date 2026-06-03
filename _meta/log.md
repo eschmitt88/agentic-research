@@ -99,3 +99,5 @@ skills; read by `/lint`.
 2026-06-03 20:32 curate 2026-06-01-digest.md → _done/
 2026-06-03 20:32 curate 2026-06-03-digest.md → _done/
 2026-06-03 20:32 curate-backfill: 26 notes ingested, 72 concept back-links, 6 files archived
+2026-06-03 21:09 wrap-skip-structured reason=cwd-not-in-experiment
+2026-06-03 21:09 wrap 2026-06-03: trust backfill, agency:max, digest+curate drain (6→0), agent-architecture MoC
