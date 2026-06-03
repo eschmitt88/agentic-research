@@ -90,3 +90,4 @@ skills; read by `/lint`.
 2026-06-03 19:22 ingest du2026memory (digest auto-advance)
 2026-06-03 19:23 ingest qu2026coral (digest auto-advance)
 2026-06-03 19:23 ingest starace2025paperbench (digest auto-advance)
+2026-06-03 19:23 digest-autoingest n=5 verdict=go
