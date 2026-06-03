@@ -7,6 +7,11 @@ source_papers:
   - ouyang2026skillos
   - cho2026skillret
 sources:
+  - "[[literature/papers/lam2026governing]]"
+  - "[[literature/papers/liu2026harnessing]]"
+  - "[[literature/papers/yang2026skillopt]]"
+  - "[[literature/papers/ye2026evolutionary]]"
+  - "[[literature/papers/zhou2026comprehensive]]"
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/cho2026skillret]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"

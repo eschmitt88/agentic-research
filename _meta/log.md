@@ -92,3 +92,10 @@ skills; read by `/lint`.
 2026-06-03 19:23 ingest starace2025paperbench (digest auto-advance)
 2026-06-03 19:23 digest-autoingest n=5 verdict=go
 2026-06-03 19:59 promote-moc agent-architecture (5 concepts)
+2026-06-03 20:32 curate 2026-05-11-digest.md → _done/
+2026-06-03 20:32 curate 2026-05-15-agent-harnesses.md → _done/
+2026-06-03 20:32 curate 2026-05-18-digest.md → _done/
+2026-06-03 20:32 curate 2026-05-25-digest.md → _done/
+2026-06-03 20:32 curate 2026-06-01-digest.md → _done/
+2026-06-03 20:32 curate 2026-06-03-digest.md → _done/
+2026-06-03 20:32 curate-backfill: 26 notes ingested, 72 concept back-links, 6 files archived

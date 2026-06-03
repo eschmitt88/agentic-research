@@ -9,6 +9,13 @@ source_papers:
   - wu2026gam
   - du2026memory
 sources:
+  - "[[literature/papers/lam2026governing]]"
+  - "[[literature/papers/li2026complexmcp]]"
+  - "[[literature/papers/pham2026memorai]]"
+  - "[[literature/papers/sun2026rethinking]]"
+  - "[[literature/papers/wu2026memory]]"
+  - "[[literature/papers/yu2026hmem]]"
+  - "[[literature/papers/zhou2026comprehensive]]"
   - "[[literature/papers/zhao2026expweaver]]"
   - "[[literature/papers/yang2026graph]]"
   - "[[literature/papers/wu2026gam]]"

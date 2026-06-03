@@ -9,6 +9,14 @@ source_papers:
   - wu2026gam
   - du2026memory
 sources:
+  - "[[literature/papers/li2026complexmcp]]"
+  - "[[literature/papers/liu2026dive]]"
+  - "[[literature/papers/pham2026memorai]]"
+  - "[[literature/papers/sun2026rethinking]]"
+  - "[[literature/papers/wang2026reframing]]"
+  - "[[literature/papers/wu2026memory]]"
+  - "[[literature/papers/yu2026hmem]]"
+  - "[[literature/repos/vila-lab-dive-into-claude-code]]"
   - "[[literature/papers/nguyen2026byterover]]"
   - "[[literature/papers/yang2026graph]]"
   - "[[literature/papers/wu2026gam]]"

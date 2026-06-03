@@ -7,6 +7,12 @@ source_papers:
   - romeraparedes2024funsearch
   - novikov2025alphaevolve
 sources:
+  - "[[literature/papers/assumpcao2025codeevolve]]"
+  - "[[literature/papers/du2026cvevolve]]"
+  - "[[literature/papers/li2026apex]]"
+  - "[[literature/papers/liu2026oragent]]"
+  - "[[literature/papers/pepe2026agentic]]"
+  - "[[literature/papers/ye2026evolutionary]]"
   - "[[literature/papers/romeraparedes2024funsearch]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
 used_by: []

@@ -5,6 +5,14 @@ status: seedling
 added: "2026-05-15"
 source_papers: []
 sources:
+  - "[[literature/papers/banu2026harness]]"
+  - "[[literature/papers/li2026complexmcp]]"
+  - "[[literature/papers/liu2026dive]]"
+  - "[[literature/papers/liu2026harnessing]]"
+  - "[[literature/papers/ning2026code]]"
+  - "[[literature/papers/wang2026parness]]"
+  - "[[literature/papers/wang2026reframing]]"
+  - "[[literature/repos/vila-lab-dive-into-claude-code]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
 used_by: []
 related_concepts:

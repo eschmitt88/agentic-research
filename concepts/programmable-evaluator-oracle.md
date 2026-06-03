@@ -9,6 +9,13 @@ source_papers:
   - li2025fm
   - qu2026coral
 sources:
+  - "[[literature/papers/assumpcao2025codeevolve]]"
+  - "[[literature/papers/du2026cvevolve]]"
+  - "[[literature/papers/edwards2025rexbench]]"
+  - "[[literature/papers/liu2026harnessing]]"
+  - "[[literature/papers/liu2026oragent]]"
+  - "[[literature/papers/ning2026code]]"
+  - "[[literature/papers/pelleriti2026evolutionary]]"
   - "[[literature/papers/romeraparedes2024funsearch]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/papers/li2025fm]]"

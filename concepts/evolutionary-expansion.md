@@ -10,6 +10,13 @@ source_papers:
   - romeraparedes2024funsearch
   - qu2026coral
 sources:
+  - "[[literature/papers/assumpcao2025codeevolve]]"
+  - "[[literature/papers/du2026cvevolve]]"
+  - "[[literature/papers/li2026apex]]"
+  - "[[literature/papers/liu2026oragent]]"
+  - "[[literature/papers/pelleriti2026evolutionary]]"
+  - "[[literature/papers/pepe2026agentic]]"
+  - "[[literature/papers/ye2026evolutionary]]"
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/nam2025mle]]"
   - "[[literature/papers/novikov2025alphaevolve]]"

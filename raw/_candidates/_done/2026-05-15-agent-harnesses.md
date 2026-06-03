@@ -5,6 +5,7 @@ discovered: 2026-05-15
 source: discover
 n_requested: 10
 n_returned: 10
+curated: 2026-06-03
 ---
 
 ## 1. The Claude Code Leak: What the Harness Actually Looks Like (Paddo, 2026)
@@ -76,3 +77,24 @@ n_returned: 10
 - type: post
 - summary: Walkthrough of Agent Client Protocol (ACP) — OpenClaw's mechanism for nesting external coding agents (Pi, Claude Code, Codex, OpenCode, Gemini CLI) inside a parent orchestrator. The orchestrator hands a coding task to the child harness over ACP and receives results programmatically, without manual session juggling.
 - reason: This *nested-harness* pattern is novel for this project. Maps directly onto `[[hierarchical-delegation]]` — a curator-style outer agent could in principle dispatch ML experiments to a Claude-Code-shaped inner harness rather than spawning raw subagents. Worth knowing whether ACP is a credible interface for that.
+
+## Curation
+
+Curated 2026-06-03. The three primary sources (paddo.dev leak post,
+Hermes Agent, OpenHarness) were already in the graph. Of the seven new
+items — all secondary commentary on the Claude Code leak / OpenClaw /
+claw-code — two genuinely substantive, non-hot-take items were ingested
+as `literature/posts/` notes; the rest declined.
+
+1. Paddo — Claude Code Leak — already in graph → `posts/paddo-dev-claude-code-leak-harness-exposed.md`
+2. Hermes Agent (Nous) — already in graph → `repos/nousresearch-hermes-agent.md`
+3. OpenClaw SDK agent-harness doc — ingested → `posts/openclaw2026harness.md` (official SDK reference; cleanest formal separation-of-concerns statement)
+4. OpenHarness + Ohmo (HKUDS) — already in graph → `repos/hkuds-openharness.md`
+5. dev.to "Mini OpenClaw" tutorial — declined — secondary/pedagogical; the primary OpenClaw harness doc is now ingested (#3)
+6. Ken Huang substack (Claude Code vs Hermes) — declined — secondary commentary; both primaries (Claude Code leak, Hermes) already ingested
+7. Savelis Medium ("512,000 lines") — declined — secondary commentary; primary leak source (paddo) already ingested
+8. Marc Bara Medium ("what the leak reveals") — declined — secondary commentary; primary leak source (paddo) already ingested; anti-distillation observation noted but thin to anchor
+9. Claw Code (Mehul Gupta Medium) — declined — DMCA status uncertain (per NOTES); defer
+10. OpenClaw ACP harness (Playbook) — ingested → `posts/openclaw2026acp.md` (nested-harness / ACP pattern; novel for this project, maps to hierarchical-delegation)
+
+Net new: 2 (`openclaw2026harness`, `openclaw2026acp`).

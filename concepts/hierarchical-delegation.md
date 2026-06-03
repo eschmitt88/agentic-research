@@ -7,6 +7,14 @@ source_papers:
   - zhang2026aibuildai
   - chen2026toward
 sources:
+  - "[[literature/papers/calboreanu2026iterative]]"
+  - "[[literature/papers/liu2026dive]]"
+  - "[[literature/papers/ning2026code]]"
+  - "[[literature/papers/pepe2026agentic]]"
+  - "[[literature/papers/wang2026reframing]]"
+  - "[[literature/repos/vila-lab-dive-into-claude-code]]"
+  - "[[literature/posts/openclaw2026acp]]"
+  - "[[literature/posts/openclaw2026harness]]"
   - "[[literature/papers/zhang2026aibuildai]]"
   - "[[literature/papers/chen2026toward]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"

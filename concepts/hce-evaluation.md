@@ -9,6 +9,11 @@ source_papers:
   - kamelhar2026gsar
   - starace2025paperbench
 sources:
+  - "[[literature/papers/calboreanu2026iterative]]"
+  - "[[literature/papers/edwards2025rexbench]]"
+  - "[[literature/papers/li2026apex]]"
+  - "[[literature/papers/pelleriti2026evolutionary]]"
+  - "[[literature/papers/yang2026skillopt]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/chan2024mle]]"
   - "[[literature/papers/kamelhar2026gsar]]"
