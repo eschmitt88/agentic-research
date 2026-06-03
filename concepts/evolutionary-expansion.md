@@ -8,11 +8,13 @@ source_papers:
   - nam2025mle
   - novikov2025alphaevolve
   - romeraparedes2024funsearch
+  - qu2026coral
 sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/nam2025mle]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/papers/romeraparedes2024funsearch]]"
+  - "[[literature/papers/qu2026coral]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"

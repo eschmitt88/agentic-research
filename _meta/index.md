@@ -21,6 +21,7 @@ and `/new-experiment`.
 - [[literature/papers/yang2026graph]] — Graph-based Agent Memory (survey)
 - [[literature/papers/wu2026gam]] — GAM: Hierarchical Graph-based Agentic Memory
 - [[literature/papers/du2026memory]] — Memory for Autonomous LLM Agents (survey)
+- [[literature/papers/qu2026coral]] — CORAL: Autonomous Multi-Agent Evolution
 
 ## Active experiments
 

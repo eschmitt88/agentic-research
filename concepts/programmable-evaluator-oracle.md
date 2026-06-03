@@ -7,10 +7,12 @@ source_papers:
   - romeraparedes2024funsearch
   - novikov2025alphaevolve
   - li2025fm
+  - qu2026coral
 sources:
   - "[[literature/papers/romeraparedes2024funsearch]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/papers/li2025fm]]"
+  - "[[literature/papers/qu2026coral]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
