@@ -14,12 +14,17 @@ authors:
   - Omar Fawzi
   - Pushmeet Kohli
   - Alhussein Fawzi
+institutions: ["Google DeepMind", "University of Wisconsin-Madison", "Université de Lyon"]
 year: 2024
 venue: "Nature 625, 468–475"
+peer_reviewed: true
 url: "https://www.nature.com/articles/s41586-023-06924-6"
+code_url:
+citations:
 source: "raw/papers/romeraparedes2024funsearch.pdf"
 added: "2026-05-16"
 relevance: 4
+credibility: 5
 status: skimmed
 related_experiments: []
 related_concepts:
@@ -125,6 +130,14 @@ AlphaEvolve later lifts to whole-file evolution.
 - **LLM dependency is modest.** Later work used Gemini 1.5 Flash with
   no specialized code training; the architecture is what's
   load-bearing, not the model.
+
+## Trust signals
+
+- **Credibility:** 5 — Google DeepMind with University of
+  Wisconsin-Madison and Université de Lyon; peer-reviewed in Nature
+  (top-tier venue); foundational and heavily cited; DeepMind released
+  the FunSearch implementation. Top scores on every trust axis,
+  independent of its (4) relevance to this project.
 
 ## Follow-up
 

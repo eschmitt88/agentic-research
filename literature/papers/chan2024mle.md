@@ -14,12 +14,17 @@ authors:
   - Tejal Patwardhan
   - Lilian Weng
   - Aleksander Mądry
+institutions: ["OpenAI"]
 year: 2024
 venue: "ICLR 2025 (arXiv:2410.07095)"
+peer_reviewed: true
 url: "https://arxiv.org/abs/2410.07095"
+code_url: "https://github.com/openai/mle-bench"
+citations:
 source: "raw/papers/chan2024mle.pdf"
 added: "2026-04-24"
 relevance: 4
+credibility: 5
 status: skimmed
 related_experiments: []
 related_concepts:
@@ -80,6 +85,12 @@ followed.
   very different absolute scores.
 - No discipline on held-out splits inside the benchmark — later work
   (AIRA_2) makes HCE separation a first-class concern.
+
+## Trust signals
+
+- **Credibility:** 5 — OpenAI; peer-reviewed (ICLR 2025); benchmark
+  code + harness open-sourced at github.com/openai/mle-bench; the
+  field-standard MLE-agent benchmark, heavily cited.
 
 ## Follow-up
 

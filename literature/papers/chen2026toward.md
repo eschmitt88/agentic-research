@@ -12,12 +12,17 @@ authors:
   - Cheng Chen
   - Ji-Rong Wen
   - Kai Jia
+institutions: ["Renmin University of China", "AweAI"]
 year: 2026
 venue: "arXiv:2604.13018 [cs.AI]"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2604.13018"
+code_url:
+citations:
 source: "raw/papers/chen2026toward.pdf"
 added: "2026-04-26"
 relevance: 5
+credibility: 3
 status: skimmed
 related_experiments: []
 related_concepts:
@@ -120,6 +125,14 @@ scoped shared workspace ("File-as-Bus"). It improves PaperBench by
 - File-as-Bus and citation-anchoring (per Kosmos) are likely
   complementary; this paper does not enforce citation discipline on
   workspace writes.
+
+## Trust signals
+
+- **Credibility:** 3 — Renmin University of China (Gaoling School of
+  AI) + AweAI; arXiv preprint, not yet peer-reviewed; page-1 GitHub
+  link advertised but no concrete repo URL in the text. Strong
+  benchmark results (PaperBench, MLE-Bench Lite) from a reputable
+  academic group, but reproducibility unverified.
 
 ## Follow-up
 

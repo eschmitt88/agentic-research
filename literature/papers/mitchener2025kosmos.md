@@ -39,12 +39,17 @@ authors:
   - Samuel G. Rodriques
   - Michaela M. Hinks
   - Andrew D. White
+institutions: ["Edison Scientific", "FutureHouse", "University of Oxford", "Massachusetts Institute of Technology", "Stanford University", "Washington University in St. Louis", "University College London"]
 year: 2025
 venue: "arXiv:2511.02824 [cs.AI]"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2511.02824"
+code_url:
+citations:
 source: "raw/papers/mitchener2025kosmos.pdf"
 added: "2026-04-24"
 relevance: 5
+credibility: 4
 status: skimmed
 related_experiments:
   - world-model-at-short-horizons
@@ -111,6 +116,16 @@ run was equivalent to ~6 months of manual research effort.
   for our own agent.
 - Domain breadth makes depth of ablation hard; unclear which agent
   (analysis vs. literature) carries the most weight.
+
+## Trust signals
+
+- **Credibility:** 4 — Edison Scientific / FutureHouse with a broad
+  academic consortium (Oxford, MIT, Stanford, WashU, UCL, Broad
+  Institute); arXiv preprint, not yet peer-reviewed; no public code
+  located. Distinguished by independent external evaluation of report
+  accuracy (79.4%) and reproduction of concurrent unpublished
+  findings — unusually strong validation for a preprint; held below 5
+  only by the lack of peer review and a released artifact.
 
 ## Follow-up
 

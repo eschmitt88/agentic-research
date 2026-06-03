@@ -2,12 +2,17 @@
 kind: paper
 title: "GSAR: Typed Grounding for Hallucination Detection and Recovery in Multi-Agent LLMs"
 authors: ["Federico A. Kamelhar"]
+institutions: ["Oracle Corporation"]
 year: 2026
 venue: "arXiv 2604.23366"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2604.23366"
+code_url:
+citations:
 source: "raw/papers/kamelhar2026gsar.pdf"
 added: "2026-05-11"
 relevance: 5
+credibility: 2
 status: read
 related_experiments: []
 related_concepts:
@@ -144,6 +149,15 @@ The paper makes and empirically evaluates five testable claims:
   fingerprint audit defense is included but the underlying issue
   (LLM-as-judge endpoint can change behavior without warning) is
   structural and unresolved.
+
+## Trust signals
+
+- **Credibility:** 2 — single-author paper (Oracle Corporation);
+  arXiv preprint, not peer-reviewed. The empirical stack runs on the
+  internal/proprietary Locus SDK, so results are not independently
+  reproducible; the portable fallback is underspecified. Reputable
+  corporate affiliation is a weak prior here given the absence of
+  peer review and released code.
 
 ## Follow-up
 

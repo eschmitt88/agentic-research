@@ -2,12 +2,17 @@
 kind: paper
 title: "AutoResearchBench: Benchmarking AI Agents on Complex Scientific Literature Discovery"
 authors: ["Lei Xiong", "Kun Luo", "Ziyi Xia", "Wenbo Zhang", "Jin-Ge Yao", "Zheng Liu", "Jingying Shao", "Jianlyu Chen", "Hongjin Qian", "Xi Yang", "Qian Yu", "Hao Li", "Chen Yue", "Xiaan Du", "Yuyang Wang", "Yesheng Liu", "Haiyu Xu", "Zhicheng Dou"]
+institutions: ["Renmin University of China"]
 year: 2026
 venue: "arXiv 2604.25256"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2604.25256"
+code_url: "https://github.com/CherYou/AutoResearchBench"
+citations:
 source: "raw/papers/xiong2026autoresearchbench.pdf"
 added: "2026-05-11"
 relevance: 4
+credibility: 4
 status: read
 related_experiments: []
 related_concepts:
@@ -167,6 +172,15 @@ skill.
   evaluated. Probably because at 3M papers it's expensive, but the
   comparison would clarify whether the failures are agentic-loop
   failures or retrieval failures.
+
+## Trust signals
+
+- **Credibility:** 4 — Renmin University of China (RUC); arXiv
+  preprint, not yet peer-reviewed; dataset, evaluation pipeline, and
+  code publicly released at github.com/CherYou/AutoResearchBench.
+  Reputable academic group with a full artifact release; the
+  DeepXiv search backend it builds on is proprietary, which limits
+  full end-to-end reproducibility.
 
 ## Follow-up
 

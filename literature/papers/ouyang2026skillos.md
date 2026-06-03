@@ -2,12 +2,17 @@
 kind: paper
 title: "SkillOS: Learning Skill Curation for Self-Evolving Agents"
 authors: ["Siru Ouyang", "Jun Yan", "Yanfei Chen", "Rujun Han", "Zifeng Wang", "Bhavana Dalvi Mishra", "Rui Meng", "Chun-Liang Li", "Yizhu Jiao", "Kaiwen Zha", "Maohao Shen", "Vishy Tirumalashetty", "George Lee", "Jiawei Han", "Tomas Pfister", "Chen-Yu Lee"]
+institutions: ["University of Illinois Urbana-Champaign", "Google Cloud", "Massachusetts Institute of Technology"]
 year: 2026
 venue: "arXiv 2605.06614"
+peer_reviewed: false
 url: "https://arxiv.org/abs/2605.06614"
+code_url:
+citations:
 source: "raw/papers/ouyang2026skillos.pdf"
 added: "2026-05-11"
 relevance: 5
+credibility: 4
 status: read
 related_experiments: []
 related_concepts:
@@ -166,6 +171,15 @@ outperforms Gemini-2.5-Pro used directly as the curator.
   `λ_u`, `λ_c` hand-tuned; Qwen3-32B judge for content quality is
   itself a moving target). Reproducing the recipe cleanly outside
   Google Cloud AI Research will be non-trivial.
+
+## Trust signals
+
+- **Credibility:** 4 — University of Illinois Urbana-Champaign with
+  Google Cloud AI Research and MIT; arXiv preprint, not yet
+  peer-reviewed; no code URL located on the front matter. Careful RL
+  recipe with strong ablations from a reputable academic + major-lab
+  collaboration; the note flags that the GRPO recipe is non-trivial
+  to reproduce outside Google Cloud, and no public artifact was found.
 
 ## Follow-up
 
