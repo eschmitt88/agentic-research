@@ -7,10 +7,12 @@ source_papers:
   - zhao2026expweaver
   - yang2026graph
   - wu2026gam
+  - du2026memory
 sources:
   - "[[literature/papers/zhao2026expweaver]]"
   - "[[literature/papers/yang2026graph]]"
   - "[[literature/papers/wu2026gam]]"
+  - "[[literature/papers/du2026memory]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
