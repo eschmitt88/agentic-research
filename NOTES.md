@@ -292,3 +292,49 @@ SessionEnd hook backstops this if you forget.
   `/iterate` (longer queries, arxiv-specialized retrieval,
   `[Retrieve]` triggers); `/lint` extension for insert/update/delete
   ratio. None addressed today.
+
+## 2026-06-03
+
+### Did
+
+- Backfilled trust-signal frontmatter (institutions, peer_reviewed,
+  code_url, credibility) on all 16 pre-existing `literature/papers/`
+  notes, pulling affiliations from the source PDFs.
+- Opted the repo into `agency: max` (`budget.yaml`).
+- Ran `/digest`: wrote `raw/_candidates/2026-06-03-digest.md` (10
+  candidates), then auto-advanced the top 5 under a GO/high headroom
+  verdict — ingested yang2026graph, wu2026gam, du2026memory,
+  qu2026coral, starace2025paperbench with trust signals + concept links.
+- Auto-promoted `mocs/agent-architecture.md` (substrate / orchestration
+  / execution; 5 concepts) via the new `/promote-moc` skill.
+- Drained the candidate backlog with `/curate`: all 6 candidate files
+  moved to `raw/_candidates/_done/`; 26 notes ingested (24 papers, 1
+  repo, 2 OpenClaw posts); claw-code declined (DMCA) and the
+  Claude-Code-leak hot-takes declined with reasons; 72 note->concept
+  back-links added across 15 concepts.
+- Net graph growth: papers 21->44, posts 1->3, MoCs 1->2; uncurated
+  candidates 6->0.
+
+### Findings
+
+- The memory tag-cluster is NOT MoC-ripe (3 concepts, 2 already in the
+  knowledge-organization MoC); `agent-architecture` was (5 concepts, 3
+  un-mapped). `/promote-moc` correctly declined memory + evaluation
+  (subsumed) and promoted agent-architecture.
+- Two concept seeds now have enough attestations to crystallize:
+  `multi-granularity-memory` (yu2026hmem + sun2026rethinking +
+  wu2026memory) and `permission-gate-as-architecture` (liu2026dive +
+  wang2026reframing — the 4th attestation prior NOTES were waiting on).
+- `assumpcao2025codeevolve` `code_url` left null — the abstract's "this
+  https URL" could not be resolved confidently from the abs page.
+- Backlog contained several peer-reviewed venues (ACL: edwards2025rexbench,
+  pham2026memorai; MDPI: calboreanu2026iterative) — set peer_reviewed: true.
+
+### Next
+
+- Seed `multi-granularity-memory` and `permission-gate-as-architecture`
+  concepts; with the former, re-check whether the memory cluster reaches
+  MoC-ripeness.
+- Resolve and fill `assumpcao2025codeevolve` `code_url`.
+- Consider widening `agency: max` to the other literature repos and a
+  nightly `/curate` + `/promote-moc` sweep.
