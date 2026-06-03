@@ -7,10 +7,12 @@ source_papers:
   - hambardzumyan2026aira
   - chan2024mle
   - kamelhar2026gsar
+  - starace2025paperbench
 sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/chan2024mle]]"
   - "[[literature/papers/kamelhar2026gsar]]"
+  - "[[literature/papers/starace2025paperbench]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
