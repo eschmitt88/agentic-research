@@ -12,6 +12,7 @@ source_papers:
 sources:
   - "[[literature/papers/assumpcao2025codeevolve]]"
   - "[[literature/papers/du2026cvevolve]]"
+  - "[[literature/papers/du2026mlevolve]]"
   - "[[literature/papers/li2026apex]]"
   - "[[literature/papers/liu2026oragent]]"
   - "[[literature/papers/pelleriti2026evolutionary]]"
