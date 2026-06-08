@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/chan2024mle]]"
   - "[[literature/papers/kamelhar2026gsar]]"
+  - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/starace2025paperbench]]"
 used_by:
   - project_slug: _scratch

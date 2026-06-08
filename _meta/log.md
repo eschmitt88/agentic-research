@@ -106,3 +106,6 @@ skills; read by `/lint`.
 2026-06-08 07:03 ingest raw/papers/du2026mlevolve.pdf (digest auto-advance)
 2026-06-08 07:05 fetch-paper https://arxiv.org/abs/2606.06448 → raw/papers/omri2026agent.pdf
 2026-06-08 07:05 ingest raw/papers/omri2026agent.pdf (digest auto-advance)
+2026-06-08 07:06 fetch-paper https://arxiv.org/abs/2606.01961 → raw/papers/liu2026automedbench.pdf
+2026-06-08 07:06 ingest raw/papers/liu2026automedbench.pdf (digest auto-advance)
+2026-06-08 07:06 digest-autoingest n=3 verdict=slow

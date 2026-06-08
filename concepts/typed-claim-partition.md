@@ -8,6 +8,7 @@ source_papers:
 sources:
   - "[[literature/papers/calboreanu2026iterative]]"
   - "[[literature/papers/kamelhar2026gsar]]"
+  - "[[literature/papers/liu2026automedbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
