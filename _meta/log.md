@@ -111,3 +111,4 @@ skills; read by `/lint`.
 2026-06-08 07:06 digest-autoingest n=3 verdict=slow
 2026-06-08 07:07 promote-moc declined (no newly-ripe cluster; no new concepts seeded)
 2026-06-08 07:07 digest partial-curate 2026-06-08-digest.md (3/5 ingested, 2 deferred; left in place)
+2026-06-08 07:08 session_end session=95d4f245-ab9b-42e1-85e9-2ae06a591326

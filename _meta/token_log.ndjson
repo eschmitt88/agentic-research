@@ -743,3 +743,21 @@
     "Edit": 1
   }
 }
+{
+  "timestamp": "2026-06-08T07:08:52Z",
+  "session_id": "95d4f245-ab9b-42e1-85e9-2ae06a591326",
+  "input_tokens": 46898,
+  "output_tokens": 110433,
+  "cache_read_tokens": 9930160,
+  "cache_creation_tokens": 464897,
+  "tools_used_summary": {
+    "Bash": 25,
+    "ToolSearch": 1,
+    "WebSearch": 8,
+    "WebFetch": 5,
+    "Write": 5,
+    "Read": 14,
+    "Edit": 16,
+    "Skill": 3
+  }
+}

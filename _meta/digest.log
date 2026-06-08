@@ -117,3 +117,30 @@ Sources:
 - [Code as Agent Harness (2605.18747)](https://arxiv.org/abs/2605.18747)
 - [MemORAI (2605.01386)](https://arxiv.org/abs/2605.01386)
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+`/digest` complete. Everything committed and pushed to GitHub (final commit `93e99c9`).
+
+## Summary
+
+**Window:** since 2026-06-03 (last digest). Ran 5 queries across the project's active fronts; deduplicated against the existing graph.
+
+**Candidates written** → `raw/_candidates/2026-06-08-digest.md` (n=5): three brand-new June-2026 arXiv items plus two late-May items on the permission-gate and memory fronts.
+
+**Headroom verdict:** `SLOW` / `normal` (GPU/CPU idle, not `hold`) → auto-advanced in small batches, re-checking between each, cap ~3.
+
+**Ingested (3/3 fresh June items):**
+
+| Paper | Citekey | Relevance / Credibility | Concept back-links |
+|---|---|---|---|
+| MLEvolve — self-evolving MLE (Progressive MCGS + Retrospective Memory) · Shanghai AI Lab | `du2026mlevolve` | 5 / 4 | evolutionary-search-grain, evolutionary-expansion, agent-native-memory, hierarchical-delegation |
+| Agent Memory: systems characterization (4-axis taxonomy + profiling harness) · Stanford/MIT/KU Leuven | `omri2026agent` | 4 / 4 | agent-native-memory, selective-memory-retrieval, context-eviction-policy |
+| AutoMedBench — 5-stage medical autoresearch; *Validate* weakest stage · UCSC/NVIDIA | `liu2026automedbench` | 4 / 4 | hce-evaluation, typed-claim-partition, programmable-evaluator-oracle |
+
+10 concept back-links added across 10 concept files; each note carries full trust signals (institutions, code_url, peer_reviewed).
+
+**`/promote-moc`:** declined — today added only *sources*, no new concept files, so cluster counts are unchanged from the 06-03 adjudication. Nothing newly ripe.
+
+**Deferred (2, left in candidate file, not archived):** `2605.08538` Human-Inspired Memory and `2605.27333` FinHarness — late-May, below the normal cap. Both are queued as the **4th attestation** for the two concept seeds NOTES flagged for crystallization (`multi-granularity-memory`, `permission-gate-as-architecture`).
+
+`_meta/last_digest` updated to `2026-06-08T07:01:54Z`; all steps logged to `_meta/log.md`.
+
+**Suggested next step:** a `/curate` pass that seeds `multi-granularity-memory` and `permission-gate-as-architecture` (ingesting the two deferred items as their 4th attestations) — which would then make the memory cluster worth re-checking for MoC-ripeness.
