@@ -17,6 +17,7 @@ sources:
   - "[[literature/posts/openclaw2026harness]]"
   - "[[literature/papers/zhang2026aibuildai]]"
   - "[[literature/papers/chen2026toward]]"
+  - "[[literature/papers/du2026mlevolve]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
