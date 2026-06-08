@@ -109,3 +109,5 @@ skills; read by `/lint`.
 2026-06-08 07:06 fetch-paper https://arxiv.org/abs/2606.01961 → raw/papers/liu2026automedbench.pdf
 2026-06-08 07:06 ingest raw/papers/liu2026automedbench.pdf (digest auto-advance)
 2026-06-08 07:06 digest-autoingest n=3 verdict=slow
+2026-06-08 07:07 promote-moc declined (no newly-ripe cluster; no new concepts seeded)
+2026-06-08 07:07 digest partial-curate 2026-06-08-digest.md (3/5 ingested, 2 deferred; left in place)
