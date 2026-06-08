@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/wu2026gam]]"
   - "[[literature/papers/du2026memory]]"
   - "[[literature/papers/du2026mlevolve]]"
+  - "[[literature/papers/omri2026agent]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"

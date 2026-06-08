@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/yang2026graph]]"
   - "[[literature/papers/wu2026gam]]"
   - "[[literature/papers/du2026memory]]"
+  - "[[literature/papers/omri2026agent]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
