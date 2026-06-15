@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/kamelhar2026gsar]]"
   - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/starace2025paperbench]]"
+  - "[[literature/papers/xu2026researchclawbench]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24

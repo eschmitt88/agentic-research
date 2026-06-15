@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/qu2026coral]]"
   - "[[literature/papers/liu2026automedbench]]"
+  - "[[literature/papers/xu2026researchclawbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"

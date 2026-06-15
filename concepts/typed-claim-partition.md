@@ -9,6 +9,7 @@ sources:
   - "[[literature/papers/calboreanu2026iterative]]"
   - "[[literature/papers/kamelhar2026gsar]]"
   - "[[literature/papers/liu2026automedbench]]"
+  - "[[literature/papers/xu2026researchclawbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
