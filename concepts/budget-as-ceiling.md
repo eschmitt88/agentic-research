@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/kamelhar2026gsar]]"
+  - "[[literature/papers/xin2026eurekagent]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24

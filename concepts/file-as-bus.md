@@ -7,6 +7,8 @@ source_papers:
   - chen2026toward
 sources:
   - "[[literature/papers/chen2026toward]]"
+  - "[[literature/papers/jin2026toward]]"
+  - "[[literature/papers/xin2026eurekagent]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"

@@ -21,6 +21,7 @@ sources:
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/jin2026toward]]"
+  - "[[literature/papers/xin2026eurekagent]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
