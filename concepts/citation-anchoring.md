@@ -9,6 +9,7 @@ source_papers:
 sources:
   - "[[literature/papers/mitchener2025kosmos]]"
   - "[[literature/papers/kamelhar2026gsar]]"
+  - "[[literature/papers/xu2026researchclawbench]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
