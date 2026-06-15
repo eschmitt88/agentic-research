@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/starace2025paperbench]]"
   - "[[literature/papers/xu2026researchclawbench]]"
+  - "[[literature/papers/jin2026toward]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24

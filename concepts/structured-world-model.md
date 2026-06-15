@@ -9,6 +9,7 @@ source_papers:
 sources:
   - "[[literature/papers/mitchener2025kosmos]]"
   - "[[literature/papers/chen2026toward]]"
+  - "[[literature/papers/jin2026toward]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
