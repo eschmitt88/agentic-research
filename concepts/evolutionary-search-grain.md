@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/ye2026evolutionary]]"
   - "[[literature/papers/romeraparedes2024funsearch]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
+  - "[[literature/papers/jin2026toward]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"

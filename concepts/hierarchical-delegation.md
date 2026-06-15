@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/du2026mlevolve]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
+  - "[[literature/papers/jin2026toward]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"

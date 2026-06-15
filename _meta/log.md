@@ -115,3 +115,5 @@ skills; read by `/lint`.
 2026-06-15 07:02 digest n=6 window_since=2026-06-08T07:01:54Z
 2026-06-15 07:03 fetch-paper https://arxiv.org/abs/2606.07591 → raw/papers/xu2026researchclawbench.pdf
 2026-06-15 07:05 ingest raw/papers/xu2026researchclawbench.pdf (digest auto-advance)
+2026-06-15 07:06 fetch-paper https://arxiv.org/abs/2606.11926 → raw/papers/jin2026toward.pdf
+2026-06-15 07:08 ingest raw/papers/jin2026toward.pdf (digest auto-advance)
