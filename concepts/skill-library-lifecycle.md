@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/zhou2026comprehensive]]"
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/cho2026skillret]]"
+  - "[[literature/papers/zhang2026skillcomposer]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
@@ -129,6 +130,24 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
    refinement (ReasoningBank-style) than to scheduled curation. The
    three modes — execution-time, retrieval-time, batch-time — are
    not mutually exclusive; a mature library likely uses all three.
+
+7. **The construction operations can be *learned*, and the lifecycle
+   triple is not unique.** SkillComposer
+   ([[literature/papers/zhang2026skillcomposer]]) decomposes skill
+   construction into three *learnable* operations — **create**, **improve**,
+   **merge** — trained at inference time without ground-truth supervision
+   (delta-pass-rate-guided rejection sampling). Its triple is not this
+   project's insert/update/delete: *create* ≈ insert and *improve* ≈
+   update, but **merge** (consolidate semantically similar skills) is a
+   consolidation operation with no clean analogue to *delete* — it fuses
+   rather than prunes. SkillComposer names the axis the consolidation
+   serves: **specification** (refine to a task pattern; the job of
+   *improve*) vs **generalization** (abstract across tasks; the job of
+   *merge*) are *orthogonal* quality dimensions, and a good lifecycle
+   needs both levers, not just an insert/prune balance. This sharpens the
+   write-side picture: the open question is no longer only *when* to
+   insert/update/delete but *which consolidation operation* (merge vs
+   delete) applies — and whether a mature library needs both.
 
 6. **Empirical reference point for what a library looks like at
    scale.** SkillRet ([[literature/papers/cho2026skillret]]) curated
