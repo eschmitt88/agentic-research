@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/cho2026skillret]]"
   - "[[literature/papers/zhang2026skillcomposer]]"
+  - "[[literature/papers/wu2026bayesian]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
@@ -148,6 +149,29 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
    write-side picture: the open question is no longer only *when* to
    insert/update/delete but *which consolidation operation* (merge vs
    delete) applies — and whether a mature library needs both.
+
+8. **The *operation* should be selected by verified evidence, not
+   reflection.** Bayesian-Agent ([[literature/papers/wu2026bayesian]])
+   treats each skill as a hypothesis and maintains a feature-conditioned
+   posterior over its success/failure modes from verified trajectory
+   evidence; that posterior — not an LLM's self-critique — picks the
+   rewrite action from a five-way set: **patch** (failure-mode fix),
+   **split**, **compress**, **retire** (prune), **explore**. Two lessons
+   for this project's write-side policy. First, the operation set is
+   *richer* than insert/update/delete: *split* and *compress* are
+   structural reorganizations (decompose an overloaded skill; consolidate
+   a verbose one) that neither this project's triple nor SkillComposer's
+   create/improve/merge names explicitly — a `/lint` extension might
+   surface "concepts that should be split" or "notes that should be
+   compressed", not only merged or pruned. Second, and sharper: the
+   curation *decision* should be **evidence-driven**. Where SkillOS
+   curates against the executor's behavior and SkillComposer learns the
+   operations, Bayesian-Agent makes the *choice of which operation to
+   apply* a function of accumulated verified outcomes — the antidote to
+   uncalibrated growth where every run just appends another note. The
+   manual analogue here: a note repeatedly retrieved-but-unused (evidence
+   of low value) is a *retire* candidate; a note that keeps being
+   partially-cited across unrelated themes is a *split* candidate.
 
 6. **Empirical reference point for what a library looks like at
    scale.** SkillRet ([[literature/papers/cho2026skillret]]) curated

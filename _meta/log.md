@@ -124,3 +124,5 @@ skills; read by `/lint`.
 2026-06-22 07:00 digest n=5 window_since=2026-06-15T07:01:46Z
 2026-06-22 07:03 fetch-paper https://arxiv.org/abs/2606.06079 → raw/papers/zhang2026skillcomposer.pdf
 2026-06-22 07:05 ingest raw/papers/zhang2026skillcomposer.pdf → literature/papers/zhang2026skillcomposer.md
+2026-06-22 07:06 fetch-paper https://arxiv.org/abs/2606.08348 → raw/papers/wu2026bayesian.pdf
+2026-06-22 07:07 ingest raw/papers/wu2026bayesian.pdf → literature/papers/wu2026bayesian.md
