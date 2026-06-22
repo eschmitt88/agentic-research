@@ -761,3 +761,21 @@
     "Skill": 3
   }
 }
+{
+  "timestamp": "2026-06-22T07:11:22Z",
+  "session_id": "70a98d56-d62b-4a2a-9710-e1f51e405c1c",
+  "input_tokens": 35992,
+  "output_tokens": 125826,
+  "cache_read_tokens": 10593447,
+  "cache_creation_tokens": 492841,
+  "tools_used_summary": {
+    "Bash": 18,
+    "ToolSearch": 1,
+    "WebSearch": 8,
+    "WebFetch": 5,
+    "Read": 12,
+    "Write": 4,
+    "Skill": 3,
+    "Edit": 16
+  }
+}
