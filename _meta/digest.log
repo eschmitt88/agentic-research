@@ -145,3 +145,4 @@ SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 
 **Suggested next step:** a `/curate` pass that seeds `multi-granularity-memory` and `permission-gate-as-architecture` (ingesting the two deferred items as their 4th attestations) — which would then make the memory cluster worth re-checking for MoC-ripeness.
 API Error: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled

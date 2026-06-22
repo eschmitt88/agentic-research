@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
+  - "[[literature/papers/zhang2026skillcomposer]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
@@ -108,3 +109,16 @@ a role.
   testing in this project's own ideator/implementer split — a
   smaller model trained on this project's ideation patterns may
   outperform Opus 4.7 used out-of-the-box.
+- **A small strategic model can lift a much larger executor.**
+  SkillComposer ([[literature/papers/zhang2026skillcomposer]]) reports a
+  **4B** skill composer improving a **27B** executor by up to +4.5 (agent)
+  / +3.4 (code). The composer plays the ideator/curator role — it
+  authors and evolves the skills the larger executor consumes — and is
+  ~7x smaller than the model it improves. This is a second attestation
+  (after SkillOS's 8B curator) that the strategic side does *not* have to
+  be the bigger model; here the small side earns its keep not through
+  executor-specific training but through a *specialized capability*
+  (learned skill composition: create/improve/merge). The lesson for this
+  project's ideator/implementer split: a role-specialized small model can
+  beat a frontier default when the role is a *learnable skill*, not just a
+  reasoning-horsepower contest.
