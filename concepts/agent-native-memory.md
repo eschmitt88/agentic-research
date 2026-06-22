@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/du2026memory]]"
   - "[[literature/papers/du2026mlevolve]]"
   - "[[literature/papers/omri2026agent]]"
+  - "[[literature/papers/xu2026evoarena]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
@@ -131,6 +132,22 @@ otherwise default to bolting on a vector store.
    out-of-domain detection prevents hallucinated answers from
    tangential retrievals — same principle should apply to `/discover`
    and `/digest` candidate selection.
+
+8. **Memory as a git-style patch history, not a latest-state snapshot.**
+   EvoMem ([[literature/papers/xu2026evoarena]]) takes "git is the memory
+   layer" literally: rather than keeping memory as a single overwritten
+   latest state, it maintains an **append-only patch history** where each
+   change records pre-update memory, post-update memory, the rationale,
+   and the supporting evidence. This directly diagnoses a failure mode for
+   any overwrite-in-place memory — **state collapse**, where an update
+   clobbers a fact still valid for an older context and *also* loses the
+   provenance explaining when it was valid. The lesson for this project's
+   markdown-file memory: the substrate is already git-tracked, so the
+   patch history is *free* (`git log` on a concept file is exactly the
+   pre/post/rationale trail EvoMem reconstructs) — but only if commit
+   messages carry the rationale and the change keeps the superseded claim
+   recoverable rather than silently rewriting it. Provenance (guidance #3)
+   should extend across *time*, not just to the originating source.
 
 ## Connections
 
