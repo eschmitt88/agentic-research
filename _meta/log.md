@@ -130,3 +130,4 @@ skills; read by `/lint`.
 2026-06-22 07:10 ingest raw/papers/xu2026evoarena.pdf → literature/papers/xu2026evoarena.md
 2026-06-22 07:10 digest-autoingest n=3 verdict=slow
 2026-06-22 07:11 promote-moc auto-detect → declined (no ripe un-mapped cluster)
+2026-06-22 07:11 session_end session=70a98d56-d62b-4a2a-9710-e1f51e405c1c

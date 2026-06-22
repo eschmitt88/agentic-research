@@ -146,3 +146,26 @@ SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 **Suggested next step:** a `/curate` pass that seeds `multi-granularity-memory` and `permission-gate-as-architecture` (ingesting the two deferred items as their 4th attestations) — which would then make the memory cluster worth re-checking for MoC-ripeness.
 API Error: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Pushed successfully (the failure was the sandbox blocking DNS). The `/digest` run is complete.
+
+## `/digest` summary — 2026-06-22
+
+**Window:** since 2026-06-15 · **Verdict:** `slow`/`normal` (resources idle, token usage unknown → paced at the normal target of ~3, re-checked between each unit)
+
+**Swept** 6 WebSearch queries across the active fronts (autonomous ML/research agents, agent memory, skill libraries, evaluation benchmarks, context management), deduplicated against ~50 graph papers. Brand-new this-week drops aren't indexed yet; the 5 surfaced items are early/mid-June papers that slipped the prior two digests and were absent from the graph. Written to `raw/_candidates/2026-06-22-digest.md`.
+
+**Auto-advanced 3 of 5** (fetch + ingest + deep concept integration), each committed separately:
+
+| Paper | rel/cred | Concepts touched |
+|---|---|---|
+| **zhang2026skillcomposer** (SkillComposer) | 4/3 | skill-library-lifecycle (create/improve/merge; spec-vs-generalization), hybrid-model-backends (4B→27B) |
+| **wu2026bayesian** (Bayesian-Agent, *code*) | 4/3 | skill-library-lifecycle (patch/split/compress/retire/explore), programmable-evaluator-oracle (posterior-as-fitness) |
+| **xu2026evoarena** (EvoArena/EvoMem, *code+dataset*) | 4/4 | agent-native-memory (git patch-history provenance), selective-memory-retrieval (version-aware gating), structured-world-model (version-aware state) |
+
+**Deferred 2** (below the count cap, left in the file for next run / `/curate`): EvolveMem (2605.13941, mid-May) and "Less Context, Better Agents" (2606.10209, enterprise domain).
+
+**`/promote-moc`:** declined — no ripe un-mapped cluster (the ≥5 memory & evaluation clusters are already in `knowledge-organization-for-research-agents.md`; the un-mapped evolutionary-search cluster is only 3 concepts, worth watching as it grows).
+
+**Persisted:** `_meta/last_digest` updated, `_meta/log.md` appended (digest, 3 fetches/ingests, autoingest n=3, promote-moc decline), candidate file given a `## Curation` section. 5 commits pushed to `main` (Pages will update).
+
+Net: papers 50→53; the skill-library and agent-memory fronts both reinforced. Closest-to-ripe un-mapped theme is **evolutionary-search** (3 concepts) — one or two more attestations and it crosses the MoC threshold.
