@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/qu2026coral]]"
   - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/xu2026researchclawbench]]"
+  - "[[literature/papers/wu2026bayesian]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -111,7 +112,15 @@ oracle.
   speed). Whether it can be adapted to fuzzy domains via *learned*
   evaluators (LLM-as-judge, reward models) without inheriting the
   noise-and-collapse problems of those judges is an open empirical
-  question.
+  question. Bayesian-Agent ([[literature/papers/wu2026bayesian]])
+  offers a partial answer in the *skill-evolution* setting: instead of an
+  LLM-as-judge, it accumulates a **feature-conditioned Bayesian
+  posterior** over each skill's verified success/failure outcomes and
+  lets that calibrated posterior — not a one-shot judge call — drive the
+  rewrite policy. This sidesteps the noise-and-collapse trap by treating
+  the fitness signal as *evidence accumulated over many runs* rather than
+  a single fuzzy score, at the cost of needing enough trajectory evidence
+  to calibrate (a cold-start problem the crisp-oracle systems don't have).
 - Evaluator design itself is unautomated in current work. A
   meta-loop that searches over evaluator specifications given a
   high-level goal is a natural extension but no published system
