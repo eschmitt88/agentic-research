@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/wu2026gam]]"
   - "[[literature/papers/du2026memory]]"
   - "[[literature/papers/omri2026agent]]"
+  - "[[literature/papers/xu2026evoarena]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -88,6 +89,18 @@ emits a trigger when it judges the current context is insufficient
    repeated tool failures, dead-ends in search, explicit "I'm not
    sure" reasoning traces. Avoid time-based or step-count-based
    triggers; they reintroduce the always-on failure mode.
+
+   *A second gating axis: temporal/version dependence.* EvoMem
+   ([[literature/papers/xu2026evoarena]]) retrieves from the latest
+   memory by default but **selectively pulls in historical patches only
+   when the current query depends on overwritten state, conflicting
+   evidence, or an earlier environment version**. This is a gating signal
+   independent of uncertainty: the trigger is "this decision references a
+   fact that has since changed," not "I am unsure." For a research graph
+   it maps to consulting a concept's *history* (a superseded method, a
+   retracted source) rather than only its current head — retrieve the
+   `git log` of a note, not just the note, when the query is about how a
+   claim evolved.
 
 3. **Cheap-default, escalation-on-trigger.** The default action
    path should run *without* memory consultation. Retrieval kicks

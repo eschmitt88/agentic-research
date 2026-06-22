@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/mitchener2025kosmos]]"
   - "[[literature/papers/chen2026toward]]"
   - "[[literature/papers/jin2026toward]]"
+  - "[[literature/papers/xu2026evoarena]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -95,6 +96,17 @@ consistency across rounds.
 - Whether the structured-world-model approach is load-bearing at
   shorter horizons (1-2 hours) or only at 12h+ is unknown — could
   be the kind of ablation a downstream project runs.
+- **The world model's state may need to be versioned, not just
+  field-indexed.** EvoArena ([[literature/papers/xu2026evoarena]]) shows
+  that when the *environment itself* evolves (interfaces, rules, code,
+  user prefs change across releases), a latest-state world model suffers
+  **state collapse** — overwriting a field loses a value still valid for
+  an older version and the rationale for the change. Its fix
+  (version-aware state tracking via an append-only patch history) suggests
+  schema fields here should arguably carry their own change history, not
+  just current values — a `hypotheses:` field that records *why* a
+  hypothesis was rejected and under what conditions, recoverable later, is
+  more robust than one that just deletes rejected entries.
 - Status is `experimental` because no current skill materializes
   a world-model file; NOTES.md + log files substitute implicitly.
   Graduate to `active` when a downstream project uses a dedicated
