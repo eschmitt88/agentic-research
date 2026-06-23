@@ -11,11 +11,13 @@ and `/new-experiment`.
 ## Maps of Content
 
 - [[mocs/knowledge-organization-for-research-agents]] — substrate /
-- [[mocs/agent-architecture]] — how a long-horizon autonomous agent is built (substrate / orchestration / execution)
-  write-side / read-side of agent memory; 8 concepts spanning
+  write-side / read-side of agent memory; 9 concepts spanning
   agent-native-memory, file-as-bus, structured-world-model,
   skill-library-lifecycle, typed-claim-partition, citation-anchoring,
-  selective-memory-retrieval, web-grounded-literature.
+  selective-memory-retrieval, multi-granularity-memory,
+  web-grounded-literature.
+- [[mocs/agent-architecture]] — how a long-horizon autonomous agent is
+  built (substrate / orchestration / execution).
 
 ## Literature / papers
 
