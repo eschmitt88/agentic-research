@@ -12,4 +12,22 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 
 | Date | Slug | Target | Recommendation | Status |
 |------|------|--------|----------------|--------|
-| _(none yet — first sweep runs Sunday 05:00)_ | | | | |
+| 2026-06-23 | [digest-scenario-rich-queries](2026-06-23-digest-scenario-rich-queries.md) | `skills/digest/SKILL.md` | adopt | proposed |
+
+## Considered and held (2026-06-23 inaugural run)
+
+Recorded so the reasoning is visible — these did *not* clear both gates:
+
+- **arxiv full-text retrieval backend for `/digest`** (swap WebSearch →
+  DeepXiv-style full-text), evidence `xiong2026autoresearchbench` (+1.5–2.5pp).
+  **Held on simplicity** — adds a new retrieval dependency (surface area),
+  and the `web-grounded-literature` concept itself flags it as "worth a
+  downstream experiment" first, not a direct adoption.
+- **`[Retrieve]`-trigger gated retrieval in `/iterate`**
+  (`selective-memory-retrieval`, `zhao2026expweaver`, credibility 4).
+  **Held on simplicity** — adds a behavioral mechanism to a downstream skill;
+  better validated by a downstream experiment before being baked into the harness.
+- **Last-K-tool-calls + summary eviction in the pre-compact hook**
+  (`context-eviction-policy`, `lodha2026less`). **Held on evidence** — the
+  specific heuristic rests mainly on a credibility-2 enterprise-domain
+  preprint; fails Gate 1 for a direct system change.
