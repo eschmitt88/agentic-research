@@ -338,3 +338,52 @@ SessionEnd hook backstops this if you forget.
 - Resolve and fill `assumpcao2025codeevolve` `code_url`.
 - Consider widening `agency: max` to the other literature repos and a
   nightly `/curate` + `/promote-moc` sweep.
+
+## 2026-06-23
+
+### Did
+
+- Diagnosed why `agency: max` had left 3 candidate files uncurated since
+  2026-06-03: each `/digest` auto-advances only ~3 items under a
+  slow/normal cap and *defers the rest, leaving the file in place*; nothing
+  ran a follow-up `/curate` to drain the deferrals, so they piled up.
+- Ran `/curate` over the full backlog under a GO/high verdict. Ingested all
+  7 deferred keepers (fetch + parallel-subagent read/draft, main-agent graph
+  wiring): kerestecioglu2026human, jia2026finharness, wang2026act (AARRI),
+  pu2026skillops, liu2026evolvemem, lodha2026less, xu2026single (MemGAS,
+  ICLR 2026 — peer-reviewed). 0 declines.
+- Seeded the two concepts the prior NOTES "Next" flagged:
+  `multi-granularity-memory` (6 attestations) and
+  `permission-gate-as-architecture` (5 attestations, FinHarness the
+  4th-domain anchor). Wired the 7 new notes into 8 existing concepts.
+- Reconstructed the missing 2026-06-15 `/curate` log (that digest ingested
+  its top 3 in git but never wrote its curation section), and archived all
+  3 files to `raw/_candidates/_done/`. Uncurated candidates 3 → 0.
+- `/promote-moc`: added `multi-granularity-memory` to the
+  knowledge-organization MoC (8 → 9 concepts) rather than spawning a
+  redundant memory MoC; declined a new agent-memory MoC and a safety MoC.
+- Two commits pushed (1672700 curate batch, 7ae8835 MoC); plus index/log fixes.
+
+### Findings
+
+- Root cause is structural, not a one-off: `/digest`'s per-run auto-advance
+  cap + "defer and leave in place" + no scheduled `/curate` = a slow leak of
+  deferred items. The agency.md `/curate` contract ("drain the standing
+  backlog") only fires when invoked; it was last run 2026-06-03.
+- MoC-ripeness re-check (prior NOTES asked): the memory cluster is still
+  *not* ripe for its own MoC — only 4 memory-tagged concepts, and half
+  (agent-native-memory, selective-memory-retrieval) are already mapped in
+  knowledge-organization. Enrich-existing was the correct move.
+- xu2026single (MemGAS) is the strongest of the batch (rel 4 / cred 4 —
+  peer-reviewed ICLR 2026 + code): canonical anchor for
+  multi-granularity-memory (entropy-routed multi-grain retrieval).
+
+### Next
+
+- **Prevent recurrence**: set up the nightly `/curate` + `/promote-moc`
+  sweep the prior NOTES already flagged (cron/schedule), so deferred digest
+  items are drained automatically instead of accumulating. Alternatively,
+  raise `/digest`'s auto-advance cap under a GO/high verdict so it defers
+  less in the first place.
+- Resolve and fill `assumpcao2025codeevolve` `code_url` (still open).
+- Consider widening `agency: max` to the other literature repos.
