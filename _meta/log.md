@@ -131,3 +131,7 @@ skills; read by `/lint`.
 2026-06-22 07:10 digest-autoingest n=3 verdict=slow
 2026-06-22 07:11 promote-moc auto-detect → declined (no ripe un-mapped cluster)
 2026-06-22 07:11 session_end session=70a98d56-d62b-4a2a-9710-e1f51e405c1c
+2026-06-23 curate raw/_candidates/2026-06-08-digest.md ingested=2 declined=0 dup=3 (kerestecioglu2026human, jia2026finharness)
+2026-06-23 curate raw/_candidates/2026-06-15-digest.md ingested=3 declined=0 dup=3 (wang2026act, pu2026skillops, xu2026single)
+2026-06-23 curate raw/_candidates/2026-06-22-digest.md ingested=2 declined=0 dup=3 (liu2026evolvemem, lodha2026less)
+2026-06-23 seed concepts: multi-granularity-memory (6 attestations), permission-gate-as-architecture (5 attestations)

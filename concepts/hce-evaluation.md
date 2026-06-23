@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/xu2026researchclawbench]]"
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xin2026eurekagent]]"
+  - "[[literature/papers/wang2026act]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24

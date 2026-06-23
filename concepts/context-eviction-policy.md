@@ -22,6 +22,8 @@ sources:
   - "[[literature/papers/wu2026gam]]"
   - "[[literature/papers/du2026memory]]"
   - "[[literature/papers/omri2026agent]]"
+  - "[[literature/papers/kerestecioglu2026human]]"
+  - "[[literature/papers/lodha2026less]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
