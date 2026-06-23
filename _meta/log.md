@@ -141,3 +141,4 @@ skills; read by `/lint`.
 2026-06-23 03:46 decision 0001-nightly-curate-sweep — nightly /curate + /promote-moc cron at 04:00 to drain deferred digest backlog
 2026-06-23 03:48 remove 4 stale day-1 proposals (charter: no experiments in meta repo; ideas preserved in concepts)
 2026-06-23 03:51 session_end session=115341ca-f6de-46d5-8c26-ce5304b805ea
+2026-06-23 03:59 decision 0002 + add /elevate skill (claude-system) + weekly Sun 05:00 cron; proposals queue at docs/system-proposals/
