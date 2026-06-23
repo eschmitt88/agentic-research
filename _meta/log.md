@@ -139,3 +139,4 @@ skills; read by `/lint`.
 2026-06-23 01:40 wrap-skip-structured reason=cwd-not-in-experiment
 2026-06-23 01:40 wrap drained candidate backlog (7 ingests), seeded 2 concepts, enriched knowledge-org MoC
 2026-06-23 03:46 decision 0001-nightly-curate-sweep — nightly /curate + /promote-moc cron at 04:00 to drain deferred digest backlog
+2026-06-23 03:48 remove 4 stale day-1 proposals (charter: no experiments in meta repo; ideas preserved in concepts)
