@@ -135,3 +135,4 @@ skills; read by `/lint`.
 2026-06-23 curate raw/_candidates/2026-06-15-digest.md ingested=3 declined=0 dup=3 (wang2026act, pu2026skillops, xu2026single)
 2026-06-23 curate raw/_candidates/2026-06-22-digest.md ingested=2 declined=0 dup=3 (liu2026evolvemem, lodha2026less)
 2026-06-23 seed concepts: multi-granularity-memory (6 attestations), permission-gate-as-architecture (5 attestations)
+2026-06-23 promote-moc knowledge-organization-for-research-agents (+1 concept: multi-granularity-memory; 8->9). Declined new agent-memory MoC (>=half already mapped here) and safety MoC (permission-gate is a lone concept).

@@ -11,6 +11,7 @@ concepts:
   - "[[concepts/typed-claim-partition]]"
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/selective-memory-retrieval]]"
+  - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/web-grounded-literature]]"
 tags: [moc, knowledge-organization, agent-memory, architecture]
 ---
@@ -19,7 +20,7 @@ tags: [moc, knowledge-organization, agent-memory, architecture]
 
 How autonomous research agents store, structure, curate, and consult
 the knowledge they work with — in practice, not in principle. This
-MoC ties together the eight concepts that span this question across
+MoC ties together the nine concepts that span this question across
 three layers: the *substrate* (where memory lives), the *write-side*
 (how the library evolves and how outputs are organized), and the
 *read-side* (when and how stored knowledge is consulted during
@@ -121,6 +122,26 @@ literature; the two papers from this batch attack it head-on.
   beats both initialization-only and always-on schedules across 4
   frameworks × 7 backbones × 3 environments — and that the gating
   policy is learnable via RL with task-success reward.
+
+- **[[concepts/multi-granularity-memory]]** — the *what-to-read* axis
+  that complements selective-memory-retrieval's *whether-to-read*.
+  Memory is stored at several coexisting grains (turn / summary /
+  keyword, or working / episodic / semantic tiers) and retrieval
+  routes to the grain that fits the query. MemGAS
+  ([[literature/papers/xu2026single]], ICLR 2026) is the canonical
+  anchor: four co-stored grains, a cross-granular GMM association
+  graph, and an *entropy-based router* that weights each grain by the
+  certainty of its match distribution — making granularity selection
+  literally an instance of uncertainty-gated retrieval. The
+  cognitively-motivated variant
+  ([[literature/papers/kerestecioglu2026human]]) reframes
+  consolidation-between-tiers as the write-side dual: promoting fine
+  episodic detail into a coarse semantic grain is eviction
+  ([[concepts/context-eviction-policy]]) seen from the grain axis. Maps
+  onto this project's own graph, where a concept already exists at
+  several grains — the `index.md` one-liner, the `## Definition`, the
+  full body, the git history — and the right grain depends on the
+  query.
 
 - **[[concepts/web-grounded-literature]]** — read-side policy for
   *external* knowledge specifically: continuous intake of primary
