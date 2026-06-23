@@ -779,3 +779,21 @@
     "Edit": 16
   }
 }
+{
+  "timestamp": "2026-06-23T01:40:50Z",
+  "session_id": "ca4cc8f5-0bfd-421b-8ac4-835af912f260",
+  "input_tokens": 26054,
+  "output_tokens": 233092,
+  "cache_read_tokens": 12481443,
+  "cache_creation_tokens": 678317,
+  "tools_used_summary": {
+    "Bash": 19,
+    "Read": 13,
+    "Skill": 5,
+    "ToolSearch": 1,
+    "WebFetch": 7,
+    "Agent": 7,
+    "Write": 2,
+    "Edit": 21
+  }
+}

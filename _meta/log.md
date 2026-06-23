@@ -138,3 +138,4 @@ skills; read by `/lint`.
 2026-06-23 promote-moc knowledge-organization-for-research-agents (+1 concept: multi-granularity-memory; 8->9). Declined new agent-memory MoC (>=half already mapped here) and safety MoC (permission-gate is a lone concept).
 2026-06-23 01:40 wrap-skip-structured reason=cwd-not-in-experiment
 2026-06-23 01:40 wrap drained candidate backlog (7 ingests), seeded 2 concepts, enriched knowledge-org MoC
+2026-06-23 03:46 decision 0001-nightly-curate-sweep — nightly /curate + /promote-moc cron at 04:00 to drain deferred digest backlog
