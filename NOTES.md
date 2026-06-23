@@ -363,6 +363,14 @@ SessionEnd hook backstops this if you forget.
   knowledge-organization MoC (8 → 9 concepts) rather than spawning a
   redundant memory MoC; declined a new agent-memory MoC and a safety MoC.
 - Two commits pushed (1672700 curate batch, 7ae8835 MoC); plus index/log fixes.
+- Set up a **nightly 04:00 `/curate` + `/promote-moc` cron sweep**
+  (`~/.claude/schedule/agentic-research-curate.sh`) to drain deferred digest
+  items automatically — closes the structural leak. Recorded in
+  `docs/decisions/0001-nightly-curate-sweep.md`.
+- Removed 4 stale day-1 (2026-04-24) experiment proposals from
+  `experiments/_proposals/` — they contradicted the repo charter (no
+  experiments in the meta project) and `/lint` flagged them stale. Ideas
+  preserved in the concept notes; not relocated, per user.
 
 ### Findings
 
