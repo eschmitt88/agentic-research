@@ -143,3 +143,4 @@ skills; read by `/lint`.
 2026-06-23 03:51 session_end session=115341ca-f6de-46d5-8c26-ce5304b805ea
 2026-06-23 03:59 decision 0002 + add /elevate skill (claude-system) + weekly Sun 05:00 cron; proposals queue at docs/system-proposals/
 2026-06-23 04:01 promote-moc evaluation-integrity (5 concepts)
+2026-06-23 04:02 session_end session=3bc04062-60f6-4bf5-92f3-0d2ec3d0108b

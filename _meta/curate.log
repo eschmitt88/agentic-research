@@ -1,0 +1,19 @@
+Done. Promoted the **evaluation** cluster into a new Map of Content.
+
+## What I did
+
+**Detected** one ripe cluster among the 21 concepts:
+- **evaluation (5 concepts)** — `hce-evaluation`, `pass-at-k`, `citation-anchoring`, `typed-claim-partition`, `programmable-evaluator-oracle`. The existing `knowledge-organization` MoC covers only 2 of the 5 (below majority), so this was un-mapped and ripe.
+
+**Declined** (correctly, with restraint):
+- **memory (4)** — already majority-mapped in knowledge-organization; confirms the prior NOTES finding that it's not ready for its own MoC.
+- **evolutionary-search (3)** — too few concepts.
+
+**Synthesized** `mocs/evaluation-integrity.md` from the actual concept files, organized as a containment hierarchy:
+1. *Keeping the search loop from gaming itself* — HCE split + pass@k seed distributions
+2. *Grounding the claims* — citation-anchoring → typed-claim-partition (flag → control signal)
+3. *The oracle that defines what's discoverable* — programmable-evaluator-oracle
+
+Framing centers on AIRA_2's named bottleneck (validation-selection overfitting), with anchored literature citations throughout, and an open-thread hypothesis (the concepts compose multiplicatively) plus the most testable interaction for this repo.
+
+**Wired in:** added to `_meta/index.md`, logged to `_meta/log.md`. Skipped concept-side backlinks since none of the five carry a `mocs:` field (no schema invention). Committed and pushed (`8b24a2d`) so the Pages site updates.
