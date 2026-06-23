@@ -371,6 +371,13 @@ SessionEnd hook backstops this if you forget.
   `experiments/_proposals/` — they contradicted the repo charter (no
   experiments in the meta project) and `/lint` flagged them stale. Ideas
   preserved in the concept notes; not relocated, per user.
+- Built **`/elevate`** (`~/claude-system/claude/skills/elevate/`): periodically
+  evaluates whether well-evidenced ideas in the graph should be adopted into
+  claude-system (skills/hooks/rules). Two gates — reputable evidence
+  (peer-reviewed / code / >=3 attestations, credibility >=3) AND simplicity
+  (prefer remove/consolidate; net-new surface area must justify itself).
+  Writes proposals to `docs/system-proposals/` for **human review** only;
+  never edits claude-system. Weekly cron Sun 05:00. ADR 0002.
 
 ### Findings
 
