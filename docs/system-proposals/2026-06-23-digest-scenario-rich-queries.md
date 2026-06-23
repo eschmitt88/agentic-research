@@ -7,8 +7,10 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [xiong2026autoresearchbench]
 evidence_strength: "code-released (github.com/CherYou/AutoResearchBench); credibility ~4"
-status: proposed
+status: accepted
 recommendation: adopt
+accepted_on: "2026-06-23"
+applied_commit: "claude-system@a8f0f8e"
 ---
 
 # /digest should synthesize scenario-rich queries, not keyword piles
