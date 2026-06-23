@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/papers/zhang2026skillcomposer]]"
+  - "[[literature/papers/wang2026act]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []

@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/kamelhar2026gsar]]"
   - "[[literature/papers/xin2026eurekagent]]"
+  - "[[literature/papers/jia2026finharness]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24

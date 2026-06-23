@@ -22,6 +22,8 @@ sources:
   - "[[literature/papers/du2026memory]]"
   - "[[literature/papers/omri2026agent]]"
   - "[[literature/papers/xu2026evoarena]]"
+  - "[[literature/papers/liu2026evolvemem]]"
+  - "[[literature/papers/xu2026single]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

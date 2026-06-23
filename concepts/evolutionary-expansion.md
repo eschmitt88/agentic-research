@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/romeraparedes2024funsearch]]"
   - "[[literature/papers/qu2026coral]]"
   - "[[literature/papers/jin2026toward]]"
+  - "[[literature/papers/liu2026evolvemem]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
