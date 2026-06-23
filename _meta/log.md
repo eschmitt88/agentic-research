@@ -144,3 +144,4 @@ skills; read by `/lint`.
 2026-06-23 03:59 decision 0002 + add /elevate skill (claude-system) + weekly Sun 05:00 cron; proposals queue at docs/system-proposals/
 2026-06-23 04:01 promote-moc evaluation-integrity (5 concepts)
 2026-06-23 04:02 session_end session=3bc04062-60f6-4bf5-92f3-0d2ec3d0108b
+2026-06-23 04:05 elevate proposals=1 considered=4 (adopt: digest-scenario-rich-queries; held: arxiv-backend, iterate-retrieve-trigger, precompact-eviction)
