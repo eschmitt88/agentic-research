@@ -18,6 +18,9 @@ and `/new-experiment`.
   web-grounded-literature.
 - [[mocs/agent-architecture]] — how a long-horizon autonomous agent is
   built (substrate / orchestration / execution).
+- [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over
+  long search loops; 5 concepts: hce-evaluation, pass-at-k,
+  citation-anchoring, typed-claim-partition, programmable-evaluator-oracle.
 
 ## Literature / papers
 
