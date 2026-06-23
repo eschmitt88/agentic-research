@@ -12,7 +12,7 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 
 | Date | Slug | Target | Recommendation | Status |
 |------|------|--------|----------------|--------|
-| 2026-06-23 | [digest-scenario-rich-queries](2026-06-23-digest-scenario-rich-queries.md) | `skills/digest/SKILL.md` | adopt | proposed |
+| 2026-06-23 | [digest-scenario-rich-queries](2026-06-23-digest-scenario-rich-queries.md) | `skills/digest/SKILL.md` | adopt | **accepted** (applied 2026-06-23) |
 
 ## Considered and held (2026-06-23 inaugural run)
 

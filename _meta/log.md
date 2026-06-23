@@ -145,3 +145,4 @@ skills; read by `/lint`.
 2026-06-23 04:01 promote-moc evaluation-integrity (5 concepts)
 2026-06-23 04:02 session_end session=3bc04062-60f6-4bf5-92f3-0d2ec3d0108b
 2026-06-23 04:05 elevate proposals=1 considered=4 (adopt: digest-scenario-rich-queries; held: arxiv-backend, iterate-retrieve-trigger, precompact-eviction)
+2026-06-23 04:12 elevate-accept digest-scenario-rich-queries applied to claude-system@a8f0f8e
