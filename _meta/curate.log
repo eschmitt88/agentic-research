@@ -17,3 +17,23 @@ Done. Promoted the **evaluation** cluster into a new Map of Content.
 Framing centers on AIRA_2's named bottleneck (validation-selection overfitting), with anchored literature citations throughout, and an open-thread hypothesis (the concepts compose multiplicatively) plus the most testable interaction for this repo.
 
 **Wired in:** added to `_meta/index.md`, logged to `_meta/log.md`. Skipped concept-side backlinks since none of the five carry a `mocs:` field (no schema invention). Committed and pushed (`8b24a2d`) so the Pages site updates.
+Promoted a new Map of Content. Pushed as `3ca28c4`.
+
+## What I found
+
+22 concepts, 15 already mapped across 3 MoCs. Surveying the 7 unmapped ones by theme surfaced **one ripe, coherent cluster**:
+
+**`mocs/autonomous-search-loop.md`** — *The Autonomous Experiment-Search Loop* (5 concepts)
+- `evolutionary-expansion` + `evolutionary-search-grain` — the search strategy and its mutation unit
+- `programmable-evaluator-oracle` — the fitness oracle that defines what's discoverable
+- `async-worker-pool` + `budget-as-ceiling` — the operational disciplines (parallelism, halting) that make a campaign runnable
+
+All five converge on the FunSearch → AlphaEvolve → FM Agent lineage plus AIRA_2's bottleneck framing. Overlap with existing MoCs is only `programmable-evaluator-oracle` (1/5 = 20% < 50% threshold) — it's a legitimate dual-membership seam with `evaluation-integrity`, which I flagged in both directions, mirroring how that MoC already shares `citation-anchoring`/`typed-claim-partition` with knowledge-organization.
+
+## Clusters I declined
+
+- **Memory** (`agent-native-memory`, `context-eviction-policy`, `multi-granularity-memory`, `selective-memory-retrieval`) — only 4, and 3 already live in `knowledge-organization`. Same conclusion the prior NOTES reached; enrich-existing remains correct.
+- **Skills** (`shared-skill-namespace`, `skill-library-lifecycle`) — 2, far short.
+- **Safety/runtime-governance** (`permission-gate-as-architecture`, +stragglers) — no coherent ≥5 set.
+
+Skipped the frontmatter backlink step: concepts here carry no `mocs:` field, so per the skill I didn't invent one (consistent with the existing MoCs). Index and `_meta/log.md` updated.
