@@ -884,3 +884,41 @@
     "Edit": 1
   }
 }
+{
+  "timestamp": "2026-06-23T04:05:25Z",
+  "session_id": "ca4cc8f5-0bfd-421b-8ac4-835af912f260",
+  "input_tokens": 47175,
+  "output_tokens": 332906,
+  "cache_read_tokens": 23157796,
+  "cache_creation_tokens": 1603274,
+  "tools_used_summary": {
+    "Bash": 36,
+    "Read": 13,
+    "Skill": 6,
+    "ToolSearch": 1,
+    "WebFetch": 7,
+    "Agent": 7,
+    "Write": 9,
+    "Edit": 23,
+    "AskUserQuestion": 1
+  }
+}
+{
+  "timestamp": "2026-06-23T04:12:37Z",
+  "session_id": "ca4cc8f5-0bfd-421b-8ac4-835af912f260",
+  "input_tokens": 47586,
+  "output_tokens": 340173,
+  "cache_read_tokens": 25558665,
+  "cache_creation_tokens": 1607775,
+  "tools_used_summary": {
+    "Bash": 37,
+    "Read": 14,
+    "Skill": 6,
+    "ToolSearch": 1,
+    "WebFetch": 7,
+    "Agent": 7,
+    "Write": 9,
+    "Edit": 26,
+    "AskUserQuestion": 1
+  }
+}
