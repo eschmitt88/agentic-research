@@ -21,6 +21,10 @@ and `/new-experiment`.
 - [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over
   long search loops; 5 concepts: hce-evaluation, pass-at-k,
   citation-anchoring, typed-claim-partition, programmable-evaluator-oracle.
+- [[mocs/autonomous-search-loop]] — how an autonomous agent searches a vast
+  candidate space productively; 5 concepts: evolutionary-expansion,
+  evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool,
+  budget-as-ceiling.
 
 ## Literature / papers
 
