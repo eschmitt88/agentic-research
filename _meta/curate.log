@@ -37,3 +37,17 @@ All five converge on the FunSearch → AlphaEvolve → FM Agent lineage plus AIR
 - **Safety/runtime-governance** (`permission-gate-as-architecture`, +stragglers) — no coherent ≥5 set.
 
 Skipped the frontmatter backlink step: concepts here carry no `mocs:` field, so per the skill I didn't invent one (consistent with the existing MoCs). Index and `_meta/log.md` updated.
+Pushed cleanly (`290a9c8..3063f25`) — the prior auto-push failure didn't recur.
+
+## Summary
+
+**No new MoC was ripe** — every ≥5-concept cluster is already substantially covered by one of the 4 existing MoCs. Per the skill's restraint clause, I declined to manufacture a redundant one and instead took the correct enrich action.
+
+**Declined (reported, not created):**
+- Standalone **memory** MoC — 4 of its 5 concepts already live in knowledge-organization
+- **Safety/governance** MoC — only 2 concepts (`permission-gate-as-architecture` + `budget-as-ceiling`)
+- **Skills-interop** MoC — only 2 concepts (`shared-skill-namespace` + `skill-library-lifecycle`)
+
+**Enriched** `mocs/knowledge-organization-for-research-agents.md` (9 → 10 concepts): added `context-eviction-policy` — the lone genuinely-unmapped memory concept, which frames itself as the fourth memory axis and was already referenced inline in the MoC. Placed it in the read-side section as the eviction dual of `selective-memory-retrieval`. Updated `_meta/index.md` and `_meta/log.md`. Committed and pushed (`3063f25`).
+
+This mirrors last session's `multi-granularity-memory` enrichment — same restraint, same correct home. The two remaining unmapped concepts (`permission-gate-as-architecture`, `shared-skill-namespace`) stay un-promoted until their themes accumulate ≥5 concepts.
