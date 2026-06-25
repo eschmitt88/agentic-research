@@ -11,6 +11,7 @@ concepts:
   - "[[concepts/typed-claim-partition]]"
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/selective-memory-retrieval]]"
+  - "[[concepts/context-eviction-policy]]"
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/web-grounded-literature]]"
 tags: [moc, knowledge-organization, agent-memory, architecture]
@@ -20,7 +21,7 @@ tags: [moc, knowledge-organization, agent-memory, architecture]
 
 How autonomous research agents store, structure, curate, and consult
 the knowledge they work with — in practice, not in principle. This
-MoC ties together the nine concepts that span this question across
+MoC ties together the ten concepts that span this question across
 three layers: the *substrate* (where memory lives), the *write-side*
 (how the library evolves and how outputs are organized), and the
 *read-side* (when and how stored knowledge is consulted during
@@ -122,6 +123,22 @@ literature; the two papers from this batch attack it head-on.
   beats both initialization-only and always-on schedules across 4
   frameworks × 7 backbones × 3 environments — and that the gating
   policy is learnable via RL with task-success reward.
+
+- **[[concepts/context-eviction-policy]]** — the eviction dual of
+  selective retrieval, operating on the *prompt buffer* rather than
+  the long-term substrate. Selective retrieval pulls cold content
+  back into hot context when the agent decides it needs it;
+  context-eviction pushes cold content out when the working set
+  would overflow — together they govern the *flux* across the
+  hot/cold boundary, and the substrate is just where the cold
+  content sits. Attested as consensus across four independent
+  harnesses (Claude Code's "context entropy management", OpenHarness
+  Auto-Compact, Hermes auto-compaction, ByteRover's tiered spill);
+  the load-bearing design rule is *compact, don't truncate* —
+  summarize cold spans to preserve task state rather than dropping
+  them. This is the read-side's runtime counterpart: where the other
+  read-side concepts decide *whether* and *what* to consult,
+  eviction decides *what survives in view* while reasoning happens.
 
 - **[[concepts/multi-granularity-memory]]** — the *what-to-read* axis
   that complements selective-memory-retrieval's *whether-to-read*.
