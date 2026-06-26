@@ -949,3 +949,14 @@
     "Edit": 4
   }
 }
+{
+  "timestamp": "2026-06-26T04:01:18Z",
+  "session_id": "465b61e0-5ffc-4398-ac5c-44e510678604",
+  "input_tokens": 19938,
+  "output_tokens": 2915,
+  "cache_read_tokens": 344477,
+  "cache_creation_tokens": 62865,
+  "tools_used_summary": {
+    "Bash": 6
+  }
+}

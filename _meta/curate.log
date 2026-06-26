@@ -51,3 +51,32 @@ Pushed cleanly (`290a9c8..3063f25`) — the prior auto-push failure didn't recur
 **Enriched** `mocs/knowledge-organization-for-research-agents.md` (9 → 10 concepts): added `context-eviction-policy` — the lone genuinely-unmapped memory concept, which frames itself as the fourth memory axis and was already referenced inline in the MoC. Placed it in the read-side section as the eviction dual of `selective-memory-retrieval`. Updated `_meta/index.md` and `_meta/log.md`. Committed and pushed (`3063f25`).
 
 This mirrors last session's `multi-granularity-memory` enrichment — same restraint, same correct home. The two remaining unmapped concepts (`permission-gate-as-architecture`, `shared-skill-namespace`) stay un-promoted until their themes accumulate ≥5 concepts.
+I have a complete picture. Let me run the ripeness analysis.
+
+## Ripeness analysis
+
+**22 concepts, 4 existing MoCs.** MoC coverage of every concept:
+
+| MoC | Concepts | Count |
+|-----|----------|-------|
+| agent-architecture | agent-native-memory, file-as-bus, hierarchical-delegation, hybrid-model-backends, scripted-tool-pipelines | 5 |
+| autonomous-search-loop | evolutionary-expansion, evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool, budget-as-ceiling | 5 |
+| evaluation-integrity | hce-evaluation, pass-at-k, citation-anchoring, typed-claim-partition, programmable-evaluator-oracle | 5 |
+| knowledge-organization | agent-native-memory, file-as-bus, structured-world-model, skill-library-lifecycle, typed-claim-partition, citation-anchoring, selective-memory-retrieval, context-eviction-policy, multi-granularity-memory, web-grounded-literature | 10 |
+
+**Only 2 concepts are unmapped:** `permission-gate-as-architecture` and `shared-skill-namespace`. They share no coherent theme (safety/governance vs. skill interop), so they don't form a cluster.
+
+**Candidate clusters evaluated and declined:**
+
+- **agent-memory** — `{agent-native-memory, selective-memory-retrieval, context-eviction-policy, multi-granularity-memory, skill-library-lifecycle}`. This *is* ~5 concepts, but **all five are already in the knowledge-organization MoC** (5/5 mapped ≫ the "≥ half" threshold). A new memory MoC would be pure duplication. Prior NOTES (06-24, 06-25) reached the same verdict twice; enrich-existing was already done (multi-granularity-memory was added to knowledge-organization, 8→9→10). **Declined — redundant.**
+- **safety / runtime-governance** — `{permission-gate-as-architecture, budget-as-ceiling}` (+ loose ties to programmable-evaluator-oracle, scripted-tool-pipelines, which are mapped elsewhere). Only 2 genuinely safety-themed concepts. **Declined — below 5, prior NOTES declined a safety MoC for the same reason.**
+- **skills / harness-interop** — `{shared-skill-namespace, skill-library-lifecycle}`. Only 2, and skill-library-lifecycle is already mapped. **Declined — below 5.**
+- **evolutionary-search** — fully covered by autonomous-search-loop. **Mapped.**
+
+## Verdict: nothing is ripe — no MoC created
+
+No un-mapped cluster reaches ≥5 related concepts. The single ripe-sized cluster (agent-memory) is already substantially covered by the knowledge-organization MoC, so promoting it would duplicate rather than add structure. The two orphan concepts don't cohere into a theme.
+
+Per the skill's restraint clause, I'm stopping rather than manufacturing a thin or redundant MoC. No files changed, nothing to commit.
+
+The graph's structural pressure point is elsewhere: **knowledge-organization is now at 10 concepts** with a clear memory sub-spine inside it. That's the one to watch — if 1-2 more *un-mapped* memory concepts land (not already in knowledge-organization), carving a dedicated `agent-memory` MoC out of the parent would become the correct split. It isn't yet.
