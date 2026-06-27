@@ -960,3 +960,14 @@
     "Bash": 6
   }
 }
+{
+  "timestamp": "2026-06-27T04:01:16Z",
+  "session_id": "f8f16a2b-dc73-4946-bd66-9aee8075e81f",
+  "input_tokens": 19946,
+  "output_tokens": 10542,
+  "cache_read_tokens": 482918,
+  "cache_creation_tokens": 59275,
+  "tools_used_summary": {
+    "Bash": 7
+  }
+}

@@ -80,3 +80,30 @@ No un-mapped cluster reaches ≥5 related concepts. The single ripe-sized cluste
 Per the skill's restraint clause, I'm stopping rather than manufacturing a thin or redundant MoC. No files changed, nothing to commit.
 
 The graph's structural pressure point is elsewhere: **knowledge-organization is now at 10 concepts** with a clear memory sub-spine inside it. That's the one to watch — if 1-2 more *un-mapped* memory concepts land (not already in knowledge-organization), carving a dedicated `agent-memory` MoC out of the parent would become the correct split. It isn't yet.
+## /promote-moc — detection result: nothing is ripe
+
+I surveyed all 22 concepts (excluding `_README`), grouped them by shared `tags:`, and checked overlap against the 4 existing MoCs. **No un-mapped cluster clears the ripeness bar**, so I'm declining to promote — per the skill's restraint rule, a thin or redundant MoC stays un-built.
+
+### The map as it stands
+
+| MoC | concepts |
+|---|---|
+| `agent-architecture` | agent-native-memory, file-as-bus, hierarchical-delegation, hybrid-model-backends, scripted-tool-pipelines |
+| `autonomous-search-loop` | evolutionary-expansion, evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool, budget-as-ceiling |
+| `evaluation-integrity` | hce-evaluation, pass-at-k, citation-anchoring, typed-claim-partition, programmable-evaluator-oracle |
+| `knowledge-organization-for-research-agents` | agent-native-memory, file-as-bus, structured-world-model, skill-library-lifecycle, typed-claim-partition, citation-anchoring, selective-memory-retrieval, context-eviction-policy, multi-granularity-memory, web-grounded-literature |
+
+20 of 22 concepts are mapped. Only **2 are un-mapped**: `permission-gate-as-architecture` and `shared-skill-namespace`.
+
+### Candidate clusters considered and declined
+
+- **Memory** (`agent-native-memory`, `context-eviction-policy`, `multi-granularity-memory`, `selective-memory-retrieval`, +`skill-library-lifecycle`'s procedural-memory) — 4–5 concepts, but **all already live in `knowledge-organization`**. A memory MoC would be ~100% redundant. (Same conclusion the last two sessions reached; still holds.)
+- **Safety / governance** (`permission-gate-as-architecture` + `budget-as-ceiling`, maybe `hce-evaluation`) — only 1 of these is un-mapped; the others are anchored in `autonomous-search-loop`/`evaluation-integrity`. Pulling them into a new MoC would create overlap across three existing maps for a 2–3 concept theme. Not ripe (also declined previously).
+- **Runtime policy** (`context-eviction-policy`/runtime-policy, `selective-memory-retrieval`/runtime-decisions, `permission-gate-as-architecture`/runtime-approval) — a genuinely interesting cross-cut, but only **3 concepts**. Below threshold.
+- **The 2 un-mapped concepts** don't share a theme with each other (runtime governance vs. skill-format interoperability), so they can't seed a cluster.
+
+### Watch-list (not yet ripe, closest to becoming so)
+
+The **runtime-policy / runtime-governance** cross-cut is the most promising future MoC: it would need ~2 more concepts on runtime decision-gating (beyond eviction, retrieval-gating, and permission-gating) to clear 5 and, crucially, it would be a *non-redundant* organizing axis — these concepts currently sit scattered across three different MoCs. If the next digest batch adds runtime-decision concepts, re-run `/promote-moc runtime-governance`.
+
+No files written, no commit — correctly a zero-promotion cycle.
