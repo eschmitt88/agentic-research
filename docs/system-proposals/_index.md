@@ -13,6 +13,31 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | Date | Slug | Target | Recommendation | Status |
 |------|------|--------|----------------|--------|
 | 2026-06-23 | [digest-scenario-rich-queries](2026-06-23-digest-scenario-rich-queries.md) | `skills/digest/SKILL.md` | adopt | **accepted** (applied 2026-06-23) |
+| 2026-06-28 | [lint-consolidation-check](2026-06-28-lint-consolidation-check.md) | `skills/lint/SKILL.md` | adopt-with-changes | **proposed** |
+
+## Considered and held (2026-06-28 run)
+
+Recorded so the reasoning is visible — these did *not* clear both gates:
+
+- **scripted-tool-pipelines → a `Runtime discipline` line in claude-system
+  `CLAUDE.md`** (do bulk filter/parse/aggregate inside one Bash script
+  rather than many tool-call round-trips). Evidence is strong in aggregate
+  (`liu2026dive` cred 4 + code, `ning2026code` cred 4 + code,
+  `liu2026harnessing` cred 4). **Held** — the concept *self-rates*
+  `seedling` and says the specific zero-context-cost mechanism "is named
+  here from a single source (Hermes README) plus passing mentions"; and the
+  box already uses `Bash` for exactly this. Restraint per "when in doubt,
+  do not propose."
+- **permission-gate-as-architecture → strengthen the PreToolUse cap**
+  (`liu2026dive`, `wang2026reframing`, `ning2026code`, `jia2026finharness`;
+  5 attestations, several cred 4). **Held on simplicity** — largely already
+  enacted (`hooks/pretooluse_cap.sh` + the harness permission layer + the
+  coordinator admission gate); no concrete *simplifying* edit surfaced, and
+  any change here adds gate surface area without removing any.
+- **typed-claim-partition → a four-way claim typology in `/ingest`/`/lint`**
+  (`citation-anchoring`'s typed extension). **Held** — the anchor check is
+  already enacted as `/lint` check #12; the *typed* extension rests mainly
+  on `kamelhar2026gsar` (credibility 2), failing Gate 1 for a direct change.
 
 ## Considered and held (2026-06-23 inaugural run)
 
