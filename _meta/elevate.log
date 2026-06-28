@@ -1,0 +1,20 @@
+`/elevate` complete. One proposal written, three considered and held.
+
+## Result
+
+**1 proposal** → `docs/system-proposals/2026-06-28-lint-consolidation-check.md` (committed + pushed `a8dacc9`, agentic-research only — claude-system untouched).
+
+### Proposed: a consolidation check for `/lint`
+**Target:** `claude/skills/lint/SKILL.md` · **Recommendation:** adopt-with-changes
+
+`/lint`'s always-on checks flag only *absence* (orphans, missing sources, dead links) or *growth* (check #5: clusters ripe for a MoC). Nothing flags *over-growth* — two concepts drifted into redundancy, a note that should split. The graph is append-only by construction. The proposal adds one **report-only** check (5b) that surfaces merge candidates via a conservative all-of conjunction (mutual `related_concepts:` + ≥60% shared sources + ≥2 shared tags), reusing machinery check #5 already has.
+
+- **Gate 1 (evidence):** clears via ≥3 independent attestations at credibility ≥3 plus two code-released anchors — SkillOS (cred 4), SkillOps (cred 3, code), SkillOpt (cred 4, code), Skill Programs (cred 4), Bayesian-Agent. The concept names this exact `/lint` extension twice.
+- **Gate 2 (simplicity):** `adds_surface_area: true`, held to the higher bar — but it's an edit to an existing skill (no new file/hook/rule), report-only, and its *purpose* is consolidation, so net direction is a smaller, tighter graph. The "changes" are guardrails: keep it conservative, exclude documented read/write complements (e.g. `agent-native-memory` vs `selective-memory-retrieval`), borrow only the *existence* of a merge operation, not SkillOS's cadence.
+
+### Considered and held (3)
+- **scripted-tool-pipelines** → CLAUDE.md runtime line — strong aggregate evidence, but the concept self-rates `seedling`/single-source for the specific mechanism, and the box already uses Bash for it.
+- **permission-gate-as-architecture** → already enacted (`pretooluse_cap.sh` + harness permissions + coordinator admission); no simplifying edit surfaced.
+- **typed-claim-partition** → anchor check already exists as `/lint` #12; the typed extension rests on `kamelhar2026gsar` (cred 2), failing Gate 1.
+
+Index and `_meta/log.md` updated. Note: `~/claude-system` has unrelated pre-existing local edits (settings.json, services.yaml) — not mine; I only read there.
