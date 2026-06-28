@@ -971,3 +971,14 @@
     "Bash": 7
   }
 }
+{
+  "timestamp": "2026-06-28T04:01:00Z",
+  "session_id": "ef583eda-4730-42a5-a795-da76afb02711",
+  "input_tokens": 19932,
+  "output_tokens": 5649,
+  "cache_read_tokens": 229729,
+  "cache_creation_tokens": 56706,
+  "tools_used_summary": {
+    "Bash": 4
+  }
+}
