@@ -107,3 +107,29 @@ I surveyed all 22 concepts (excluding `_README`), grouped them by shared `tags:`
 The **runtime-policy / runtime-governance** cross-cut is the most promising future MoC: it would need ~2 more concepts on runtime decision-gating (beyond eviction, retrieval-gating, and permission-gating) to clear 5 and, crucially, it would be a *non-redundant* organizing axis — these concepts currently sit scattered across three different MoCs. If the next digest batch adds runtime-decision concepts, re-run `/promote-moc runtime-governance`.
 
 No files written, no commit — correctly a zero-promotion cycle.
+I now have the full coverage picture. Let me analyze the clusters against the ripeness test.
+
+**Coverage:** 20 of 22 concepts are already mapped into the four existing MoCs. Only two are unmapped: `permission-gate-as-architecture` and `shared-skill-namespace` — and they share no common theme.
+
+Let me check the candidate clusters by shared tag:
+
+| Theme | Concepts | Count | Already mapped? |
+|---|---|---|---|
+| **memory** | agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval | 4 | All 4 in knowledge-organization MoC |
+| **evaluation** | hce-evaluation, pass-at-k, citation-anchoring, typed-claim-partition, programmable-evaluator-oracle | 5 | All 5 in evaluation-integrity MoC |
+| **agent-architecture** | agent-native-memory, file-as-bus, hierarchical-delegation, hybrid-model-backends, scripted-tool-pipelines | 5 | All 5 in agent-architecture MoC |
+| **knowledge-organization** | multi-granularity-memory, selective-memory-retrieval, skill-library-lifecycle, typed-claim-partition | 4 | All in knowledge-organization MoC |
+| **evolutionary-search** | evolutionary-expansion, evolutionary-search-grain, programmable-evaluator-oracle | 3 | All in autonomous-search-loop MoC |
+| **skills / governance** (unmapped) | shared-skill-namespace, permission-gate-as-architecture | 2 | Unmapped, but no shared theme |
+
+## Verdict: nothing is ripe — declining to promote
+
+No cluster satisfies **both** ripeness conditions (≥5 related concepts **and** not already mapped):
+
+- **Memory** (theme prior NOTES flagged) — still only **4** memory-tagged concepts, and all four already live in the knowledge-organization MoC. Below the threshold *and* fully covered. Same finding as the 2026-06-26 session; nothing has changed it.
+- **Evaluation, agent-architecture, evolutionary-search** — each is a real ≥5 (or near) cluster, but each is *already its own MoC*. A new MoC would duplicate, not add structure.
+- **The two unmapped concepts** (`shared-skill-namespace`, `permission-gate-as-architecture`) don't form a coherent cluster — one is harness-interop, the other is runtime-safety/governance — and there are only two of them. The prior session already declined a safety MoC on the same grounds; nothing new has accumulated since.
+
+Per the skill's restraint clause and `agency.md` ("declines redundant ones — keep that restraint; do not manufacture thin MoCs"), I'm **not** creating or modifying any MoC. No files changed, nothing to commit.
+
+**Watch list for next time** — the closest-to-ripe theme is **agent-memory**: one more memory concept (a 5th) that isn't already absorbed by knowledge-organization would tip it. If the next ingest batch adds a memory concept with a distinct enough angle, a dedicated memory MoC (splitting from knowledge-organization) becomes worth reconsidering.
