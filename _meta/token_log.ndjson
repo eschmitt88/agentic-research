@@ -982,3 +982,17 @@
     "Bash": 4
   }
 }
+{
+  "timestamp": "2026-06-28T05:04:31Z",
+  "session_id": "1202f769-e656-41d4-b9e1-5f7654cb8f4c",
+  "input_tokens": 33911,
+  "output_tokens": 50452,
+  "cache_read_tokens": 1974183,
+  "cache_creation_tokens": 227299,
+  "tools_used_summary": {
+    "Bash": 13,
+    "Read": 2,
+    "Write": 1,
+    "Edit": 2
+  }
+}
