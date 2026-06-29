@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/qu2026coral]]"
+  - "[[literature/papers/jain2026agentic]]"
   - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/xu2026researchclawbench]]"
   - "[[literature/papers/wu2026bayesian]]"

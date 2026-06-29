@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/wang2026act]]"
   - "[[literature/papers/belikova2026managing]]"
+  - "[[literature/papers/jain2026agentic]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24

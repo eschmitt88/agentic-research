@@ -162,3 +162,6 @@ skills; read by `/lint`.
 2026-06-29 07:00 digest n=2 window_since=2026-06-22T07:00:06Z
 2026-06-29 07:04 fetch-paper 2606.23127 → raw/papers/belikova2026managing.pdf
 2026-06-29 07:06 ingest raw/papers/belikova2026managing.pdf
+2026-06-29 07:08 fetch-paper 2606.20394 → raw/papers/jain2026agentic.pdf
+2026-06-29 07:09 ingest raw/papers/jain2026agentic.pdf
+2026-06-29 07:09 digest-autoingest n=2 verdict=slow

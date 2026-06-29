@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/chan2024mle]]"
   - "[[literature/papers/starace2025paperbench]]"
+  - "[[literature/papers/jain2026agentic]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
