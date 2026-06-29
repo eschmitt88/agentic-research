@@ -1007,3 +1007,21 @@
     "Bash": 4
   }
 }
+{
+  "timestamp": "2026-06-29T07:10:38Z",
+  "session_id": "999b232b-39f9-4e5e-aad5-05af3e8b233a",
+  "input_tokens": 45204,
+  "output_tokens": 112852,
+  "cache_read_tokens": 10650783,
+  "cache_creation_tokens": 464030,
+  "tools_used_summary": {
+    "Bash": 25,
+    "ToolSearch": 1,
+    "WebSearch": 11,
+    "WebFetch": 4,
+    "Write": 3,
+    "Skill": 3,
+    "Read": 9,
+    "Edit": 15
+  }
+}

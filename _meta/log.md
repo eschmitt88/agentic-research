@@ -167,3 +167,4 @@ skills; read by `/lint`.
 2026-06-29 07:09 digest-autoingest n=2 verdict=slow
 2026-06-29 07:10 promote-moc: declined (no new concepts seeded; both ingests appended sources to already-mapped concepts — evaluation/skills/memory clusters unchanged)
 2026-06-29 07:10 curate 2026-06-29-digest: 2 ingested, 0 deferred → archived to _done/
+2026-06-29 07:10 session_end session=999b232b-39f9-4e5e-aad5-05af3e8b233a

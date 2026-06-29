@@ -169,3 +169,25 @@ Pushed successfully (the failure was the sandbox blocking DNS). The `/digest` ru
 **Persisted:** `_meta/last_digest` updated, `_meta/log.md` appended (digest, 3 fetches/ingests, autoingest n=3, promote-moc decline), candidate file given a `## Curation` section. 5 commits pushed to `main` (Pages will update).
 
 Net: papers 50→53; the skill-library and agent-memory fronts both reinforced. Closest-to-ripe un-mapped theme is **evolutionary-search** (3 concepts) — one or two more attestations and it crosses the MoC threshold.
+Digest cycle complete. Pushed to `main` (`f808fb8..d83ac70`).
+
+## `/digest` summary — 2026-06-29
+
+**Window:** since 2026-06-22T07:00Z (7 days). Synthesized 5 scenario queries across the project's active fronts and ran ~10 WebSearches (memory, evolutionary ML-research search, skill libraries, claim grounding, permission gating, multi-agent coordination), verifying candidate submission dates by WebFetch.
+
+**Result: n=2** (after window + dedup against 66 literature notes and prior candidate files). The strict 7-day window was thin — most hits were surveys, already in-graph, or already swept. Both survivors were novel and auto-ingested.
+
+| # | Paper | Fronts attested |
+|---|-------|-----------------|
+| 1 | **belikova2026managing** — *Managing Procedural Memory in LLM Agents* (AFTER benchmark, arXiv 2606.23127, Jun 22) | `skill-library-lifecycle`, `shared-skill-namespace`, `hce-evaluation` · rel 4 / cred 3 |
+| 2 | **jain2026agentic** — *Agentic AutoResearch for Space Autonomy* (in-loop credibility gate, MIT AeroAstro, arXiv 2606.20394, Jun 18) | `pass-at-k`, `hce-evaluation`, `programmable-evaluator-oracle` · rel 3 / cred 3 |
+
+**Agency auto-advance** (`agency: max`, verdict `slow`/normal, re-checked between units): fetched + ingested both → 2 literature notes, 5 concepts gained sources, index/log updated.
+
+**`/promote-moc`:** declined — no *new* concepts were seeded (only sources appended to already-mapped concepts), so no cluster newly tipped ripe. Concept count steady at 22; the four existing MoCs still cover every ripe theme.
+
+**Loop closed:** candidate file curated (both INGESTED, 0 deferred) and archived to `raw/_candidates/_done/`. Uncurated backlog: **0**. `_meta/last_digest` advanced to 2026-06-29.
+
+**Commits pushed:** `f02ead9` (paper 1) · `5868fea` (paper 2) · `d83ac70` (digest sweep + curate/archive).
+
+Notable for a future `/discover` if those fronts need reinforcing: several strong but out-of-window items surfaced and were deliberately excluded — Library Drift (2605.19576), SoK: Agentic Skills (2602.20867), "Cited but Not Verified" (2605.06635); these slipped earlier sweeps and aren't yet in the graph.
