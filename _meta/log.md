@@ -165,3 +165,5 @@ skills; read by `/lint`.
 2026-06-29 07:08 fetch-paper 2606.20394 → raw/papers/jain2026agentic.pdf
 2026-06-29 07:09 ingest raw/papers/jain2026agentic.pdf
 2026-06-29 07:09 digest-autoingest n=2 verdict=slow
+2026-06-29 07:10 promote-moc: declined (no new concepts seeded; both ingests appended sources to already-mapped concepts — evaluation/skills/memory clusters unchanged)
+2026-06-29 07:10 curate 2026-06-29-digest: 2 ingested, 0 deferred → archived to _done/
