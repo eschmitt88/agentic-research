@@ -133,3 +133,34 @@ No cluster satisfies **both** ripeness conditions (≥5 related concepts **and**
 Per the skill's restraint clause and `agency.md` ("declines redundant ones — keep that restraint; do not manufacture thin MoCs"), I'm **not** creating or modifying any MoC. No files changed, nothing to commit.
 
 **Watch list for next time** — the closest-to-ripe theme is **agent-memory**: one more memory concept (a 5th) that isn't already absorbed by knowledge-organization would tip it. If the next ingest batch adds a memory concept with a distinct enough angle, a dedicated memory MoC (splitting from knowledge-organization) becomes worth reconsidering.
+I have enough to judge ripeness. Let me lay out the cluster analysis.
+
+**Mapping status (21 real concepts, `_README` excluded):**
+
+Four MoCs already exist. Cross-referencing every concept against them, only **two concepts are unmapped**:
+- `permission-gate-as-architecture` (safety / governance / runtime-approval)
+- `shared-skill-namespace` (skills / interop / standardization)
+
+**Candidate clusters, against the ripeness test (≥5 related AND not already majority-mapped):**
+
+| Theme | Concepts | Count | Verdict |
+|---|---|---|---|
+| Evaluation | citation-anchoring, hce-evaluation, pass-at-k, programmable-evaluator-oracle, typed-claim-partition | 5 | **Mapped** — `evaluation-integrity` covers all 5 |
+| Agent architecture | agent-native-memory, file-as-bus, hierarchical-delegation, hybrid-model-backends, scripted-tool-pipelines | 5 | **Mapped** — `agent-architecture` covers all 5 |
+| Knowledge-organization | multi-granularity-memory, selective-memory-retrieval, skill-library-lifecycle, typed-claim-partition (+6 more) | 10 | **Mapped** — `knowledge-organization-for-research-agents` |
+| Memory | agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval | 4 | **Not ripe** — only 4; half already in knowledge-org MoC (unchanged since last session) |
+| Safety / runtime-governance | permission-gate-as-architecture, budget-as-ceiling (+ runtime-policy stragglers) | 2 strong | **Not ripe** — only 2 genuine; the rest are memory-runtime concepts already mapped elsewhere |
+| Skills / interop | shared-skill-namespace, skill-library-lifecycle, scripted-tool-pipelines | 2–3 | **Not ripe** — too few, and 2 already mapped |
+
+## Verdict: nothing is ripe — no MoC promoted.
+
+No un-mapped theme reaches 5 concepts. The two genuinely unmapped concepts (`permission-gate-as-architecture`, `shared-skill-namespace`) sit on **different** themes and don't combine into a coherent ≥5 cluster.
+
+**Clusters I explicitly declined, and why:**
+- **Memory** — still 4 memory-tagged concepts (no change since 2026-06-28); `agent-native-memory` and `selective-memory-retrieval` already live in `knowledge-organization`. Enrich-existing remains correct; a standalone memory MoC would duplicate.
+- **Safety / runtime-governance** — tempting given `permission-gate` is now a 4th-domain anchor, but only 2 concepts (`permission-gate`, `budget-as-ceiling`) truly fit. Pulling in `context-eviction-policy` / `selective-memory-retrieval` to pad to 5 would be exactly the thin/redundant manufacture the rule forbids — those are memory-runtime concepts already mapped.
+- **Skills / interop** — `shared-skill-namespace` is a fresh seedling but has only `skill-library-lifecycle` and a marginal `scripted-tool-pipelines` nearby; too thin.
+
+**Watch-list (no action now):** `permission-gate-as-architecture` is the seed of a potential *safety / runtime-governance* MoC. If one or two more governance/safety concepts get ingested (e.g. a sandbox-policy or autonomy-bound note), that cluster could cross the threshold — worth re-checking after the next digest/curate burst.
+
+Nothing written, no commit — consistent with the rule that restraint is the point. The graph is well-mapped: 19 of 21 concepts are in a MoC, and the two that aren't don't yet form a cluster.
