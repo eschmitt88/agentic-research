@@ -8,6 +8,7 @@ sources:
   - "[[literature/papers/banu2026harness]]"
   - "[[literature/papers/yang2026skillopt]]"
   - "[[literature/papers/zhou2026comprehensive]]"
+  - "[[literature/papers/belikova2026managing]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []

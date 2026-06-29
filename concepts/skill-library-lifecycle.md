@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/zhang2026skillcomposer]]"
   - "[[literature/papers/wu2026bayesian]]"
   - "[[literature/papers/pu2026skillops]]"
+  - "[[literature/papers/belikova2026managing]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
