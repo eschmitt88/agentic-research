@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/wang2026act]]"
+  - "[[literature/papers/belikova2026managing]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24

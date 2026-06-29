@@ -159,3 +159,6 @@ skills; read by `/lint`.
 2026-06-28 05:04 elevate proposals=1 considered=4 (adopt-with-changes: lint-consolidation-check via skill-library-lifecycle/SkillOS+SkillOps+SkillOpt; held: scripted-tool-pipelines[seedling/self-rated], permission-gate[already-enacted], typed-claim-partition[kamelhar cred2])
 2026-06-28 05:04 session_end session=1202f769-e656-41d4-b9e1-5f7654cb8f4c
 2026-06-29 04:01 session_end session=121c2e98-4dd0-4646-a9b1-035557f0875c
+2026-06-29 07:00 digest n=2 window_since=2026-06-22T07:00:06Z
+2026-06-29 07:04 fetch-paper 2606.23127 → raw/papers/belikova2026managing.pdf
+2026-06-29 07:06 ingest raw/papers/belikova2026managing.pdf
