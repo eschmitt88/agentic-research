@@ -1025,3 +1025,14 @@
     "Edit": 15
   }
 }
+{
+  "timestamp": "2026-06-30T04:01:08Z",
+  "session_id": "33519478-0243-46cd-afa8-7d0ecc6635a3",
+  "input_tokens": 20913,
+  "output_tokens": 2257,
+  "cache_read_tokens": 241085,
+  "cache_creation_tokens": 80941,
+  "tools_used_summary": {
+    "Bash": 4
+  }
+}
