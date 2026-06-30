@@ -152,7 +152,7 @@ function parseFM(text) {
     const v = m[2].trim();
     if (v === "") out.fm[key] = out.fm[key] || [];
     else if (/^(null|~|Null|NULL)$/.test(v)) { /* YAML null — leave the field absent so it doesn't render as a "null" value/link */ }
-    else if (/^\[.*\]$/.test(v)) out.fm[key] = v.slice(1, -1).split(",").map(s => strip(s.trim())).filter(Boolean);
+    else if (v.startsWith("[")) { const close = v.lastIndexOf("]"); out.fm[key] = (close > 0 ? v.slice(1, close) : v.slice(1)).split(",").map(s => strip(s.trim())).filter(Boolean); }
     else out.fm[key] = strip(v);
   }
   return out;
