@@ -164,3 +164,30 @@ No un-mapped theme reaches 5 concepts. The two genuinely unmapped concepts (`per
 **Watch-list (no action now):** `permission-gate-as-architecture` is the seed of a potential *safety / runtime-governance* MoC. If one or two more governance/safety concepts get ingested (e.g. a sandbox-policy or autonomy-bound note), that cluster could cross the threshold — worth re-checking after the next digest/curate burst.
 
 Nothing written, no commit — consistent with the rule that restraint is the point. The graph is well-mapped: 19 of 21 concepts are in a MoC, and the two that aren't don't yet form a cluster.
+Let me build the full mapped/unmapped picture.
+
+I have everything I need. Here's the analysis.
+
+## `/promote-moc` — auto-detect: nothing ripe, no MoC created
+
+**Coverage map.** 22 concepts (excluding `_README`), 4 existing MoCs. Only **2 concepts are unmapped**:
+
+- `permission-gate-as-architecture` (tags: safety, permission-gate, runtime-approval, regulator, tool-use, governance)
+- `shared-skill-namespace` (tags: skills, interop, format-portability, harness-ecosystem, standardization)
+
+Two orphans on unrelated themes can't form a ≥5-concept cluster. So the only way to reach ripeness is via a *thematic* cluster spanning already-mapped concepts — and each candidate fails the "not already mapped" test:
+
+**Candidate clusters considered, all declined:**
+
+| Cluster | Members | Why declined |
+|---|---|---|
+| **Memory / retrieval** | agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval, skill-library-lifecycle, web-grounded-literature (6) | Ripe by count, but **knowledge-organization MoC already covers all 6**. Majority-mapped → not ripe. (Same verdict as the 2026-06-29 NOTES; enriching knowledge-org was the right move, and it's even more covered now.) |
+| **Safety / governance / autonomy-control** | permission-gate-as-architecture, budget-as-ceiling (+ maybe hierarchical-delegation) | Only ~2 coherent members; `budget-as-ceiling` already in autonomous-search-loop. Below the 5-concept floor. |
+| **Skills / interop** | shared-skill-namespace, skill-library-lifecycle | 2 concepts. Below floor; `skill-library-lifecycle` already in knowledge-org. |
+| **Tool-use / efficiency** | scripted-tool-pipelines, permission-gate-as-architecture | 2 concepts. Below floor. |
+
+**Verdict: no cluster is ripe.** Every ≥5 cluster is already substantially mapped, and the genuinely un-mapped concepts (2) are too few and thematically unrelated to anchor a new MoC. Per the skill's restraint clause, I'm **not** manufacturing a thin or redundant MoC.
+
+No files changed, so nothing to commit.
+
+**Watch item for a future run:** `permission-gate-as-architecture` (seedling, a 4-domain-attested safety/governance idea) and `shared-skill-namespace` are the two orphans. If 3+ more safety/governance/tool-governance concepts accumulate (e.g. a sandboxing, audit-trail, or capability-scoping note lands), a **safety-and-governance** MoC becomes the likely first genuinely-new map. Until then, nothing to do.
