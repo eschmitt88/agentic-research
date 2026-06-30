@@ -7,8 +7,11 @@ change_type: edit
 adds_surface_area: true
 evidence_citekeys: [ouyang2026skillos, pu2026skillops, yang2026skillopt, liu2026harnessing, wu2026bayesian, zhang2026skillcomposer]
 evidence_strength: "code-released (SkillOps github.com/Hik289/SkillOps, SkillOpt aka.ms/skillopt) + 3+ independent attestations at credibility 3-4; credibility ~4 on balance"
-status: proposed
+status: accepted
 recommendation: adopt-with-changes
+accepted_on: "2026-06-30"
+applied_commit: "claude-system@f0b3aef"
+accepted_note: "Adopted the minimal check-#5 amendment (MoC-covered cluster accreting near-duplicates = consolidation signal). Full pairwise merge/split detector 5b deferred until the graph is larger (~40-50 concepts)."
 ---
 
 # `/lint` should surface consolidation candidates, not only growth gaps
