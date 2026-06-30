@@ -13,7 +13,7 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | Date | Slug | Target | Recommendation | Status |
 |------|------|--------|----------------|--------|
 | 2026-06-23 | [digest-scenario-rich-queries](2026-06-23-digest-scenario-rich-queries.md) | `skills/digest/SKILL.md` | adopt | **accepted** (applied 2026-06-23) |
-| 2026-06-28 | [lint-consolidation-check](2026-06-28-lint-consolidation-check.md) | `skills/lint/SKILL.md` | adopt-with-changes | **proposed** |
+| 2026-06-28 | [lint-consolidation-check](2026-06-28-lint-consolidation-check.md) | `skills/lint/SKILL.md` | adopt-with-changes | **accepted** (minimal check-#5 amendment applied 2026-06-30, claude-system@f0b3aef; full 5b deferred) |
 
 ## Considered and held (2026-06-28 run)
 
