@@ -88,6 +88,7 @@
     <a class="lnk" href="#/mocs" data-v="mocs"><span>Maps of Content</span><span class="ct" id="ctMoc">·</span></a>
     <a class="lnk" href="#/candidates" data-v="candidates"><span>Candidates</span><span class="ct" id="ctCan">·</span></a>
     <a class="lnk" href="#/decisions" data-v="decisions"><span>Decisions</span><span class="ct" id="ctDec">·</span></a>
+    <a class="lnk" href="#/proposals" data-v="proposals"><span>System proposals</span><span class="ct" id="ctProp">·</span></a>
     <a class="ghlink mono" id="ghLink" target="_blank" rel="noopener">↗ view on GitHub</a>
   </nav>
   <main id="view"><p><span class="spin"></span>Reading repository…</p></main>
@@ -269,8 +270,9 @@ function buckets() {
   const moc = P.filter(p => /^mocs\/[^/]+\.md$/.test(p) && notUnderscore(p));
   const can = P.filter(p => p.startsWith("raw/_candidates/") && isMd(p) && notUnderscore(p) && p.split("/").length === 3);
   const dec = P.filter(p => p.startsWith("docs/decisions/") && isMd(p) && notUnderscore(p));
+  const prop = P.filter(p => p.startsWith("docs/system-proposals/") && isMd(p) && notUnderscore(p));
   const exps = [...new Set(P.map(p => (p.match(expDir) || [])[1]).filter(Boolean))].sort().reverse();
-  return { lit, con, moc, can, dec, exps };
+  return { lit, con, moc, can, dec, prop, exps };
 }
 
 /* ---- small helpers ---- */
@@ -528,6 +530,34 @@ async function vDecision(path) {
   if (!text) return notFound(path);
   view.innerHTML = `<div class="crumb"><a href="#/decisions">Decisions</a> / ${esc(slug(path))}</div><div class="doc">${md(parseFM(text).body)}</div>`;
 }
+async function vProposals() {
+  setActive("proposals");
+  const b = buckets();
+  const items = (await loadMany(b.prop)).sort((a, z) => String(z.fm.added || "").localeCompare(String(a.fm.added || "")));
+  const pending = items.filter(it => it.fm.status === "proposed");
+  view.innerHTML = `<h1>System proposals</h1>
+    <p class="lead">${items.length} candidate change(s) to <code>~/claude-system</code> from <code>/elevate</code>, awaiting human review. Nothing here has been applied.
+      ${pending.length ? `<b style="color:#e0a800">${pending.length} pending review.</b>` : "None pending."}</p>
+    <table><thead><tr><th>date</th><th>proposal</th><th>target</th><th>rec</th><th>status</th></tr></thead><tbody>${
+      items.map(it => `<tr${it.fm.status === "proposed" ? ' style="background:rgba(224,168,0,.10)"' : ""}>
+        <td class="mono">${esc(it.fm.added || "")}</td>
+        <td><a href="#/proposal/${encodeURIComponent(it.path)}">${esc(it.fm.slug || slug(it.path))}</a></td>
+        <td class="mono" style="font-size:11px">${esc(it.fm.target || "")}</td>
+        <td>${esc(it.fm.recommendation || "")}</td>
+        <td>${tag(it.fm.status, "s-")}</td></tr>`).join("") || `<tr><td colspan="5" class="empty">No proposals yet.</td></tr>`
+    }</tbody></table>`;
+}
+async function vProposal(path) {
+  setActive("proposals");
+  const text = await raw(path);
+  if (!text) return notFound(path);
+  const { fm, body } = parseFM(text);
+  view.innerHTML = `<div class="crumb"><a href="#/proposals">System proposals</a> / ${esc(slug(path))}</div>
+    <h1>${esc(fm.slug || slug(path))}</h1>
+    <div>${tag(fm.status, "s-")}${fm.recommendation ? `<span class="tag">${esc(fm.recommendation)}</span>` : ""}${fm.target ? `<span class="tag mono">${esc(fm.target)}</span>` : ""}</div>
+    ${fmBlock(fm, ["added", "target", "change_type", "adds_surface_area", "evidence_citekeys", "evidence_strength", "accepted_on", "applied_commit"])}
+    <div class="doc">${md(body)}</div>`;
+}
 
 /* ---- shared bits ---- */
 function fmBlock(fm, keys) {
@@ -559,6 +589,8 @@ const routes = [
   [/^\/candidate\/(.+)$/, m => vCandidate(decodeURIComponent(m[1]))],
   [/^\/decisions$/, vDecisions],
   [/^\/decision\/(.+)$/, m => vDecision(decodeURIComponent(m[1]))],
+  [/^\/proposals$/, vProposals],
+  [/^\/proposal\/(.+)$/, m => vProposal(decodeURIComponent(m[1]))],
 ];
 async function route() {
   const h = location.hash.replace(/^#/, "") || "/";
@@ -588,6 +620,7 @@ async function boot() {
     $("#ctExp").textContent = b.exps.length; $("#ctCon").textContent = b.con.length;
     $("#ctLit").textContent = b.lit.length; $("#ctMoc").textContent = b.moc.length;
     $("#ctCan").textContent = b.can.length; $("#ctDec").textContent = b.dec.length;
+    const pend = b.prop.length; $("#ctProp").textContent = pend || "·";
     document.title = `${CONFIG.repo} · research`;
     window.addEventListener("hashchange", route);
     await route();
