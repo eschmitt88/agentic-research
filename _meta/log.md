@@ -169,3 +169,4 @@ skills; read by `/lint`.
 2026-06-29 07:10 curate 2026-06-29-digest: 2 ingested, 0 deferred → archived to _done/
 2026-06-29 07:10 session_end session=999b232b-39f9-4e5e-aad5-05af3e8b233a
 2026-06-30 04:01 session_end session=33519478-0243-46cd-afa8-7d0ecc6635a3
+2026-07-01 04:01 session_end session=818fde8e-2aa0-4ce0-b490-9780f832be47

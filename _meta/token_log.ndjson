@@ -1036,3 +1036,29 @@
     "Bash": 4
   }
 }
+{
+  "timestamp": "2026-06-30T17:00:11Z",
+  "session_id": "523af81a-e740-4416-942b-8e991a4d818d",
+  "input_tokens": 32719,
+  "output_tokens": 71373,
+  "cache_read_tokens": 5443637,
+  "cache_creation_tokens": 334646,
+  "tools_used_summary": {
+    "Bash": 20,
+    "Read": 9,
+    "Edit": 9,
+    "AskUserQuestion": 2,
+    "Write": 1
+  }
+}
+{
+  "timestamp": "2026-07-01T04:01:00Z",
+  "session_id": "818fde8e-2aa0-4ce0-b490-9780f832be47",
+  "input_tokens": 21165,
+  "output_tokens": 3261,
+  "cache_read_tokens": 365374,
+  "cache_creation_tokens": 71263,
+  "tools_used_summary": {
+    "Bash": 5
+  }
+}
