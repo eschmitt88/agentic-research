@@ -216,3 +216,19 @@ Testing every candidate cluster against the two-part ripeness bar (≥5 concepts
 The graph is well-covered: 20 of 22 concepts sit in a MoC, and the 2 stragglers don't share a coherent ≥5 theme. Per the skill's restraint clause, I'm **not** manufacturing a thin or redundant MoC to have something to do.
 
 No files changed, nothing to commit. The next real promotion opportunity will likely be a **skills/interop** MoC — once `shared-skill-namespace` and `skill-library-lifecycle` are joined by ~3 more skill-lifecycle/portability concepts from the digest backlog, that becomes a genuine un-mapped cluster worth mapping.
+No cluster is ripe — I'm declining to promote anything this run.
+
+**The decisive fact:** of the 22 concepts, only two are unmapped by any existing MoC — `permission-gate-as-architecture` and `shared-skill-namespace`. Ripeness requires a ≥5-concept cluster where no existing MoC already covers at least half; with just two unmapped concepts in the whole graph, no such cluster can exist. Every candidate fails arithmetically:
+
+| Candidate cluster | Concepts | Overlap with existing MoCs | Verdict |
+|---|---|---|---|
+| Memory (`memory` tag) | 4 (agent-native-memory, context-eviction-policy, selective-memory-retrieval, multi-granularity-memory) | all 4 already in knowledge-organization | Declined — under 5 and fully mapped; same verdict as the 2026-06-30 session |
+| Safety/governance | ~3 (permission-gate-as-architecture, budget-as-ceiling, arguably hce-evaluation) | 2 of 3 mapped (autonomous-search-loop, evaluation-integrity) | Declined — under 5; previously declined too |
+| Skills/procedural | 3 (shared-skill-namespace, skill-library-lifecycle, scripted-tool-pipelines) | 2 of 3 mapped | Declined — under 5 |
+| Coordination/long-horizon | 4 (file-as-bus, structured-world-model, hierarchical-delegation, async-worker-pool) | all 4 mapped across three MoCs | Declined — fully mapped |
+| Evaluation | 5 | identical to evaluation-integrity's membership | Declined — that MoC *is* this cluster |
+| Evolutionary search | 3 | all in autonomous-search-loop | Declined |
+
+Nothing new has landed since the 2026-06-30 curate/MoC pass (recent commits are session logs and viewer/elevate work, no new concepts), so the graph state matches the prior assessment. The four existing MoCs (agent-architecture, autonomous-search-loop, evaluation-integrity, knowledge-organization-for-research-agents) cover the graph well.
+
+No files written, nothing to commit. The two unmapped concepts are worth watching: when the safety/governance theme (around `permission-gate-as-architecture`) or the skill-portability theme (around `shared-skill-namespace`) picks up two or three more concepts from future ingests, one of those will likely be the next real MoC.
