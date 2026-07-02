@@ -232,3 +232,4 @@ No cluster is ripe — I'm declining to promote anything this run.
 Nothing new has landed since the 2026-06-30 curate/MoC pass (recent commits are session logs and viewer/elevate work, no new concepts), so the graph state matches the prior assessment. The four existing MoCs (agent-architecture, autonomous-search-loop, evaluation-integrity, knowledge-organization-for-research-agents) cover the graph well.
 
 No files written, nothing to commit. The two unmapped concepts are worth watching: when the safety/governance theme (around `permission-gate-as-architecture`) or the skill-portability theme (around `shared-skill-namespace`) picks up two or three more concepts from future ingests, one of those will likely be the next real MoC.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
