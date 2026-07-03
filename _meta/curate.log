@@ -233,3 +233,19 @@ Nothing new has landed since the 2026-06-30 curate/MoC pass (recent commits are 
 
 No files written, nothing to commit. The two unmapped concepts are worth watching: when the safety/governance theme (around `permission-gate-as-architecture`) or the skill-portability theme (around `shared-skill-namespace`) picks up two or three more concepts from future ingests, one of those will likely be the next real MoC.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No cluster is ripe — no MoC created. Here's the full detection pass.
+
+**Coverage state:** 22 concepts, 4 existing MoCs. Only two concepts are unmapped by any MoC: `permission-gate-as-architecture` and `shared-skill-namespace`. Everything else already lives in `agent-architecture`, `autonomous-search-loop`, `evaluation-integrity`, or `knowledge-organization-for-research-agents`.
+
+**Candidate clusters examined, all declined:**
+
+| Cluster | Members | Why declined |
+|---|---|---|
+| Memory (`memory`, `retrieval`, `granularity` tags) | agent-native-memory, selective-memory-retrieval, context-eviction-policy, multi-granularity-memory | All 4 are already in the knowledge-organization MoC (added there on the 2026-07-02 pass). A memory MoC would be a pure subset — the exact redundancy the ripeness rule exists to prevent. Still only 4 concepts anyway. |
+| Skills (`skills`, `skill-library`) | skill-library-lifecycle, shared-skill-namespace | Only 2 concepts; skill-library-lifecycle is already mapped. Far under the 5-concept bar. |
+| Safety / governance (`safety`, `governance`, `permission-gate`, `halting`) | permission-gate-as-architecture, budget-as-ceiling, (hce-evaluation at a stretch) | 2–3 coherent members, and budget-as-ceiling and hce-evaluation are already mapped in other MoCs. Same verdict as the 2026-07-02 decline — nothing new has landed on this theme since. |
+| Coordination / long-horizon (`coordination`, `long-horizon`) | file-as-bus, structured-world-model, hierarchical-delegation, async-worker-pool | All 4 already split across agent-architecture and knowledge-organization; majority-mapped and under the bar. |
+
+Nothing has changed since the last `/promote-moc` run: no new concepts were seeded after `multi-granularity-memory` and `permission-gate-as-architecture`, so the cluster math is identical to yesterday's pass. Per the skill's restraint rule, I'm stopping here — no files written, nothing to commit.
+
+**What would make a cluster ripe next:** the skills theme is the closest watch item. `shared-skill-namespace` + `skill-library-lifecycle` anchor it with strong sourcing (SkillOS, SkillRet, SkillComposer, SkillOps, harness ecosystem repos); two-to-three more skill-adjacent concepts from future ingests would justify either a `skill-ecosystem` MoC or a deliberate split from knowledge-organization. `permission-gate-as-architecture` similarly waits on a safety/governance cluster forming around it.
