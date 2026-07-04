@@ -249,3 +249,23 @@ No cluster is ripe — no MoC created. Here's the full detection pass.
 Nothing has changed since the last `/promote-moc` run: no new concepts were seeded after `multi-granularity-memory` and `permission-gate-as-architecture`, so the cluster math is identical to yesterday's pass. Per the skill's restraint rule, I'm stopping here — no files written, nothing to commit.
 
 **What would make a cluster ripe next:** the skills theme is the closest watch item. `shared-skill-namespace` + `skill-library-lifecycle` anchor it with strong sourcing (SkillOS, SkillRet, SkillComposer, SkillOps, harness ecosystem repos); two-to-three more skill-adjacent concepts from future ingests would justify either a `skill-ecosystem` MoC or a deliberate split from knowledge-organization. `permission-gate-as-architecture` similarly waits on a safety/governance cluster forming around it.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No cluster is ripe — nothing to promote this cycle. Here's the detection breakdown.
+
+**Coverage state:** 22 concepts, 4 MoCs. Only two concepts are unmapped by any MoC: `permission-gate-as-architecture` and `shared-skill-namespace`.
+
+**Candidate clusters examined, all declined:**
+
+| Cluster (by shared tags) | Size | Why declined |
+|---|---|---|
+| memory (`agent-native-memory`, `context-eviction-policy`, `selective-memory-retrieval`, `multi-granularity-memory`) | 4 | Below the 5-concept threshold, and all four already live in the knowledge-organization MoC — same verdict as the 2026-07-01 check |
+| safety/governance (`permission-gate-as-architecture`, `budget-as-ceiling`) | 2 | Far below threshold; `budget-as-ceiling` is already in autonomous-search-loop |
+| skills/procedural (`shared-skill-namespace`, `skill-library-lifecycle`, `scripted-tool-pipelines`) | 3 | Below threshold, and 2 of 3 are already mapped (knowledge-organization, agent-architecture) |
+| evaluation (5 concepts) | 5 | Meets the size bar but is exactly the evaluation-integrity MoC's membership — fully mapped, not ripe |
+| tool-use (`scripted-tool-pipelines`, `permission-gate-as-architecture`) | 2 | Below threshold |
+
+No concepts have been added since the last promote pass (the recent commits are nightly curate/session records), so the graph hasn't shifted since the 2026-07-01 verdict that enriching knowledge-organization was the right move. Per the skill's restraint rule, I'm not manufacturing a thin or duplicate MoC — stopping here with no writes and no commit.
+
+The nearest future ripeness signal to watch: the **safety/governance** theme. `permission-gate-as-architecture` is unmapped and well-attested (5 attestations); two or three more concepts on runtime governance (approval gates, sandboxing, spend regulators) would make that a genuine cluster worth its own MoC.
+
+One unrelated note: the claude.ai Google Drive MCP server needs authorization before its tools can be used — you'd do that via your claude.ai connector settings; it can't be authorized from this non-interactive session. It wasn't needed for this task.
