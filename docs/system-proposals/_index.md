@@ -15,6 +15,31 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-06-23 | [digest-scenario-rich-queries](2026-06-23-digest-scenario-rich-queries.md) | `skills/digest/SKILL.md` | adopt | **accepted** (applied 2026-06-23) |
 | 2026-06-28 | [lint-consolidation-check](2026-06-28-lint-consolidation-check.md) | `skills/lint/SKILL.md` | adopt-with-changes | **accepted** (minimal check-#5 amendment applied 2026-06-30, claude-system@f0b3aef; full 5b deferred) |
 
+## Considered and held (2026-07-05 run)
+
+Zero-proposal cycle. Only two papers entered the graph since the last run
+(`jain2026agentic`, `belikova2026managing`, both credibility 3, ingested
+2026-06-29), and both added attestations only — no new mechanisms:
+
+- **pass-at-k → `/implement` (distribution-format metrics, enforced k)** —
+  Gate 1 passes strongly (`chan2024mle` peer-reviewed + code cred 5,
+  `starace2025paperbench` code cred 5, `edwards2025rexbench` peer-reviewed
+  cred 4; 5 attestations incl. new `jain2026agentic`). **Held on
+  simplicity/already-enacted** — `/implement` already supports `--seeds N`
+  with per-seed results, mean±std aggregation, and `seeds_run` /
+  `metric_aggregation` Diagnostics fields. The un-enacted remainder
+  (mandatory k≥3 for claims, seed-overlap checks in `/iterate`) adds gate
+  surface area, and the concept self-rates `experimental` with an explicit
+  "graduate when a downstream project runs the protocol end-to-end" gate.
+- **skill-library-lifecycle (+`belikova2026managing`)** — already yielded
+  the accepted lint-consolidation-check; the deferred full merge/split
+  detector was conditioned on graph size (~40–50 concepts) and the graph is
+  at 23. A cred-3 attestation does not meet the re-proposal bar.
+- **jain2026agentic's in-loop audit / credibility gate** — single
+  attestation, credibility 3, no code, not peer-reviewed. Fails Gate 1.
+
+No new evidence touched the previously-held ideas below; those holds stand.
+
 ## Considered and held (2026-06-28 run)
 
 Recorded so the reasoning is visible — these did *not* clear both gates:
