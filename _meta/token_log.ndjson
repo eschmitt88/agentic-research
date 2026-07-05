@@ -1095,3 +1095,14 @@
     "Bash": 3
   }
 }
+{
+  "timestamp": "2026-07-05T04:00:47Z",
+  "session_id": "6647d160-6432-48cb-b0c0-c8ec3156014e",
+  "input_tokens": 28454,
+  "output_tokens": 3278,
+  "cache_read_tokens": 145244,
+  "cache_creation_tokens": 98633,
+  "tools_used_summary": {
+    "Bash": 3
+  }
+}

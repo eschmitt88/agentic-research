@@ -269,3 +269,18 @@ No concepts have been added since the last promote pass (the recent commits are 
 The nearest future ripeness signal to watch: the **safety/governance** theme. `permission-gate-as-architecture` is unmapped and well-attested (5 attestations); two or three more concepts on runtime governance (approval gates, sandboxing, spend regulators) would make that a genuine cluster worth its own MoC.
 
 One unrelated note: the claude.ai Google Drive MCP server needs authorization before its tools can be used — you'd do that via your claude.ai connector settings; it can't be authorized from this non-interactive session. It wasn't needed for this task.
+No ripe cluster — nothing to promote this run.
+
+**What I checked:** all 22 concept notes grouped by shared tags, against the four existing MoCs (`agent-architecture`, `autonomous-search-loop`, `evaluation-integrity`, `knowledge-organization-for-research-agents`, which together already map 20 of the 22 concepts).
+
+**Candidate clusters and why each is declined:**
+
+| Cluster | Size | Verdict |
+|---|---|---|
+| Memory (`agent-native-memory`, `multi-granularity-memory`, `selective-memory-retrieval`, `context-eviction-policy`) | 4 | Below threshold, and all four already live in the knowledge-organization MoC. Same conclusion as the 2026-07-04 session — enrich-existing remains correct. |
+| Skills (`skill-library-lifecycle`, `shared-skill-namespace`) | 2 | Far below threshold. This is the theme to watch: `shared-skill-namespace` is one of only two unmapped concepts, and the skill-library literature (skillos, skillret, skillcomposer, skillops, skillopt, belikova2026managing) is accumulating fast. Two or three more skill-tagged concepts and this ripens. |
+| Safety/governance (`permission-gate-as-architecture`, `budget-as-ceiling`) | 2 | Below threshold; declined for the same reason as last session's safety-MoC decline. `permission-gate-as-architecture` is the other unmapped concept. |
+| Coordination/long-horizon (`file-as-bus`, `structured-world-model`, `hierarchical-delegation`) | 3 | Below threshold and fully covered between the agent-architecture and knowledge-organization MoCs. |
+| Evaluation (`hce-evaluation`, `pass-at-k`, `citation-anchoring`, `typed-claim-partition`, `programmable-evaluator-oracle`) | 5 | Ripe by count but 100% covered by the existing `evaluation-integrity` MoC — exactly the duplication the ripeness rule excludes. |
+
+Per the skill's restraint clause I'm not manufacturing a thin MoC; no files changed, so nothing to commit. The likeliest next promotion is a **skills/procedural-knowledge MoC** once the skills cluster reaches five concepts — worth rechecking after the next couple of ingest bursts.
