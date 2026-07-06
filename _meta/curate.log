@@ -284,3 +284,25 @@ No ripe cluster — nothing to promote this run.
 | Evaluation (`hce-evaluation`, `pass-at-k`, `citation-anchoring`, `typed-claim-partition`, `programmable-evaluator-oracle`) | 5 | Ripe by count but 100% covered by the existing `evaluation-integrity` MoC — exactly the duplication the ripeness rule excludes. |
 
 Per the skill's restraint clause I'm not manufacturing a thin MoC; no files changed, so nothing to commit. The likeliest next promotion is a **skills/procedural-knowledge MoC** once the skills cluster reaches five concepts — worth rechecking after the next couple of ingest bursts.
+No promotion — nothing is ripe. Here's the full detection pass:
+
+## Cluster survey (21 concepts, 4 existing MoCs)
+
+20 of 21 concepts are already mapped by an existing MoC. Only two are unmapped: `permission-gate-as-architecture` and `shared-skill-namespace`. Candidate clusters I checked and declined:
+
+| Cluster (merged tags) | Members | Why declined |
+|---|---|---|
+| memory / retrieval / eviction | 4 (agent-native-memory, selective-memory-retrieval, context-eviction-policy, multi-granularity-memory) | Under the 5-concept bar, and all 4 already live in `knowledge-organization-for-research-agents`. Same verdict as the 2026-06-23 re-check in NOTES.md. |
+| skills / skill-library | 2 (skill-library-lifecycle, shared-skill-namespace) | Far under the bar; lifecycle is already mapped. |
+| safety / governance / halting | 2–3 (permission-gate-as-architecture, budget-as-ceiling, arguably hce-evaluation) | Under the bar; a safety MoC was already declined on 2026-06-23 and nothing new has landed since. |
+| harness engineering / tool-use | 5 if stretched (scripted-tool-pipelines, shared-skill-namespace, permission-gate-as-architecture, hybrid-model-backends, file-as-bus) | Fails ripeness test 2: three of the five (scripted-tool-pipelines, hybrid-model-backends, file-as-bus) — a majority — are already in the `agent-architecture` MoC. This would be a duplicate, not a new theme. |
+| evolutionary search | 3 | Fully covered by `autonomous-search-loop`. |
+| evaluation / grounding | 5 | Exactly the `evaluation-integrity` MoC. |
+
+## Conclusion
+
+The graph is essentially saturated with respect to the current MoC set — no un-mapped cluster of ≥5 concepts exists, and every near-cluster is majority-covered by an existing MoC. Per the skill's restraint clause I'm stopping here: no MoC written, no files changed, nothing to commit.
+
+The situation to watch: the two unmapped concepts (`permission-gate-as-architecture`, `shared-skill-namespace`) both sit on a loose "harness/governance surface" theme. If two or three more concepts accumulate there (e.g. from future ingests on agent safety or skill interop), that becomes the next genuine MoC candidate.
+
+One unrelated note: the claude.ai Google Drive MCP server needs authorization before its tools can be used — this session is non-interactive, so you'd need to authorize it via your claude.ai connector settings. It wasn't needed for this task.
