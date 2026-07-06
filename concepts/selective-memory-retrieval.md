@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/xu2026evoarena]]"
   - "[[literature/papers/liu2026evolvemem]]"
   - "[[literature/papers/xu2026single]]"
+  - "[[literature/papers/zhou2026ready]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

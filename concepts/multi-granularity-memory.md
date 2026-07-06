@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/pham2026memorai]]"
   - "[[literature/papers/kerestecioglu2026human]]"
   - "[[literature/papers/xu2026single]]"
+  - "[[literature/papers/zhou2026ready]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
