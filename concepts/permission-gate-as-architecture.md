@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/ning2026code]]"
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/jia2026finharness]]"
+  - "[[literature/papers/madatha2026deterministic]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -57,6 +58,13 @@ deserves to be designed as architecture:
   — the gate as *runnable* policy.
 - **xin2026eurekagent** treats environment/permission design as the locus
   of productive-vs-harmful behavior shaping.
+- **madatha2026deterministic** adds the **determinism axis** from the
+  opposite direction: a prevalence study of 6,145 real agent-config files
+  finds <1% declare any permission boundary, and argues the gate must be
+  *deterministic and tool-agnostic* — SHA-256 content addressing, blocklists,
+  a phase state machine, all in ordinary testable code — rather than "further
+  LLM orchestration", on the principle that a non-deterministic component
+  cannot be a trustworthy control for another non-deterministic one.
 
 For this project the gate is already load-bearing: the Claude Code
 PreToolUse hooks, the coordinator's admission policy, and the HCE rule
@@ -81,9 +89,16 @@ hook.
    raising scrutiny exactly when the accumulated signal crosses a frozen
    threshold — structurally the same shape as [[concepts/budget-as-ceiling]]
    applied to risk instead of spend.
-4. **Make the policy inspectable / runnable.** Per ning2026code, a gate
-   expressed as executable policy (a hook script, a typed registry) is
-   auditable and testable in a way a prose guideline is not.
+4. **Make the policy inspectable / runnable — and prefer it deterministic.**
+   Per ning2026code, a gate expressed as executable policy (a hook script, a
+   typed registry) is auditable and testable in a way a prose guideline is
+   not. madatha2026deterministic sharpens this: the *enforcement* layer
+   (install-time gates, blocklists, phase transitions) should be ordinary
+   testable code, not an LLM judge, since a non-deterministic control cannot
+   be trusted to govern a non-deterministic agent. This coexists with the
+   LLM-judge governors (jia2026finharness, AgenticOS): use a deterministic
+   core for the hard invariants and reserve model-based scoring for the
+   graded, drift-sensitive escalation where determinism is infeasible.
 
 ## Connections
 
