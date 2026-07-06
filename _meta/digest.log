@@ -191,3 +191,24 @@ Digest cycle complete. Pushed to `main` (`f808fb8..d83ac70`).
 **Commits pushed:** `f02ead9` (paper 1) · `5868fea` (paper 2) · `d83ac70` (digest sweep + curate/archive).
 
 Notable for a future `/discover` if those fronts need reinforcing: several strong but out-of-window items surfaced and were deliberately excluded — Library Drift (2605.19576), SoK: Agentic Skills (2602.20867), "Cited but Not Verified" (2605.06635); these slipped earlier sweeps and aren't yet in the graph.
+`/digest` complete. Here's what the sweep did.
+
+## Summary
+
+**Window:** since the last digest, 2026-06-29 → 2026-07-06.
+
+**Search:** four natural-language scenario queries across the project's active fronts (multi-granularity memory, permission-gate/governance, skill-library lifecycle, evolutionary search + honest evaluation). After deduplicating against the existing graph, **8 new candidates** survived → written to `raw/_candidates/2026-07-06-digest.md`.
+
+**Auto-advance** (agency `max`, verdict `slow`/`normal` → target ~3): fetched and ingested the three highest-value candidates, each strengthening an existing load-bearing concept:
+
+| Paper | Concept impact |
+|---|---|
+| **ning2026closedloop** — Closed-loop Auto Research for molecular property prediction (CMU + DP Technology) | Cross-domain anchor for `hce-evaluation`: reproduces validation→test non-transfer in chemistry, and adds the **constrain-during-search vs certify-after-search** distinction plus two named non-transfer signatures (selection variance, distribution shift). |
+| **zhou2026ready** — "Are We Ready For An Agent-Native Memory System?" (SJTU/Tsinghua/MemTensor, code released) | Attests `agent-native-memory` + 3 memory concepts: a 4-module data-management decomposition with cost/robustness benchmark evidence (localized maintenance beats global reorg; graph handles updates but raw long-context still wins temporal queries). |
+| **madatha2026deterministic** — A Deterministic Control Plane for LLM Coding Agents (Happiest Minds, Zenodo dataset) | Adds the **determinism axis** to `permission-gate-as-architecture`: <1% of 6,145 real agent configs declare permission boundaries; argues enforcement must be deterministic code, not an LLM governing an LLM. |
+
+**`/promote-moc`:** correctly declined — no new concepts were seeded (all three papers attached to existing concepts), so no cluster changed size. Memory (4 concepts, already mapped), governance (2 concepts), and evaluation (already covered by `evaluation-integrity`) all remain not-newly-ripe, consistent with the prior digest.
+
+**Remaining 5 candidates** (agent-native-memory position paper, TRUSTMEM, AgenticOS, DEMM-Bench, the harness survey, and the compression-overfitting analysis) are left in place below the count cap — the nightly 04:00 `/curate` sweep will drain them.
+
+Six commits pushed; timestamp and logs updated; working tree clean.
