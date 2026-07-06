@@ -182,3 +182,5 @@ skills; read by `/lint`.
 2026-07-06 07:03 digest n=8 window_since=2026-06-29T07:00:08Z
 2026-07-06 07:05 fetch-paper https://arxiv.org/abs/2606.22731 → raw/papers/ning2026closedloop.pdf
 2026-07-06 07:07 ingest raw/papers/ning2026closedloop.pdf → literature/papers/ning2026closedloop.md
+2026-07-06 07:09 fetch-paper https://arxiv.org/abs/2606.24775 → raw/papers/zhou2026ready.pdf
+2026-07-06 07:11 ingest raw/papers/zhou2026ready.pdf → literature/papers/zhou2026ready.md

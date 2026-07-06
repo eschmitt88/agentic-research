@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/omri2026agent]]"
   - "[[literature/papers/kerestecioglu2026human]]"
   - "[[literature/papers/lodha2026less]]"
+  - "[[literature/papers/zhou2026ready]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
