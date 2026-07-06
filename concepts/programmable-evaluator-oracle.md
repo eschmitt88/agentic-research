@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/xu2026researchclawbench]]"
   - "[[literature/papers/wu2026bayesian]]"
+  - "[[literature/papers/ning2026closedloop]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"

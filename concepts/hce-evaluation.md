@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/wang2026act]]"
   - "[[literature/papers/belikova2026managing]]"
   - "[[literature/papers/jain2026agentic]]"
+  - "[[literature/papers/ning2026closedloop]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -63,6 +64,26 @@ validation and held-out test metrics diverges.
 MLE-bench ([[literature/papers/chan2024mle]]) provides the venue where
 this bites hardest — Kaggle-sized competitions with enough iteration
 headroom for the overfitting to compound.
+
+The discipline is not ML-research-specific. Closed-loop auto-research for
+molecular property prediction
+([[literature/papers/ning2026closedloop]]) reproduces the same
+failure in chemistry: validation gains routinely fail to transfer to a
+held-out test the search never read (a TDC model-axis gain of 0.041 on
+validation collapses to 0.003 on test; a Polaris data-axis gain of 0.022
+goes to −0.019). It names two empirically distinct non-transfer signatures
+— **selection variance** (a max over many trials on a small validation
+split is sampling noise) and **distribution shift** (acquired external data
+comes from a different distribution or re-imports the benchmark's own
+labels) — and frames two remedy families: **constrain-during-search**
+(reusable-holdout / differential-privacy mechanisms that limit access to
+the holdout during search) versus **certify-after-search** (keep the loop
+open-ended, freeze each validation-selected configuration, score it once on
+the evaluator-owned test). HCE as implemented here is the
+certify-after-search family: the test split is revealed only by the
+final-scoring pass. The cross-domain result is the point — separating
+discovery from held-out certification is a lesson for *any* closed-loop
+system optimizing a proxy for a held-out quantity, not a benchmark quirk.
 
 ## Implementation guidance
 
