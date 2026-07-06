@@ -186,3 +186,4 @@ skills; read by `/lint`.
 2026-07-06 07:11 ingest raw/papers/zhou2026ready.pdf → literature/papers/zhou2026ready.md
 2026-07-06 07:12 fetch-paper https://arxiv.org/abs/2606.26924 → raw/papers/madatha2026deterministic.pdf
 2026-07-06 07:14 ingest raw/papers/madatha2026deterministic.pdf → literature/papers/madatha2026deterministic.md
+2026-07-06 07:14 digest-autoingest n=3 verdict=slow
