@@ -180,3 +180,5 @@ skills; read by `/lint`.
 2026-07-05 05:02 session_end session=26ef47c4-faa7-4cbf-bd59-f01569b3b350
 2026-07-06 04:01 session_end session=8166833a-f09a-4b25-8c18-7e74650d65bf
 2026-07-06 07:03 digest n=8 window_since=2026-06-29T07:00:08Z
+2026-07-06 07:05 fetch-paper https://arxiv.org/abs/2606.22731 → raw/papers/ning2026closedloop.pdf
+2026-07-06 07:07 ingest raw/papers/ning2026closedloop.pdf → literature/papers/ning2026closedloop.md
