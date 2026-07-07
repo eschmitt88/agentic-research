@@ -29,6 +29,7 @@ and `/new-experiment`.
 ## Literature / papers
 
 - [[literature/papers/bertran2026fits]] — What Fits (Into Few Tokens) Doesn't Overfit (compression test for research-agent overfitting)
+- [[literature/papers/yang2026trustmem]] — TrustMem (write-time verification of memory consolidation)
 - [[literature/papers/belikova2026managing]] — Managing Procedural Memory in LLM Agents (AFTER skill-transfer benchmark)
 - [[literature/papers/jain2026agentic]] — Agentic AutoResearch for Space Autonomy (in-loop credibility gate, aerospace)
 - [[literature/papers/yang2026graph]] — Graph-based Agent Memory (survey)

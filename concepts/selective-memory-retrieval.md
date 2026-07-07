@@ -31,6 +31,7 @@ related_concepts:
   - "[[concepts/typed-claim-partition]]"
   - "[[concepts/evolutionary-expansion]]"
   - "[[concepts/context-eviction-policy]]"
+  - "[[concepts/verified-memory-writes]]"
 related_experiments: []
 tags: [memory, retrieval-policy, knowledge-organization, uncertainty-gating, runtime-decisions]
 ---

@@ -191,3 +191,4 @@ skills; read by `/lint`.
 2026-07-07 04:01 fetch-paper https://arxiv.org/abs/2606.11045 → raw/papers/bertran2026fits.pdf
 2026-07-07 04:05 ingest raw/papers/bertran2026fits.pdf
 2026-07-07 04:08 fetch-paper https://arxiv.org/abs/2606.25161 → raw/papers/yang2026trustmem.pdf
+2026-07-07 04:12 ingest raw/papers/yang2026trustmem.pdf
