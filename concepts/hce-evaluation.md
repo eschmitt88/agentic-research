@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/belikova2026managing]]"
   - "[[literature/papers/jain2026agentic]]"
   - "[[literature/papers/ning2026closedloop]]"
+  - "[[literature/papers/bertran2026fits]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -35,6 +36,7 @@ related_concepts:
   - "[[concepts/pass-at-k]]"
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/typed-claim-partition]]"
+  - "[[concepts/compression-as-generalization-test]]"
 related_experiments: []
 tags: [evaluation, discipline, overfitting, hce]
 ---
@@ -84,6 +86,20 @@ certify-after-search family: the test split is revealed only by the
 final-scoring pass. The cross-domain result is the point — separating
 discovery from held-out certification is a lesson for *any* closed-loop
 system optimizing a proxy for a held-out quantity, not a benchmark quirk.
+
+Split hygiene alone doesn't say whether validation-selected gains are
+*real*. [[literature/papers/bertran2026fits]] supplies both a theory for
+why honest agent loops rarely overfit (successful strategies are
+compressible — description-length generalization) and two enforcement-layer
+mechanisms with formal bounds: one-bit ladder feedback during search
+(constrain-during-search, with per-checkpoint confidence intervals that
+certify progress) and a compressed-prompt reproducer audit after search
+(certify-after-search; validation-exploiting checkpoints fail to reproduce,
+100% sensitivity / 91% specificity). See
+[[concepts/compression-as-generalization-test]]. Notably, the bottlenecks
+are enforced by the harness (validation reachable only through an
+evaluation entry point), echoing this rule's own design: model-honored in
+context, structurally backstopped.
 
 ## Implementation guidance
 
