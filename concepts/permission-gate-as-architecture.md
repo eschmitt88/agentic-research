@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/jia2026finharness]]"
   - "[[literature/papers/madatha2026deterministic]]"
+  - "[[literature/papers/zhao2026agenticos]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -65,6 +66,15 @@ deserves to be designed as architecture:
   a phase state machine, all in ordinary testable code — rather than "further
   LLM orchestration", on the principle that a non-deterministic component
   cannot be a trustworthy control for another non-deterministic one.
+- **zhao2026agenticos** pushes the gate all the way down into the OS: the
+  agent runtime has *no* interface except the gate — capabilities are
+  synthesized from a declared intent Manifest, POSIX primitives are
+  permanently excluded, and every external effect passes mandatory
+  mediation, information-flow labeling, and audit. Its threat model
+  assumes a fully compromised agent, so the gate is not advisory: an
+  undeclared capability has no ABI stub to call. Design-only (no
+  implementation or eval), but the strongest statement yet of the gate as
+  the *entire* action surface rather than a checkpoint on it.
 
 For this project the gate is already load-bearing: the Claude Code
 PreToolUse hooks, the coordinator's admission policy, and the HCE rule

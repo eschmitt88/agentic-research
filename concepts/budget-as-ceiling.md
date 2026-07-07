@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/kamelhar2026gsar]]"
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/jia2026finharness]]"
+  - "[[literature/papers/zhao2026agenticos]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -51,6 +52,15 @@ budget without the user knowing (the costly one). The ceiling makes
 both failure modes structural — if the budget is wrong, the user
 edits one file; the skill does not need to learn a new halting
 heuristic.
+
+AgenticOS ([[literature/papers/zhao2026agenticos]]) generalizes the
+enforcement locus: budgets there are not loop-halting conditions read by
+skills but **admission/runtime primitives bound into capability tokens** —
+network permissions are ⟨domain, path prefix, method, data type, budget⟩
+five-tuples and Manifests declare per-agent inference budgets, so
+exceeding a budget doesn't halt a loop, it invalidates the capability.
+Design-only, but it shows the same ceiling discipline enforced below the
+agent instead of inside it.
 
 ## Implementation guidance
 
