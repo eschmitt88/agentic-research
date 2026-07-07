@@ -306,3 +306,17 @@ The graph is essentially saturated with respect to the current MoC set — no un
 The situation to watch: the two unmapped concepts (`permission-gate-as-architecture`, `shared-skill-namespace`) both sit on a loose "harness/governance surface" theme. If two or three more concepts accumulate there (e.g. from future ingests on agent safety or skill interop), that becomes the next genuine MoC candidate.
 
 One unrelated note: the claude.ai Google Drive MCP server needs authorization before its tools can be used — this session is non-interactive, so you'd need to authorize it via your claude.ai connector settings. It wasn't needed for this task.
+`/curate` complete — the backlog is drained (uncurated candidates: 1 → 0) and everything is pushed through `a7ca0fc`.
+
+**The one uncurated file** was `2026-07-06-digest.md` (8 items). Its own auto-advance had already ingested 3 on 2026-07-06 but never closed the file. Dispositions recorded in its new `## Curation` section:
+
+- **Already in graph (3):** ning2026closedloop, zhou2026ready, madatha2026deterministic — the 2026-07-06 auto-advance.
+- **Ingested today (3):**
+  - `bertran2026fits` (Amazon/UPenn/CMU, rel 4 / cred 3) — "What Fits Doesn't Overfit": validation-exploiting gains fail to survive compression into a ~32-token prompt handed to a fresh reproducer (100% sensitivity / 91% specificity detector). Seeded **`compression-as-generalization-test`** and extended `hce-evaluation` beyond split hygiene.
+  - `yang2026trustmem` (Samsung AI Center, rel 4 / cred 3) — TrustMem verifies every memory write as a transition (coverage/preservation/faithfulness) before it persists, cutting consolidated corruption 79%. Seeded **`verified-memory-writes`**, the write-side dual of `selective-memory-retrieval`.
+  - `zhao2026agenticos` (Tencent, rel 3 / cred 2 — design-only, no implementation) — OS as intent filter; attests `permission-gate-as-architecture` (gate as the *entire* action surface), `budget-as-ceiling` (budgets bound into capability tokens), and `skill-library-lifecycle` (skill admission).
+- **Declined (2):** DEMM-Bench (no concept anchor yet; noted in zhao's Follow-up as the evaluation anchor to fetch if the governance cluster ripens toward a MoC) and the harness-design survey (overlaps banu2026harness; digest itself marked it skippable under a tight verdict).
+
+**Post-batch `/promote-moc`:** no new MoC is ripe — the governance cluster is still ~4 concepts, half already mapped. Instead I enriched the two existing MoCs: evaluation-integrity 5 → 6 concepts (+compression-as-generalization-test, wired into its containment-hierarchy framing) and knowledge-organization 10 → 11 (+verified-memory-writes as a fourth write-side concern).
+
+The coordinator verdict was `slow`/normal throughout (token usage unknown → conservative pacing; hardware idle), so I worked one fetch→ingest at a time and re-checked between units. Eight commits pushed at natural boundaries; the Pages uncurated count should now read 0. Both new concepts are single-source seedlings — the notes name what a second attestation would look like for each.
