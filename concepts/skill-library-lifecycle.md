@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/belikova2026managing]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
+  - "[[literature/papers/zhao2026agenticos]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
