@@ -320,3 +320,21 @@ One unrelated note: the claude.ai Google Drive MCP server needs authorization be
 **Post-batch `/promote-moc`:** no new MoC is ripe — the governance cluster is still ~4 concepts, half already mapped. Instead I enriched the two existing MoCs: evaluation-integrity 5 → 6 concepts (+compression-as-generalization-test, wired into its containment-hierarchy framing) and knowledge-organization 10 → 11 (+verified-memory-writes as a fourth write-side concern).
 
 The coordinator verdict was `slow`/normal throughout (token usage unknown → conservative pacing; hardware idle), so I worked one fetch→ingest at a time and re-checked between units. Eight commits pushed at natural boundaries; the Pages uncurated count should now read 0. Both new concepts are single-source seedlings — the notes name what a second attestation would look like for each.
+All 23 concepts and 4 MoCs scanned. Verdict: **no cluster is ripe — declining to promote.** Nothing was written or committed.
+
+## Cluster analysis
+
+Coverage first: only 2 of 23 concepts are unmapped by any MoC — `permission-gate-as-architecture` and `shared-skill-namespace`. Every candidate cluster fails the ripeness test:
+
+**Memory (5 concepts — declined on overlap).** The `memory`-tagged cluster has now reached the size threshold: `agent-native-memory`, `context-eviction-policy`, `multi-granularity-memory`, `selective-memory-retrieval`, `verified-memory-writes`. But all 5 of 5 already live in `mocs/knowledge-organization-for-research-agents.md` — a new agent-memory MoC would be a pure subset duplicate. This is the same cluster declined in the last session (then 4 concepts, half mapped); it has since been fully absorbed into the knowledge-organization MoC, which was the enrich-existing path working as intended.
+
+**Safety/governance (2–3 concepts — declined on size).** `permission-gate-as-architecture` plus `budget-as-ceiling` (already in autonomous-search-loop), loosely `verified-memory-writes`. No coherent 5. Same verdict as last session.
+
+**Skills/tool-use (4 concepts — declined on size and overlap).** `shared-skill-namespace`, `skill-library-lifecycle`, `scripted-tool-pipelines`, `permission-gate-as-architecture` — one short of threshold, and two of the four are already mapped.
+
+**Evaluation, search-loop, architecture** — each exactly tracks an existing MoC; nothing to do.
+
+## Watch items for future runs
+
+- The memory sub-theme is now 5 of the knowledge-organization MoC's 11 concepts. If it reaches ~7 and the parent starts feeling like two documents stapled together, that's the point to *split* (moving the memory concepts out), not to add an overlapping MoC. Not there yet.
+- The two unmapped concepts are natural seeds: one or two more governance/safety ingests (the zhao2026agenticos line — permission gates, budget ceilings, skill lifecycles) would make a real safety-and-governance cluster. Worth watching after the next digest burst.

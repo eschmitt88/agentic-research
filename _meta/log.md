@@ -197,3 +197,4 @@ skills; read by `/lint`.
 2026-07-07 04:22 curate raw/_candidates/2026-07-06-digest.md ingested=3 declined=2 dup=3
 2026-07-07 04:28 promote-moc: no new MoC ripe; enriched evaluation-integrity (+compression-as-generalization-test, 6) and knowledge-organization (+verified-memory-writes, 11); governance cluster still ~4 concepts, declined
 2026-07-07 04:11 session_end session=46e55952-5ae7-4f4b-aaac-9223a5de38d2
+2026-07-07 04:12 session_end session=bda31514-a914-47a2-a3c7-58c4283e4e8f
