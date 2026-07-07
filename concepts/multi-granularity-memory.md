@@ -24,6 +24,7 @@ related_concepts:
   - "[[concepts/selective-memory-retrieval]]"
   - "[[concepts/context-eviction-policy]]"
   - "[[concepts/structured-world-model]]"
+  - "[[concepts/verified-memory-writes]]"
 related_experiments: []
 tags: [memory, granularity, retrieval, knowledge-organization, consolidation, multi-store]
 ---
