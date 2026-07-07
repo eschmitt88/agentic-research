@@ -194,3 +194,4 @@ skills; read by `/lint`.
 2026-07-07 04:12 ingest raw/papers/yang2026trustmem.pdf
 2026-07-07 04:14 fetch-paper https://arxiv.org/abs/2606.21129 → raw/papers/zhao2026agenticos.pdf
 2026-07-07 04:20 ingest raw/papers/zhao2026agenticos.pdf
+2026-07-07 04:22 curate raw/_candidates/2026-07-06-digest.md ingested=3 declined=2 dup=3
