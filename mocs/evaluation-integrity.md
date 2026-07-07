@@ -9,6 +9,7 @@ concepts:
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/typed-claim-partition]]"
   - "[[concepts/programmable-evaluator-oracle]]"
+  - "[[concepts/compression-as-generalization-test]]"
 tags: [moc, evaluation, evaluation-integrity, overfitting, grounding, architecture]
 ---
 
@@ -19,7 +20,7 @@ How do you keep the evaluation signal of an autonomous research agent
 capability rather than learning to game its own measuring stick? This is
 the failure mode that distinguishes a long-horizon agent from a
 short-horizon one: over enough iterations, any signal the search loop can
-read, it will eventually optimize *against* rather than *toward*. The five
+read, it will eventually optimize *against* rather than *toward*. The six
 concepts here are the structural defenses, each guarding a different point
 where the signal can rot. Where the sibling MoC
 [[mocs/knowledge-organization-for-research-agents]] is about the knowledge
@@ -44,13 +45,23 @@ signal that would let it cheat.
   (`final_metrics.json`). AIRA_2's ablations show that without it, longer
   runs trade real capability for validation gaming and the val/test gap
   diverges. This is the load-bearing rule (`~/.claude/rules/evaluation.md`)
-  that the other four operate under.
+  that the other five operate under.
 - [[concepts/pass-at-k]] — a reported result is a *distribution over seeds*,
   not a single number. MLE-bench ([[literature/papers/chan2024mle]]) and
   AIRA_2 both find headline performance is seed-sensitive at a magnitude
   that rivals architectural change: a 2-point gap can vanish at k=5, and a
   real improvement can be invisible at k=1. Honest selection requires k≥3
   and a stated distribution, so the loop can't promote noise.
+- [[concepts/compression-as-generalization-test]] — the audit that says
+  whether a validation-selected gain was *real*. Split hygiene prevents the
+  loop from reading the truth but can't certify what it selected;
+  [[literature/papers/bertran2026fits]] shows honest strategies compress
+  into ~32-token prompts a fresh reproducer (training data only) can
+  replay, while validation-exploiting gains fail to reproduce (100%
+  sensitivity / 91% specificity) — and that a one-bit "improved?" feedback
+  channel matches scalar feedback while yielding confidence intervals that
+  certify progress. HCE's certify-after-search pass, made operational per
+  checkpoint.
 
 ## Grounding the claims the agent emits
 
@@ -90,8 +101,9 @@ against, and it implicitly bounds what can be found at all.
 
 ## Open thread
 
-The five form a containment hierarchy: HCE keeps the loop from reading the
-truth, pass@k keeps it from promoting noise, anchoring + typed-partition
+The six form a containment hierarchy: HCE keeps the loop from reading the
+truth, pass@k keeps it from promoting noise, compression-testing certifies
+what survived selection, anchoring + typed-partition
 keep the prose honest, and the programmable oracle is the one thing the loop
 *is* allowed to optimize — which is exactly why it must be kept off the
 held-out truth. The working hypothesis is that these compose multiplicatively,

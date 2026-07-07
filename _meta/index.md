@@ -11,16 +11,18 @@ and `/new-experiment`.
 ## Maps of Content
 
 - [[mocs/knowledge-organization-for-research-agents]] — substrate /
-  write-side / read-side of agent memory; 10 concepts spanning
+  write-side / read-side of agent memory; 11 concepts spanning
   agent-native-memory, file-as-bus, structured-world-model,
   skill-library-lifecycle, typed-claim-partition, citation-anchoring,
   selective-memory-retrieval, context-eviction-policy,
-  multi-granularity-memory, web-grounded-literature.
+  multi-granularity-memory, verified-memory-writes,
+  web-grounded-literature.
 - [[mocs/agent-architecture]] — how a long-horizon autonomous agent is
   built (substrate / orchestration / execution).
 - [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over
-  long search loops; 5 concepts: hce-evaluation, pass-at-k,
-  citation-anchoring, typed-claim-partition, programmable-evaluator-oracle.
+  long search loops; 6 concepts: hce-evaluation, pass-at-k,
+  citation-anchoring, typed-claim-partition, programmable-evaluator-oracle,
+  compression-as-generalization-test.
 - [[mocs/autonomous-search-loop]] — how an autonomous agent searches a vast
   candidate space productively; 5 concepts: evolutionary-expansion,
   evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool,

@@ -13,6 +13,7 @@ concepts:
   - "[[concepts/selective-memory-retrieval]]"
   - "[[concepts/context-eviction-policy]]"
   - "[[concepts/multi-granularity-memory]]"
+  - "[[concepts/verified-memory-writes]]"
   - "[[concepts/web-grounded-literature]]"
 tags: [moc, knowledge-organization, agent-memory, architecture]
 ---
@@ -21,7 +22,7 @@ tags: [moc, knowledge-organization, agent-memory, architecture]
 
 How autonomous research agents store, structure, curate, and consult
 the knowledge they work with — in practice, not in principle. This
-MoC ties together the ten concepts that span this question across
+MoC ties together the eleven concepts that span this question across
 three layers: the *substrate* (where memory lives), the *write-side*
 (how the library evolves and how outputs are organized), and the
 *read-side* (when and how stored knowledge is consulted during
@@ -79,7 +80,7 @@ state.
 ### Write-side: how the library evolves, how outputs are organized
 
 How knowledge gets *into* the substrate and how it gets *shaped*
-over time. Three sub-concepts cover different write-time concerns.
+over time. Four sub-concepts cover different write-time concerns.
 
 - **[[concepts/skill-library-lifecycle]]** — `insert/update/delete`
   as a learned curation policy over the library's life. Empirical
@@ -91,6 +92,19 @@ over time. Three sub-concepts cover different write-time concerns.
   curator on the same executor* — is the empirical anchor for
   curator-executor calibration: good curation is reader-specific,
   not absolutely good or bad.
+
+- **[[concepts/verified-memory-writes]]** — the trust gate on the
+  write path: every insert/revise/prune is verified as a state
+  transition (coverage / preservation / faithfulness) *before* it
+  persists, because a flawed entry that consolidates gets retrieved
+  and amplified while terminal feedback can't localize which write
+  introduced it. TrustMem ([[literature/papers/yang2026trustmem]])
+  shows transition-level verification cuts consolidated omission /
+  corruption / hallucination by 40–79% while improving downstream
+  utility. This is the write-side dual of
+  [[concepts/selective-memory-retrieval]]'s read-side gating, and the
+  rubric maps directly onto skill-library-lifecycle's promotion
+  decision and this project's own `/ingest` discipline.
 
 - **[[concepts/typed-claim-partition]]** — agent *output* claims
   organized into typed buckets (grounded / ungrounded / contradicted
