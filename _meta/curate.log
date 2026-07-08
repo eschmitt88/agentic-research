@@ -338,3 +338,14 @@ Coverage first: only 2 of 23 concepts are unmapped by any MoC — `permission-ga
 
 - The memory sub-theme is now 5 of the knowledge-organization MoC's 11 concepts. If it reaches ~7 and the parent starts feeling like two documents stapled together, that's the point to *split* (moving the memory concepts out), not to add an overlapping MoC. Not there yet.
 - The two unmapped concepts are natural seeds: one or two more governance/safety ingests (the zhao2026agenticos line — permission gates, budget ceilings, skill lifecycles) would make a real safety-and-governance cluster. Worth watching after the next digest burst.
+**No MoC promoted — nothing is ripe.** Verdict logged and pushed (`3824aa4`).
+
+What the detection pass found across the 23 concepts and 4 existing MoCs:
+
+**Declined: agent-governance cluster (the closest call).** Members would be `permission-gate-as-architecture` (unmapped, 7 sources — the anchor), `budget-as-ceiling`, `hce-evaluation`, and `verified-memory-writes`, with `skill-library-lifecycle` as a fifth only under a stretched reading — its center of gravity is memory curation, and "governance" rests on one of its fourteen sources. That's 4 core + 1 marginal, not an honest 5. Decisive check: yesterday's 04:28 sweep explicitly declined this same cluster at "~4 concepts," and the only commits since are session housekeeping — reversing a 24-hour-old decline on byte-identical data would make the nightly sweep's judgment noise, not signal. This cluster is one ingest away from ripe: a new governance-core concept (oversight, audit, sandboxing) or an attestation that firms up skill-library-lifecycle's governance reading flips it, and the mechanical test already passes on overlap (no existing MoC covers more than 2 of the 5).
+
+**Declined: memory cluster.** Now genuinely 5 concepts (`agent-native-memory`, `context-eviction-policy`, `multi-granularity-memory`, `selective-memory-retrieval`, `verified-memory-writes`), but all 5 already live in the knowledge-organization MoC — 100% overlap fails the not-already-mapped test. Same conclusion as the 2026-06-23 decline; splitting isn't warranted while the parent (11 concepts) remains coherent.
+
+**Declined: everything else.** Skills/interop is 2 concepts (`shared-skill-namespace`, `skill-library-lifecycle`); evolutionary-search is 3, all already in autonomous-search-loop. Neither approaches the threshold.
+
+No enrichment was needed either — yesterday's run already folded both new seedlings into their MoCs, and nothing has landed since. `permission-gate-as-architecture` and `shared-skill-namespace` remain the only unmapped concepts; the former is deliberately being held for the governance MoC rather than shoehorned into agent-architecture, since folding it in now would bleed pressure off the cluster that's about to justify it properly.
