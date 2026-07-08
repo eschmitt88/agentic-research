@@ -198,3 +198,4 @@ skills; read by `/lint`.
 2026-07-07 04:28 promote-moc: no new MoC ripe; enriched evaluation-integrity (+compression-as-generalization-test, 6) and knowledge-organization (+verified-memory-writes, 11); governance cluster still ~4 concepts, declined
 2026-07-07 04:11 session_end session=46e55952-5ae7-4f4b-aaac-9223a5de38d2
 2026-07-07 04:12 session_end session=bda31514-a914-47a2-a3c7-58c4283e4e8f
+2026-07-08 04:02 promote-moc: no MoC ripe; governance cluster unchanged since 2026-07-07 decline (core: permission-gate, budget-as-ceiling, hce-evaluation, verified-memory-writes; skill-library-lifecycle only marginal — 4+1, not 5); memory cluster 5/5 already in knowledge-organization
