@@ -376,3 +376,11 @@ What I checked and declined:
 Across all four existing MoCs, only 2 of the 24 concepts remain unmapped (permission-gate-as-architecture, shared-skill-namespace) — nowhere near a new 5-concept theme.
 
 Per the `agency: max` pattern from prior runs, I recorded the decline in `_meta/log.md` and pushed (commit 6808b03). The governance cluster is the one to watch: one more permission/safety-themed ingest likely tips it to 5.
+**No ripe cluster — nothing promoted.** The graph is unchanged since 2026-07-07 (no commits touching `concepts/` or `mocs/` since then), and I re-verified the clustering from the actual tag data rather than just trusting the prior verdicts:
+
+- **Memory** (5 concepts: agent-native-memory, multi-granularity-memory, selective-memory-retrieval, context-eviction-policy, verified-memory-writes) — declined: all 5 are already members of the knowledge-organization MoC, so a new memory MoC would be a 100% duplicate.
+- **Governance/safety** — declined: still 4 solid (permission-gate-as-architecture, budget-as-ceiling, hce-evaluation, verified-memory-writes) plus skill-library-lifecycle as a marginal fifth; below the 5-concept bar.
+- **Evaluation (6), agent-architecture (5), search-loop (5)** — each maps exactly onto an existing MoC; nothing new to do.
+- Only 2 concepts in the whole graph are unmapped (permission-gate-as-architecture, shared-skill-namespace) — no unmapped theme comes close to 5.
+
+Logged the verdict to `_meta/log.md` and pushed (commit `162257f`), matching the pattern of the last three nightly runs. The governance cluster is the one to watch: one more solid safety/governance concept ingested and it ripens.
