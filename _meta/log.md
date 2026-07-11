@@ -204,3 +204,4 @@ skills; read by `/lint`.
 2026-07-09 04:01 session_end session=0ecc49c8-3a71-4893-a21f-d63715fdd72a
 2026-07-10 04:01 promote-moc: no MoC ripe; concepts/ and mocs/ still unchanged since 2026-07-07 (a7ca0fc); governance 4+1 marginal, memory 5/5 mapped in knowledge-organization; unmapped concepts remain only permission-gate-as-architecture + shared-skill-namespace
 2026-07-10 04:01 session_end session=debcc771-6d72-4e12-855b-85039b0dfe3a
+2026-07-11 04:00 promote-moc: no MoC ripe; concepts/ and mocs/ unchanged since 2026-07-07 (a7ca0fc); governance 4+1 marginal (permission-gate, budget-as-ceiling, hce-evaluation, verified-memory-writes + skill-library-lifecycle marginal), memory 5/5 mapped in knowledge-organization; unmapped concepts still only permission-gate-as-architecture + shared-skill-namespace
