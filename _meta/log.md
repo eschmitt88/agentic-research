@@ -208,3 +208,4 @@ skills; read by `/lint`.
 2026-07-11 04:01 session_end session=c3c019ee-0017-45fb-b1ee-7e2fa7d0537e
 2026-07-12 04:01 promote-moc: no MoC ripe; concepts/ and mocs/ unchanged since 2026-07-07 (a7ca0fc); governance 4+1 marginal (permission-gate, budget-as-ceiling, hce-evaluation, verified-memory-writes + skill-library-lifecycle marginal), memory 5/5 mapped in knowledge-organization; unmapped concepts still only permission-gate-as-architecture + shared-skill-namespace
 2026-07-12 04:01 session_end session=56d44a4e-7d34-4bc0-a744-6ac8b364a741
+2026-07-12 05:02 elevate proposals=1 considered=5 — proposed hce-spent-test-reads (evaluation.md: final pass runs once, test reads are spent); held compression-audit + verified-memory-writes (single-source seedlings), zhou2026ready (no concrete target), permission-gate re-check (cred-2 additions below re-proposal bar)
