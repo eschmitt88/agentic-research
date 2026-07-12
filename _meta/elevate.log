@@ -32,3 +32,14 @@ What the run found:
 The reasoning is recorded in `docs/system-proposals/_index.md` under a "Considered and held (2026-07-05 run)" section, and `_meta/log.md` has the `proposals=0 considered=3` line.
 
 One side observation: `_meta/log.md` shows the 2026-07-02 SessionEnd auto-push failed (`~/.claude/hooks/auto-push.err`), though later commits reached GitHub fine — may be worth a glance if it recurs.
+`/elevate` complete: **1 proposal written, 4 candidates considered and held.** Committed and pushed (`a6affd6`); `~/claude-system` was read-only throughout.
+
+**The proposal — [hce-spent-test-reads](docs/system-proposals/2026-07-12-hce-spent-test-reads.md), recommendation: adopt.** The live `evaluation.md` closes the within-chain channel (search never reads `test/`) but is silent on the between-chains one: a chain ends, the final pass writes `final_metrics.json`, the number disappoints, and a new chain on the same task — steered by that number — legally ends in another final pass. Repeat and the test split becomes a slow-motion validation split. The proposed fix is two sentences appended to the existing rule (no new file, knob, or hook): the final pass runs **once per chain**, and a test score once read is **spent** — later chains selected on it must report held-out numbers as exploratory, not confirmatory. Evidence clears Gate 1 on the 3+-attestations arm: `ning2026closedloop`'s explicit score-once certification protocol, `bertran2026fits`'s adaptive-data-analysis bounds (leakage grows with bits extracted from the holdout), plus the concept's peer-reviewed anchors (`chan2024mle`, AIRA_2's diverging val/test-gap ablations).
+
+**Held, with reasons recorded in `_index.md`:**
+- **Reproducer audit in `/implement`/`/iterate`** (`compression-as-generalization-test`) — strongest new mechanism, but a single-source seedling; belongs in a downstream `/derive-experiment` first.
+- **Verified-memory-writes rubric for `/ingest`/auto-memory** — single attestation, and `/ingest` already hand-rolls the pattern.
+- **`zhou2026ready` memory findings** — passes Gate 1 (code released) but yields no concrete edit to any file.
+- **Permission-gate re-check** — the two new attestations are both credibility 2 and don't move the 2026-06-28 simplicity hold.
+
+To act on the proposal: read it, make the two-sentence edit in `~/claude-system/claude/rules/evaluation.md` yourself if you agree, and flip `status:` to accepted or rejected in the proposal file.
