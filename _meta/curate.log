@@ -384,3 +384,13 @@ Per the `agency: max` pattern from prior runs, I recorded the decline in `_meta/
 - Only 2 concepts in the whole graph are unmapped (permission-gate-as-architecture, shared-skill-namespace) — no unmapped theme comes close to 5.
 
 Logged the verdict to `_meta/log.md` and pushed (commit `162257f`), matching the pattern of the last three nightly runs. The governance cluster is the one to watch: one more solid safety/governance concept ingested and it ripens.
+**No ripe cluster — no MoC created.** `concepts/` and `mocs/` haven't changed since 2026-07-07 (commit a7ca0fc), so I verified the clusters from scratch and reached the same verdict as the last three nightly runs:
+
+- **Memory** (5 concepts) — all five already live in `knowledge-organization-for-research-agents`; a new memory MoC would be a duplicate.
+- **Evaluation** (6) and **agent-architecture** (5) — fully covered by their existing MoCs.
+- **Governance** remains the nearest candidate at 4+1 marginal (permission-gate-as-architecture, budget-as-ceiling, hce-evaluation, verified-memory-writes, plus skill-library-lifecycle as a stretch), but all except permission-gate are already mapped elsewhere, failing the not-already-mapped test.
+- Only two concepts sit in no MoC at all: `permission-gate-as-architecture` and `shared-skill-namespace`.
+
+I logged the verdict in `_meta/log.md` and pushed it (commit 2368675), matching the repo's nightly-run pattern.
+
+One observation: the graph has now been static for five days, so these runs are deterministic no-ops. Governance will ripen only when new ingests add unmapped safety/permission concepts — the next `/digest`/`/curate` ingest burst is what could change the answer, and one or two more governance-tagged concepts (e.g. from a runtime-approval or sandboxing paper) would likely tip that cluster.
