@@ -14,6 +14,40 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 |------|------|--------|----------------|--------|
 | 2026-06-23 | [digest-scenario-rich-queries](2026-06-23-digest-scenario-rich-queries.md) | `skills/digest/SKILL.md` | adopt | **accepted** (applied 2026-06-23) |
 | 2026-06-28 | [lint-consolidation-check](2026-06-28-lint-consolidation-check.md) | `skills/lint/SKILL.md` | adopt-with-changes | **accepted** (minimal check-#5 amendment applied 2026-06-30, claude-system@f0b3aef; full 5b deferred) |
+| 2026-07-12 | [hce-spent-test-reads](2026-07-12-hce-spent-test-reads.md) | `rules/evaluation.md` | adopt | proposed |
+
+## Considered and held (2026-07-12 run)
+
+One proposal (above). Six papers entered the graph since the 2026-07-05
+run (ingested 2026-07-06/07); the rest was considered and held:
+
+- **compression-as-generalization-test → a reproducer-audit step in
+  `/implement` or `/iterate`** (compress the winning strategy to ≤128
+  tokens, replay via a fresh agent on training data only). The strongest
+  new mechanism in the batch, but a **single-source seedling**
+  (`bertran2026fits`, cred 3, no code, not peer-reviewed) — the concept
+  itself says "needs a second attestation before promotion to growing."
+  Fails Gate 1 for a harness change; the right first move is a downstream
+  `/derive-experiment`, not a rule edit. (Its *score-once* corollary,
+  jointly attested with `ning2026closedloop` and the concept's
+  peer-reviewed anchors, did clear the bar — that is the proposal above.)
+- **verified-memory-writes → a write-time verification rubric for
+  auto-memory / `/ingest`** (coverage / preservation / faithfulness).
+  Single attestation (`yang2026trustmem`, cred 3, no code); the concept
+  note itself observes `/ingest`'s trust-signal frontmatter + immutable
+  `raw/` already hand-roll the pattern. Fails Gate 1; nothing concrete to
+  simplify.
+- **zhou2026ready → memory concepts** — passes Gate 1 mechanically (code
+  released, cred 3) but its lesson ("no single memory architecture
+  dominates; align structure to workload bottleneck") is descriptive and
+  yields no concrete edit to any skill/hook/rule. No target, no proposal.
+- **permission-gate-as-architecture re-check** — two new attestations
+  (`madatha2026deterministic` cred 2, `zhao2026agenticos` cred 2) do not
+  meet the re-proposal bar for the 2026-06-28 hold; both are cred-2
+  design/prevalence papers, and the hold was on simplicity (already
+  enacted), which they don't change. madatha's "control plane must be
+  deterministic code, not LLM orchestration" is already this box's
+  pattern (shell hooks, coordinator admission in Python).
 
 ## Considered and held (2026-07-05 run)
 
