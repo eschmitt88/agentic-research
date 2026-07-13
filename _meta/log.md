@@ -212,3 +212,5 @@ skills; read by `/lint`.
 2026-07-12 05:04 session_end session=57cc9fc9-48e1-44cd-8946-f3b53d9ef1a8
 2026-07-13 04:01 promote-moc: no MoC ripe; concepts/ and mocs/ unchanged since 2026-07-07 (a7ca0fc); all tag clusters fully mapped (memory 5/5 and knowledge-org in knowledge-organization, evaluation 6/6 in evaluation-integrity, architecture 5/5 in agent-architecture, evolutionary-search in autonomous-search-loop); governance still 4+1 marginal; unmapped concepts still only permission-gate-as-architecture + shared-skill-namespace
 2026-07-13 04:01 session_end session=a936e436-1128-4d1d-ad21-3c9ce24279dc
+2026-07-13 07:04 digest n=14 window_since=2026-07-06T07:03:34Z
+2026-07-13 07:05 fetch-paper https://arxiv.org/abs/2606.32025 → raw/papers/zhao2026generative.pdf
