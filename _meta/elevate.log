@@ -43,3 +43,4 @@ One side observation: `_meta/log.md` shows the 2026-07-02 SessionEnd auto-push f
 - **Permission-gate re-check** — the two new attestations are both credibility 2 and don't move the 2026-06-28 simplicity hold.
 
 To act on the proposal: read it, make the two-sentence edit in `~/claude-system/claude/rules/evaluation.md` yourself if you agree, and flip `status:` to accepted or rejected in the proposal file.
+{"id":"W1uxbNbOsU3H","time":1783832671,"expires":1783875871,"event":"message","topic":"esaiserver1337","title":"/elevate: 1 new system-proposal(s) to review","message":"• hce-spent-test-reads\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
