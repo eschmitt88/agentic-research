@@ -220,3 +220,4 @@ skills; read by `/lint`.
 2026-07-13 07:13 fetch-paper https://arxiv.org/abs/2605.10923 → raw/papers/shen2026dynamic.pdf
 2026-07-13 07:13 ingest raw/papers/shen2026dynamic.pdf
 2026-07-13 07:13 digest-autoingest n=3 verdict=slow(normal)
+2026-07-13 07:14 promote-moc: no MoC ripe after digest auto-ingest (3 papers enriched 4 existing concepts, no new concepts); cluster state unchanged from 04:01 run — governance still 4+1 marginal with majority mapped elsewhere, skills cluster ~3 with skill-library-lifecycle already in knowledge-organization; unmapped concepts still only permission-gate-as-architecture + shared-skill-namespace
