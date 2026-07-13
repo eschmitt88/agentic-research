@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/pu2026skillops]]"
   - "[[literature/papers/belikova2026managing]]"
   - "[[literature/papers/zhao2026generative]]"
+  - "[[literature/papers/shen2026dynamic]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/zhao2026agenticos]]"
@@ -176,6 +177,33 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
    manual analogue here: a note repeatedly retrieved-but-unused (evidence
    of low value) is a *retire* candidate; a note that keeps being
    partially-cited across unrelated themes is a *split* candidate.
+
+10. **Retirement gets a mechanism — and a warning: removal is not
+   internalization.** SLIM ([[literature/papers/shen2026dynamic]]) treats
+   the active skill set as a trainable *external capability boundary*,
+   jointly optimized with the policy. Each audited skill's
+   **marginal external contribution** is measured by leave-one-skill-out
+   validation on the tasks routed to it (EMA-smoothed); retire fires only
+   when contribution is negligible *and* the skill has sufficient
+   cumulative exposure *and* a persistent low-contribution streak — the
+   guard that protects low-frequency long-tail skills from premature
+   pruning. Three findings sharpen this concept. (a) The healthy endpoint
+   is **non-monotonic**: expand → fluctuate → stabilize at a compact
+   non-empty set (38→46→21), refuting both always-grow (SkillOS's
+   insert-dominant early phase is a *phase*, not the end state) and
+   prune-to-zero. (b) Forcing the set to zero drops validation 92.2%→76.6%
+   — a removed skill was not necessarily absorbed; retirement decisions
+   must be measured, not assumed. (c) Frequency is not value in either
+   direction: frequently-selected skills can be near-internalized
+   (disabling costs ~0.06) while globally-rare skills are locally
+   indispensable (−0.250) — so retire-by-LRU or retire-by-age heuristics
+   are the wrong policy, and a random-audit ablation is the *worst*
+   variant. Manual analogue for this project: a note is a retire candidate
+   only after repeated audited exposure with persistently negligible
+   contribution, never merely because it is old or rarely linked. Bonus:
+   SLIM's *expand* operation emits Anthropic-style `SKILL.md` artifacts
+   from inside the RL loop — the lifecycle and the shared skill format
+   ([[concepts/shared-skill-namespace]]) are converging.
 
 9. **Composition-time selection is its own lifecycle stage — and it
    couples to the write-side.** Generative Skill Composition
