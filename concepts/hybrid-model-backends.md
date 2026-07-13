@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/ouyang2026skillos]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/papers/zhang2026skillcomposer]]"
+  - "[[literature/papers/zhao2026generative]]"
   - "[[literature/papers/wang2026act]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
@@ -123,3 +124,18 @@ a role.
   project's ideator/implementer split: a role-specialized small model can
   beat a frontier default when the role is a *learnable skill*, not just a
   reasoning-horsepower contest.
+- **Third attestation, sharpest ratio yet: a ~3.9M-trainable-param
+  specialist beats a frontier API judge at skill selection.** Generative
+  Skill Composition ([[literature/papers/zhao2026generative]]) trains a
+  tiny decoder (frozen 0.6B encoder + 3-layer AR head) to compose skill
+  plans for GPT-5.2-Codex and Gemini-3-Pro executors; it beats
+  Gemini-2.5-flash-as-judge by +12.9 pp Set F1 while being two orders of
+  magnitude faster, and *degrades more gracefully under distribution
+  shift than SFT of a 154×-larger backbone* (−11 pp vs −27.5 pp on the
+  real-task holdout). The added nuance over SkillOS and
+  zhang2026skillcomposer: when the strategic sub-decision has *closed
+  structure* (a fixed library, a bounded output vocabulary), the
+  specialist's advantage comes from exploiting that structure — the
+  generalist judge cannot even fit the full skill bodies in its context
+  budget. Route structured sub-decisions to structured specialists; save
+  the frontier model for open-ended reasoning.

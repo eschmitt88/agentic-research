@@ -214,3 +214,4 @@ skills; read by `/lint`.
 2026-07-13 04:01 session_end session=a936e436-1128-4d1d-ad21-3c9ce24279dc
 2026-07-13 07:04 digest n=14 window_since=2026-07-06T07:03:34Z
 2026-07-13 07:05 fetch-paper https://arxiv.org/abs/2606.32025 → raw/papers/zhao2026generative.pdf
+2026-07-13 07:08 ingest raw/papers/zhao2026generative.pdf

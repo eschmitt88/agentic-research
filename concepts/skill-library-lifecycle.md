@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/wu2026bayesian]]"
   - "[[literature/papers/pu2026skillops]]"
   - "[[literature/papers/belikova2026managing]]"
+  - "[[literature/papers/zhao2026generative]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/zhao2026agenticos]]"
@@ -175,6 +176,27 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
    manual analogue here: a note repeatedly retrieved-but-unused (evidence
    of low value) is a *retire* candidate; a note that keeps being
    partially-cited across unrelated themes is a *split* candidate.
+
+9. **Composition-time selection is its own lifecycle stage — and it
+   couples to the write-side.** Generative Skill Composition
+   ([[literature/papers/zhao2026generative]]; system confusingly also
+   named "SkillComposer" — distinct from
+   [[literature/papers/zhang2026skillcomposer]]) formalizes the
+   *deployment* end of the lifecycle: given a fixed curated library,
+   jointly predict **which** skills to load, **how many**, and **in
+   what order** as closed-vocabulary sequence prediction. A ~3.9M-param
+   specialist decoder beats flat retrieval and a frontier LLM-judge,
+   closing ~80% of the gap to the gold-skill oracle on SkillsBench at
+   the lowest prompt-token cost. Two lessons. First, selection is
+   *structural*, not similarity ranking — how many skills and in what
+   order are decisions a flat retriever cannot express (an unordered
+   top-k under- or over-provisions the context). Second, the paper
+   deliberately freezes the library to isolate composition from
+   creation — which exposes the open seam with the write-side
+   operations above: every insert/merge/retire invalidates a trained
+   composer's output vocabulary. A living library needs either a
+   composer cheap enough to retrain per curation cycle or a
+   composition interface robust to library churn.
 
 6. **Empirical reference point for what a library looks like at
    scale.** SkillRet ([[literature/papers/cho2026skillret]]) curated
