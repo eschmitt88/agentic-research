@@ -215,3 +215,5 @@ skills; read by `/lint`.
 2026-07-13 07:04 digest n=14 window_since=2026-07-06T07:03:34Z
 2026-07-13 07:05 fetch-paper https://arxiv.org/abs/2606.32025 → raw/papers/zhao2026generative.pdf
 2026-07-13 07:08 ingest raw/papers/zhao2026generative.pdf
+2026-07-13 07:11 fetch-paper https://arxiv.org/abs/2606.22504 → raw/papers/santosgrueiro2026lingering.pdf
+2026-07-13 07:11 ingest raw/papers/santosgrueiro2026lingering.pdf

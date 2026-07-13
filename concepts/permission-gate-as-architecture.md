@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/jia2026finharness]]"
   - "[[literature/papers/madatha2026deterministic]]"
   - "[[literature/papers/zhao2026agenticos]]"
+  - "[[literature/papers/santosgrueiro2026lingering]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -40,7 +41,7 @@ part of the agent's control loop rather than a wrapper around it.
 
 ## Why it matters here
 
-Five independent attestations converge on the same reframing — the gate is
+Eight independent attestations converge on the same reframing — the gate is
 where a meaningful slice of agent behavior is actually *governed*, so it
 deserves to be designed as architecture:
 
@@ -66,6 +67,21 @@ deserves to be designed as architecture:
   a phase state machine, all in ordinary testable code — rather than "further
   LLM orchestration", on the principle that a non-deterministic component
   cannot be a trustworthy control for another non-deterministic one.
+- **santosgrueiro2026lingering** adds the **temporal axis**: permissions
+  need a *lifetime*, not just a decision rule. Its named failure mode —
+  *lingering authority*, a temporary capability still exposed to the
+  planner after the subgoal that justified it closed — is invisible to
+  every point-in-time gate above. PORTICO compiles a task contract into an
+  initial envelope + grant rules + closure predicates; grants mint
+  epoch-bound revocable handles, and closure removes them from the next
+  planner interface. The causal isolation is clean: a comparator identical
+  in every way except revocation matches all pre-closure decisions, then
+  executes 6/6 forbidden stale writes where PORTICO executes 0. Bonus
+  finding: *visibility itself is behavioral* — under identical execution
+  policy, a broader visible interface produces more blocked forbidden
+  proposals (84 vs 67), so what the gate *shows* the planner shapes
+  planning, not just what it permits. Releases a runnable artifact
+  (`portico-tool`, an MCP server), the first in this cluster.
 - **zhao2026agenticos** pushes the gate all the way down into the OS: the
   agent runtime has *no* interface except the gate — capabilities are
   synthesized from a declared intent Manifest, POSIX primitives are
@@ -109,6 +125,18 @@ hook.
    LLM-judge governors (jia2026finharness, AgenticOS): use a deterministic
    core for the hard invariants and reserve model-based scoring for the
    graded, drift-sensitive escalation where determinism is infeasible.
+
+5. **Scope permissions in time, and close them on trusted events.** Per
+   santosgrueiro2026lingering: an approval granted for a subgoal should
+   expire when the subgoal ends — enforced by the gate removing the
+   capability from the agent's visible interface, not by asking the agent
+   to stop using it. Two transferable rules: (a) the closure signal must
+   be a *trusted runtime event* (a test passing, an orchestrator phase
+   transition, a human revocation) — the agent's own "done with that"
+   claim is untrusted text and closes nothing; (b) replay of a stale
+   handle is denied *before* side effects. The harness analogue: a
+   PreToolUse allowance granted for one phase of a session should not
+   survive into the next phase by default.
 
 ## Connections
 
