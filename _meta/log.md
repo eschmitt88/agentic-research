@@ -217,3 +217,6 @@ skills; read by `/lint`.
 2026-07-13 07:08 ingest raw/papers/zhao2026generative.pdf
 2026-07-13 07:11 fetch-paper https://arxiv.org/abs/2606.22504 → raw/papers/santosgrueiro2026lingering.pdf
 2026-07-13 07:11 ingest raw/papers/santosgrueiro2026lingering.pdf
+2026-07-13 07:13 fetch-paper https://arxiv.org/abs/2605.10923 → raw/papers/shen2026dynamic.pdf
+2026-07-13 07:13 ingest raw/papers/shen2026dynamic.pdf
+2026-07-13 07:13 digest-autoingest n=3 verdict=slow(normal)
