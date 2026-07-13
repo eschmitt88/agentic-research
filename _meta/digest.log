@@ -212,3 +212,20 @@ Notable for a future `/discover` if those fronts need reinforcing: several stron
 **Remaining 5 candidates** (agent-native-memory position paper, TRUSTMEM, AgenticOS, DEMM-Bench, the harness survey, and the compression-overfitting analysis) are left in place below the count cap — the nightly 04:00 `/curate` sweep will drain them.
 
 Six commits pushed; timestamp and logs updated; working tree clean.
+The `/digest` run is complete. Here's the summary:
+
+## Digest — 2026-07-13
+
+**Sweep** (window since 2026-07-06): four scenario-form queries across the active fronts — agent memory, evaluation integrity/HCE, permission-gate governance, and skill lifecycle + evolutionary search. After deduplicating against the graph (and verifying two tricky near-duplicates were genuinely distinct papers), **14 candidates** landed in `raw/_candidates/2026-07-13-digest.md`: 7 in/near-window items and 7 deliberate older slips with dead-center concept fit.
+
+**Auto-advance** (agency: max): the coordinator verdict was `slow`/normal both times I checked, so I ingested the top 3 rather than 6:
+
+1. **`zhao2026generative`** — *Generative Skill Composition* (arXiv 2606.32025, July 1, UNC/ASU/Honda). Skill composition as joint which/how-many/what-order sequence prediction; a 3.9M-param specialist beats a frontier LLM-judge and matches oracle retrieval. Enriched `skill-library-lifecycle`, `hybrid-model-backends`, and `shared-skill-namespace`. Caution flagged in the note: its system is also named "SkillComposer", colliding with the unrelated `zhang2026skillcomposer` already in the graph.
+2. **`santosgrueiro2026lingering`** — *Lingering Authority / PORTICO* (2606.22504). Adds the **temporal axis** to `permission-gate-as-architecture`: permissions get lifetimes via epoch-bound revocable handles, and closure events must be trusted runtime signals, not the agent's own claims. This is the cred-3-with-artifact addition `/elevate` said the concept was missing — it may now clear the re-proposal bar.
+3. **`shen2026dynamic`** — *SLIM* (2605.10923, CUHK, code released). Skill **retirement** by leave-one-skill-out marginal contribution, with the sharp negative result that removal ≠ internalization. Gave `skill-library-lifecycle` its missing retire mechanism.
+
+**Graph hygiene**: `/promote-moc` correctly declined — no new concepts today, so no cluster ripened (governance still 4+1 marginal, only 2 unmapped concepts). The candidates file has a Curation section recording the 3 ingests and stays in `raw/_candidates/` for the nightly 04:00 `/curate` sweep to drain the remaining 11 (strongest of those: SkillWiki, FML-bench, the Action Authorization Boundary paper).
+
+All work is committed and pushed (5 commits: `4030008` → `74278d3`); `_meta/last_digest` and `_meta/log.md` updated.
+
+One thing worth surfacing: the coordinator reported **"token usage unknown (ccusage unavailable)"** on both verdict checks — pacing fell back to conservative. If ccusage is broken on this box, the agency gate is flying blind on quota; worth a look.
