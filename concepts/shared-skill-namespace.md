@@ -9,6 +9,7 @@ sources:
   - "[[literature/papers/yang2026skillopt]]"
   - "[[literature/papers/zhou2026comprehensive]]"
   - "[[literature/papers/belikova2026managing]]"
+  - "[[literature/papers/zhao2026generative]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
@@ -61,6 +62,15 @@ declares format-compatibility with the agentskills.io standard. The
 emerging picture is a de-facto namespace where a skill is identified
 by its on-disk path and its `name:` field, not by which harness
 loaded it.
+
+The namespace is now also a *research substrate*: Generative Skill
+Composition ([[literature/papers/zhao2026generative]]) adopts the
+agentskills.io skill definition (metadata / applicability condition /
+procedural policy / termination / resources, with progressive
+disclosure) as the formal object its composer predicts over — academic
+work building directly on the shared standard rather than inventing a
+bespoke skill format. A shared schema is what makes a trained composer
+transferable across harnesses at all.
 
 For this project specifically, this is operationally relevant:
 the `/digest`, `/ingest`, `/lint`, `/fetch-paper`, `/discover` skills

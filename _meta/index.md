@@ -30,6 +30,7 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/zhao2026generative]] — Generative Skill Composition (which/how-many/what-order as sequence prediction; 3.9M specialist beats LLM-judge)
 - [[literature/papers/bertran2026fits]] — What Fits (Into Few Tokens) Doesn't Overfit (compression test for research-agent overfitting)
 - [[literature/papers/yang2026trustmem]] — TrustMem (write-time verification of memory consolidation)
 - [[literature/papers/zhao2026agenticos]] — AgenticOS (OS as intent filter; budgets inside capability tokens)
