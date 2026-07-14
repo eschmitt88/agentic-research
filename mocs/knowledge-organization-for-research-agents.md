@@ -5,6 +5,7 @@ status: active
 added: "2026-05-11"
 concepts:
   - "[[concepts/agent-native-memory]]"
+  - "[[concepts/llm-wiki-pattern]]"
   - "[[concepts/file-as-bus]]"
   - "[[concepts/structured-world-model]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -22,7 +23,7 @@ tags: [moc, knowledge-organization, agent-memory, architecture]
 
 How autonomous research agents store, structure, curate, and consult
 the knowledge they work with — in practice, not in principle. This
-MoC ties together the eleven concepts that span this question across
+MoC ties together the twelve concepts that span this question across
 three layers: the *substrate* (where memory lives), the *write-side*
 (how the library evolves and how outputs are organized), and the
 *read-side* (when and how stored knowledge is consulted during
@@ -62,6 +63,20 @@ state.
   ([[literature/papers/cho2026skillret]]) — empirical anchor on
   what a library-at-scale looks like (17.8K skills, median 1.6K
   tokens each).
+
+- **[[concepts/llm-wiki-pattern]]** — the *when* of organization on
+  that substrate: curation work happens once at ingest/compile time,
+  producing a persistent compounding wiki (raw → LLM-owned wiki →
+  schema file), instead of per-query retrieval over raw data.
+  *Canonical sources:* Karpathy's LLM Wiki gist
+  ([[literature/posts/gist-github-com-karpathy-llm-wiki]]) — the
+  named primary source this repo's layout independently converged
+  on; A-Mem ([[literature/papers/xu2025amem]], NeurIPS 2025) — the
+  peer-reviewed Zettelkasten bridge whose ablation shows the links
+  carry the multi-hop value; the rebuild critique
+  ([[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]])
+  — the failure model (append-only wikis go inconsistent at scale)
+  and the maintenance-operations checklist.
 
 - **[[concepts/file-as-bus]]** — multi-agent coordination case of
   the same pattern. Workspace as coordination substrate;

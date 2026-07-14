@@ -122,3 +122,12 @@ an independent domain.
 - reason: The item that triggered this sweep; low evidence weight on
   its own but useful as the ecosystem-survey entry point and to record
   why this topic entered the graph now.
+
+---
+
+## Curation progress (2026-07-14, same-day user-directed ingest)
+
+- **Ingested #1 A-MEM** → `literature/papers/xu2025amem.md` (rel 4 / cred 5)
+- **Ingested #2 Karpathy gist** → `literature/posts/gist-github-com-karpathy-llm-wiki.md` (rel 4); seeded `concepts/llm-wiki-pattern`
+- **Ingested #3 rebuild critique** → `literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki.md` (rel 4)
+- Entries 4–8 remain for the nightly `/curate` sweep.

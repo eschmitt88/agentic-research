@@ -11,8 +11,8 @@ and `/new-experiment`.
 ## Maps of Content
 
 - [[mocs/knowledge-organization-for-research-agents]] — substrate /
-  write-side / read-side of agent memory; 11 concepts spanning
-  agent-native-memory, file-as-bus, structured-world-model,
+  write-side / read-side of agent memory; 12 concepts spanning
+  agent-native-memory, llm-wiki-pattern, file-as-bus, structured-world-model,
   skill-library-lifecycle, typed-claim-partition, citation-anchoring,
   selective-memory-retrieval, context-eviction-policy,
   multi-granularity-memory, verified-memory-writes,
