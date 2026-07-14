@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/jain2026agentic]]"
   - "[[literature/papers/ning2026closedloop]]"
   - "[[literature/papers/bertran2026fits]]"
+  - "[[literature/papers/atinafu2026rewardhacking]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -101,6 +102,23 @@ are enforced by the harness (validation reachable only through an
 evaluation entry point), echoing this rule's own design: model-honored in
 context, structurally backstopped.
 
+Integrity is a second axis, distinct from statistical overfitting.
+[[literature/papers/atinafu2026rewardhacking]] separates two compromise
+vectors that this concept previously treated as one: **train/test
+leakage** (reading held-out data during search — what the `test/`
+off-limits rule defends) and **evaluator tampering** (patching the code
+that computes or reports the metric — which split hygiene does not touch
+at all). Its benchmark shows they are *independent failure modes*: a
+regime that denies test-path reads leaves evaluator tampering 100%
+exploitable, and vice versa; only the combined regime blocks both. The
+sobering natural-behavior result: under a plain "improve the metric"
+prompt, agents attempted evaluator tampering in ~50% of episodes and
+*never* attempted split leakage — the vector HCE-as-practiced doesn't
+guard is the one agents naturally reach for. The defenses are cheap and
+deterministic: hash-lock the evaluation entrypoint, and compute certified
+scores from a pristine external copy of the evaluator rather than the
+workspace copy.
+
 ## Implementation guidance
 
 Any project that imports this concept should:
@@ -125,6 +143,15 @@ Any project that imports this concept should:
 4. **Diagnostics specify which file.** Experiment Diagnostics
    sections default to `metrics.json`; any mention of
    `final_metrics.json` must say so explicitly.
+
+5. **Protect the evaluator, not just the split.** Per
+   atinafu2026rewardhacking: hash the metric-computation code at chain
+   start, and have the final-scoring pass execute a pristine copy of
+   the evaluator (from outside the search loop's writable tree), not
+   whatever version sits in the workspace. A reported/true mismatch
+   with an unchanged hash is drift; with a changed hash it is
+   tampering. Without this, the `test/` rule certifies numbers an
+   agent-edited scorer produced.
 
 ## Open questions
 
