@@ -32,6 +32,7 @@ sources:
   - "[[literature/papers/liu2026evolvemem]]"
   - "[[literature/papers/xu2026single]]"
   - "[[literature/papers/zhou2026ready]]"
+  - "[[literature/papers/xu2025amem]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
@@ -152,6 +153,24 @@ otherwise default to bolting on a vector store.
    messages carry the rationale and the change keeps the superseded claim
    recoverable rather than silently rewriting it. Provenance (guidance #3)
    should extend across *time*, not just to the originating source.
+
+9. **Link and evolve at write time — new entries rework old ones.**
+   A-Mem ([[literature/papers/xu2025amem]], NeurIPS 2025, code) is the
+   peer-reviewed anchor for building agent memory on explicit
+   Zettelkasten principles: every new note gets LLM-generated
+   keywords/tags/context, a cheap embedding filter proposes neighbor
+   candidates, an LLM decides which links are real, and — the
+   distinctive move — the LLM then **retroactively updates the
+   neighbors** (memory evolution) so the network reorganizes as
+   knowledge accumulates. Its ablation is directly load-bearing:
+   removing link generation collapses multi-hop QA (27.0 → 9.7 F1),
+   while evolution adds refinement on top — i.e. the *links* are where
+   the value lives, which is this project's wikilink discipline
+   attested with numbers. `/ingest`'s update-existing-concepts-on-
+   arrival step is memory evolution enacted; A-Mem's caveat (it
+   rewrites neighbors in place, losing what they said before) is
+   answered here by guidance #8 — evolve *through* git history, not
+   over it.
 
 ## Connections
 
