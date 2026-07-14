@@ -5,6 +5,7 @@ status: seedling
 added: "2026-07-07"
 sources:
   - "[[literature/papers/yang2026trustmem]]"
+  - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -63,7 +64,16 @@ The pattern generalizes beyond conversational memory:
 - [[concepts/agent-native-memory]] argues memory systems should be
   designed for agents' actual read/write workloads — this concept is the
   write-workload half made concrete.
-- Single-source seedling: TrustMem is the only attestation so far.
-  Adjacent evidence to watch: memory admission control and
-  provenance-aware memory (cited in TrustMem's related work but not yet
-  in this graph).
+- Second attestation, from practice
+  ([[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]):
+  after an automated synthesis pass wrote garbage to a production
+  vault, the author made every scheduled write **reversible** — daily
+  diffs plus a 24-hour review window before changes become permanent.
+  That is write-time verification implemented as *delayed commit +
+  human backstop* rather than a verifier model: same principle
+  (trust enforced at consolidation, not retrieval), opposite
+  mechanism cost. TrustMem remains the only *academic* attestation;
+  the concept stays `seedling` until a second paper-grade source
+  lands. Adjacent evidence to watch: memory admission control and
+  provenance-aware memory (cited in TrustMem's related work but not
+  yet in this graph).
