@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/ning2026closedloop]]"
   - "[[literature/papers/bertran2026fits]]"
   - "[[literature/papers/atinafu2026rewardhacking]]"
+  - "[[literature/papers/zou2026fmlbench]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24

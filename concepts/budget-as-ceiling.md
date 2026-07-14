@@ -85,6 +85,14 @@ agent instead of inside it.
    halts at `max_consecutive_no_improvement=3` is reporting "this
    search direction is exhausted," which feeds the next `/propose`
    call. The halt reason goes in the session's NOTES.md.
+   [[literature/papers/zou2026fmlbench]] sharpens this: stagnation is
+   first a *switch* signal, then a halt signal. Its AdaptiveSearch
+   treats W consecutive non-improving steps as the trigger to fork the
+   top-N candidates and broaden the search — outperforming both pure
+   greedy and pure tree search — and only a stall that survives the
+   broader phase is true exhaustion. A chain-runner that can afford it
+   should escalate strategy at the stagnation counter before killing
+   the chain.
 
 4. **Raising ceilings is explicit.** A proposal that requires
    raising `max_wall_hours` beyond the current ceiling must say so

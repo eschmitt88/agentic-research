@@ -230,3 +230,5 @@ skills; read by `/lint`.
 2026-07-14 04:20 ingest raw/papers/hu2026flashevolve.pdf
 2026-07-14 04:27 fetch-paper https://arxiv.org/abs/2603.11337 → raw/papers/atinafu2026rewardhacking.pdf
 2026-07-14 04:27 ingest raw/papers/atinafu2026rewardhacking.pdf
+2026-07-14 04:36 fetch-paper https://arxiv.org/abs/2605.17373 → raw/papers/zou2026fmlbench.pdf
+2026-07-14 04:36 ingest raw/papers/zou2026fmlbench.pdf
