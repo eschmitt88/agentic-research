@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/xu2026single]]"
   - "[[literature/papers/zhou2026ready]]"
   - "[[literature/papers/ji2026memory]]"
+  - "[[literature/papers/xu2025amem]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -67,6 +68,13 @@ decide which to read at query time:
   construction granularity), and **pham2026memorai** (multi-granularity +
   graph retrieval) are the corroborating attestations from distinct groups
   and venues.
+- **xu2025amem (A-Mem, NeurIPS 2025)** attests the *write-side* half
+  (guidance #1) from the Zettelkasten direction: every stored experience
+  is constructed at multiple representations up front (raw content +
+  LLM-generated keywords, tags, and contextual description, jointly
+  embedded), and its 85–93% per-question token reduction vs flat-context
+  baselines is the efficiency case for paying construction cost at write
+  time.
 - **ji2026memory (MRAgent, ICML 2026)** adds the third routing paradigm:
   where MemGAS routes by entropy and H-MEM by hierarchy, MRAgent
   *reconstructs* — the grains (episodic / semantic / topic layers over a

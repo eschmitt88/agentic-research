@@ -238,3 +238,4 @@ skills; read by `/lint`.
 2026-07-14 04:47 promote-moc: no MoC ripe after curate batch — 6 papers enriched 10 existing concepts, no new concepts seeded; cluster membership unchanged from 2026-07-13 assessment (governance 4+1 marginal/mapped-elsewhere, skills ~3, unmapped still only permission-gate-as-architecture + shared-skill-namespace)
 2026-07-14 13:43 discover agentic-second-brains n=8
 2026-07-14 14:18 fetch-paper https://arxiv.org/abs/2502.12110 → raw/papers/xu2025amem.pdf
+2026-07-14 14:20 ingest raw/papers/xu2025amem.pdf
