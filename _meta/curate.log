@@ -449,3 +449,4 @@ The graph has 24 concepts, and 22 of them already live in one of the four MoCs. 
 The interesting finding is that last one: it's the only theme actually accumulating. The July ingests (ge2026governance, santosgrueiro2026lingering, zhao2026agenticos, huang2026skillwiki) have repeatedly enriched the two *unmapped* concepts — `permission-gate-as-architecture` and `shared-skill-namespace` — which look like the seed of a future "harness governance & ecosystem interop" MoC. But two concepts is not a cluster, and manufacturing a thin MoC is exactly what this skill is supposed to refuse. It needs roughly three more concepts on that theme (e.g. sandbox/isolation policy, cross-agent trust, capability attestation) before promotion; worth watching in the next few digest cycles.
 
 No files were changed, so there's nothing to commit. Per the skill contract, restraint is the outcome here.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
