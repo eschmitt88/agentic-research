@@ -14,7 +14,8 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 |------|------|--------|----------------|--------|
 | 2026-06-23 | [digest-scenario-rich-queries](2026-06-23-digest-scenario-rich-queries.md) | `skills/digest/SKILL.md` | adopt | **accepted** (applied 2026-06-23) |
 | 2026-06-28 | [lint-consolidation-check](2026-06-28-lint-consolidation-check.md) | `skills/lint/SKILL.md` | adopt-with-changes | **accepted** (minimal check-#5 amendment applied 2026-06-30, claude-system@f0b3aef; full 5b deferred) |
-| 2026-07-12 | [hce-spent-test-reads](2026-07-12-hce-spent-test-reads.md) | `rules/evaluation.md` | adopt | proposed |
+| 2026-07-12 | [hce-spent-test-reads](2026-07-12-hce-spent-test-reads.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-07-14, claude-system@a16aa2d) |
+| 2026-07-14 | [experiment-loop-skill-scoping](2026-07-14-experiment-loop-skill-scoping.md) | `skills/` layout, new-project, propose, iterate | adopt | proposed (user-directed, not /elevate) |
 
 ## Considered and held (2026-07-12 run)
 

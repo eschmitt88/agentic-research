@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [ning2026closedloop, bertran2026fits, hambardzumyan2026aira, chan2024mle]
 evidence_strength: "3+ independent attestations incl. peer-reviewed + code anchors (chan2024mle) and an explicit score-once certification protocol (ning2026closedloop); credibility ~4 on balance"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 
