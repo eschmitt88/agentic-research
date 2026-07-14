@@ -71,5 +71,5 @@ to GitHub (`git.auto_push: true`) so overnight curation persists off-box.
 
 - End sessions with `/wrap`. The SessionEnd hook backstops this.
 - Run `/lint` weekly.
-- No `/implement` or `/iterate` in this project — the meta project
-  curates literature and concepts; experiments live downstream.
+- Experiments live downstream — this meta project curates literature
+  and concepts and does not link the experiment-loop skill group.
