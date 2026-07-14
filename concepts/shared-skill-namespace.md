@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/zhou2026comprehensive]]"
   - "[[literature/papers/belikova2026managing]]"
   - "[[literature/papers/zhao2026generative]]"
+  - "[[literature/papers/ge2026governance]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
@@ -147,6 +148,18 @@ following the SKILL.md convention.
   (with discovery, install, versions) or stays a curated link list
   is open. The trajectory matters for whether downstream projects
   should publish skills there.
+- **Trust and permission verification.** The namespace now has a named
+  threat model: ge2026governance formalizes the *malicious skill plugin*
+  class — a skill whose runtime behavior exceeds its self-declared
+  permissions while still performing its declared function — and finds
+  intent-alignment judges detect it at only 75–94% (vs ~92–100% for
+  prompt injection) because the covert side-channel rides a legitimate
+  operation. Its OpenClaw audit names the exact gap a shared registry
+  inherits: permission declarations are self-reported, with no
+  independent runtime verification (G2). A skill that is *portable
+  across harnesses* is also an attack that is portable across harnesses;
+  a future namespace spec needs declared-permission enforcement at the
+  protocol level, not just judge-based screening.
 - **Conflict resolution.** If `~/.claude/skills/wrap/SKILL.md` and
   `~/.openharness/skills/wrap/SKILL.md` both exist with different
   bodies, which wins? OpenHarness's docs don't make the precedence
