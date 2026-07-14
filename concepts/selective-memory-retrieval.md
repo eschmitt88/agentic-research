@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/liu2026evolvemem]]"
   - "[[literature/papers/xu2026single]]"
   - "[[literature/papers/zhou2026ready]]"
+  - "[[literature/papers/ji2026memory]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -105,6 +106,16 @@ emits a trigger when it judges the current context is insufficient
    retracted source) rather than only its current head — retrieve the
    `git log` of a note, not just the note, when the query is about how a
    claim evolved.
+
+   *A third gating axis: continuation.* MRAgent
+   ([[literature/papers/ji2026memory]]) extends the runtime decision from
+   *whether* to read to *how long to keep reading*: retrieval is an
+   iterative reconstruction loop where, each step, the agent judges
+   whether accumulated evidence suffices and either stops or selects the
+   next traversal action conditioned on what it has found so far. Its
+   analysis shows the self-termination is well calibrated (max useful
+   turns ≈ average turns taken) and that spending the same budget as
+   parallel one-shot retrieval cannot substitute for adaptive depth.
 
 3. **Cheap-default, escalation-on-trigger.** The default action
    path should run *without* memory consultation. Retrieval kicks

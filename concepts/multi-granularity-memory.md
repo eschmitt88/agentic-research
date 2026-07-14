@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/kerestecioglu2026human]]"
   - "[[literature/papers/xu2026single]]"
   - "[[literature/papers/zhou2026ready]]"
+  - "[[literature/papers/ji2026memory]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -66,6 +67,17 @@ decide which to read at query time:
   construction granularity), and **pham2026memorai** (multi-granularity +
   graph retrieval) are the corroborating attestations from distinct groups
   and venues.
+- **ji2026memory (MRAgent, ICML 2026)** adds the third routing paradigm:
+  where MemGAS routes by entropy and H-MEM by hierarchy, MRAgent
+  *reconstructs* — the grains (episodic / semantic / topic layers over a
+  Cue–Tag–Content graph) are traversed by LLM reasoning inside the
+  retrieval loop, with intermediate evidence redirecting which grain is
+  read next and a sufficiency judgment deciding when to stop. Comes with
+  an expressivity proof (active/stateful retrieval strictly contains
+  passive) and a cost result worth quoting: tag-gated access to grains
+  *cut* per-sample tokens to 118k vs 245–632k for flat or
+  summarize-everything baselines — multi-granularity as an efficiency
+  mechanism, not just a recall one.
 
 For this project the pattern maps directly onto the knowledge graph: a
 concept note already exists at several grains — the one-line `index.md`
