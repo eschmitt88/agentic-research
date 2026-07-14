@@ -6,6 +6,7 @@ added: "2026-07-14"
 sources:
   - "[[literature/posts/gist-github-com-karpathy-llm-wiki]]"
   - "[[literature/papers/xu2025amem]]"
+  - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -72,17 +73,40 @@ queries.
 - **[[concepts/web-grounded-literature]]** — ingest is the boundary
   where fresh web material enters the wiki.
 
+## Maintenance operations (the pattern's known failure half)
+
+The rebuild critique
+([[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]])
+supplies the failure model: an **append-only** wiki goes internally
+inconsistent past a few hundred sources. Its five gaps, as a checklist —
+(1) rewrite-on-ingest with dated recency markers, (2) automatic
+contradiction reconciliation (recency × authority × confidence; losing
+claims archived, not deleted), (3) unsolicited synthesis passes,
+(4) scheduled maintenance instead of on-demand, (5) AI-first note
+format (the LLM, not the human, is the primary reader). A-Mem's memory
+evolution is the academic echo of (1)–(2): new arrivals trigger LLM
+updates to neighboring notes, and its ablation shows the win. Its
+companion principle — **reversible automation** (daily diffs + a review
+window before scheduled changes stick) — is what makes autonomous
+maintenance safe; a git-tracked wiki gets it structurally.
+
+This repo's scorecard: (4) and (5) enacted, (1) partial (concepts
+evolve on ingest; literature notes are append-only), (2) and (3)
+missing — no contradiction-reconciliation pass, and `/promote-moc` is
+the only unsolicited synthesis.
+
 ## Open questions
 
-- **Append-only vs self-rewriting.** The gist's pattern is largely
-  append-and-link; the practitioner critique (theaioperator rebuild —
-  pending ingest) argues append-only wikis go internally inconsistent
-  past a few hundred sources without rewriting, contradiction
-  reconciliation, scheduled maintenance, and unsolicited synthesis.
-  A-Mem's memory evolution is the academic version of the same fix.
-  Which maintenance operations are *essential* vs nice-to-have is the
-  open design question — this repo runs scheduled lint/curate but has
-  no contradiction-reconciliation pass.
+- **Which maintenance operations are essential vs nice-to-have.** The
+  critique treats all five as required for production; only (2)
+  reconciliation has an academic co-attestation so far (A-Mem's
+  evolution). A weekly reconciliation pass is the obvious candidate
+  mechanism to trial here before any `/elevate` proposal.
+- **AI-first vs human-readable tension.** Gap 5 inverts
+  [[concepts/agent-native-memory]]'s "human-readable artifacts"
+  framing; in practice the formats converge (frontmatter + wikilinks +
+  prose), but the *primary-reader* question changes what a lint should
+  optimize for.
 - **Where compile-time curation breaks down** — for corpora that
   change under you (live codebases, prices), compiled pages go stale;
   the pattern implicitly assumes slowly-accreting sources like
