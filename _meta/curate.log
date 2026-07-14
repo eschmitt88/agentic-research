@@ -431,3 +431,21 @@ One unrelated note: the claude.ai Google Drive MCP server needs authentication b
 **Close-out:** curation section + `curated: 2026-07-14` appended, file archived to `_done/`, `_meta/log.md` updated, promote-moc checked (declined — 10 concepts enriched but none seeded, so no cluster newly ripe). Seven commits pushed, `0a3dac6` through `19e732d`.
 
 One observation worth flagging: the nightly 04:00 curate sweep (ADR 0001) apparently didn't drain this file before your manual invocation — worth checking whether the cron job ran this morning.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Analysis is complete — I have full coverage data. Here's the verdict:
+
+**No cluster is ripe; declining to promote.** Every candidate cluster of ≥5 concepts is already substantially mapped, and the genuinely new theme is too small.
+
+The graph has 24 concepts, and 22 of them already live in one of the four MoCs. Cluster by cluster:
+
+| Cluster (merged tags) | Size | Overlap with existing MoCs | Verdict |
+|---|---|---|---|
+| memory / retrieval / consolidation | 5 (agent-native-memory, context-eviction-policy, selective-memory-retrieval, multi-granularity-memory, verified-memory-writes) | 5/5 in `knowledge-organization-for-research-agents` | **Declined** — 100% covered; last month's enrich-existing call still holds |
+| evaluation / overfitting / grounding | 6 | 6/6 in `evaluation-integrity` | **Declined** — fully covered |
+| agent-architecture / coordination | 5 | 5/5 in `agent-architecture` | **Declined** — fully covered |
+| evolutionary-search / budget / infra | 5 | 5/5 in `autonomous-search-loop` | **Declined** — fully covered |
+| governance / skills-interop (the emerging one) | 2–3 (permission-gate-as-architecture, shared-skill-namespace, arguably budget-as-ceiling) | budget-as-ceiling already in autonomous-search-loop | **Declined** — below the 5-concept threshold |
+
+The interesting finding is that last one: it's the only theme actually accumulating. The July ingests (ge2026governance, santosgrueiro2026lingering, zhao2026agenticos, huang2026skillwiki) have repeatedly enriched the two *unmapped* concepts — `permission-gate-as-architecture` and `shared-skill-namespace` — which look like the seed of a future "harness governance & ecosystem interop" MoC. But two concepts is not a cluster, and manufacturing a thin MoC is exactly what this skill is supposed to refuse. It needs roughly three more concepts on that theme (e.g. sandbox/isolation policy, cross-agent trust, capability attestation) before promotion; worth watching in the next few digest cycles.
+
+No files were changed, so there's nothing to commit. Per the skill contract, restraint is the outcome here.
