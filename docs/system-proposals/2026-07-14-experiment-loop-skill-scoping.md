@@ -118,10 +118,44 @@ migration touch on existing experiment projects.
   the absorbed sections must stay goal-level (a paragraph each), per
   the authoring principle.
 - **A project's shape can change.** A lit repo that later grows
-  experiments needs someone to remember the symlink. Mitigation:
-  `/new-experiment` (experiment group) is unreachable in such a repo,
-  but `/lint` is global — add a one-line check: `experiments/` exists
-  but no experiment-loop skills are linked → warn.
+  experiments needs someone to remember the symlink. Mitigation is the
+  graduation path below plus a one-line global `/lint` check:
+  `experiments/` exists but no experiment-loop skills are linked → warn.
+
+## Graduation path: growing a lit repo into an experimenting one
+
+Two ways a lit repo grows, chosen by whether the experiments serve this
+repo's reading or start a new line of work:
+
+- **Spawn a downstream project** (hub-and-spoke) when the experiments
+  have their own identity — own data, own budget, multiple experiments —
+  or when the concepts serve more than one consumer. Fully covered by
+  existing machinery: `/new-project` + the `@import` contract +
+  `used_by:` back-references. This is agentic-research's own charter.
+- **Graduate in place** when there is a single consumer and the reading
+  and running are one thread. Checklist, not a skill (per the authoring
+  principle — a capable model executes this; nothing to codify):
+  1. `ln -s ~/claude-system/claude/skills-experiment .claude/skills`
+  2. Declare intent in `budget.yaml` (ceilings, `agency:`, model roles).
+  3. **Define the holdout before the first optimization run** —
+     `splits.yaml` + `test/` flips the HCE opt-in. The only
+     order-sensitive step: a holdout carved out after iterating against
+     the data is contaminated from birth.
+  4. `dvc init` if absent; `.worktrees/` for destructive runs.
+  5. First move: `/derive-experiment` on the ripest literature note —
+     the purpose-built note → proposal bridge, which back-links
+     `related_experiments:` so the graph records why the repo grew.
+  6. Record the graduation in `docs/decisions/` (it changes what the
+     repo is).
+
+  In-place graduation is also what `/propose` rewards: it reads
+  `concepts/`, recent literature, and experiment diagnostics together,
+  so co-locating them gives ideation the full graph rather than the
+  imported slice.
+
+This section is documentation, not mechanism — the only code change it
+implies is the `/lint` warning above. Put the checklist in
+claude-system's README (or a short `docs/` page) when applying.
 - **Skill-name references in existing docs** (iteration logs, NOTES,
   concept notes) will mention `/expand`//`/ensemble`; they remain
   readable as history. No rewrite needed.
