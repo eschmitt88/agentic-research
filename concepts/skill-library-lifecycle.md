@@ -23,6 +23,7 @@ sources:
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/zhao2026agenticos]]"
+  - "[[literature/papers/huang2026skillwiki]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -236,6 +237,22 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
    shape of unsupervised community-curated libraries, and any
    curation policy needs to handle the long-tail without
    collapsing it.
+
+11. **Above the operations sits an infrastructure layer.** SkillWiki
+   ([[literature/papers/huang2026skillwiki]], demo-grade) names what
+   the per-library operations above presuppose: lifecycle *states* as
+   first-class governance objects (Raw → Candidate → Draft → Verified →
+   Released → Degraded → Deprecated → Archived), a provenance graph
+   linking every skill to the knowledge evidence it was derived from,
+   and change-as-reviewed-release (snapshot → structured diff → review
+   → release) instead of direct overwrites. Its Degraded state is
+   detected from runtime failure clustering, echoing SLIM's
+   evidence-based retirement rather than age-based pruning. Evidence is
+   feasibility-only (125 artifacts, one full-chain case study), so
+   treat this as vocabulary and architecture, not validated mechanism —
+   but the vocabulary maps directly onto this project's own
+   candidate → ingested → concept → MoC → retired pipeline, where git
+   already provides the snapshot/diff/review substrate.
 
 ## Connections
 

@@ -232,3 +232,5 @@ skills; read by `/lint`.
 2026-07-14 04:27 ingest raw/papers/atinafu2026rewardhacking.pdf
 2026-07-14 04:36 fetch-paper https://arxiv.org/abs/2605.17373 → raw/papers/zou2026fmlbench.pdf
 2026-07-14 04:36 ingest raw/papers/zou2026fmlbench.pdf
+2026-07-14 04:44 fetch-paper https://arxiv.org/abs/2606.16523 → raw/papers/huang2026skillwiki.pdf
+2026-07-14 04:44 ingest raw/papers/huang2026skillwiki.pdf
