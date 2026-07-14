@@ -7,7 +7,7 @@ change_type: restructure
 adds_surface_area: false
 evidence_citekeys: [belikova2026managing, lodha2026less]
 evidence_strength: "user-directed simplification grounded in the skill-library-lifecycle concept (merge/consolidate bias) and context-rot evidence; not literature-gated the way /elevate proposals are"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 
