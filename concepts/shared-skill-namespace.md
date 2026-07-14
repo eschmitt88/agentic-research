@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/belikova2026managing]]"
   - "[[literature/papers/zhao2026generative]]"
   - "[[literature/papers/ge2026governance]]"
+  - "[[literature/papers/huang2026skillwiki]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
 used_by: []
@@ -147,7 +148,12 @@ following the SKILL.md convention.
   point at it; whether it becomes a genuine PyPI-style registry
   (with discovery, install, versions) or stays a curated link list
   is open. The trajectory matters for whether downstream projects
-  should publish skills there.
+  should publish skills there. SkillWiki
+  ([[literature/papers/huang2026skillwiki]]) is the first concrete
+  proposal for what that registry would need — lifecycle states,
+  version lineage, provenance links to evidence, health monitoring,
+  and governed (reviewed) contribution — though it demonstrates
+  feasibility, not adoption.
 - **Trust and permission verification.** The namespace now has a named
   threat model: ge2026governance formalizes the *malicious skill plugin*
   class — a skill whose runtime behavior exceeds its self-declared
