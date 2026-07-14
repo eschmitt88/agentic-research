@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/madatha2026deterministic]]"
   - "[[literature/papers/zhao2026agenticos]]"
   - "[[literature/papers/santosgrueiro2026lingering]]"
+  - "[[literature/papers/ge2026governance]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -41,7 +42,7 @@ part of the agent's control loop rather than a wrapper around it.
 
 ## Why it matters here
 
-Eight independent attestations converge on the same reframing — the gate is
+Nine independent attestations converge on the same reframing — the gate is
 where a meaningful slice of agent behavior is actually *governed*, so it
 deserves to be designed as architecture:
 
@@ -82,7 +83,21 @@ deserves to be designed as architecture:
   proposals (84 vs 67), so what the gate *shows* the planner shapes
   planning, not just what it permits. Releases a runnable artifact
   (`portico-tool`, an MCP server), the first in this cluster.
-- **zhao2026agenticos** pushes the gate all the way down into the OS: the
+- **ge2026governance** adds the **quantitative axis**: the first benchmark
+  of the judge-as-gate in the cluster (1,081 bilingual tool calls, seven
+  judges). LLM judges intercept 93–98.5% of injection/poisoning; zero-shot
+  NLI stays under 10%; two-stage cascades trade IR for precision (a fully
+  local cascade reaches 94.7–95.6% IR at 6.0–9.7% FPR). Its base-rate
+  analysis is the sharpest single number: at 1% attack prevalence even the
+  best judge's PPV collapses to 22.7% — three of four blocks are false
+  alarms — so the *judge layer must not be the sole gatekeeper*. Its
+  four-layer LGA stack (OS sandbox / intent judge / zero-trust inter-agent
+  tokens / append-only audit) prices the deterministic layers at ~5–18 ms
+  against ~1 s for the judge: defense-in-depth is nearly free next to the
+  model call. Also formalizes the *malicious skill plugin* threat class
+  (runtime behavior exceeding self-declared permissions), which
+  intent-alignment judges detect at only 75–94% because the covert
+  side-channel rides a legitimate operation.
   agent runtime has *no* interface except the gate — capabilities are
   synthesized from a declared intent Manifest, POSIX primitives are
   permanently excluded, and every external effect passes mandatory
@@ -125,6 +140,13 @@ hook.
    LLM-judge governors (jia2026finharness, AgenticOS): use a deterministic
    core for the hard invariants and reserve model-based scoring for the
    graded, drift-sensitive escalation where determinism is infeasible.
+   ge2026governance independently reaches the same division from the
+   statistics side: under a realistic attack prior the judge's precision
+   collapses (22.7% PPV at 1% prevalence), so the sandbox is the always-on
+   containment boundary and judge escalations route to human review or
+   rollback rather than silent blocking — and the deterministic layers cost
+   ~18 ms next to the judge's ~1 s, so there is no latency excuse for
+   skipping them.
 
 5. **Scope permissions in time, and close them on trusted events.** Per
    santosgrueiro2026lingering: an approval granted for a subgoal should
