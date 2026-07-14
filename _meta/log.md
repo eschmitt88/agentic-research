@@ -234,3 +234,5 @@ skills; read by `/lint`.
 2026-07-14 04:36 ingest raw/papers/zou2026fmlbench.pdf
 2026-07-14 04:44 fetch-paper https://arxiv.org/abs/2606.16523 → raw/papers/huang2026skillwiki.pdf
 2026-07-14 04:44 ingest raw/papers/huang2026skillwiki.pdf
+2026-07-14 04:47 curate raw/_candidates/2026-07-13-digest.md ingested=6 declined=5 dup=0 (plus 3 pre-ingested by digest auto-advance)
+2026-07-14 04:47 promote-moc: no MoC ripe after curate batch — 6 papers enriched 10 existing concepts, no new concepts seeded; cluster membership unchanged from 2026-07-13 assessment (governance 4+1 marginal/mapped-elsewhere, skills ~3, unmapped still only permission-gate-as-architecture + shared-skill-namespace)
