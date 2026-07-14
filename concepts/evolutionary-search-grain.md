@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/romeraparedes2024funsearch]]"
   - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/papers/jin2026toward]]"
+  - "[[literature/papers/zou2026fmlbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -102,9 +103,26 @@ The grain choice cascades into the rest of the architecture:
   comparison on a single problem at both grains would calibrate
   whether grain or model strength is the dominant factor for the
   reported AlphaEvolve > FunSearch results.
+  *Partially answered at the adjacent axis:*
+  [[literature/papers/zou2026fmlbench]] runs exactly this controlled
+  design for search *topology* (greedy vs parallel-linear vs best-first
+  tree vs MCTS vs evolutionary; same LLM, same code editor, same step
+  budget, 18 tasks). Result: complexity does not predict performance —
+  greedy hill-climbing ties the best tree search and principled MCTS
+  ranks last — and which topology wins is governed by the task's
+  improvement-opportunity density (greedy on dense landscapes, broad
+  frontier-keeping search on sparse ones). The same methodology applied
+  to grain is still open.
 - **Can grain be chosen adaptively per generation?** A meta-controller
   that picks "edit this function" vs "rewrite this file" based on
   current population diversity would unify the two regimes.
+  zou2026fmlbench validates the analogous move for topology: its
+  AdaptiveSearch runs greedy as a *probe* and irreversibly switches to
+  multi-branch exploration when validation improvement stalls for W
+  consecutive steps — beating every fixed strategy on both dense and
+  sparse task partitions. Stall-triggered escalation is the cheapest
+  online signal that works; no prior knowledge of the task's opportunity
+  structure is needed.
 - **The interpretability cost of larger grain is asserted but not
   measured.** Mathematicians reading FunSearch outputs is a strong
   qualitative claim. Whether AlphaEvolve's whole-file outputs are
