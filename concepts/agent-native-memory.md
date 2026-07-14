@@ -38,6 +38,7 @@ sources:
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
 used_by: []
 related_concepts:
+  - "[[concepts/llm-wiki-pattern]]"
   - "[[concepts/structured-world-model]]"
   - "[[concepts/file-as-bus]]"
   - "[[concepts/citation-anchoring]]"

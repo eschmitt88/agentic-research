@@ -28,6 +28,10 @@ and `/new-experiment`.
   evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool,
   budget-as-ceiling.
 
+## Literature / posts (recent)
+
+- [[literature/posts/gist-github-com-karpathy-llm-wiki]] — Karpathy's LLM Wiki gist (primary source for [[concepts/llm-wiki-pattern]]: compile-time curation, raw/wiki/schema layers)
+
 ## Literature / papers
 
 - [[literature/papers/xu2025amem]] — A-Mem (Zettelkasten agent memory: LLM link generation + retroactive memory evolution; NeurIPS 2025, code)
