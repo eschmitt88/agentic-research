@@ -411,3 +411,23 @@ Only two of the 24 concepts remain unmapped — `permission-gate-as-architecture
 Per the repo's `agency: max` precedent for no-op verdicts, I appended the one-line verdict to `_meta/log.md` and committed/pushed it (`676ae6b`), leaving the unrelated modified `_meta/elevate.log` out of the commit.
 
 One unrelated note: the claude.ai Google Drive MCP server needs authentication before its tools work — since this session is non-interactive, you'd have to authorize it via your claude.ai connector settings if you want it available.
+/curate is complete — the backlog is drained to zero and everything is pushed.
+
+**What was curated:** one uncurated file (`2026-07-13-digest.md`, 14 items; 3 had already been ingested by the digest's auto-advance). The coordinator verdict was slow/normal throughout, so I worked one fetch→ingest at a time with a commit+push per paper, re-checking headroom between units.
+
+**Ingested 6** (each with a literature note, trust-signal frontmatter, and concept enrichment):
+
+| Paper | Rel/Cred | What it added |
+|---|---|---|
+| ge2026governance (LGA, 2603.07191) | 4/2 | 9th attestation for `permission-gate-as-architecture` — first quantified judge-gate benchmark; PPV collapses to 22.7% at 1% attack prevalence, independently backing the deterministic-core thesis |
+| ji2026memory (MRAgent, ICML 2026 + code) | 4/4 | Third routing paradigm for `multi-granularity-memory` (active reconstruction); continuation-gating axis for `selective-memory-retrieval` |
+| hu2026flashevolve (UCSD) | 4/3 | First firsthand anchor for `async-worker-pool`: artifact versioning, staleness-repair (Reflective Async), rate-based worker balancing |
+| atinafu2026rewardhacking (Waterloo + code) | 4/3 | Splits `hce-evaluation` into two independent vectors — our `test/` rule guards leakage, but evaluator tampering is the vector agents naturally attempt; added protect-the-evaluator guidance |
+| zou2026fmlbench (NUS/Meta/Weco + code) | 4/4 | Controlled strategy comparison: complexity ≠ performance; stagnation should trigger a strategy *switch* before a halt — noted against our `max_consecutive_no_improvement` ceiling |
+| huang2026skillwiki (HIT/Tencent, demo) | 3/3 | Infrastructure layer for `skill-library-lifecycle` (S0–S7 governance states, provenance graph); answers `shared-skill-namespace`'s registry open question |
+
+**Declined 5** with recorded reasons in the archived file: the .NET blog (attestation without new content), the harness-safety audit (weakest of three governance items), GEAR (evolutionary attestation already dense), the memory-generality diagnostics paper (superseded by MRAgent this window), and ARTS (FML-bench covers the search-policy question with cleaner evidence).
+
+**Close-out:** curation section + `curated: 2026-07-14` appended, file archived to `_done/`, `_meta/log.md` updated, promote-moc checked (declined — 10 concepts enriched but none seeded, so no cluster newly ripe). Seven commits pushed, `0a3dac6` through `19e732d`.
+
+One observation worth flagging: the nightly 04:00 curate sweep (ADR 0001) apparently didn't drain this file before your manual invocation — worth checking whether the cron job ran this morning.
