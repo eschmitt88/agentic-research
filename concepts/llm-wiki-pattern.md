@@ -8,6 +8,7 @@ sources:
   - "[[literature/papers/xu2025amem]]"
   - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
   - "[[literature/repos/eugeniughelbur-obsidian-second-brain]]"
+  - "[[literature/repos/agricidaniel-claude-obsidian]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -113,6 +114,20 @@ the vault learned it, giving reconciliation an audit trail. Still only
 one team's self-report, not an ablation or an independent evaluation —
 this is corroborating design convergence, not proof any given
 mechanism works better than the alternatives.
+
+**A third, larger implementation with a different emphasis.**
+`claude-obsidian` ([[literature/repos/agricidaniel-claude-obsidian]],
+9.4k stars, the highest-visibility repo in this cluster) converges on
+the same three-layer shape but its distinctive contributions are
+engineering concerns none of the other sources name: per-file advisory
+locks for concurrent ingest sub-agents (`wiki-lock.sh`), a benchmarked
+hybrid-retrieval pipeline (BM25 + optional Anthropic contextual-prefix
++ local cosine rerank, self-reported +32pp top-1 accuracy over a
+BM25-only baseline), and a web-egress hygiene policy for its autonomous
+research loop (URL scheme/host filtering, script stripping,
+wikilink-injection defense, body-size caps) — a threat model (fetched
+content injecting the LLM-owned wiki) none of the other three sources
+raise explicitly.
 
 ## Open questions
 
