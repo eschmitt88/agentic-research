@@ -450,3 +450,13 @@ The interesting finding is that last one: it's the only theme actually accumulat
 
 No files were changed, so there's nothing to commit. Per the skill contract, restraint is the outcome here.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Curation batch complete. Summary:
+
+**Ingested (3):**
+- **#4** eugeniughelbur/obsidian-second-brain (rel 4/cred 3) — same author as the already-ingested critique; implements all five gaps that critique flagged, plus a new OKM freshness-policy + bi-temporal-facts mechanism. Substantially updated `concepts/llm-wiki-pattern`.
+- **#5** AgriciDaniel/claude-obsidian (rel 3/cred 2) — highest-visibility (9.4k★) implementation; distinctive for multi-writer locking, a benchmarked hybrid-retrieval pipeline, and web-egress hygiene. Also added to `llm-wiki-pattern`.
+- **#6** Mem0 paper (chhikara2025mem0, rel 4/cred 4) — production-scale (60.8k★) memory system with an explicit ADD/UPDATE/DELETE/NOOP write gate; updated `concepts/agent-native-memory` and `concepts/verified-memory-writes` as a second (coarser) write-verification attestation alongside TrustMem.
+
+**Declined (2):** #7 (practitioner blog, redundant with already-ingested primary sources) and #8 (survey video, thin, explicitly flagged as low-evidence in the original triage).
+
+The candidate file is archived to `_done/`, `/promote-moc` ran and correctly declined — the memory-tagged cluster (5 concepts) is already fully covered by the existing `knowledge-organization-for-research-agents` MoC. Six commits pushed; uncurated backlog is back to zero.
