@@ -32,6 +32,7 @@ and `/new-experiment`.
 
 - [[literature/posts/gist-github-com-karpathy-llm-wiki]] — Karpathy's LLM Wiki gist (primary source for [[concepts/llm-wiki-pattern]]: compile-time curation, raw/wiki/schema layers)
 - [[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]] — the rebuild critique (five gaps of append-only wikis; AI-first vault; reversible automation)
+- [[literature/repos/eugeniughelbur-obsidian-second-brain]] — same author's tool claiming all five critique gaps closed; adds OKM freshness policy + bi-temporal facts (rel 4 / cred 3)
 
 ## Literature / papers
 
