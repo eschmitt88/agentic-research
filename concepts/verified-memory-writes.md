@@ -6,6 +6,7 @@ added: "2026-07-07"
 sources:
   - "[[literature/papers/yang2026trustmem]]"
   - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
+  - "[[literature/papers/chhikara2025mem0]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -72,8 +73,24 @@ The pattern generalizes beyond conversational memory:
   That is write-time verification implemented as *delayed commit +
   human backstop* rather than a verifier model: same principle
   (trust enforced at consolidation, not retrieval), opposite
-  mechanism cost. TrustMem remains the only *academic* attestation;
-  the concept stays `seedling` until a second paper-grade source
-  lands. Adjacent evidence to watch: memory admission control and
-  provenance-aware memory (cited in TrustMem's related work but not
-  yet in this graph).
+  mechanism cost.
+- **A second paper-grade source, at production scale but with a
+  weaker gate.** Mem0 ([[literature/papers/chhikara2025mem0]], 60.8k
+  GitHub stars, deployed) makes every write pass through an explicit
+  four-way decision — ADD / UPDATE / DELETE / NOOP — chosen by an LLM
+  tool-call conditioned on the top-*s* most similar existing memories.
+  This confirms the *shape* of TrustMem's claim (writes should be
+  gated, not appended unconditionally) at real deployment scale, but
+  the gate itself is a single undifferentiated LLM judgment call, not
+  a dedicated verifier scored against explicit coverage /
+  preservation / faithfulness axes — i.e. evidence that *some* write
+  gate helps, not evidence for TrustMem's specific verification
+  design. TrustMem remains the only source with a *decomposed,
+  measured* verification rubric (40–79% error reduction attributed to
+  the coverage/preservation/faithfulness split specifically); Mem0
+  and the practice report are corroborating but coarser. The concept
+  stays `seedling` — still no independent replication of TrustMem's
+  own ablation, and no source yet compares a coarse single-judgment
+  gate against a decomposed one head-to-head. Adjacent evidence to
+  watch: memory admission control and provenance-aware memory (cited
+  in TrustMem's related work but not yet in this graph).

@@ -246,3 +246,5 @@ skills; read by `/lint`.
 2026-07-14 14:27 promote-moc knowledge-organization += llm-wiki-pattern (12 concepts)
 2026-07-15 04:02 ingest raw/repos/eugeniughelbur-obsidian-second-brain.md
 2026-07-15 04:03 ingest raw/repos/agricidaniel-claude-obsidian.md
+2026-07-15 04:06 fetch-paper 2504.19413 → raw/papers/chhikara2025mem0.pdf
+2026-07-15 04:06 ingest raw/papers/chhikara2025mem0.pdf
