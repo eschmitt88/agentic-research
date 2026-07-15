@@ -249,3 +249,4 @@ skills; read by `/lint`.
 2026-07-15 04:06 fetch-paper 2504.19413 → raw/papers/chhikara2025mem0.pdf
 2026-07-15 04:06 ingest raw/papers/chhikara2025mem0.pdf
 2026-07-15 04:07 curate 2026-07-14-agentic-second-brains.md ingested=3 declined=2 dup=0
+2026-07-15 04:07 promote-moc: declined — memory-tagged cluster (agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval, verified-memory-writes) fully covered by existing knowledge-organization-for-research-agents MoC; no ripe un-mapped cluster after 2026-07-15 curate batch
