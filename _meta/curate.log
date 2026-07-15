@@ -460,3 +460,18 @@ Curation batch complete. Summary:
 **Declined (2):** #7 (practitioner blog, redundant with already-ingested primary sources) and #8 (survey video, thin, explicitly flagged as low-evidence in the original triage).
 
 The candidate file is archived to `_done/`, `/promote-moc` ran and correctly declined — the memory-tagged cluster (5 concepts) is already fully covered by the existing `knowledge-organization-for-research-agents` MoC. Six commits pushed; uncurated backlog is back to zero.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion needed — I independently re-derived the same result already committed this morning (`a87c104`).
+
+**Cluster check** (25 concepts, 4 existing MoCs):
+
+| Tag cluster | Size | Status |
+|---|---|---|
+| `memory` (agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval, verified-memory-writes) | 5 | 100% already in `knowledge-organization-for-research-agents` |
+| `evaluation` (citation-anchoring, compression-as-generalization-test, hce-evaluation, pass-at-k, programmable-evaluator-oracle, typed-claim-partition) | 6 | 100% already in `evaluation-integrity` |
+| `agent-architecture` (agent-native-memory, file-as-bus, hierarchical-delegation, hybrid-model-backends, scripted-tool-pipelines) | 5 | 100% already in `agent-architecture` |
+| `knowledge-organization` tag itself | 6 | 100% already in `knowledge-organization-for-research-agents` |
+
+**Unmapped concepts:** only `permission-gate-as-architecture` and `shared-skill-namespace` — 2, short of the >=5 ripeness threshold.
+
+Nothing has changed since the 04:07 nightly sweep (`a87c104`, logged: "no ripe cluster — memory tags fully covered by knowledge-organization MoC"): no new concepts, no candidates in `raw/_candidates/` beyond the already-archived `_done/`. Declining to write a duplicate log entry or commit — that would just be noise on top of the existing decision. Nothing to push for this either (the one unpushed local commit is unrelated, from the prior session).
