@@ -5,6 +5,7 @@ discovered: 2026-07-14
 source: discover
 n_requested: 10
 n_returned: 8
+curated: 2026-07-15
 ---
 
 # Triage: agentic second brains / LLM-managed PKM
@@ -131,3 +132,44 @@ an independent domain.
 - **Ingested #2 Karpathy gist** → `literature/posts/gist-github-com-karpathy-llm-wiki.md` (rel 4); seeded `concepts/llm-wiki-pattern`
 - **Ingested #3 rebuild critique** → `literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki.md` (rel 4)
 - Entries 4–8 remain for the nightly `/curate` sweep.
+
+## Curation
+
+Dedup check against `literature/**` `source:`/`url:` fields: none of
+entries 4–8 were already in the graph (entry 3's URL was the only hit,
+already recorded above as ingested). Coordinator headroom verdict at
+curation time: `go` / `high` (7.6% weekly spend, resources idle) —
+proceeded autonomously per `agency: max`.
+
+- **Ingested #4 eugeniughelbur/obsidian-second-brain** →
+  `literature/repos/eugeniughelbur-obsidian-second-brain.md` (rel 4 /
+  cred 3); updated `concepts/llm-wiki-pattern` — this is the same
+  author's tool implementing all five gaps the rebuild critique (#3)
+  named as missing, plus a named OKM freshness policy and bi-temporal
+  facts not covered by any prior source.
+- **Ingested #5 AgriciDaniel/claude-obsidian** →
+  `literature/repos/agricidaniel-claude-obsidian.md` (rel 3 / cred 2);
+  updated `concepts/llm-wiki-pattern` — highest-visibility (9.4k star)
+  implementation, distinctive for multi-writer advisory locking, a
+  benchmarked hybrid-retrieval pipeline, and a web-egress hygiene
+  policy none of the other sources name. Credibility capped by a
+  promotional "Pro membership" upsell layered on the open-source
+  release and an unverified self-reported benchmark.
+- **Ingested #6 Mem0 (chhikara2025mem0)** →
+  `literature/papers/chhikara2025mem0.md` (rel 4 / cred 4); updated
+  `concepts/agent-native-memory` and `concepts/verified-memory-writes`
+  — production-scale (60.8k star, deployed) counterpoint to A-Mem,
+  with an explicit ADD/UPDATE/DELETE/NOOP write-gate that corroborates
+  (but doesn't replicate) TrustMem's write-verification claim.
+- **Declined #7 aimaker.substack.com walkthrough** — redundant with
+  already-ingested primary source (#2, the gist) and critique (#3);
+  a single practitioner blog post with no unique mechanism, benchmark,
+  or claim beyond what's now covered by six substantive sources in
+  this same batch. Not legally fraught or off-mission, just thin
+  relative to what's already in the graph.
+- **Declined #8 Wes Roth — "Claude Built the Ultimate Second Brain"**
+  — ecosystem-survey video, no code or novel claims; the original
+  triage note already flagged it as "low evidence weight on its own,"
+  and its role (recording why this sweep was triggered) is now
+  satisfied by this candidate file itself. Superseded by the six
+  substantive sources ingested above.

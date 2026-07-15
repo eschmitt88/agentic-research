@@ -248,3 +248,4 @@ skills; read by `/lint`.
 2026-07-15 04:03 ingest raw/repos/agricidaniel-claude-obsidian.md
 2026-07-15 04:06 fetch-paper 2504.19413 → raw/papers/chhikara2025mem0.pdf
 2026-07-15 04:06 ingest raw/papers/chhikara2025mem0.pdf
+2026-07-15 04:07 curate 2026-07-14-agentic-second-brains.md ingested=3 declined=2 dup=0
