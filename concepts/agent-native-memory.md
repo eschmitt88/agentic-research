@@ -33,6 +33,7 @@ sources:
   - "[[literature/papers/xu2026single]]"
   - "[[literature/papers/zhou2026ready]]"
   - "[[literature/papers/xu2025amem]]"
+  - "[[literature/papers/chhikara2025mem0]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
@@ -172,6 +173,18 @@ otherwise default to bolting on a vector store.
    rewrites neighbors in place, losing what they said before) is
    answered here by guidance #8 — evolve *through* git history, not
    over it.
+
+   Mem0 ([[literature/papers/chhikara2025mem0]], 60.8k-star deployed
+   system) is the production-scale sibling to A-Mem's academic design:
+   same principle (an LLM decides how new information changes existing
+   memory) at conversation scale rather than corpus scale, via a
+   coarser four-way ADD/UPDATE/DELETE/NOOP tool-call instead of A-Mem's
+   note-linking-plus-evolution. It trades A-Mem's richer cross-linking
+   for 91% lower p95 latency and >90% token savings vs. full-context —
+   a concrete data point that *how much* structure a write policy
+   carries is a tunable cost/quality knob, not a fixed requirement.
+   See [[concepts/verified-memory-writes]] for how its write gate
+   compares to TrustMem's decomposed verification.
 
 ## Connections
 

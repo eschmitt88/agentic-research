@@ -38,6 +38,7 @@ and `/new-experiment`.
 ## Literature / papers
 
 - [[literature/papers/xu2025amem]] — A-Mem (Zettelkasten agent memory: LLM link generation + retroactive memory evolution; NeurIPS 2025, code)
+- [[literature/papers/chhikara2025mem0]] — Mem0 (production memory layer, 60.8k stars; ADD/UPDATE/DELETE/NOOP write policy, 91% lower p95 latency vs full-context; rel 4 / cred 4)
 - [[literature/papers/shen2026dynamic]] — SLIM (skill retirement by leave-one-skill-out marginal contribution; removal ≠ internalization)
 - [[literature/papers/santosgrueiro2026lingering]] — Lingering Authority / PORTICO (permissions with lifetimes; epoch-bound revocable capability handles)
 - [[literature/papers/zhao2026generative]] — Generative Skill Composition (which/how-many/what-order as sequence prediction; 3.9M specialist beats LLM-judge)
