@@ -7,6 +7,7 @@ sources:
   - "[[literature/posts/gist-github-com-karpathy-llm-wiki]]"
   - "[[literature/papers/xu2025amem]]"
   - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
+  - "[[literature/repos/eugeniughelbur-obsidian-second-brain]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -95,13 +96,36 @@ evolve on ingest; literature notes are append-only), (2) and (3)
 missing — no contradiction-reconciliation pass, and `/promote-moc` is
 the only unsolicited synthesis.
 
+**A second, independent implementation of the critique's checklist.**
+The same author's `obsidian-second-brain` tool
+([[literature/repos/eugeniughelbur-obsidian-second-brain]]) claims all
+five gaps closed: `/obsidian-ingest` rewrites 5–15 existing pages per
+source (1), `/obsidian-reconcile` runs on demand and nightly (2),
+`/obsidian-synthesize` writes unprompted pattern pages (3), four
+cron-scheduled agents plus a post-compaction background agent (4), and
+an "AI-first" `## For future Claude` note preamble (5). It adds one
+mechanism neither the critique nor A-Mem names: **OKM (Open Knowledge
+Metabolism)** — a spec'd, linted rule that every stored fact must be
+*timeless*, *dated*, or *a pointer*, so fast-changing facts are never
+copied in to go stale, only linked with an `as of` stamp — plus
+**bi-temporal facts** that record both when a claim was true and when
+the vault learned it, giving reconciliation an audit trail. Still only
+one team's self-report, not an ablation or an independent evaluation —
+this is corroborating design convergence, not proof any given
+mechanism works better than the alternatives.
+
 ## Open questions
 
 - **Which maintenance operations are essential vs nice-to-have.** The
-  critique treats all five as required for production; only (2)
-  reconciliation has an academic co-attestation so far (A-Mem's
-  evolution). A weekly reconciliation pass is the obvious candidate
-  mechanism to trial here before any `/elevate` proposal.
+  critique treats all five as required for production; (2)
+  reconciliation now has two independent implementations pointing the
+  same direction (A-Mem's evolution ablation, and this repo's
+  `/obsidian-reconcile` + bi-temporal audit trail) but still no
+  controlled comparison. A weekly reconciliation pass is the obvious
+  candidate mechanism to trial here before any `/elevate` proposal —
+  and `freshness-policy.md`'s timeless/dated/pointer taxonomy is a
+  concrete design worth stealing for that trial rather than inventing
+  one from scratch.
 - **AI-first vs human-readable tension.** Gap 5 inverts
   [[concepts/agent-native-memory]]'s "human-readable artifacts"
   framing; in practice the formats converge (frontmatter + wikilinks +

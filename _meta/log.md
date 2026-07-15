@@ -244,3 +244,4 @@ skills; read by `/lint`.
 2026-07-14 14:24 fetch-paper https://theaioperator.io/p/i-rebuilt-karpathys-llm-wiki-heres → raw/web/theaioperator-io-rebuilt-karpathy-llm-wiki.md
 2026-07-14 14:26 ingest raw/web/theaioperator-io-rebuilt-karpathy-llm-wiki.md
 2026-07-14 14:27 promote-moc knowledge-organization += llm-wiki-pattern (12 concepts)
+2026-07-15 04:02 ingest raw/repos/eugeniughelbur-obsidian-second-brain.md
