@@ -475,3 +475,23 @@ No promotion needed — I independently re-derived the same result already commi
 **Unmapped concepts:** only `permission-gate-as-architecture` and `shared-skill-namespace` — 2, short of the >=5 ripeness threshold.
 
 Nothing has changed since the 04:07 nightly sweep (`a87c104`, logged: "no ripe cluster — memory tags fully covered by knowledge-organization MoC"): no new concepts, no candidates in `raw/_candidates/` beyond the already-archived `_done/`. Declining to write a duplicate log entry or commit — that would just be noise on top of the existing decision. Nothing to push for this either (the one unpushed local commit is unrelated, from the prior session).
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**No ripe cluster — declining to promote.** The concept graph is byte-identical to what the 2026-07-15 nightly sweep (a87c104) and a same-day re-derivation already evaluated, so I'm not writing a duplicate log entry or manufacturing a MoC.
+
+Full cluster scan (25 concepts, 4 existing MoCs):
+
+| Candidate cluster | Concepts | Overlap with existing MoCs |
+|---|---|---|
+| memory | 5 (agent-native-memory, multi-granularity-memory, verified-memory-writes, context-eviction-policy, selective-memory-retrieval) | **5/5** already in knowledge-organization-for-research-agents — declined |
+| evaluation | 6 | 6/6 in evaluation-integrity — declined |
+| agent-architecture | 5 | 5/5 in agent-architecture — declined |
+| knowledge-organization | 6 | 6/6 in knowledge-organization-for-research-agents — declined |
+| evolutionary-search | 3 | all in autonomous-search-loop — declined (also under threshold) |
+| safety/governance | ~2 (permission-gate-as-architecture, budget-as-ceiling) | under the ≥5 threshold — declined |
+| skills | 2 (shared-skill-namespace, skill-library-lifecycle) | under threshold — declined |
+
+Only two concepts sit in no MoC at all: `permission-gate-as-architecture` and `shared-skill-namespace`. The next ripening frontier is a **safety/governance** or **skills-ecosystem** cluster — each needs roughly 3 more concepts before promotion makes sense.
+
+Housekeeping: I pushed the one unpushed commit (4f0fbce, yesterday's session record) per the repo's auto-push rule. I left the uncommitted `_meta/curate.log` change alone — it's trailing state from a prior session (its own analysis notes plus a SessionEnd hook-failure line), not this run's work.
+
+Separately: the claude.ai Google Drive MCP server needs authorization before its tools work here; since this session is non-interactive, you'd enable it via your claude.ai connector settings if you want it.
