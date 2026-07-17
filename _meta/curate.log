@@ -495,3 +495,19 @@ Only two concepts sit in no MoC at all: `permission-gate-as-architecture` and `s
 Housekeeping: I pushed the one unpushed commit (4f0fbce, yesterday's session record) per the repo's auto-push rule. I left the uncommitted `_meta/curate.log` change alone — it's trailing state from a prior session (its own analysis notes plus a SessionEnd hook-failure line), not this run's work.
 
 Separately: the claude.ai Google Drive MCP server needs authorization before its tools work here; since this session is non-interactive, you'd enable it via your claude.ai connector settings if you want it.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No cluster is ripe — nothing to promote this run.
+
+**The numbers:** 24 concepts exist, and 23 of them are already mapped across the four MoCs. Only two concepts are unmapped: `permission-gate-as-architecture` and `shared-skill-namespace`. Every candidate cluster fails the ripeness test:
+
+| Cluster (by tags) | Size | Why declined |
+|---|---|---|
+| memory (agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval, verified-memory-writes) | 5 | All 5 already live in `knowledge-organization-for-research-agents` — 100% overlap. Same verdict as the 2026-07-16 session, now with even less room since verified-memory-writes and context-eviction-policy were folded in. |
+| evaluation (hce-evaluation, pass-at-k, citation-anchoring, typed-claim-partition, programmable-evaluator-oracle, compression-as-generalization-test) | 6 | Exactly the `evaluation-integrity` MoC's concept list. |
+| agent-architecture (file-as-bus, hierarchical-delegation, hybrid-model-backends, scripted-tool-pipelines, agent-native-memory) | 5 | Exactly the `agent-architecture` MoC. |
+| safety / governance (permission-gate-as-architecture) | 1 | Far below the 5-concept threshold. |
+| skills / interop (shared-skill-namespace, skill-library-lifecycle) | 2 | Below threshold, and skill-library-lifecycle is already mapped. |
+
+**Watch item for future runs:** the skills/interop theme is the most plausible next MoC — it needs roughly three more concepts (e.g. around skill portability, procedural-memory formats, or harness ecosystems) before it's worth promoting. The safety theme would need four more.
+
+Per the skill's restraint clause, I'm making no writes and no commit — the graph is fully mapped as it stands, which is the healthy state, not a failure.
