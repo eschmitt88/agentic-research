@@ -511,3 +511,4 @@ No cluster is ripe — nothing to promote this run.
 **Watch item for future runs:** the skills/interop theme is the most plausible next MoC — it needs roughly three more concepts (e.g. around skill portability, procedural-memory formats, or harness ecosystems) before it's worth promoting. The safety theme would need four more.
 
 Per the skill's restraint clause, I'm making no writes and no commit — the graph is fully mapped as it stands, which is the healthy state, not a failure.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
