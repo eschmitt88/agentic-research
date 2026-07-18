@@ -512,3 +512,12 @@ No cluster is ripe — nothing to promote this run.
 
 Per the skill's restraint clause, I'm making no writes and no commit — the graph is fully mapped as it stands, which is the healthy state, not a failure.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Promoted **`mocs/capability-layer.md`** — the project's fifth MoC — committed and pushed as `59d1385`.
+
+**What was detected.** Of 24 concepts, only two were in no MoC at all: `shared-skill-namespace` and `permission-gate-as-architecture`. Together with `skill-library-lifecycle`, `scripted-tool-pipelines`, and `hybrid-model-backends` they form a coherent 5-concept cluster on the agent's **action surface** — how procedural capability (skills and tool access) is authored, ported across harnesses, executed cheaply, and gated safely. No existing MoC covers more than 2 of the 5 (agent-architecture holds the two shared seam concepts), so it passed both ripeness tests. The cluster ripened only in the last few days: the 07-16/17 sessions ingested a skill-ecosystem literature wave (SLIM, SkillWiki, PORTICO, Generative Skill Composition, ge2026governance), and the prior curate run's own log had flagged "skills/interop" as the most plausible next MoC once it gained ~3 more concepts — which it now has.
+
+**Declined**, per the restraint clause: a memory MoC (5 memory-tagged concepts, but all already in knowledge-organization — same verdict as the 07-15 sweep) and a standalone safety MoC (only ~2 genuinely safety-themed concepts).
+
+**The MoC itself** organizes the five into four layers — authoring (write-side lifecycle), portability (shared namespace), execution (scripted pipelines + model dispatch), governance (the gate as regulator) — closing on the hypothesis that the capability layer is standardizing the way package ecosystems did and will inherit their supply-chain failure modes, with the permission gate as the analogue of package signing. It also notes this project's own `~/.claude/skills/` are artifacts of the layer it describes, so lifecycle findings are directly testable here.
+
+Housekeeping: `_meta/index.md` lists the new MoC, `_meta/log.md` has the promote line, and a stray hook-noise line in `_meta/curate.log` left over from a prior sweep was committed along with it. Frontmatter backlinks were skipped — concepts carry no `mocs:` field, and the skill says not to invent one.
