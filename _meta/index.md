@@ -27,6 +27,10 @@ and `/new-experiment`.
   candidate space productively; 5 concepts: evolutionary-expansion,
   evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool,
   budget-as-ceiling.
+- [[mocs/capability-layer]] — the agent's action surface: how procedural
+  capability is authored, ported, executed, and gated; 5 concepts:
+  skill-library-lifecycle, shared-skill-namespace, scripted-tool-pipelines,
+  hybrid-model-backends, permission-gate-as-architecture.
 
 ## Literature / posts (recent)
 
