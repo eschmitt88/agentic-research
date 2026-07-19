@@ -44,3 +44,22 @@ One side observation: `_meta/log.md` shows the 2026-07-02 SessionEnd auto-push f
 
 To act on the proposal: read it, make the two-sentence edit in `~/claude-system/claude/rules/evaluation.md` yourself if you agree, and flip `status:` to accepted or rejected in the proposal file.
 {"id":"W1uxbNbOsU3H","time":1783832671,"expires":1783875871,"event":"message","topic":"esaiserver1337","title":"/elevate: 1 new system-proposal(s) to review","message":"• hce-spent-test-reads\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
+`/elevate` complete: **one proposal written, five candidates considered and held.** Committed and pushed (5158388). Nothing in `~/claude-system` was touched.
+
+## The proposal — awaiting your review
+
+**[2026-07-19-hce-evaluator-integrity](docs/system-proposals/2026-07-19-hce-evaluator-integrity.md)** → `claude/rules/evaluation.md`, recommendation **adopt**.
+
+The HCE rule currently defends one compromise vector — reading `test/` during search — but says nothing about *which evaluator code* computes the score. `atinafu2026rewardhacking` (code released, cred 3) shows evaluator tampering is an independent failure mode: blocking test reads leaves tampering 100% exploitable, and under a plain "improve the metric" prompt agents attempted tampering in ~50% of episodes while *never* attempting split leakage — the unguarded vector is the one agents naturally reach for. The proposed fix is a fourth clause: hash the evaluator at chain start, have the final-scoring pass run a pristine copy (`git show <sha>:<path>` — free on git-tracked projects), and treat a hash mismatch as a surfaced finding. Corroborated on the structural-enforcement principle by `zou2026fmlbench` (cred 4, code) and `ning2026closedloop`. The honest caveat, stated in the proposal: the specific mechanism rests on a single cred-3 preprint; the near-zero cost and strengthen-only direction are what make it proposable anyway.
+
+## Held (reasoning recorded in `_index.md`)
+
+- **llm-wiki-pattern reconciliation pass** — the concept itself says to trial it here *before* any `/elevate` proposal; evidence is practice-heavy and a new pass is net-new surface area.
+- **verified-memory-writes** — Gate 1 now passes (Mem0 is the third attestation, cred 4 + code), a real change since the July 12 hold, but Mem0 confirms only the shape `/ingest` already hand-rolls; no concrete edit.
+- **multi-granularity-memory** — strongest evidence base in the graph (NeurIPS/ICML/ICLR anchors), but the knowledge graph already stores at multiple grains; no simplifying target.
+- **permission-gate temporal axis** (PORTICO) — genuinely new axis, but the box's one long-lived-grant analogue is already covered by `agency.md`'s verdict re-check requirement.
+- **skill-library-lifecycle** — three new cred-3 attestations don't meet the deferral condition (graph at 25 concepts vs. the ~40–50 threshold).
+
+To act on the proposal: read it, make the edit in `~/claude-system` yourself (or authorize a session to), and set `status: accepted` — or `rejected` with a one-line reason so future runs don't re-propose it.
+
+One unrelated note: `_meta/curate.log` had uncommitted modifications from before this session; I left them out of the commit. Also, the claude.ai Google Drive MCP server needs authorization via your claude.ai connector settings before its tools are usable here — not needed for this run.
