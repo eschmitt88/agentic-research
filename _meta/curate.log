@@ -521,3 +521,18 @@ Promoted **`mocs/capability-layer.md`** — the project's fifth MoC — committe
 **The MoC itself** organizes the five into four layers — authoring (write-side lifecycle), portability (shared namespace), execution (scripted pipelines + model dispatch), governance (the gate as regulator) — closing on the hypothesis that the capability layer is standardizing the way package ecosystems did and will inherit their supply-chain failure modes, with the permission gate as the analogue of package signing. It also notes this project's own `~/.claude/skills/` are artifacts of the layer it describes, so lifecycle findings are directly testable here.
 
 Housekeeping: `_meta/index.md` lists the new MoC, `_meta/log.md` has the promote line, and a stray hook-noise line in `_meta/curate.log` left over from a prior sweep was committed along with it. Frontmatter backlinks were skipped — concepts carry no `mocs:` field, and the skill says not to invent one.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion today — nothing is ripe. Every cluster of ≥5 related concepts is already majority-covered by an existing MoC, so per the ripeness rule I'm declining rather than manufacturing a redundant map.
+
+What I found, cluster by cluster:
+
+- **Memory** (6: agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval, verified-memory-writes, + skill-library-lifecycle via `procedural-memory`) — this cluster did grow past the threshold since the last check, but all five core memory concepts are already members of `mocs/knowledge-organization-for-research-agents.md`. A standalone agent-memory MoC would duplicate it, the same call the 2026-07-18 session made when it enriched that MoC instead. Declined.
+- **Evaluation** (6 concepts) — fully covered by `mocs/evaluation-integrity.md`. Declined.
+- **Agent architecture** (5) — fully covered by `mocs/agent-architecture.md`. Declined.
+- **Search/evolution** (5–6) — covered by `mocs/autonomous-search-loop.md`. Declined.
+- **Skills/capability** (5) — covered by `mocs/capability-layer.md`, promoted just yesterday. Declined.
+- **Coordination/long-horizon** (file-as-bus, hierarchical-delegation, structured-world-model) — only 3 concepts, below threshold, and all three are mapped elsewhere anyway. Not ripe.
+
+A full coverage check confirms all 25 concepts (excluding `_README`) appear in at least one of the five MoCs — there is no orphaned cluster hiding anywhere. The graph is fully mapped as of the capability-layer promotion.
+
+No files changed, so nothing to commit. One thing worth watching: the memory theme is the most likely future split — if it gains 2–3 more concepts that strain the knowledge-organization MoC's framing (it's now at 14 concepts, the largest by far), splitting a dedicated memory MoC out of it would be the move, per the skill's "split only when the sub-theme has clearly outgrown the parent" clause.
