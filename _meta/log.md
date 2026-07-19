@@ -251,3 +251,4 @@ skills; read by `/lint`.
 2026-07-15 04:07 curate 2026-07-14-agentic-second-brains.md ingested=3 declined=2 dup=0
 2026-07-15 04:07 promote-moc: declined — memory-tagged cluster (agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval, verified-memory-writes) fully covered by existing knowledge-organization-for-research-agents MoC; no ripe un-mapped cluster after 2026-07-15 curate batch
 2026-07-18 04:02 promote-moc capability-layer (5 concepts)
+2026-07-19 05:10 elevate proposals=1 considered=6 (proposed hce-evaluator-integrity; held llm-wiki-reconciliation, verified-memory-writes, multi-granularity-memory, permission-gate-temporal, skill-library-lifecycle)

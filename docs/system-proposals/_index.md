@@ -16,6 +16,54 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-06-28 | [lint-consolidation-check](2026-06-28-lint-consolidation-check.md) | `skills/lint/SKILL.md` | adopt-with-changes | **accepted** (minimal check-#5 amendment applied 2026-06-30, claude-system@f0b3aef; full 5b deferred) |
 | 2026-07-12 | [hce-spent-test-reads](2026-07-12-hce-spent-test-reads.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-07-14, claude-system@a16aa2d) |
 | 2026-07-14 | [experiment-loop-skill-scoping](2026-07-14-experiment-loop-skill-scoping.md) | `skills/` layout, new-project, propose, iterate | adopt | **accepted** (applied 2026-07-14, claude-system@ef0b199; 10 experiment projects symlinked) |
+| 2026-07-19 | [hce-evaluator-integrity](2026-07-19-hce-evaluator-integrity.md) | `rules/evaluation.md` | adopt | proposed |
+
+## Considered and held (2026-07-19 run)
+
+One proposal (above, from `atinafu2026rewardhacking`'s evaluator-tampering
+result). ~14 notes entered the graph since the 2026-07-12 run (ingested
+2026-07-13/15) plus the capability-layer MoC; the rest was considered and
+held:
+
+- **llm-wiki-pattern → a reconciliation/maintenance pass** (the rebuild
+  critique's five-gap checklist; this repo lacks (2) contradiction
+  reconciliation and (3) unsolicited synthesis). **Held on the concept's
+  own instruction** — its open questions say a weekly reconciliation pass
+  is "the obvious candidate mechanism to *trial here before* any
+  `/elevate` proposal." Evidence is also practice-heavy (Karpathy gist +
+  two practitioner repos + a newsletter post; `xu2025amem` is
+  peer-reviewed cred 5 but attests the adjacent evolution mechanism, not
+  a maintenance-pass design), and a new pass is net-new surface area.
+  The right first move is the trial the concept asks for.
+- **verified-memory-writes re-check** — Gate 1 now passes mechanically
+  (3 attestations incl. `chhikara2025mem0`, cred 4, code released at
+  60k+ stars), a material change from the 2026-07-12 single-attestation
+  hold. **Still held on Gate 2** — Mem0 confirms the *shape* (gate
+  writes, don't append) that `/ingest` already hand-rolls, not
+  TrustMem's decomposed rubric; the concept self-rates seedling with "no
+  independent replication"; no concrete simplifying edit surfaced.
+- **multi-granularity-memory → a grain-routing policy** — strongest
+  Gate 1 in the graph (9 sources; `xu2025amem` NeurIPS cred 5,
+  `ji2026memory` ICML cred 4 + code, `xu2026single` ICLR cred 4 + code).
+  **Held on Gate 2** — the graph already stores at multiple grains
+  (index one-liners / definitions / bodies / MoCs / git history), and
+  the un-enacted remainder (per-query routing machinery) adds behavioral
+  surface area with no simpler form. Precedent: the `zhou2026ready` hold
+  — strong evidence, no concrete target.
+- **permission-gate-as-architecture re-check (temporal axis)** —
+  `santosgrueiro2026lingering` (cred 3, first runnable artifact in the
+  cluster) adds a genuinely new axis: permission grants need lifetimes
+  and trusted-event closure. **Held on simplicity** — the prior
+  already-enacted hold stands; the box's only long-lived grant analogue
+  (the agency GO verdict) is already covered by `agency.md`'s "re-check
+  the verdict periodically inside a long burst," and no other concrete
+  target exists. `ge2026governance` (cred 2) fails Gate 1 on its own.
+- **skill-library-lifecycle re-check** — three new attestations
+  (`shen2026dynamic`, `zhao2026generative`, `huang2026skillwiki`, all
+  cred 3). The deferred full merge/split detector was conditioned on
+  graph size ~40–50 concepts; the graph is at 25. SLIM's
+  evidence-based-retirement warning is consistent with the accepted
+  check-#5 amendment; nothing new to propose yet.
 
 ## Considered and held (2026-07-12 run)
 
