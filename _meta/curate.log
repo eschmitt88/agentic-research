@@ -536,3 +536,4 @@ What I found, cluster by cluster:
 A full coverage check confirms all 25 concepts (excluding `_README`) appear in at least one of the five MoCs — there is no orphaned cluster hiding anywhere. The graph is fully mapped as of the capability-layer promotion.
 
 No files changed, so nothing to commit. One thing worth watching: the memory theme is the most likely future split — if it gains 2–3 more concepts that strain the knowledge-organization MoC's framing (it's now at 14 concepts, the largest by far), splitting a dedicated memory MoC out of it would be the move, per the skill's "split only when the sub-theme has clearly outgrown the parent" clause.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
