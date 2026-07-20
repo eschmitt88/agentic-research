@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/starace2025paperbench]]"
   - "[[literature/papers/jain2026agentic]]"
   - "[[literature/papers/wang2026naturebench]]"
+  - "[[literature/papers/lupidi2026airsbench]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -81,7 +82,14 @@ each configuration is run at k≥3.
   SOTA anchors, not the variance of the agents being ranked. Expensive
   4-hour-per-task benchmarks are exactly where the k=1 temptation is
   strongest and where this concept's k≥3 floor remains unmet in
-  practice.
+  practice. *Counterexample now attested:* AIRS-Bench
+  ([[literature/papers/lupidi2026airsbench]]) runs every agent-task
+  pair at ≥10 seeds despite 24h/H-200-per-run cost, reports 95% CIs on
+  all headline metrics, folds failed/invalid runs in as normalized-0
+  rather than dropping them, and aggregates rankings with an
+  order-invariant Bradley–Terry Elo — the first expensive benchmark in
+  this graph to exceed the k≥3 floor as protocol rather than
+  aspiration.
 - `status: experimental` here because this project has no tooling
   that enforces pass@k reporting yet. It is a recommendation backed
   by literature, not an enforced rule. Graduate to `active` when a
