@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/xu2026researchclawbench]]"
   - "[[literature/papers/wu2026bayesian]]"
   - "[[literature/papers/ning2026closedloop]]"
+  - "[[literature/papers/wang2026naturebench]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -126,7 +127,15 @@ oracle.
 - Evaluator design itself is unautomated in current work. A
   meta-loop that searches over evaluator specifications given a
   high-level goal is a natural extension but no published system
-  does it.
+  does it. NatureGym ([[literature/papers/wang2026naturebench]]) is the
+  first substantial step on this question: an LLM-agent pipeline that
+  *constructs* the evaluator — scoring function, ground-truth routing by
+  reference-answer type (label / oracle / distribution), per-instance
+  SOTA anchors — from a source paper, verified by 36 automated build
+  checks plus logic/smoke tests against the authors' released outputs,
+  with humans confirming only critical corrections. It automates
+  evaluator construction from an existing paper, not evaluator
+  *invention* from a high-level goal, so the meta-loop remains open.
 - How brittle the agent is to small evaluator bugs is undocumented.
   An evaluator with a subtle scoring error directs the entire
   search toward the wrong target — and the search's own success
