@@ -8,6 +8,7 @@ sources:
   - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
   - "[[literature/papers/chhikara2025mem0]]"
   - "[[literature/papers/karamchandani2026your]]"
+  - "[[literature/papers/louck2026securing]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -117,3 +118,22 @@ The pattern generalizes beyond conversational memory:
   plausibly needs both, and the paper's own adaptive-paraphrase
   result (the heuristic guard falls to an attacker who knows its
   patterns) marks the structural half as the brittle one.
+- **Fifth attestation — the formal boundary on what the gate may check**
+  ([[literature/papers/louck2026securing]]). A machine-checked (TLA+)
+  separation theorem: any write/act authority signal derived from
+  *content* or a *derivation edge* is **malleable** — laundered by the
+  agent's own summarization, a trusted-tool echo, or manufactured
+  corroboration — so content-scoring gates (SENTINEL's forensics, and
+  in principle any LLM-judge trust score) cannot be sound against an
+  adaptive attacker; FARMA's adaptive-paraphrase win over SENTINEL is
+  this theorem in the wild. What holds is authority bound
+  non-malleably to *origin at write time* (channel-authenticated, never
+  inferred from content), elevated only via ≥2 independent trusted
+  principals: TMA-NM reaches 0% attack success across 8 models at
+  utility identical to undefended, where content and lineage baselines
+  leak 47–84%. Sharpens this concept's internal division of labor:
+  origin-binding is the *security* layer of the write gate, and
+  TrustMem's semantic coverage/preservation/faithfulness triad is the
+  *quality* layer — the theorem says the quality layer can never be
+  asked to carry the security load. First formally-verified source in
+  the cluster; artifacts released (benchmark, harness, TLA+ models).
