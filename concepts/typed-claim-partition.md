@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/kamelhar2026gsar]]"
   - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/xu2026researchclawbench]]"
+  - "[[literature/papers/yu2026knows]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -103,6 +104,30 @@ not just a flag that distinguishes anchored from unanchored.
   K_max is a direct application of budget-as-ceiling to a recovery
   loop; the typology determines *which* recovery action is cheap
   enough to attempt before the ceiling.
+
+## Independent convergence
+
+Knows ([[literature/papers/yu2026knows]]) arrives at a structurally
+similar answer from a different problem: not "how do we score an
+agent's grounding" but "how do we make a research paper machine-
+consumable at all." Its KnowsRecord sidecar types every Statement by
+kind (claim/assumption/limitation/method/question/definition) and
+attaches a two-dimensional confidence score (claim_strength,
+extraction_fidelity) plus typed Relations
+(`supported_by`/`challenged_by`/`depends_on`/`cites`) between
+statements and evidence. That is GSAR's core move — partition before
+scoring, and let the partition's *type*, not an aggregate number,
+drive what a downstream consumer does with the claim — reached
+independently, outside the evaluation literature, as an authoring-
+and-consumption format rather than a judge. The ablation evidence
+lines up too: dropping Knows's Relations layer costs only 1pp of
+downstream accuracy and dropping Evidence costs 2pp (their E8), a
+weaker but directionally consistent echo of GSAR's finding that the
+typology's value is concentrated in the partition itself rather than
+in any one entity type. Two unrelated projects converging on "type
+the claim, don't just score it" from opposite directions (evaluation
+vs. interchange format) is stronger evidence for the pattern than
+either paper alone.
 
 ## Open questions
 

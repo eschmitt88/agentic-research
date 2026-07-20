@@ -9,6 +9,7 @@ sources:
   - "[[literature/papers/chen2026toward]]"
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xin2026eurekagent]]"
+  - "[[literature/papers/yu2026knows]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
@@ -102,6 +103,26 @@ state has accumulated enough drift to corrupt decisions.
 
 ## Open questions
 
+- **A document-grain data point now exists alongside the
+  workspace-grain one.** Knows ([[literature/papers/yu2026knows]])
+  arrives at the same core commitment — a durable file, not
+  conversational context, is the thing agents actually read — from a
+  different direction: not multi-agent workspace coordination but
+  single-document consumption. Its KnowsRecord is a YAML sidecar that
+  coexists with a PDF; agents read the sidecar and re-ground from it
+  rather than re-parsing the prose on every invocation, which is
+  exactly guidance #4 here ("re-ground, do not inherit") applied to a
+  paper instead of a project workspace. The gains are large at that
+  grain too — weak models gain +29 to +42pp accuracy and cut
+  29–86% of tokens reading the sidecar instead of the PDF — a
+  second, independently-motivated confirmation that a structured
+  durable artifact beats re-deriving structure from unstructured
+  context on every read, even when the "bus" is a single file rather
+  than a multi-region workspace. It does not attest the *coordination*
+  half of this concept (permission-scoped regions, multiple roles
+  writing to distinct areas) — Knows has one sidecar per artifact, no
+  role-based write partitioning — so it strengthens the re-grounding
+  principle specifically, not the full workspace-bus pattern.
 - Does the workspace-map representation (the Orchestrator's index of
   the bus) need to be hand-designed, or can it be derived from the
   filesystem tree? AiScientist's paper does not document the format
