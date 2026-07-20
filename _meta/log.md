@@ -269,3 +269,4 @@ skills; read by `/lint`.
 2026-07-20 19:26 ingest raw/papers/khan2026token.pdf
 2026-07-20 19:27 fetch-paper https://arxiv.org/abs/2606.13669 → raw/papers/cao2026agentsk1.pdf
 2026-07-20 19:31 ingest raw/papers/cao2026agentsk1.pdf
+2026-07-20 19:33 fetch-paper https://arxiv.org/abs/2604.17309 → raw/papers/yu2026knows.pdf
