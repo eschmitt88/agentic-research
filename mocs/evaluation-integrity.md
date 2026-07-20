@@ -10,6 +10,7 @@ concepts:
   - "[[concepts/typed-claim-partition]]"
   - "[[concepts/programmable-evaluator-oracle]]"
   - "[[concepts/compression-as-generalization-test]]"
+  - "[[concepts/information-firewall]]"
 tags: [moc, evaluation, evaluation-integrity, overfitting, grounding, architecture]
 ---
 
@@ -20,7 +21,7 @@ How do you keep the evaluation signal of an autonomous research agent
 capability rather than learning to game its own measuring stick? This is
 the failure mode that distinguishes a long-horizon agent from a
 short-horizon one: over enough iterations, any signal the search loop can
-read, it will eventually optimize *against* rather than *toward*. The six
+read, it will eventually optimize *against* rather than *toward*. The seven
 concepts here are the structural defenses, each guarding a different point
 where the signal can rot. Where the sibling MoC
 [[mocs/knowledge-organization-for-research-agents]] is about the knowledge
@@ -52,6 +53,14 @@ signal that would let it cheat.
   that rivals architectural change: a 2-point gap can vanish at k=5, and a
   real improvement can be invisible at k=1. Honest selection requires k≥3
   and a stated distribution, so the loop can't promote noise.
+- [[concepts/information-firewall]] — the same boundary-drawing applied to
+  the *task construction* rather than the split: withhold the source
+  method (identity, code, outputs) so the agent must discover a solution
+  rather than reproduce the published one. NatureBench
+  ([[literature/papers/wang2026naturebench]]) operationalizes it with
+  file-level keep/exclude rules plus eval-time web-search disable. Where
+  HCE hides the *answers* from the loop, the firewall hides the *method*
+  — one protects the estimate, the other the construct being measured.
 - [[concepts/compression-as-generalization-test]] — the audit that says
   whether a validation-selected gain was *real*. Split hygiene prevents the
   loop from reading the truth but can't certify what it selected;
@@ -101,7 +110,8 @@ against, and it implicitly bounds what can be found at all.
 
 ## Open thread
 
-The six form a containment hierarchy: HCE keeps the loop from reading the
+The seven form a containment hierarchy: the information firewall keeps the
+task from leaking its own solution, HCE keeps the loop from reading the
 truth, pass@k keeps it from promoting noise, compression-testing certifies
 what survived selection, anchoring + typed-partition
 keep the prose honest, and the programmable oracle is the one thing the loop
