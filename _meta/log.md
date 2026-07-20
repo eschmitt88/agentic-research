@@ -255,3 +255,4 @@ skills; read by `/lint`.
 2026-07-20 07:02 digest n=10 window_since=2026-07-13T07:04:22Z
 2026-07-20 07:03 fetch-paper https://arxiv.org/abs/2607.05029 → raw/papers/karamchandani2026your.pdf
 2026-07-20 07:06 ingest raw/papers/karamchandani2026your.pdf
+2026-07-20 07:08 fetch-paper https://arxiv.org/abs/2607.04329 → raw/papers/wu2026hasbench.pdf
