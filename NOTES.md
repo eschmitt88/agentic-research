@@ -402,3 +402,67 @@ SessionEnd hook backstops this if you forget.
   less in the first place.
 - Resolve and fill `assumpcao2025codeevolve` `code_url` (still open).
 - Consider widening `agency: max` to the other literature repos.
+
+## 2026-07-20
+
+### Did
+- Cleaned up morning session leftovers: committed the dangling
+  `_meta/digest.log` hook-failure line and pushed the unpushed
+  session commit.
+- Drained the 2026-07-20 digest backlog via `/curate` under a GO/high
+  verdict (re-checked mid-burst): **7 ingested, 1 declined** —
+  `louck2026securing` (TMA-NM origin-bound memory authority),
+  `wang2026naturebench`, `lupidi2026airsbench`, `khan2026token`
+  (budget-overrun incident catalog), `cao2026agentsk1`, `yu2026knows`,
+  `alzahrani2026persistent`; declined Harness-MU (2606.21856) as a
+  marginal 12th source for permission-gate-as-architecture. File
+  archived to `raw/_candidates/_done/`. Six of the seven ran as
+  sequential subagents (last two on Sonnet per new fan-out policy).
+- Concept updates across the batch: verified-memory-writes (5th
+  attestation, formal), permission-gate-as-architecture (11th source,
+  authority-as-data axis), budget-as-ceiling (first empirical anchor),
+  hce-evaluation, programmable-evaluator-oracle, pass-at-k (×2),
+  llm-wiki-pattern, structured-world-model, typed-claim-partition,
+  file-as-bus (×2), agent-native-memory, context-eviction-policy;
+  seeded **concepts/information-firewall.md** (NatureBench's
+  method-withholding boundary).
+- `/promote-moc`: no un-mapped cluster ripe (memory 5/5, evaluation 7/7
+  already covered); folded information-firewall into
+  `mocs/evaluation-integrity.md` (now 7 concepts) instead.
+- Repaired a pre-existing corruption in
+  `concepts/permission-gate-as-architecture.md`: the zhao2026agenticos
+  attestation bullet had lost its opening line, leaving an orphaned
+  fragment.
+- Resolved the open `assumpcao2025codeevolve` `code_url` →
+  https://github.com/inter-co/science-codeevolve (verified 200).
+- Updated `_meta/index.md` (evaluation-integrity count, 3 new
+  highlight papers).
+
+### Findings
+- khan2026token is the batch's standout (rel 5): 63 real budget-overrun
+  incidents, none prevented before a user paid — converts
+  budget-as-ceiling from design stance to empirically-motivated, and
+  its evidence clears /elevate's bar (flagged in the note's Follow-up:
+  pre-flight spend reservation vs our halt-after-cycle counters).
+- louck2026securing sharpens the memory-write story: content- and
+  lineage-based write gates are *provably* launderable (TLA+-checked);
+  only channel-authenticated origin binding holds. SENTINEL-style
+  forensics (karamchandani2026your) is quality layer, not security
+  layer — the two papers ingested today+this morning form a clean
+  attack/impossibility/construction arc on verified-memory-writes.
+- A typed-enforcement thread is accumulating across khan2026token,
+  zhao2026agenticos, louck2026securing, madatha2026deterministic
+  (flagged in khan note) — watch for concept-promotion ripeness.
+- The nightly 04:00 curate sweep would have drained today's backlog
+  anyway; this session mainly pulled that work forward under an idle
+  GO/high window and validated the sequential-subagent ingest pattern.
+
+### Next
+- `/elevate` next weekly run (Sun 05:00) should evaluate khan2026token's
+  pre-flight spend-reservation idea against the coordinator's current
+  halt-after-cycle ceilings.
+- Watch information-firewall (single-source seedling) for a second
+  attestation; watch the typed-enforcement thread (3+ sources) for
+  concept ripeness.
+- Still open from prior sessions: consider widening `agency: max` to
+  the other literature repos.

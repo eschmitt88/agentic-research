@@ -20,9 +20,9 @@ and `/new-experiment`.
 - [[mocs/agent-architecture]] — how a long-horizon autonomous agent is
   built (substrate / orchestration / execution).
 - [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over
-  long search loops; 6 concepts: hce-evaluation, pass-at-k,
+  long search loops; 7 concepts: hce-evaluation, pass-at-k,
   citation-anchoring, typed-claim-partition, programmable-evaluator-oracle,
-  compression-as-generalization-test.
+  compression-as-generalization-test, information-firewall.
 - [[mocs/autonomous-search-loop]] — how an autonomous agent searches a vast
   candidate space productively; 5 concepts: evolutionary-expansion,
   evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool,
@@ -41,6 +41,9 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/khan2026token]] — Token Budgets (63-incident overrun catalog; first empirical anchor for budget-as-ceiling; rel 5 / cred 3)
+- [[literature/papers/louck2026securing]] — TMA-NM (machine-checked separation theorem: content/lineage authority signals are malleable; origin-bound write-time authority holds at 0% ASR; rel 4 / cred 3)
+- [[literature/papers/wang2026naturebench]] — NatureBench (discovery-vs-reproduction split via information firewall; sealed host-side evaluator; rel 4 / cred 4)
 - [[literature/papers/xu2025amem]] — A-Mem (Zettelkasten agent memory: LLM link generation + retroactive memory evolution; NeurIPS 2025, code)
 - [[literature/papers/chhikara2025mem0]] — Mem0 (production memory layer, 60.8k stars; ADD/UPDATE/DELETE/NOOP write policy, 91% lower p95 latency vs full-context; rel 4 / cred 4)
 - [[literature/papers/shen2026dynamic]] — SLIM (skill retirement by leave-one-skill-out marginal contribution; removal ≠ internalization)
