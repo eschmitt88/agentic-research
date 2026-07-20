@@ -273,3 +273,4 @@ skills; read by `/lint`.
 2026-07-20 19:35 ingest raw/papers/yu2026knows.pdf
 2026-07-20 19:38 fetch-paper https://arxiv.org/abs/2605.26870 → raw/papers/alzahrani2026persistent.pdf
 2026-07-20 19:40 ingest raw/papers/alzahrani2026persistent.pdf
+2026-07-20 20:05 curate raw/_candidates/2026-07-20-digest.md ingested=7 declined=1 dup=0 (2 pre-ingested by digest auto-advance)
