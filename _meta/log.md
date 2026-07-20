@@ -259,3 +259,5 @@ skills; read by `/lint`.
 2026-07-20 07:12 ingest raw/papers/wu2026hasbench.pdf
 2026-07-20 07:12 digest-autoingest n=2 verdict=slow/low (karamchandani2026your, wu2026hasbench)
 2026-07-20 07:14 promote-moc skipped: no new concepts this run; 07-18 sweep found all 25 concepts already mapped, memory sub-cluster below split threshold
+2026-07-20 19:12 fetch-paper https://arxiv.org/abs/2606.24322 → raw/papers/louck2026securing.pdf
+2026-07-20 19:14 ingest raw/papers/louck2026securing.pdf
