@@ -9,6 +9,7 @@ sources:
   - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
   - "[[literature/repos/eugeniughelbur-obsidian-second-brain]]"
   - "[[literature/repos/agricidaniel-claude-obsidian]]"
+  - "[[literature/papers/cao2026agentsk1]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -128,6 +129,27 @@ research loop (URL scheme/host filtering, script stripping,
 wikilink-injection defense, body-size caps) — a threat model (fetched
 content injecting the LLM-owned wiki) none of the other three sources
 raise explicitly.
+
+**The pattern at industrial scale, off the markdown substrate.**
+Agents-K1 ([[literature/papers/cao2026agentsk1]], Shanghai AI Lab) is
+the largest instance found of compile-time knowledge orchestration:
+2.46M scientific papers parsed **once, offline** (MinerU parser + a 4B
+GRPO-trained extractor) into Scholar-KG, a persistent typed knowledge
+graph that agents then query through an agent-facing interface
+(GraphAnything CLI/MCP). The paper states the pattern's core move
+explicitly — separating "offline construction of reliable knowledge
+representations" from "online use of this knowledge for
+evidence-grounded reasoning" — and quantifies the anti-RAG argument
+the gist only asserts: the compiled graph beats nine graph-RAG
+baselines on multi-hop QA and lifts GPT-5.2 from 25.2% to 39.4% on
+FrontierScience-Research. The three layers map cleanly (raw PDFs →
+LLM-maintained graph → five-module schema), as do the three operations
+(ingest = parser + extractor; query = tri-source CLI; lint = a
+per-module LLM-as-judge protocol). The divergence is the substrate:
+Neo4j + embeddings rather than markdown the agent owns — evidence that
+the pattern's economic core (organization work amortized at compile
+time) is substrate-independent, while what survives from the wiki
+form is provenance-per-field and typed links, not human readability.
 
 ## Open questions
 

@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/chen2026toward]]"
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xu2026evoarena]]"
+  - "[[literature/papers/cao2026agentsk1]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -84,6 +85,21 @@ consistency across rounds.
 - Kosmos does not publish the schema. Re-deriving a good one from
   the paper's reported behavior is partly inference; the right
   schema likely varies by domain.
+- **A published, full-scale schema now exists for the knowledge half
+  of the state.** Agents-K1 ([[literature/papers/cao2026agentsk1]])
+  publishes what Kosmos withholds: a complete five-category schema
+  (meta/factual, textually-mentioned, implicit/abstracted, citation
+  relations, knowledge relations) for structured scientific knowledge,
+  with per-field provenance ⟨doc, section/page, span⟩ plus a
+  calibrated confidence score — guidance #3's "every write carries
+  provenance" enacted at 2.46M-paper scale — and its propositions
+  (identifier-preserving joins, cross-view reachability) formalize
+  *why* one connected, field-addressable graph beats reasoning over
+  separate text fragments. Scope caveat: Scholar-KG is a read-mostly
+  knowledge substrate, not a mutable coordination object — it attests
+  the schema'd-state half of this concept (typed fields,
+  addressability, provenance), not the multi-agent read/write
+  coordination half.
 - AiScientist ([[literature/papers/chen2026toward]]) takes a
   related but distinct stance: the durable state lives as
   *heterogeneous artifacts in a workspace* (paper analyses, code,
