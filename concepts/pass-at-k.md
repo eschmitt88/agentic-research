@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/chan2024mle]]"
   - "[[literature/papers/starace2025paperbench]]"
   - "[[literature/papers/jain2026agentic]]"
+  - "[[literature/papers/wang2026naturebench]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -72,7 +73,15 @@ each configuration is run at k≥3.
   ([[literature/papers/li2025fm]]) and AIBuildAI
   ([[literature/papers/zhang2026aibuildai]]) do not specify seed
   protocols explicitly; their medal rates may not be directly
-  comparable.
+  comparable. NatureBench
+  ([[literature/papers/wang2026naturebench]]) runs each of its twelve
+  agent configurations exactly once over 90 tasks, so its 17.8%
+  Surpass-SOTA headline is a k=1 estimate with no run-to-run variance
+  treatment — its cross-model reproduce-mode agreement calibrates the
+  SOTA anchors, not the variance of the agents being ranked. Expensive
+  4-hour-per-task benchmarks are exactly where the k=1 temptation is
+  strongest and where this concept's k≥3 floor remains unmet in
+  practice.
 - `status: experimental` here because this project has no tooling
   that enforces pass@k reporting yet. It is a recommendation backed
   by literature, not an enforced rule. Graduate to `active` when a

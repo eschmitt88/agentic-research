@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/bertran2026fits]]"
   - "[[literature/papers/atinafu2026rewardhacking]]"
   - "[[literature/papers/zou2026fmlbench]]"
+  - "[[literature/papers/wang2026naturebench]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -119,6 +120,24 @@ guard is the one agents naturally reach for. The defenses are cheap and
 deterministic: hash-lock the evaluation entrypoint, and compute certified
 scores from a pristine external copy of the evaluator rather than the
 workspace copy.
+
+Benchmark-side, NatureBench ([[literature/papers/wang2026naturebench]])
+hardens the same boundary by construction and adds a third enforcement
+family: **seal-and-audit**. The evaluator, ground truth, and SOTA anchors
+live in a host-side service the agent can query but never read — closing
+atinafu2026rewardhacking's evaluator-tampering vector structurally rather
+than by hash-checking — while the agent *is* given iterative score
+feedback on the held-out set (`/evaluate` returns per-instance gaps and
+the running best). That deliberately trades split hygiene for
+optimization pressure: the search signal *is* the test signal, and the
+residual risk (gaming the scorer over repeated submissions) is handled
+after the run by an LLM validity judge that voids flagged runs — with a
+measurable audit trail (the strongest agents submit zero invalid
+solutions; GPT-5.5's 13 shortcut submissions are caught and zeroed). As a
+design point it sits opposite this concept's certify-after-search
+default: appropriate when the goal is measuring peak capability against a
+fixed published anchor, not when protecting an unbiased final estimate of
+a method under development.
 
 ## Implementation guidance
 
