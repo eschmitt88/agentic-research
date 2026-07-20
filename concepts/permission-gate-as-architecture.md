@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/santosgrueiro2026lingering]]"
   - "[[literature/papers/ge2026governance]]"
   - "[[literature/papers/wu2026hasbench]]"
+  - "[[literature/papers/louck2026securing]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -43,7 +44,7 @@ part of the agent's control loop rather than a wrapper around it.
 
 ## Why it matters here
 
-Nine independent attestations converge on the same reframing — the gate is
+Eleven independent attestations converge on the same reframing — the gate is
 where a meaningful slice of agent behavior is actually *governed*, so it
 deserves to be designed as architecture:
 
@@ -116,6 +117,20 @@ deserves to be designed as architecture:
   whether authorization requests are "well-timed and warranted … rather
   than over-asking on trivial ones," directly operationalizing the
   false-refusal cost this concept's Open Questions flags as unmeasured.
+- **louck2026securing** adds the **authority-as-data axis** from the
+  memory side: its act-gate is a permission gate whose policy is not
+  prose or a judge but *data carried by the item itself* — a
+  channel-authenticated origin label plus a k-of-n
+  independent-corroboration count — checked deterministically in
+  ~1.3 µs with zero false blocks. Its machine-checked theorem is the
+  sharpest statement yet of guidance point 4's deterministic-core
+  principle: any gate signal an adversary can *transform* (content
+  scores, lineage edges) is provably launderable, so the hard
+  invariant must bind to something non-malleable. Also the second
+  runnable artifact in the cluster (benchmark + TLA+ models). Bridges
+  [[concepts/verified-memory-writes]]: the same gate governs both what
+  memory may persist and what actions it may later authorize.
+- **zhao2026agenticos** adds the **OS axis**: an OS-level design where the
   agent runtime has *no* interface except the gate — capabilities are
   synthesized from a declared intent Manifest, POSIX primitives are
   permanently excluded, and every external effect passes mandatory
