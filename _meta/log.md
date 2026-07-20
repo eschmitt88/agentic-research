@@ -261,3 +261,4 @@ skills; read by `/lint`.
 2026-07-20 07:14 promote-moc skipped: no new concepts this run; 07-18 sweep found all 25 concepts already mapped, memory sub-cluster below split threshold
 2026-07-20 19:12 fetch-paper https://arxiv.org/abs/2606.24322 → raw/papers/louck2026securing.pdf
 2026-07-20 19:14 ingest raw/papers/louck2026securing.pdf
+2026-07-20 19:13 fetch-paper https://arxiv.org/abs/2606.24530 → raw/papers/wang2026naturebench.pdf
