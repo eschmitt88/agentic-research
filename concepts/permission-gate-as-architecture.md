@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/zhao2026agenticos]]"
   - "[[literature/papers/santosgrueiro2026lingering]]"
   - "[[literature/papers/ge2026governance]]"
+  - "[[literature/papers/wu2026hasbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -98,6 +99,23 @@ deserves to be designed as architecture:
   (runtime behavior exceeding self-declared permissions), which
   intent-alignment judges detect at only 75–94% because the covert
   side-channel rides a legitimate operation.
+- **wu2026hasbench** adds the **human-side / configurability axis** and
+  the first benchmark that sweeps gate placement as a variable. Its
+  framing is this concept's thesis applied to the human in the loop:
+  runtime interrupts and approval gates "keep humans outside the system,
+  treating human participation as a late-stage supervision signal rather
+  than a designable and schedulable component" — so HAS-Framework puts
+  humans in the same typed graph as agents (roles, permissions,
+  visibility scopes, typed edges for delegate/supervise/intervene) and
+  compiles a 5-level Human Agency Scale into concrete runtime policies.
+  The numbers cut both ways, which is what makes them useful: equal
+  partnership adds +26.9 Safety Rate on safety-critical-authorization
+  tasks (the gate working) while heavier human control (A4) costs +50%
+  interaction turns for diminishing or negative returns (the gate
+  over-asking) — and its Control Request Justification metric scores
+  whether authorization requests are "well-timed and warranted … rather
+  than over-asking on trivial ones," directly operationalizing the
+  false-refusal cost this concept's Open Questions flags as unmeasured.
   agent runtime has *no* interface except the gate — capabilities are
   synthesized from a declared intent Manifest, POSIX primitives are
   permanently excluded, and every external effect passes mandatory
@@ -177,9 +195,11 @@ hook.
   benchmark-bound results and admits no adaptive-attacker robustness — a
   gate tuned to a fixed threat distribution may be evadable by an agent (or
   user) that learns the threshold.
-- **False-refusal cost.** None of the sources fully account for the
-  productivity tax of over-escalation; the allow/verify/refuse tradeoff
-  curve is mostly reported at a single operating point.
+- **False-refusal cost.** Mostly reported at a single operating point;
+  wu2026hasbench is the first source to measure the over-escalation tax
+  directly (CRJ metric; A4's +50% turns for diminishing returns), but
+  only for *human*-approval gates with a simulated human — the tradeoff
+  curve for automated gates remains uncharacterized.
 - **Where the state lives.** The session risk cumulant is per-session;
   whether cross-session memory of prior gate decisions
   ([[concepts/agent-native-memory]]) improves or biases future gating is
