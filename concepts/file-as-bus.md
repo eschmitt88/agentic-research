@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/yu2026knows]]"
+  - "[[literature/papers/alzahrani2026persistent]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
@@ -103,6 +104,26 @@ state has accumulated enough drift to corrupt decisions.
 
 ## Open questions
 
+- **A naturalistic (non-benchmark) instance of the pattern now exists.**
+  Alzahrani ([[literature/papers/alzahrani2026persistent]]) is a
+  115-day self-observed case study of one physician-scientist running
+  a persistent multi-role agent environment — 502 memory files, 17
+  configured agent directories, 57 skill files, scheduled jobs, and a
+  governance layer that "became part of the operating environment
+  rather than an after-the-fact policy appendix." That is the same
+  shape as this concept's implementation guidance (#1 role-aligned
+  regions, #3 provenance-bearing durable artifacts, #5 workspace as
+  system of record) observed in the wild rather than asserted from an
+  architecture description or measured via ablation. It attests the
+  *coordination-substrate* half more directly than Knows does — 17
+  distinct role directories is closer to File-as-Bus's multi-region,
+  multi-role claim than Knows' one-sidecar-per-document design — but
+  it is n=1, self-report, with no counterfactual (no matched non-agent
+  workflow, no controlled removal of the memory layer to see what
+  breaks). It cannot substitute for AiScientist's ablation numbers; it
+  can and does substitute for the thing ablations can't provide —
+  evidence the pattern survives contact with real, messy, multi-month
+  academic work rather than a benchmark harness.
 - **A document-grain data point now exists alongside the
   workspace-grain one.** Knows ([[literature/papers/yu2026knows]])
   arrives at the same core commitment — a durable file, not

@@ -272,3 +272,4 @@ skills; read by `/lint`.
 2026-07-20 19:33 fetch-paper https://arxiv.org/abs/2604.17309 → raw/papers/yu2026knows.pdf
 2026-07-20 19:35 ingest raw/papers/yu2026knows.pdf
 2026-07-20 19:38 fetch-paper https://arxiv.org/abs/2605.26870 → raw/papers/alzahrani2026persistent.pdf
+2026-07-20 19:40 ingest raw/papers/alzahrani2026persistent.pdf

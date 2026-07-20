@@ -37,6 +37,7 @@ sources:
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
+  - "[[literature/papers/alzahrani2026persistent]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"
@@ -213,6 +214,36 @@ otherwise default to bolting on a vector store.
 
 ## Open questions
 
+- **A naturalistic deployment now attests the pattern at scale, not
+  just in benchmark or architecture-description form.** Alzahrani
+  ([[literature/papers/alzahrani2026persistent]]) is a 115-day
+  self-observed case study of one physician-scientist's persistent
+  agent environment: 502 memory-related files, 17 configured agent
+  directories (role specialization), 57 skill files (reusable
+  procedures) — markdown/file-based memory the agent reads and writes
+  directly, no vector DB or embedding service named anywhere in the
+  paper. That is guidance #1 and #4 above (hierarchical addressable
+  paths; memory ops as tools, not services) observed in the wild
+  rather than benchmarked. It is n=1 and self-report, so it cannot
+  attest *effectiveness* the way ByteRover's LoCoMo/LongMemEval-S
+  numbers do — but it is independent ecological evidence that the
+  agent-native pattern is something a real, non-CS-lab researcher
+  actually built and ran for four months, not only something ML labs
+  demonstrate on benchmarks.
+- **The paper also surfaces a token-economics signature of a mature
+  agent-native memory system that this concept does not yet model.**
+  Its May 2026 telemetry subset was 82.9% cache-read tokens
+  (Cache-Dominance Ratio); the authors read this as evidence that once
+  a persistent workflow has accumulated enough reusable memory and
+  procedure, most "work" is *reading back* durable state rather than
+  generating fresh inference — and argue evaluation should therefore
+  price cost-per-completed-artifact rather than cost-per-token. That's
+  a plausible mechanical consequence of guidance #6 (tiered/cheap
+  retrieval before agent loops) at the token-accounting layer, but it
+  rests on one 25-day window from one deployment. Worth tracking as a
+  candidate future concept (token-economics-of-persistent-memory or
+  similar) if a second independent source reports a comparable
+  cache-dominance pattern; not yet promoted on a single data point.
 - The relation-graph contribution ablation in ByteRover was small
   (−0.4 pp) on LongMemEval-S; whether explicit edges materially
   beat dense retrieval on *research-graph* synthesis (vs.
