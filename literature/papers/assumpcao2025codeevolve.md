@@ -11,7 +11,7 @@ year: 2025
 venue: "arXiv:2510.14150 [cs.AI]"
 peer_reviewed: false
 url: "https://arxiv.org/abs/2510.14150"
-code_url: null   # released per abstract ("this https URL"); exact repo URL not resolved from the abs page
+code_url: "https://github.com/inter-co/science-codeevolve"
 citations: null
 source: "raw/papers/assumpcao2025codeevolve.pdf"
 added: "2026-06-03"

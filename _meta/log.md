@@ -275,3 +275,4 @@ skills; read by `/lint`.
 2026-07-20 19:40 ingest raw/papers/alzahrani2026persistent.pdf
 2026-07-20 20:05 curate raw/_candidates/2026-07-20-digest.md ingested=7 declined=1 dup=0 (2 pre-ingested by digest auto-advance)
 2026-07-20 20:12 promote-moc: no ripe un-mapped cluster (memory 5/5 and evaluation 7/7 already covered); folded new concept information-firewall into mocs/evaluation-integrity.md instead
+2026-07-20 20:16 fix: assumpcao2025codeevolve code_url resolved → https://github.com/inter-co/science-codeevolve (verified 200)
