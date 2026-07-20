@@ -537,3 +537,23 @@ A full coverage check confirms all 25 concepts (excluding `_README`) appear in a
 
 No files changed, so nothing to commit. One thing worth watching: the memory theme is the most likely future split — if it gains 2–3 more concepts that strain the knowledge-organization MoC's framing (it's now at 14 concepts, the largest by far), splitting a dedicated memory MoC out of it would be the move, per the skill's "split only when the sub-theme has clearly outgrown the parent" clause.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Nothing is ripe — no new MoC created. Every candidate cluster is already fully covered by an existing MoC, so per the skill's restraint rule I'm declining all of them and stopping.
+
+**What I checked:** all 25 concept notes grouped by shared tags, cross-referenced against the five existing MoCs' `concepts:` lists.
+
+**Candidate clusters and why each was declined:**
+
+| Cluster (merged tags) | Concepts | Overlap with existing MoCs |
+|---|---|---|
+| agent-memory (`memory`, `procedural-memory`) | 6 — agent-native-memory, multi-granularity-memory, selective-memory-retrieval, context-eviction-policy, verified-memory-writes, skill-library-lifecycle | **6/6** already in `knowledge-organization-for-research-agents` |
+| evaluation (`evaluation`, `hce`, `grounding`) | 6 | 6/6 in `evaluation-integrity` |
+| knowledge-organization | 6 | 6/6 in `knowledge-organization-for-research-agents` |
+| agent-architecture | 5 | 5/5 in `agent-architecture` |
+| evolutionary search (`search`, `evolutionary-search`) | ~5 | all in `autonomous-search-loop` |
+| coordination / long-horizon | 3 — file-as-bus, hierarchical-delegation, structured-world-model | under the 5-concept threshold anyway |
+
+In fact every one of the 25 concepts already belongs to at least one MoC — there is no un-mapped cluster in the graph at all.
+
+The only judgment call was the **agent-memory sub-cluster**, which the 2026-07-18 session declined at 4 concepts and which now stands at 5 memory-tagged concepts (verified-memory-writes joined since). But all 5 already live inside `knowledge-organization-for-research-agents` (12 concepts, tagged `agent-memory`), and one added concept doesn't make the sub-theme "clearly outgrown" — the parent MoC is large but still coherent. If the memory cluster reaches ~7–8 members or the parent MoC passes ~15 concepts, splitting an `agent-memory` MoC out of it becomes the right move; that's the threshold to watch at the next sweep.
+
+No files changed, so nothing to commit or push.

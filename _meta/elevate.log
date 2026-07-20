@@ -63,3 +63,5 @@ The HCE rule currently defends one compromise vector — reading `test/` during 
 To act on the proposal: read it, make the edit in `~/claude-system` yourself (or authorize a session to), and set `status: accepted` — or `rejected` with a one-line reason so future runs don't re-propose it.
 
 One unrelated note: `_meta/curate.log` had uncommitted modifications from before this session; I left them out of the commit. Also, the claude.ai Google Drive MCP server needs authorization via your claude.ai connector settings before its tools are usable here — not needed for this run.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+{"id":"ri5UN3dbHy5V","time":1784437496,"expires":1784480696,"event":"message","topic":"esaiserver1337","title":"/elevate: 1 new system-proposal(s) to review","message":"• hce-evaluator-integrity\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
