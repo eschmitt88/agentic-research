@@ -8,6 +8,7 @@ source_papers:
   - yang2026graph
   - wu2026gam
   - du2026memory
+  - khan2026token
 sources:
   - "[[literature/papers/li2026complexmcp]]"
   - "[[literature/papers/liu2026dive]]"
@@ -28,6 +29,7 @@ sources:
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
+  - "[[literature/papers/khan2026token]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -92,6 +94,19 @@ The pattern is now attested across four independent harnesses:
 
 Four independent attestations from a sample of four harnesses is
 consensus. The pattern is real, named differently in each project.
+
+[[literature/papers/khan2026token]] adds the *cost* face of the missing
+or buggy policy: its M-context-amplification cluster collects 13
+production budget-overrun incidents across seven frameworks where
+unbounded context growth directly produced dollar losses — a 31×
+context overflow from a single base64-encoded image, a 2-million-token
+observer-LLM call during tool-heavy runs — and two of the incidents are
+Claude Code *compaction-loop* bugs (CCDE-001: ≈$235 in four days for
+one user), i.e. the eviction mechanism itself failing open. Eviction
+policy is therefore not only a fidelity concern (see Open questions)
+but a documented cost control: the failure mode of not having one, or
+having a buggy one, shows up as a budget incident
+([[concepts/budget-as-ceiling]]).
 
 For this project specifically, eviction policy is currently
 *implicit*: `/digest` and `/ingest` produce small outputs (one
