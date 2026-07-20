@@ -557,3 +557,4 @@ In fact every one of the 25 concepts already belongs to at least one MoC — the
 The only judgment call was the **agent-memory sub-cluster**, which the 2026-07-18 session declined at 4 concepts and which now stands at 5 memory-tagged concepts (verified-memory-writes joined since). But all 5 already live inside `knowledge-organization-for-research-agents` (12 concepts, tagged `agent-memory`), and one added concept doesn't make the sub-theme "clearly outgrown" — the parent MoC is large but still coherent. If the memory cluster reaches ~7–8 members or the parent MoC passes ~15 concepts, splitting an `agent-memory` MoC out of it becomes the right move; that's the threshold to watch at the next sweep.
 
 No files changed, so nothing to commit or push.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled

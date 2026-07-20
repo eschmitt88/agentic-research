@@ -7,6 +7,7 @@ sources:
   - "[[literature/papers/yang2026trustmem]]"
   - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
   - "[[literature/papers/chhikara2025mem0]]"
+  - "[[literature/papers/karamchandani2026your]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -94,3 +95,25 @@ The pattern generalizes beyond conversational memory:
   gate against a decomposed one head-to-head. Adjacent evidence to
   watch: memory admission control and provenance-aware memory (cited
   in TrustMem's related work but not yet in this graph).
+- **Fourth attestation — the adversarial case for the same boundary**
+  ([[literature/papers/karamchandani2026your]]). FARMA forges an
+  agent's *own reasoning traces* ("prior validation already complete")
+  and amplifies them into false precedent, reaching 100% attack
+  success against undefended agents and defeating retrieval-time and
+  consensus defenses — amplification floods the store until forged
+  traces *are* the consensus, so outlier detection inverts. The
+  SENTINEL defense's first design principle is this concept stated as
+  a security requirement: screen entries **before they are committed
+  to memory**, "prevent[ing] forged entries from accumulating in the
+  store and being legitimized through retrieval." Its write-path
+  ablation (Reasoning Guard necessary and sufficient; 0% ASR, 0% FPR
+  on 326 benign traces) is the strongest quantitative evidence yet
+  that the write gate, not retrieval filtering, is where trust must
+  be enforced. Prior sources motivated the gate from benign drift;
+  this one shows the same boundary is the security perimeter — but
+  note its gate is *structural* (provenance/format forensics on the
+  entry), orthogonal to TrustMem's *semantic* triad
+  (coverage/preservation/faithfulness). A production write gate
+  plausibly needs both, and the paper's own adaptive-paraphrase
+  result (the heuristic guard falls to an attacker who knows its
+  patterns) marks the structural half as the brittle one.
