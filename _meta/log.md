@@ -276,3 +276,5 @@ skills; read by `/lint`.
 2026-07-20 20:05 curate raw/_candidates/2026-07-20-digest.md ingested=7 declined=1 dup=0 (2 pre-ingested by digest auto-advance)
 2026-07-20 20:12 promote-moc: no ripe un-mapped cluster (memory 5/5 and evaluation 7/7 already covered); folded new concept information-firewall into mocs/evaluation-integrity.md instead
 2026-07-20 20:16 fix: assumpcao2025codeevolve code_url resolved → https://github.com/inter-co/science-codeevolve (verified 200)
+2026-07-20 20:20 wrap-skip-structured reason=cwd-not-in-experiment
+2026-07-20 20:20 wrap curate-drain 7 ingested / 1 declined; information-firewall seeded + folded into evaluation-integrity; codeevolve code_url resolved
