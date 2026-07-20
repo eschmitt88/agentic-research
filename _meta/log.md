@@ -263,3 +263,4 @@ skills; read by `/lint`.
 2026-07-20 19:14 ingest raw/papers/louck2026securing.pdf
 2026-07-20 19:13 fetch-paper https://arxiv.org/abs/2606.24530 → raw/papers/wang2026naturebench.pdf
 2026-07-20 19:17 ingest raw/papers/wang2026naturebench.pdf
+2026-07-20 19:18 fetch-paper https://arxiv.org/abs/2602.06855 → raw/papers/lupidi2026airsbench.pdf
