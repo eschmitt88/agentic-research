@@ -7,6 +7,7 @@ source_papers:
   - li2025fm
   - hambardzumyan2026aira
   - kamelhar2026gsar
+  - khan2026token
 sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
@@ -14,6 +15,7 @@ sources:
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/jia2026finharness]]"
   - "[[literature/papers/zhao2026agenticos]]"
+  - "[[literature/papers/khan2026token]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -61,6 +63,34 @@ five-tuples and Manifests declare per-agent inference budgets, so
 exceeding a budget doesn't halt a loop, it invalidates the capability.
 Design-only, but it shows the same ceiling discipline enforced below the
 agent instead of inside it.
+
+Until [[literature/papers/khan2026token]], every source above argued for
+the ceiling from design experience. That paper supplies the empirical
+base: 63 confirmed production budget-overrun incidents across 21
+frameworks and 18 ecosystems (2023–2026), each backed by a quoted GitHub
+issue and, where reported, a dollar loss (≈$2,150 for a single user in
+the worst case), with an eight-cluster mechanism taxonomy (two-rater
+κ = 0.837 on case labels). Two findings land directly on this concept.
+First, the costly failure mode above is the documented norm, not a
+hypothetical: framework fixes ship within days of a report, but the
+catalog contains *no case in which an overrun was prevented before at
+least one user paid* — every deployed mitigation was post-hoc, which is
+the strongest argument yet that the ceiling should be enforced
+**pre-flight** (refuse the call whose projected spend would exceed the
+cap) rather than as a counter checked after the spend. Second, a whole
+cluster (M-budget-primitive-missing, 12 of 110 rows across six
+frameworks) documents frameworks that ship *no first-class budget
+primitive at all* — the absence a project-level `budget.yaml` exists to
+fill. The paper's three-layer enforcement taxonomy (compile-time type
+system / software middleware / transport-layer 402) extends the
+AgenticOS locus point: its affine-typed Rust `Budget` makes cloning,
+double-spending, or use-after-delegating a budget compile errors, so the
+delegation-fanout race it documents in 11 incidents cannot be written —
+the same deterministic-substrate instinct as
+[[concepts/permission-gate-as-architecture]]'s deterministic core,
+applied to spend integrity. Its M-context-amplification cluster (13
+incidents, including Claude Code's own compaction-loop bugs) is the
+dollar-cost face of [[concepts/context-eviction-policy]].
 
 ## Implementation guidance
 
