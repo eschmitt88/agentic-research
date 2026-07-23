@@ -594,3 +594,22 @@ I also looked at the one cross-cutting grouping that isn't majority-covered by a
 Per skill step 2, that's the stop condition: no writes, no commit. The next natural trigger will be either a new concept landing in the enforcement space (e.g. if the typed-enforcement thread gets promoted to a concept) or an ingest burst that retags existing ones.
 
 Unrelated housekeeping note: the claude.ai Google Drive MCP server needs authentication before its tools can be used — this session is non-interactive, so you'd authorize it via your claude.ai connector settings.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No cluster is ripe — nothing to promote. All 26 concepts already live in at least one MoC, and every ≥5-concept tag cluster is substantially covered by an existing map. Detection details:
+
+**Candidate clusters examined and declined:**
+
+| Cluster (by merged tags) | Concepts | Overlap with existing MoCs | Verdict |
+|---|---|---|---|
+| memory (memory + retrieval + consolidation) | 5 — agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval, verified-memory-writes | 5/5 in `mocs/knowledge-organization-for-research-agents.md` | Declined — fully mapped; the sub-theme hasn't outgrown the parent (5 of its 14 concepts) |
+| evaluation | 7 — citation-anchoring, compression-as-generalization-test, hce-evaluation, information-firewall, pass-at-k, programmable-evaluator-oracle, typed-claim-partition | 7/7 in `mocs/evaluation-integrity.md` | Declined — that MoC *is* this cluster |
+| agent-architecture | 5 — agent-native-memory, file-as-bus, hierarchical-delegation, hybrid-model-backends, scripted-tool-pipelines | 5/5 in `mocs/agent-architecture.md` | Declined — identical membership |
+| evolutionary search | 5 — async-worker-pool, budget-as-ceiling, evolutionary-expansion, evolutionary-search-grain, programmable-evaluator-oracle | 5/5 in `mocs/autonomous-search-loop.md` | Declined — identical membership |
+| skills/capability | 5 — hybrid-model-backends, permission-gate-as-architecture, scripted-tool-pipelines, shared-skill-namespace, skill-library-lifecycle | 5/5 in `mocs/capability-layer.md` | Declined — identical membership |
+| typed-enforcement / governance (the thread flagged in NOTES.md) | 3 — permission-gate-as-architecture, budget-as-ceiling, verified-memory-writes | partial overlap with capability-layer and autonomous-search-loop | Declined — below the 5-concept threshold; still source-level accumulation, not concept-level |
+
+Nothing has changed since the 2026-07-22 session's identical check — no new concepts have been seeded since `information-firewall`, which was folded into `mocs/evaluation-integrity.md` at that time. The nearest future candidate remains the **typed-enforcement thread**: it has 4+ sources (khan2026token, zhao2026agenticos, louck2026securing, madatha2026deterministic) but only 3 promoted concepts. If one or two more enforcement-shaped concepts get seeded from that literature, it would be the first genuinely un-mapped 5-cluster; worth re-checking after the next ingest burst.
+
+No files written, nothing committed — per the skill's restraint rule, a redundant MoC is worse than none.
+
+(Unrelated note: the claude.ai Google Drive MCP server needs authentication before its tools can be used — this session is non-interactive, so if you want it, authorize the connector in your claude.ai settings.)
