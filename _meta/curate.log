@@ -614,3 +614,22 @@ No files written, nothing committed — per the skill's restraint rule, a redund
 
 (Unrelated note: the claude.ai Google Drive MCP server needs authentication before its tools can be used — this session is non-interactive, so if you want it, authorize the connector in your claude.ai settings.)
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No cluster is ripe — nothing to promote this cycle. Here's the full detection pass across the 25 concepts and 5 existing MoCs:
+
+**Candidate clusters and why each was declined:**
+
+| Cluster (by shared tags) | Size | Overlap with existing MoCs |
+|---|---|---|
+| evaluation | 7 | All 7 already in `mocs/evaluation-integrity.md` (updated just yesterday to fold in information-firewall) |
+| memory | 5 | All 5 in `mocs/knowledge-organization-for-research-agents.md` |
+| knowledge-organization | 6 | All 6 in the knowledge-organization MoC |
+| agent-architecture | 5 | Exactly the membership of `mocs/agent-architecture.md` |
+| skills / capability | 3–5 | Covered by `mocs/capability-layer.md` |
+| evolutionary search | 3–5 | Covered by `mocs/autonomous-search-loop.md` |
+| coordination (file-as-bus, hierarchical-delegation, structured-world-model) | 3 | Below the 5-concept threshold anyway |
+
+I also looked at the "typed-enforcement thread" flagged in NOTES.md (permission-gate-as-architecture, budget-as-ceiling, verified-memory-writes, information-firewall, hce-evaluation). It's the only 5-concept grouping where no single existing MoC covers a majority — each member lives in a *different* MoC. But it fails the coherence test: those five share no tags, and the thread is accumulating at the *literature* level (khan2026token, zhao2026agenticos, louck2026securing, madatha2026deterministic) toward a possible new **concept** (typed enforcement), not a MoC. Promoting it now would manufacture a cross-cutting MoC out of judgment stretch rather than real tag structure. If that concept gets seeded and pulls 4–5 neighbors onto a shared enforcement tag, it becomes the natural next promotion — worth re-checking after the next ingest burst.
+
+This matches yesterday's finding; the only graph change since (information-firewall) was already absorbed into evaluation-integrity. No files written, nothing to commit.
+
+One unrelated note: the claude.ai Google Drive MCP server needs authorization before its tools can be used — this session is non-interactive, so you'd need to authorize it via your claude.ai connector settings.
