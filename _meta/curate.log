@@ -613,3 +613,4 @@ Nothing has changed since the 2026-07-22 session's identical check — no new co
 No files written, nothing committed — per the skill's restraint rule, a redundant MoC is worse than none.
 
 (Unrelated note: the claude.ai Google Drive MCP server needs authentication before its tools can be used — this session is non-interactive, so if you want it, authorize the connector in your claude.ai settings.)
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
