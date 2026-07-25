@@ -633,3 +633,24 @@ I also looked at the "typed-enforcement thread" flagged in NOTES.md (permission-
 This matches yesterday's finding; the only graph change since (information-firewall) was already absorbed into evaluation-integrity. No files written, nothing to commit.
 
 One unrelated note: the claude.ai Google Drive MCP server needs authorization before its tools can be used — this session is non-interactive, so you'd need to authorize it via your claude.ai connector settings.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion this cycle — nothing is ripe.
+
+## Cluster scan (25 concepts, 5 existing MoCs)
+
+Every concept in `concepts/` is already a member of at least one MoC, so no cluster can clear the "not already mapped" test. The candidates that are large enough on tag-coherence alone:
+
+| Candidate cluster | Concepts | Overlap with existing MoC | Verdict |
+|---|---|---|---|
+| **memory / retrieval** (`agent-native-memory`, `context-eviction-policy`, `multi-granularity-memory`, `selective-memory-retrieval`, `verified-memory-writes`) | 5 | 5/5 in `knowledge-organization-for-research-agents` | **Decline** — 100% subsumed |
+| **evaluation** (`hce-evaluation`, `pass-at-k`, `citation-anchoring`, `typed-claim-partition`, `programmable-evaluator-oracle`, `compression-as-generalization-test`, `information-firewall`) | 7 | 7/7 in `evaluation-integrity` | **Decline** — already *is* that MoC |
+| **evolutionary search** (`evolutionary-expansion`, `evolutionary-search-grain`, `programmable-evaluator-oracle`, `async-worker-pool`, `budget-as-ceiling`) | 5 | 5/5 in `autonomous-search-loop` | **Decline** — 100% subsumed |
+| **safety / governance / enforcement** (`permission-gate-as-architecture`, `verified-memory-writes`, `budget-as-ceiling`, `information-firewall`) | 4 | split across 3 MoCs | **Decline** — below the ≥5 threshold |
+
+This repeats the 2026-07-20 finding (`_meta/log.md` 20:12), which is expected: no new concept files have been written since then — the newest is `information-firewall` (2026-07-20), already folded into `mocs/evaluation-integrity.md`.
+
+## The one cluster worth watching
+
+The **safety/governance** group is the only genuinely un-mapped theme, and it's the closest to ripening. It sits at 4 concepts spread thin across `capability-layer`, `knowledge-organization`, and `autonomous-search-loop` — none of which frames them as *enforcement mechanisms*. NOTES.md already flags a typed-enforcement literature thread (`khan2026token`, `zhao2026agenticos`, `louck2026securing`, `madatha2026deterministic`) with no concept note yet. If that thread gets promoted to a concept — something like *typed-capability-enforcement* — the cluster hits 5 with a real organizing question ("what stops an autonomous agent from doing the wrong thing, and at which layer?"), and it would be a legitimate new MoC rather than a re-slice of an existing one.
+
+No files written, nothing committed.
