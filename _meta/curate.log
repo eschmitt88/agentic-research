@@ -654,3 +654,27 @@ This repeats the 2026-07-20 finding (`_meta/log.md` 20:12), which is expected: n
 The **safety/governance** group is the only genuinely un-mapped theme, and it's the closest to ripening. It sits at 4 concepts spread thin across `capability-layer`, `knowledge-organization`, and `autonomous-search-loop` — none of which frames them as *enforcement mechanisms*. NOTES.md already flags a typed-enforcement literature thread (`khan2026token`, `zhao2026agenticos`, `louck2026securing`, `madatha2026deterministic`) with no concept note yet. If that thread gets promoted to a concept — something like *typed-capability-enforcement* — the cluster hits 5 with a real organizing question ("what stops an autonomous agent from doing the wrong thing, and at which layer?"), and it would be a legitimate new MoC rather than a re-slice of an existing one.
 
 No files written, nothing committed.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Nothing is ripe — no MoC promoted.**
+
+Detection over 26 concepts and 5 existing MoCs:
+
+| Cluster (tag) | Concepts | Already covered by |
+|---|---|---|
+| `evaluation` | 7 | `mocs/evaluation-integrity` — 7/7 |
+| `knowledge-organization` | 6 | `mocs/knowledge-organization-for-research-agents` — 6/6 |
+| `memory` | 5 | `mocs/knowledge-organization-for-research-agents` — 5/5 |
+| `agent-architecture` | 5 | `mocs/agent-architecture` — 5/5 |
+| `coordination` | 3 | below threshold (2/3 mapped anyway) |
+| `retrieval` | 3 | below threshold |
+
+Every cluster at or above the 5-concept threshold is **fully** subsumed by an existing MoC (100% overlap in all four cases), so clause 2 of the ripeness test fails outright. Splitting any of them would produce a strict subset of a parent MoC, not a new sub-theme that has outgrown its parent.
+
+Graph health incidentally confirmed clean: **0 unmapped concepts** (all 26 appear in at least one MoC) and **0 stale MoC references** (no `concepts:` wikilink points at a missing file).
+
+The two threads NOTES.md flagged to watch aren't ready:
+
+- **typed-enforcement** (khan2026token, zhao2026agenticos, louck2026securing, madatha2026deterministic) — a *literature* thread with no concept note yet. The nearest concept-level cluster is `permission-gate-as-architecture` + `budget-as-ceiling` + `verified-memory-writes` = 3, and those three are split across three different MoCs. If the thread does get promoted to its own concept, a safety/enforcement MoC becomes plausible at ~5 — worth re-running then.
+- **information-firewall** — still a single-source seedling, already folded into `evaluation-integrity` last session.
+
+No files written, nothing committed. Per the skill's restraint clause, manufacturing a sixth MoC here would just duplicate an existing view.
