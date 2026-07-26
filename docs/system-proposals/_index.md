@@ -17,6 +17,55 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-07-12 | [hce-spent-test-reads](2026-07-12-hce-spent-test-reads.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-07-14, claude-system@a16aa2d) |
 | 2026-07-14 | [experiment-loop-skill-scoping](2026-07-14-experiment-loop-skill-scoping.md) | `skills/` layout, new-project, propose, iterate | adopt | **accepted** (applied 2026-07-14, claude-system@ef0b199; 10 experiment projects symlinked) |
 | 2026-07-19 | [hce-evaluator-integrity](2026-07-19-hce-evaluator-integrity.md) | `rules/evaluation.md` | adopt | proposed |
+| 2026-07-26 | [token-metering-cumulative-double-count](2026-07-26-token-metering-cumulative-double-count.md) | `hooks/token_logger.sh` (+ `coordinator/policy.py`) | adopt | proposed |
+
+## Considered and held (2026-07-26 run)
+
+One proposal (above), from `khan2026token`'s M-cost-observability cluster
+applied to this box's own meter: the `token_logger` Stop hook stores
+cumulative transcript totals, so every consumer that sums `token_events`
+over-counts ~51× — verified live (`/plan` defers every ingest with
+"−4,770,410,939 of 5,000,000 remaining"). Nine notes entered the graph on
+2026-07-20 plus `concepts/information-firewall`; the rest was held:
+
+- **`wu2026hasbench` → permission-gate-as-architecture re-check.** The
+  closest to ripe of the holds. It supplies the evidence class the
+  2026-06-28 hold explicitly lacked — gate placement as a *swept*
+  variable, quantifying both the safety benefit (+26.9 Safety Rate on
+  authorization tasks) and the over-gating cost (+50% turns for
+  diminishing returns). Gate 1 passes on the concept's 11 attestations.
+  **Held on Gate 2, again** — the benefit direction is already enacted
+  (PreToolUse cap + harness permission layer + coordinator admission)
+  and the *anti*-over-gating direction is already enacted too (`/plan`'s
+  "for cheap local operations … skip it"). No concrete simplifying edit;
+  `wu2026hasbench` is cred 3 with no released artifact.
+- **`louck2026securing` + `karamchandani2026your` → verified-memory-writes.**
+  Gate 1 now passes comfortably (5 attestations; louck cred 3 with
+  released `mem-inv-bench`, and a machine-checked impossibility result:
+  content- and lineage-based write gates are provably launderable, only
+  channel-authenticated origin binding holds). **Held on Gate 2** —
+  origin-binding the harness's auto-memory writes is net-new machinery,
+  and the concept note itself flags the memory-security thread as still
+  consolidating toward its own concept. The 2026-07-19 hold stands on
+  strictly better evidence, which is worth recording.
+- **`wang2026naturebench` → `rules/evaluation.md` (seal-and-audit as a
+  third enforcement family, information-firewall).** Cred 4 with released
+  code, so Gate 1 passes. **Held on process, not merit** — the
+  2026-07-19 `hce-evaluator-integrity` proposal against the same file is
+  still `proposed`/undecided; stacking a second undecided edit on one
+  rule file makes neither reviewable. Re-raise once that one is decided.
+  `information-firewall` is also still a single-source seedling.
+- **`cao2026agentsk1` (cred 4 + code), `yu2026knows` (cred 2)** →
+  llm-wiki-pattern / structured-world-model / typed-claim-partition.
+  Material new attestations, no new mechanism aimed at this box. The
+  2026-07-19 hold on the llm-wiki reconciliation pass stands on its own
+  terms: the concept asks for a trial *here* before any `/elevate`
+  proposal.
+- **`alzahrani2026persistent`** (cred 2) — fails Gate 1 on its own; its
+  cost-per-artifact observation is a single 25-day window.
+- **`lupidi2026airsbench` → pass-at-k** — shares AIRA_2's author set, so
+  not independent confirmation; the 2026-07-05 already-enacted hold
+  (`/implement --seeds N`) stands.
 
 ## Considered and held (2026-07-19 run)
 
