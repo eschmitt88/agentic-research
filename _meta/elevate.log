@@ -65,3 +65,35 @@ To act on the proposal: read it, make the edit in `~/claude-system` yourself (or
 One unrelated note: `_meta/curate.log` had uncommitted modifications from before this session; I left them out of the commit. Also, the claude.ai Google Drive MCP server needs authorization via your claude.ai connector settings before its tools are usable here — not needed for this run.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 {"id":"ri5UN3dbHy5V","time":1784437496,"expires":1784480696,"event":"message","topic":"esaiserver1337","title":"/elevate: 1 new system-proposal(s) to review","message":"• hce-evaluator-integrity\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
+`/elevate` complete — **1 proposal, 10 candidates considered**. Pushed to `origin/main` (`e21b398`). `~/claude-system` untouched (read-only throughout; its pre-existing `M claude/settings.json` is not mine and I left it alone, as I did the pre-existing dirty `_meta/curate.log` here).
+
+## The proposal: the token meter is wrong by ~51×
+
+`docs/system-proposals/2026-07-26-token-metering-cumulative-double-count.md`
+
+`claude/hooks/token_logger.sh` re-aggregates the **whole session transcript** on every Stop and inserts that cumulative total as a new `token_events` row. Every consumer `SUM`s those rows, so each turn's spend is counted once per subsequent turn. Confirmed in the DB — session `0c4638b7…` has 18 strictly-increasing rows (output 45,835 → 507,500).
+
+```
+7-day SUM over rows              = 4,775,410,939
+7-day SUM(per-session MAX) ≈ true =    93,102,217
+```
+
+Verified live, read-only:
+
+```
+$ claude-coordinator-plan agentic-research ingest --est-tokens 30000 --json
+{"admit": false, "reason": "defer: <25% weekly token budget remains
+ (-4,770,410,939 of 5,000,000)"}
+```
+
+`/plan` currently defers **every** research/ingest/digest job on this box. Also inert or wrong: `pretooluse_cap.sh` (fires ~51× early), `/iterate --chain`'s `max_tokens` halt, `/lint` check #10, `/headroom`'s token lines. Unaffected: the agency verdict, which reads `ccusage` directly — that's precisely why weeks of `agency: max` bursts never surfaced this. The signal that *authorizes* spend is sound; the four that are supposed to *stop* it are not.
+
+The fix is a delta insert (`transcript_total − SUM(recorded)`), self-referential so it needs no schema change, plus one required companion in `policy.py`: `_load_budget()` reads `budget.yaml: max_tokens` — documented and consumed by `/iterate` as a *per-chain* ceiling — as `max_tokens_weekly`. Neither half alone restores the gate.
+
+**On the NOTES.md item for this run** (khan2026token's pre-flight spend reservation vs. halt-after-cycle counters): the box already has the pre-flight *shape* — `/plan` estimates before the job and the coordinator refuses on `est_tokens > remaining`. The gap isn't a missing mechanism, it's that the existing gate is fed a fictional number. Repairing the meter is strictly prior to any reservation layer, which would otherwise reserve against the same fiction.
+
+Two risks worth the reviewer's attention before landing: transcript rotation would make the clamped delta silently record 0, and a `--resume` session with a fresh `session_id` re-inserts its whole history. Sub-agent spend invisible to a session-scoped cap (khan's M-delegation-fanout in miniature) is flagged as a separate follow-up, not bundled.
+
+## Notable hold
+
+`wu2026hasbench` supplies exactly the evidence class the 2026-06-28 permission-gate hold said was missing — gate placement as a swept variable, with both the safety benefit (+26.9 Safety Rate) and the over-gating cost (+50% turns) quantified. Held again on Gate 2: both directions are already enacted, including the anti-over-gating one in `/plan`'s "for cheap local operations… skip it." The memory-security pair (`louck2026securing`, `karamchandani2026your`) now clears Gate 1 comfortably — including a machine-checked impossibility result — but origin-binding auto-memory writes is net-new machinery, so the prior hold stands on better evidence. `wang2026naturebench` was deferred on process alone: the 2026-07-19 proposal against `rules/evaluation.md` is still undecided, and two undecided edits on one rule file make neither reviewable.
