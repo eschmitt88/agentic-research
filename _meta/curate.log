@@ -678,3 +678,4 @@ The two threads NOTES.md flagged to watch aren't ready:
 - **information-firewall** — still a single-source seedling, already folded into `evaluation-integrity` last session.
 
 No files written, nothing committed. Per the skill's restraint clause, manufacturing a sixth MoC here would just duplicate an existing view.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
