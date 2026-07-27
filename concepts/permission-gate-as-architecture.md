@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/wu2026hasbench]]"
   - "[[literature/papers/louck2026securing]]"
   - "[[literature/papers/sharma2026smsr]]"
+  - "[[literature/papers/ye2026agent]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"

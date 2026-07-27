@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/jia2026finharness]]"
   - "[[literature/papers/zhao2026agenticos]]"
   - "[[literature/papers/khan2026token]]"
+  - "[[literature/papers/ye2026agent]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -128,6 +129,78 @@ dollar-cost face of [[concepts/context-eviction-policy]].
    raising `max_wall_hours` beyond the current ceiling must say so
    in `risks:` and the user explicitly edits `budget.yaml` before
    running. No silent overrides.
+
+## A ceiling is really a ceiling-plus-one-call
+
+[[literature/papers/ye2026agent]] (peer-reviewed, COINE 2026 @ AAMAS)
+states the enforcement limit this concept has been implicitly assuming
+away. Token consumption is *unknown during* an LLM call and known only
+after it returns — even streaming APIs report usage metadata at
+completion. Three consequences follow directly:
+
+1. No budget mechanism can prevent a **single** call from exceeding the
+   ceiling. It can only prevent the *next* one.
+2. The value of a ceiling is therefore **multi-call** protection —
+   runaway loops, retry storms, iterative-refinement cycles.
+3. True pre-allocation would require provider-side capabilities that do
+   not exist: interruptible generation with mid-stream cancellation,
+   token reservation with guaranteed hard limits, budget-aware
+   inference.
+
+The paper's own data shows this honestly: a runaway agent under a 40K
+budget was detected and halted at **56K consumed** — a 40% overshoot,
+by design rather than by bug.
+
+This **settles the pre-flight-reservation question** left open after
+[[literature/papers/khan2026token]]. khan's affine-typed budget
+ownership is a genuine in-process integrity property (no aliasing, no
+double-spend, no use-after-delegation — all compile errors), but it
+cannot bound a single call's actual cost either, because nothing can.
+So halt-after-cycle enforcement is not a weaker approximation of
+reservation; it is the correct achievable design. What follows for us:
+
+- Keep hard enforcement **between** actions and soft enforcement
+  (budget-aware prompting) within them — the paper's explicit split.
+  Soft enforcement alone is defeated by "token elasticity," where models
+  exceed stated budgets precisely when constraints are tight.
+- Treat every ceiling in `budget.yaml` as ceiling-plus-one-worst-case-call,
+  and size a **reserve buffer** (the paper uses 10–15%) to cover it. Our
+  `budget.yaml` currently declares ceilings with no reserve, which makes
+  the overshoot unbounded rather than merely nonzero.
+- Enforce at the harness, not the model. Hard enforcement "requires no
+  model-level support; it operates at the orchestration layer between
+  actions" — the same structural-not-behavioral argument as
+  [[concepts/permission-gate-as-architecture]].
+
+Fully enforceable this way: multi-call budgets, iteration limits,
+API-call limits, duration limits. Only *approximable*: cost ceilings in
+currency, which is why our token-denominated ceilings are the more
+defensible unit.
+
+## Budgets survive delegation — the conservation law
+
+The same paper supplies the invariant this concept lacked for
+sub-agents: Σ_j c_j ≤ B for every resource, holding across sequential,
+parallel, hierarchical, and competitive execution, with subcontracts
+constrained by Σ R_i ≤ R_parent. The consequence it names **bounded
+autonomy** — however capable an orchestrator is, it may create
+subcontracts but can never exceed its own parent constraint — is what
+makes recursive delegation safe rather than merely convenient. Measured:
+zero conservation violations across 50 multi-agent trials.
+
+Two allocation details worth importing alongside it: budgets can be
+assigned proportionally (by estimated complexity), equally, or
+*negotiated* (agents request, coordinator caps to prevent
+over-claiming); and unused budget from completed agents should return to
+a shared pool, letting cheap agents subsidize expensive ones without
+breaching the total. See [[concepts/hierarchical-delegation]].
+
+The headline result is also a reframing of what ceilings buy: 90% token
+reduction came with **525× lower variance** and a success-rate change of
+−7.1 pp that was *not* statistically significant. Budgets are not a cost
+optimization that happens to be safe; they are a variance-elimination
+mechanism whose mean-quality effect is roughly neutral. Argue for them
+on tail risk, not on average savings.
 
 ## Open questions
 
