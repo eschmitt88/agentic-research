@@ -286,3 +286,5 @@ skills; read by `/lint`.
 2026-07-27 07:20 ingest raw/papers/sharma2026smsr.pdf
 2026-07-27 07:24 fetch-paper https://arxiv.org/abs/2601.08815 → raw/papers/ye2026agent.pdf
 2026-07-27 07:32 ingest raw/papers/ye2026agent.pdf
+2026-07-27 07:36 fetch-paper https://arxiv.org/abs/2607.14651 → raw/papers/gao2026mempoison.pdf
+2026-07-27 07:46 ingest raw/papers/gao2026mempoison.pdf

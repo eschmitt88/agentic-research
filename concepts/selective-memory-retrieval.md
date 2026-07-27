@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/xu2026single]]"
   - "[[literature/papers/zhou2026ready]]"
   - "[[literature/papers/ji2026memory]]"
+  - "[[literature/papers/gao2026mempoison]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -172,6 +173,29 @@ emits a trigger when it judges the current context is insufficient
   surface — the system invokes bad memory *exactly when uncertain*,
   which is the worst time. Pairing with provenance / freshness
   filters at retrieval time may be necessary.
+
+  **This is now measured, and the conclusion inverts the usual framing:
+  retrieval is not only a risk surface but a necessary defense stage.**
+  [[literature/papers/gao2026mempoison]] shows write-time gates have a
+  structural ceiling against harm that emerges from *co-retrieval* of
+  individually plausible records — no per-record admission check can see
+  it, because it is not in any record. Retrieval-time source-reliability
+  reweighting is the single best defense on that class (corruption 51.7%
+  → 17.0%), beating every write-time method, while being among the worst
+  on directly-harmful single records (43.7% vs 4.8%). The two stages fail
+  on **disjoint** attack classes. So the right reading is not "retrieval
+  gating is dangerous, filter at write time" but "the retrieval policy is
+  where compositional harm must be caught, because nothing upstream can."
+  See [[concepts/verified-memory-writes]].
+
+- **Which memory actually caused the answer?** MemPoison's Mechanistic
+  Influence Decomposition is a reusable diagnostic for exactly the claim
+  this concept keeps needing to make: leave-one-out counterfactuals over
+  the retrieved slate measure a single item's contribution;
+  leave-*pair*-out isolates interaction effects between items; and
+  comparing an item's influence across contexts measures whether it is
+  conditionally activated. Better grounding for "this retrieval policy is
+  working" than end-task accuracy, and applicable outside security.
 - **Cross-skill transfer.** Whether the gating policy learned in
   one task (e.g., embodied interaction) transfers to another
   (e.g., literature curation, code generation) is untested. The
