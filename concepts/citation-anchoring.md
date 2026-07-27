@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/kamelhar2026gsar]]"
   - "[[literature/papers/xu2026researchclawbench]]"
   - "[[literature/papers/wang2026search]]"
+  - "[[literature/papers/tang2026memory]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -88,6 +89,19 @@ explicit anchors moves the defect from invisible to grepable.
    provenance to look rigorous and not enough to detect contamination.
    Our pipeline keeps the raw artifact and cites it; the query that
    surfaced it is not recorded anywhere.
+
+7. **Anchors must survive abstraction.** When an agent compiles raw
+   experience into something reusable, the compiled artifact should keep
+   pointing at what justified it. [[literature/papers/tang2026memory]]
+   makes this a promotion criterion rather than a nicety: a procedural
+   policy is only eligible to become a callable skill if it *retains its
+   supporting evidence*, and the promoted skill carries evidence
+   anchors, applicability boundaries, and verification rules forward.
+   The payoff is revisability — a skill that remembers why it exists can
+   be re-verified or retired on evidence, while one that has compiled its
+   justification away can only be trusted or deleted. Generalizes to any
+   distillation step: summaries, concept notes, and MoCs should link to
+   their sources for the same reason, not merely for etiquette.
 
 ## Open questions
 

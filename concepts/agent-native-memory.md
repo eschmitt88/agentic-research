@@ -38,6 +38,7 @@ sources:
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
   - "[[literature/papers/alzahrani2026persistent]]"
+  - "[[literature/papers/tang2026memory]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"

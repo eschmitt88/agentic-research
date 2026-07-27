@@ -24,6 +24,7 @@ sources:
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/zhao2026agenticos]]"
   - "[[literature/papers/huang2026skillwiki]]"
+  - "[[literature/papers/tang2026memory]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -312,3 +313,59 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
   on longer horizons isn't shown. For a research-memory project
   with multi-year horizons, the steady-state question matters
   practically.
+
+## The admission gate — governing what becomes a skill at all
+
+Most sources here work the *exit* side: which skills to retire, merge,
+or deprecate once the library is already noisy.
+[[literature/papers/tang2026memory]] works the entry side, and its
+premise is that the noise is avoidable. Distilling skills straight from
+raw trajectories is the error — traces carry failed attempts, blind
+exploration, and environment-specific artifacts, so the resulting skills
+are over-specific and fire in the wrong contexts. Instead, promote from
+*governed* memory: grounded step traces (L1) → induced cross-episode
+procedural policies (L2) → declarative environmental knowledge (L3),
+with only L2 policies crystallizing into callable skills.
+
+The gate is three-part, and worth stating as a checklist:
+
+1. **Evidence retained** — the policy still points at the traces that
+   support it.
+2. **Positive estimated gain** — it demonstrably helps, rather than
+   merely having occurred.
+3. **Internal consistency** — its trigger, procedure, and applicability
+   boundary agree with each other.
+
+A skill that passes carries its evidence anchors, applicability
+boundary, verification rules, and a reliability estimate forward.
+Provenance survives promotion instead of being compiled away — see
+[[concepts/citation-anchoring]], of which this is the procedural-memory
+instance. Our own skill files assert procedures with no link to whatever
+established them; the same gap, one level up.
+
+Their answer to sparse credit assignment is **reflection-weighted value
+backfilling**: terminal feedback is propagated back over grounded traces
+using dense local self-reflections as weights, and the resulting
+evidence-calibrated trace value is the single signal governing
+retrieval, induction, promotion, and revision alike. That unification is
+the more transferable idea than any individual component.
+
+Results: best or tied-best on all five EvoAgentBench domains (+15.4 pts
+on software engineering), *lower* cost on four of five, and positive
+cross-domain transfer on all six pairs tested (+2.6 to +5.1) — evolved
+skills help on unrelated domains rather than interfering.
+
+**Read the ablation against the paper's own framing, though.** Removing
+skill crystallization costs less than flattening the memory hierarchy
+(IR 26.15 → 20.00 vs → 10.77). The dominant effect is the governed
+L1/L2/L3 substrate; the skill layer is a real but secondary increment.
+The honest lesson for this concept is that **skill quality is
+downstream of memory organization** — a library curated well at the exit
+cannot rescue procedures induced from an ungoverned trace store.
+
+Caveat on scope: MSCE measures accumulation and transfer over bounded
+runs and reports no variance anywhere. It does not test what this
+concept most cares about — what happens when skills go stale, or when
+the library grows large enough that retrieval interference sets in.
+Whether admission gating and consolidation/retirement are substitutes or
+complements is open.

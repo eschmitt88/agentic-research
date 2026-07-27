@@ -288,3 +288,6 @@ skills; read by `/lint`.
 2026-07-27 07:32 ingest raw/papers/ye2026agent.pdf
 2026-07-27 07:36 fetch-paper https://arxiv.org/abs/2607.14651 → raw/papers/gao2026mempoison.pdf
 2026-07-27 07:46 ingest raw/papers/gao2026mempoison.pdf
+2026-07-27 07:50 fetch-paper https://arxiv.org/abs/2607.16621 → raw/papers/tang2026memory.pdf
+2026-07-27 08:02 ingest raw/papers/tang2026memory.pdf
+2026-07-27 08:02 digest-autoingest n=5 verdict=go/high (wang2026search, sharma2026smsr, ye2026agent, gao2026mempoison, tang2026memory)
