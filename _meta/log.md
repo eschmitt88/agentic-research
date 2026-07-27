@@ -282,3 +282,5 @@ skills; read by `/lint`.
 2026-07-27 07:02 digest n=20 window_since=2026-07-20T07:02:56Z
 2026-07-27 07:04 fetch-paper https://arxiv.org/abs/2606.05241 → raw/papers/wang2026search.pdf
 2026-07-27 07:12 ingest raw/papers/wang2026search.pdf
+2026-07-27 07:08 fetch-paper https://arxiv.org/abs/2606.12703 → raw/papers/sharma2026smsr.pdf
+2026-07-27 07:20 ingest raw/papers/sharma2026smsr.pdf

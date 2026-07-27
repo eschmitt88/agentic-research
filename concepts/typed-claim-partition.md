@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/xu2026researchclawbench]]"
   - "[[literature/papers/yu2026knows]]"
+  - "[[literature/papers/sharma2026smsr]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -145,3 +146,28 @@ either paper alone.
   types, capability types, evidence-recency types. GSAR is one
   instantiation; whether the meta-pattern deserves a more abstract
   concept is open.
+
+## Typing before aggregation — the Consistent Minority Effect
+
+[[literature/papers/sharma2026smsr]] supplies an unusually clean
+argument for typing outputs *before* combining them, from a direction
+unrelated to grounding. When several LLM samples are aggregated by
+**string** agreement, an adversary reliably wins from a numerical
+minority: a false claim is one specific repeatable sentence, while
+correct responses paraphrase freely, so the votes for "correct" shatter
+across distinct strings and the single most-frequent string is the
+attacker's. The paper bounds this by the clean responses' min-entropy —
+as legitimate paraphrase diversity rises, the adversary's win
+probability approaches 1, i.e. **the better the honest answers, the
+worse string voting performs.** Measured: 93.3% attack success under
+string voting vs 13.3% under typed-verdict voting on the *same* ablation
+runs, affecting 12 of 15 scenarios.
+
+The fix is exactly this concept's move — collapse each free-text
+response into a typed label ({correct, malicious, neither}) and
+aggregate over labels, never over surface form. It generalizes well
+past memory security: self-consistency voting, ensemble judging, and
+majority-vote evaluation all compare generated text and inherit the
+same failure. Worth auditing anywhere we aggregate model outputs; the
+tell is any comparison of strings for equality where a *judgment* was
+the thing actually wanted.

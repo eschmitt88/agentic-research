@@ -43,6 +43,7 @@ and `/new-experiment`.
 ## Literature / papers
 
 - [[literature/papers/wang2026search]] — Search-Time Contamination (holdout leaks through the agent's own search tool; three-tier taxonomy where only answer-level leakage inflates, so URL-matching audits measure the wrong thing; rel 5 / cred 4)
+- [[literature/papers/sharma2026smsr]] — SMSR (independent impossibility route to write-time provenance; 0% ASR unsigned but 8% residual against the *authenticated* writer, qualifying TMA-NM's sufficiency claim; Consistent Minority Effect; rel 4 / cred 3)
 - [[literature/papers/khan2026token]] — Token Budgets (63-incident overrun catalog; first empirical anchor for budget-as-ceiling; rel 5 / cred 3)
 - [[literature/papers/louck2026securing]] — TMA-NM (machine-checked separation theorem: content/lineage authority signals are malleable; origin-bound write-time authority holds at 0% ASR; rel 4 / cred 3)
 - [[literature/papers/wang2026naturebench]] — NatureBench (discovery-vs-reproduction split via information firewall; sealed host-side evaluator; rel 4 / cred 4)

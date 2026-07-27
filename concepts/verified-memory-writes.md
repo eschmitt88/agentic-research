@@ -1,7 +1,7 @@
 ---
 kind: concept
 name: "verified-memory-writes"
-status: seedling
+status: growing
 added: "2026-07-07"
 sources:
   - "[[literature/papers/yang2026trustmem]]"
@@ -9,11 +9,13 @@ sources:
   - "[[literature/papers/chhikara2025mem0]]"
   - "[[literature/papers/karamchandani2026your]]"
   - "[[literature/papers/louck2026securing]]"
+  - "[[literature/papers/sharma2026smsr]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
   - "[[concepts/agent-native-memory]]"
   - "[[concepts/skill-library-lifecycle]]"
+  - "[[concepts/permission-gate-as-architecture]]"
 related_experiments: []
 tags: [memory, consolidation, write-policy, verification, trustworthiness, knowledge-organization]
 ---
@@ -137,3 +139,38 @@ The pattern generalizes beyond conversational memory:
   *quality* layer — the theorem says the quality layer can never be
   asked to carry the security load. First formally-verified source in
   the cluster; artifacts released (benchmark, harness, TLA+ models).
+- **Sixth attestation — an independent route to the same necessity, and
+  the first honest account of what origin-binding does *not* cover**
+  ([[literature/papers/sharma2026smsr]]). SMSR proves the impossibility
+  half by an entirely different argument — embedding density rather than
+  TLA+ model checking: because fluent text populates any neighbourhood
+  of a target query's embedding, no deterministic content-based
+  retrieval-time filter can carry a non-trivial worst-case certificate.
+  Two independent formal routes converging on "write-time provenance is
+  necessary" is a much stronger warrant than either alone, and the
+  empirical companion is blunt: a keyword + perplexity + semantic-anomaly
+  filter falls to **100% ASR** against fluent bypass text, while HMAC
+  signing takes the same attacks to **0%**.
+
+  The important part is the residual. SMSR's 0% covers only the
+  **unsigned** adversary — one with no access to the signing oracle.
+  Against the **authenticated** adversary, who writes through the normal
+  path (which is what the agent itself does), signatures buy nothing and
+  the defense falls back to a probabilistic bound: 8.0% ASR [5.8, 10.9]
+  against a certified worst case of 10.4%, collapsing to no guarantee at
+  all once the adversary's write budget approaches half the retrieval
+  pool. This puts a **scope qualifier on the fifth attestation**:
+  louck2026securing's laundering channels — self-summarization,
+  trusted-tool echo, manufactured corroboration — all operate by making
+  *the agent write the poison itself*, which is precisely SMSR's
+  authenticated regime. TMA-NM claims 0% there; SMSR measures a real
+  residual. The two agree that origin-binding is **necessary** and
+  disagree on whether it is **sufficient**. Treat sufficiency as open
+  until a third source adjudicates.
+
+  Operationally the construction reduces to one rule that is
+  [[concepts/permission-gate-as-architecture]] restated as a security
+  requirement: **the signing oracle must be the only write path.** Any
+  route into the store that bypasses it voids the whole construction —
+  so the gate's worth is a property of the architecture around it, not
+  of the gate itself.
