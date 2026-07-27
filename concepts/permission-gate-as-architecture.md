@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/ge2026governance]]"
   - "[[literature/papers/wu2026hasbench]]"
   - "[[literature/papers/louck2026securing]]"
+  - "[[literature/papers/sharma2026smsr]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -219,3 +220,26 @@ hook.
   whether cross-session memory of prior gate decisions
   ([[concepts/agent-native-memory]]) improves or biases future gating is
   unexplored.
+
+## The gate is worth only as much as its exclusivity
+
+[[literature/papers/sharma2026smsr]] is a twelfth source and states the
+concept's central asymmetry more starkly than any other: its entire
+certified construction rests on the HMAC signing oracle being the
+**only** path into the memory store. "Any write path that does not go
+through the signing oracle becomes a bypass" — so the deployment
+guidance is not about the gate's logic at all but about the
+architecture around it (store not directly writeable, key in an HSM or
+secrets manager, oracle isolated behind a separate trust boundary).
+
+Two things follow. First, a gate's strength is a property of the *set
+of paths* it covers, and adding a gate while leaving a side channel open
+buys nothing — the measured numbers move from 93–100% attack success to
+0% only because the unsigned path is closed by construction. Second, the
+gate's cheapness is a coverage effect: Component 1 costs one HMAC verify
+per retrieved entry (<1 µs) and zero utility loss, whereas the
+*content*-inspecting defenses it replaces cost 100% attack success at
+comparable expense. Where a boundary can be drawn structurally,
+inspection is the more expensive and weaker option — the same lesson
+[[concepts/verified-memory-writes]] draws from the security/quality
+layer split.
