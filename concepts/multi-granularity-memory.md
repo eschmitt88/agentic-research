@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/ji2026memory]]"
   - "[[literature/papers/xu2025amem]]"
   - "[[literature/papers/gao2026mempoison]]"
+  - "[[literature/papers/tang2026memory]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -138,6 +139,18 @@ did this claim change") is the read-side counterpart to
   ladder (turn / summary / keyword, or working / episodic / semantic).
   Whether the optimal set of grains can itself be learned or evolved
   (cf. [[concepts/evolutionary-expansion]]) is open.
+- **Grains can differ in *kind*, not only in resolution.**
+  [[literature/papers/tang2026memory]]'s ladder is L1 grounded step
+  traces → L2 induced procedural policies → L3 declarative environmental
+  cognition. That is not a compression ladder: L2 is a *procedure* and L3
+  is a *model of the environment*, neither of which is a summary of L1.
+  It suggests the concept's framing (same content at several
+  resolutions) may be a special case of a broader one — several
+  representations of different type, associated by evidence links. Its
+  flat-memory ablation is also the strongest quantitative argument in the
+  cluster that the ladder is load-bearing rather than decorative:
+  collapsing it drops information-retrieval Pass@1 from 26.15 to 10.77,
+  below several baselines, while *increasing* cost.
 - **Routing signal robustness.** Entropy of a similarity distribution is
   cheap but proxy; whether it degrades on adversarial or out-of-distribution
   queries (where confident-looking matches are wrong) is untested.
