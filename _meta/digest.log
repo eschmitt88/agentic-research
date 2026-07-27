@@ -242,3 +242,30 @@ Digest complete — 10 new candidates written, 2 auto-ingested under a `slow/low
 
 **Worth flagging for the next `/curate` pass:** item 6 (the 63-incident budget-overrun catalog, 2606.04056) would give `budget-as-ceiling` its first empirical source, and item 2 (origin-bound memory authority, 2606.24322) bridges the two concepts strengthened today.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+That's a literal syntax example in prose, not a link — pre-existing and correct. Tree is clean and everything is pushed.
+
+## Digest complete — 2026-07-27
+
+**Window:** since 2026-07-20T07:02:56Z. Four scenario-form queries across the active fronts (memory-write security, token-budget/typed enforcement, evaluation integrity, skill-library lifecycle).
+
+**Candidates:** 20 written to `raw/_candidates/2026-07-27-digest.md`, deduplicated against 88 literature notes — all 28 checked titles were new (the few grep hits were related-work mentions inside existing notes). `_meta/last_digest` and `_meta/log.md` updated.
+
+**Auto-advance:** coordinator verdict was GO/high (39% weekly used, 10h to reset, hardware idle), re-checked between items and stable throughout. Ingested 5, each committed and pushed at its own boundary:
+
+| Paper | What it changed |
+|---|---|
+| **wang2026search** — Search-Time Contamination | Gave `information-firewall` the second attestation it explicitly asked for → promoted seedling to `growing`. Adds a third compromise vector to `hce-evaluation`: the holdout leaks through the agent's *own* search tool, which filesystem-scoped `test/` discipline cannot see. |
+| **sharma2026smsr** — SMSR | 6th attestation for `verified-memory-writes`; independent formal route (embedding density, not TLA+) to the same necessity claim. Its Consistent Minority Effect went into `typed-claim-partition`. |
+| **ye2026agent** — Agent Contracts | Connects `budget-as-ceiling` to `hierarchical-delegation` via the conservation law Σ R_i ≤ R_parent. |
+| **gao2026mempoison** — MemPoison | Closed a question the SMSR ingest opened hours earlier. |
+| **tang2026memory** — MSCE | Supplies `skill-library-lifecycle`'s missing *admission* gate; `citation-anchoring` gains an anchors-survive-abstraction clause. |
+
+**Two findings worth your attention:**
+
+1. **The pre-flight spend-reservation question from the 07-20 NOTES is settled — against it.** ye2026agent shows reservation is not implementable on current provider APIs: token spend is unknown until a call returns, so a ceiling is really *ceiling-plus-one-call* (their runaway agent overshot 40K → 56K by design). Our halt-after-cycle counters are the correct achievable design, not a weak approximation. The actionable fix is a reserve buffer in `budget.yaml` (we have none), not a reservation layer. Next `/elevate` should read that rather than khan2026token's proposal at face value.
+
+2. **The memory-security arc resolved, and not the way the 07-20 session recorded it.** I ingested SMSR, which measures an 8% residual against the *authenticated* writer where louck2026securing's TMA-NM claims 0% — then MemPoison adjudicated it: compositional and dormant payloads arrive through legitimate authenticated channels as individually-plausible records, so an origin-bound gate admits them by construction, same as a content gate. **Write-time origin binding is necessary but not sufficient**; TMA-NM's 0%-against-laundering result is scoped to single-record laundering. The concept now carries a composition-time layer, since write-time and retrieval-time defenses fail on disjoint tiers.
+
+**`/promote-moc`: declined.** All 26 concepts are already mapped. The one plausible new cluster (resource governance) overlaps `agent-architecture`, `capability-layer`, and `autonomous-search-loop` at ≥half for any membership I didn't cherry-pick — and the sensitivity of ripeness to which concepts I included was itself the signal that I'd be manufacturing one. Updated `evaluation-integrity` and `agent-architecture` instead.
+
+**Left undone deliberately:** 15 of 20 candidates are uncurated. The file stays in `raw/_candidates/` (not archived) with a partial-curation header naming the five done and recommending the next three — HDSO, SpecBench, and one of the policy-as-code pair, each chosen because today's ingests opened the question it answers.
