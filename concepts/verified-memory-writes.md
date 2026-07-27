@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/karamchandani2026your]]"
   - "[[literature/papers/louck2026securing]]"
   - "[[literature/papers/sharma2026smsr]]"
+  - "[[literature/papers/gao2026mempoison]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -174,3 +175,71 @@ The pattern generalizes beyond conversational memory:
   route into the store that bypasses it voids the whole construction —
   so the gate's worth is a property of the architecture around it, not
   of the gate itself.
+
+## The write gate has a structural ceiling — necessary, not sufficient
+
+[[literature/papers/gao2026mempoison]] settles the sufficiency question
+the fifth and sixth attestations left open, and settles it against
+sufficiency. Its taxonomy separates harm by *when it becomes visible*:
+
+- **L1 — direct.** A single record is harmful on its face. This is what
+  every write gate in the cluster is built for, and it works: write-time
+  consistency checking takes L1 corruption from 45.4% to **4.8%**.
+- **L2 — compositional.** The payload is split across several records,
+  each individually plausible, that become harmful only when
+  co-retrieved. Best write-time result: 22.5%.
+- **L3 — dormant.** A record stays behaviorally inert until a later
+  natural context activates it. Undefended this is the *most* effective
+  attack (**76.7%** corruption, above L1's 45.4%), and the best
+  write-time result is 27.8%.
+
+The dilemma is structural, not a tuning failure: facing L2/L3 a
+write-time filter must "either admit the locally plausible components,
+thereby allowing the attack, or block benign information, destroying the
+utility of the memory system." The fragments genuinely *are* benign
+individually. Counterfactual analysis confirms the mechanism rather than
+inferring it — L1 corruption is carried by one record (removing it
+reverts 95.7% of responses), whereas L2 shows real pairwise interaction
+(the pair's joint effect exceeds the sum of its parts) and L3 shows
+influence that appears only under its trigger.
+
+**Why this binds origin-binding too, not just content gates.** Every
+defense MemPoison evaluates is content-based, so this is not a direct
+measurement against TMA-NM or SMSR — but the argument transfers by
+construction. L2/L3 payloads arrive through *legitimate, authenticated*
+channels: user input, tool returns, cross-agent messages. Channel-bound
+origin authority certifies precisely what is not in dispute — that a
+real principal wrote this record — while the harm lives in the relation
+*between* records, or in a future context. An origin-bound gate admits
+L2/L3 for a different reason than a content gate does, and just as
+reliably. Together with sharma2026smsr's measured 8% residual against
+the authenticated writer, the resolution is:
+
+> **Write-time origin binding is necessary but not sufficient.** TMA-NM's
+> 0%-against-laundering result should be read as scoped to *single-record*
+> laundering; it does not cover compositional or dormant corruption.
+
+**The missing layer.** This concept has distinguished a *security* layer
+(origin binding) from a *quality* layer (TrustMem's
+coverage/preservation/faithfulness). Both are **per-record**, and
+MemPoison shows any per-record gate has a ceiling. The layer neither
+covers is **composition-time**: reasoning over the retrieved slate
+rather than the incoming record. The evidence is direct — source-
+reliability *retrieval* reweighting is the single best L2 defense
+(17.0%, beating every write-time method) while being among the worst on
+L1 (43.7%). Write-time and retrieval-time defenses fail on **disjoint**
+tiers, which is why only a stacked defense reaches single digits overall
+(10.7% at 93.8% clean accuracy). Design implication: a write gate is a
+necessary first stage, not a complete architecture.
+
+Two smaller findings worth carrying:
+
+- **Scale does not save you.** All ten model families sit at 54.7–66.9%
+  undefended corruption; GPT-5 is the *worst* at 66.9%. This is not a
+  weak-model artifact that frontier models grow out of.
+- **The substrate is a defense parameter.** Flat chunk storage is worst
+  (67.9%), hierarchical notes intermediate (63.1%), a decomposed fact
+  store best (56.6%) via dilution — see
+  [[concepts/multi-granularity-memory]]. Though note the tension:
+  decomposition dilutes L1 payloads while fragmentation is exactly the
+  L2 attack.

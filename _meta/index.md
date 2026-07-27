@@ -43,6 +43,7 @@ and `/new-experiment`.
 ## Literature / papers
 
 - [[literature/papers/wang2026search]] — Search-Time Contamination (holdout leaks through the agent's own search tool; three-tier taxonomy where only answer-level leakage inflates, so URL-matching audits measure the wrong thing; rel 5 / cred 4)
+- [[literature/papers/gao2026mempoison]] — MemPoison (write gates have a structural ceiling: compositional + dormant corruption is invisible per-record; L3 dormant is the *worst* attack at 76.7%; all 10 models vulnerable, GPT-5 worst; rel 5 / cred 4)
 - [[literature/papers/sharma2026smsr]] — SMSR (independent impossibility route to write-time provenance; 0% ASR unsigned but 8% residual against the *authenticated* writer, qualifying TMA-NM's sufficiency claim; Consistent Minority Effect; rel 4 / cred 3)
 - [[literature/papers/ye2026agent]] — Agent Contracts (conservation law Σ R_i ≤ R_parent for delegated budgets; settles pre-flight reservation as *not implementable* — a ceiling is ceiling-plus-one-call; COINE 2026 @ AAMAS; rel 5 / cred 3)
 - [[literature/papers/khan2026token]] — Token Budgets (63-incident overrun catalog; first empirical anchor for budget-as-ceiling; rel 5 / cred 3)

@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/zhou2026ready]]"
   - "[[literature/papers/ji2026memory]]"
   - "[[literature/papers/xu2025amem]]"
+  - "[[literature/papers/gao2026mempoison]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -143,3 +144,22 @@ did this claim change") is the read-side counterpart to
 - **Cost accounting.** Constructing every experience at N grains multiplies
   write cost; none of the sources fully account for the construction
   overhead against the retrieval-quality gain.
+- **Grain choice is also a security parameter — with an unresolved sign.**
+  [[literature/papers/gao2026mempoison]] measures poisoning resistance
+  across three substrates and finds it tracks granularity: a decomposed
+  fact store is most robust (56.6% behavioral corruption), hierarchical
+  notes intermediate (63.1%), flat chunks worst (67.9%). The mechanism is
+  "decomposition-induced dilution" — breaking an entry into atomic facts
+  dissolves an injected payload that survives intact in a raw chunk, and
+  summarization attenuates it partially. That is a second, independent
+  argument for a design this concept already favours on retrieval
+  grounds.
+
+  But the sign is not uniform, and the same paper supplies the
+  counter-case: its hardest attack class works by *splitting* a payload
+  across several individually plausible records that only become harmful
+  when co-retrieved. Fine granularity dilutes single-record poisons and
+  is the native medium for compositional ones. Whether decomposition is
+  net protective depends on which attack class dominates, and no source
+  yet measures the tradeoff directly — worth resolving before treating
+  fine grain as a safety win.
