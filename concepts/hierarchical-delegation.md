@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/zhang2026aibuildai]]"
   - "[[literature/papers/chen2026toward]]"
   - "[[literature/papers/du2026mlevolve]]"
+  - "[[literature/papers/ye2026agent]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/jin2026toward]]"
@@ -104,3 +105,45 @@ per-role focus. At MLE-bench scale the trade is strongly positive.
   sub-agent hierarchies — `/implement` uses one subagent, not a
   manager. A downstream project that reproduces AIBuildAI's or
   AiScientist's architecture would move this to `active`.
+
+## What a parent owes a child: the conservation law
+
+Most sources here describe delegation as a *role* decomposition — who
+does what. [[literature/papers/ye2026agent]] supplies the missing
+*resource* semantics: an orchestrator issues subcontracts constrained by
+Σ R_i ≤ R_parent, an invariant that holds regardless of whether children
+run sequentially, in parallel, hierarchically, or competitively.
+Measured at zero violations across 50 trials of a three-agent
+Researcher → Analyzer → Reporter pipeline.
+
+The property it buys is **bounded autonomy**: an orchestrator may be
+arbitrarily capable and may itself spawn contract-issuing children, yet
+can never exceed the constraint it was handed. That is what makes
+*recursive* delegation safe — the depth of the hierarchy is irrelevant
+to the total spend, so "how deep may this nest?" stops being a safety
+question and becomes purely a coordination-overhead question.
+
+Two mechanisms make it practical rather than merely sound:
+
+- **Allocation has three modes** — proportional to estimated complexity,
+  equal when complexity is unknown, or *negotiated* (children request,
+  the coordinator caps to prevent over-claiming). A 10–15% reserve
+  buffer absorbs coordination overhead.
+- **Unused budget returns to a shared pool** as children complete, so
+  efficient siblings subsidize expensive ones without breaching the
+  total. Without this, equal allocation wastes whatever the cheap
+  children did not need.
+
+The paper also reframes the orchestrator's job as **contracting as a
+capability**: once a contract fully specifies a child's task, budget,
+and success criteria, the parent need not select from a fixed pool — it
+can *instantiate* a specialist to fit the contract. Routing and
+orchestration collapse into one operation, with the contract as the
+agent's specification rather than a filter over existing agents. That is
+a materially different architecture from the fixed-role pipelines the
+other sources here describe, and the closest thing in the cluster to a
+principled answer to "how many roles?" — as many as there are
+contracts worth writing.
+
+See [[concepts/budget-as-ceiling]] for the enforcement limits that bound
+all of this (a ceiling is really ceiling-plus-one-call).
