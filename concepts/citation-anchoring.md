@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/mitchener2025kosmos]]"
   - "[[literature/papers/kamelhar2026gsar]]"
   - "[[literature/papers/xu2026researchclawbench]]"
+  - "[[literature/papers/wang2026search]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -74,6 +75,19 @@ explicit anchors moves the defect from invisible to grepable.
    [[concepts/typed-claim-partition]]. For autonomous loops, the
    typed version is what turns provenance into something the
    planner can act on.
+
+6. **Anchor the query, not only the source.** One of
+   [[literature/papers/wang2026search]]'s three prescriptions is
+   *transparent search trajectories*: expose the queries issued, URLs
+   returned, pages visited, and intermediate evidence, so an auditor can
+   tell whether an answer was reasoned to or retrieved. That is
+   citation-anchoring extended one link back — a claim anchored to a
+   source is still unfalsifiable about *how the source was found*. The
+   paper's complaint is concrete: commercial deep-research systems return
+   a synthesized summary plus reference URLs, which is exactly enough
+   provenance to look rigorous and not enough to detect contamination.
+   Our pipeline keeps the raw artifact and cites it; the query that
+   surfaced it is not recorded anywhere.
 
 ## Open questions
 

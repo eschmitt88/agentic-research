@@ -281,3 +281,4 @@ skills; read by `/lint`.
 2026-07-26 05:04 elevate proposals=1 considered=10 — proposed: token_logger.sh cumulative-total double-count (~51x over-count; /plan defers all ingest at -4.77B of 5M) from khan2026token M-cost-observability + budget-as-ceiling. Held: wu2026hasbench→permission-gate (evidence class now present, still no simplifying edit), louck2026securing+karamchandani2026your→verified-memory-writes (Gate 1 now passes, Gate 2 net-new machinery), wang2026naturebench→evaluation.md (deferred: 2026-07-19 proposal on same file still undecided), cao2026agentsk1/yu2026knows (no new mechanism), alzahrani2026persistent (cred 2), lupidi2026airsbench (not independent)
 2026-07-27 07:02 digest n=20 window_since=2026-07-20T07:02:56Z
 2026-07-27 07:04 fetch-paper https://arxiv.org/abs/2606.05241 → raw/papers/wang2026search.pdf
+2026-07-27 07:12 ingest raw/papers/wang2026search.pdf
