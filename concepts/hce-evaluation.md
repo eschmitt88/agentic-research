@@ -30,6 +30,7 @@ sources:
   - "[[literature/papers/atinafu2026rewardhacking]]"
   - "[[literature/papers/zou2026fmlbench]]"
   - "[[literature/papers/wang2026naturebench]]"
+  - "[[literature/papers/wang2026search]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -139,6 +140,32 @@ default: appropriate when the goal is measuring peak capability against a
 fixed published anchor, not when protecting an unbiased final estimate of
 a method under development.
 
+A third compromise vector: **the holdout can be re-acquired from
+outside the workspace.** [[literature/papers/wang2026search]] measures
+search-enabled agents retrieving benchmark artifacts — and often the
+gold label — mid-evaluation, from question banks, forums, and
+data-hosting platforms. This is orthogonal to both vectors above: the
+agent never reads `test/` and never patches the evaluator, it simply
+re-derives the answer from the public web. Filesystem-scoped discipline
+(clause 1 of `~/.claude/rules/evaluation.md`) is *definitionally* unable
+to catch it, because nothing in the workspace is touched.
+
+Two details make this actionable rather than merely alarming. First,
+severity is tiered and only the top tier matters: retrieving
+benchmark-*metadata* URLs carries hazard ratios below 1 for correct
+prediction, while explicit *answer* retrieval carries 2.20–8.92. Audits
+that measure corpus overlap or URL matching — the common practice —
+measure exposure, not exploitation, and over-report. Second, the effect
+is low-prevalence but near-total when it fires: mean inflation is ~4%,
+but conditional on answer leakage, accuracy jumps to ~100% independent
+of task difficulty. Mean-accuracy comparisons hide it.
+
+Scope note: this only binds a project whose task is drawn from a public
+corpus *and* whose agent has retrieval. A private task with private
+splits is unaffected, and so is a retrieval-free loop. But the
+combination is increasingly the default, and it can shift model
+*rankings*, not just absolute scores.
+
 ## Implementation guidance
 
 Any project that imports this concept should:
@@ -172,6 +199,16 @@ Any project that imports this concept should:
    with an unchanged hash is drift; with a changed hash it is
    tampering. Without this, the `test/` rule certifies numbers an
    agent-edited scorer produced.
+
+6. **If the task is public and the agent can retrieve, close the
+   retrieval surface too.** Per wang2026search: disable web search
+   during scored runs, or pin retrieval to a fixed offline corpus, and
+   log the full search trajectory (queries, retrieved URLs, visited
+   pages) alongside `final_metrics.json` so a reviewer can check whether
+   a result came from reasoning or from a retrieved answer. Audit for
+   *answer-level* leakage, not corpus overlap. A held-out score from a
+   search-enabled run on a public benchmark is not an unbiased estimate
+   and should be reported with that caveat attached.
 
 ## Open questions
 

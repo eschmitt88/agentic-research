@@ -12,9 +12,11 @@ sources:
   - "[[literature/papers/nam2025mle]]"
   - "[[literature/papers/mitchener2025kosmos]]"
   - "[[literature/papers/xiong2026autoresearchbench]]"
+  - "[[literature/papers/wang2026search]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
+  - "[[concepts/information-firewall]]"
 related_experiments: []
 tags: [retrieval, search, ingest, discovery]
 ---
@@ -112,6 +114,36 @@ than the headline number:
   design — automated recall (digest produces ranked candidates),
   human precision verification (user triages and promotes via
   `/fetch-paper`) — matches what the empirical evidence supports.
+
+## The same channel is a contamination vector when there is a score
+
+Continuous web intake is a capability here and a liability one step
+downstream. [[literature/papers/wang2026search]] measures search-enabled
+agents retrieving benchmark artifacts and gold labels mid-evaluation,
+inflating scores by up to 4% on average and to near-certainty whenever
+the answer itself is retrieved. It is the same tool call, the same
+corpus, the same skill shape.
+
+This project is unaffected in practice — literature curation *wants* to
+find the source, there is no held-out quantity, and nothing here is
+scored. The distinction worth keeping explicit: web grounding is safe
+when retrieval is the *product*, hazardous when retrieval runs alongside
+an *evaluation* whose answer lives on the public web. See
+[[concepts/information-firewall]] and clause 6 of
+[[concepts/hce-evaluation]]'s implementation guidance.
+
+Two things a downstream project inheriting these skills should carry:
+
+- **Never pair unsandboxed `/discover`-style retrieval with scoring on a
+  public benchmark.** Disable search during scored runs or pin retrieval
+  to a frozen corpus. Narrowing the corpus is not a fix by itself —
+  wang2026search's Valyu result (0% leakage on MedQA, 78% on PubMedQA,
+  same curated corpus) shows a source list is only safe relative to a
+  specific task's provenance.
+- **Log the query, not just the hit.** Recording which query surfaced a
+  source makes retrieval auditable after the fact. Our candidate files
+  record the *rationale* for inclusion but not the query string that
+  produced it — a cheap gap to close.
 
 ## Open questions
 
