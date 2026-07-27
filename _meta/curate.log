@@ -679,3 +679,22 @@ The two threads NOTES.md flagged to watch aren't ready:
 
 No files written, nothing committed. Per the skill's restraint clause, manufacturing a sixth MoC here would just duplicate an existing view.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+## No cluster is ripe — nothing promoted
+
+**Coverage check:** all 26 concepts are already members of at least one of the 5 existing MoCs. Zero orphans.
+
+**Clusters evaluated, and why each is declined:**
+
+| Candidate theme | Concepts | Existing coverage | Verdict |
+|---|---|---|---|
+| Memory / retrieval | agent-native-memory, multi-granularity-memory, selective-memory-retrieval, context-eviction-policy, verified-memory-writes | `knowledge-organization-for-research-agents` — 5/5 | Fully mapped |
+| Evaluation | hce-evaluation, pass-at-k, citation-anchoring, typed-claim-partition, programmable-evaluator-oracle, compression-as-generalization-test, information-firewall | `evaluation-integrity` — 7/7 | Fully mapped |
+| Agent architecture | + structured-world-model, hierarchical-delegation | `agent-architecture` — 5/6 | Majority mapped |
+| Search loop | + pass-at-k | `autonomous-search-loop` — 5/6 | Majority mapped |
+| Skills / capability | skill-library-lifecycle, shared-skill-namespace, scripted-tool-pipelines, hybrid-model-backends, permission-gate-as-architecture | `capability-layer` — 5/5 | Fully mapped |
+
+**The one genuinely un-mapped theme — runtime governance / typed enforcement** — is the thread last session flagged (khan2026token, zhao2026agenticos, louck2026securing, madatha2026deterministic). At the *concept* level it currently has only three members: `permission-gate-as-architecture` (11 sources), `budget-as-ceiling` (7), `verified-memory-writes` (5). Stretching it to five would mean dragging in `context-eviction-policy` and `selective-memory-retrieval`, which are memory concepts wearing a "runtime-policy" tag — that would produce an overlapping MoC that re-slices `knowledge-organization`, exactly the subsumption mistake the ripeness test exists to prevent. `information-firewall` is evaluation-design, not runtime enforcement, so it doesn't count toward this cluster either.
+
+That thread is the one to watch: it's accumulating fast on the literature side (4 papers in ~two weeks) but hasn't yet spawned a distinct concept of its own. If a *typed/deterministic enforcement* concept gets seeded from that literature — the pattern where policy is a checked type rather than a runtime prompt — the cluster reaches 4 solid members, and a 5th would make a `mocs/runtime-governance.md` genuinely warranted rather than a re-labeling.
+
+No files written, no commit. One incidental observation while reading: `permission-gate-as-architecture` is still `status: seedling` at 11 sources — that looks stale rather than accurate, but promoting concept status is `/ingest`/`/lint` territory, not this skill's, so I left it.
