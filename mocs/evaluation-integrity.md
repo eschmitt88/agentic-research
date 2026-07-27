@@ -61,6 +61,18 @@ signal that would let it cheat.
   file-level keep/exclude rules plus eval-time web-search disable. Where
   HCE hides the *answers* from the loop, the firewall hides the *method*
   — one protects the estimate, the other the construct being measured.
+  No longer single-source: search-time contamination
+  ([[literature/papers/wang2026search]]) attests the same boundary from
+  the measurement side and shows the two firewalls share **one bypass** —
+  a search-enabled agent routes around the method firewall and the answer
+  holdout with the same tool call, recovering benchmark artifacts and gold
+  labels from question banks and forums. Two lessons transfer to every
+  concept in this MoC: audit for *answer-level* leakage rather than corpus
+  overlap (metadata retrieval carries hazard ratios below 1 for correct
+  prediction, so URL-matching audits over-report), and treat a restricted
+  retrieval corpus as relocating the boundary rather than drawing it
+  (0% leakage on one benchmark, 78% on another built from the same
+  sources).
 - [[concepts/compression-as-generalization-test]] — the audit that says
   whether a validation-selected gain was *real*. Split hygiene prevents the
   loop from reading the truth but can't certify what it selected;

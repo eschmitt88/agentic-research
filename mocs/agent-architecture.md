@@ -52,7 +52,19 @@ Once state is durable, the question is who does what — and with which model.
   sub-agents (manager / designer / coder / tuner) under a coordinator. The
   win is **context isolation**, not prompt engineering: AIBuildAI
   ([[literature/papers/zhang2026aibuildai]]) hit rank-1 on MLE-bench (63.1%
-  medal) with exactly this split.
+  medal) with exactly this split. Context isolation is only half the
+  story, though: delegation also divides *resources*, and
+  [[literature/papers/ye2026agent]] supplies the invariant — subcontracts
+  constrained by Σ R_i ≤ R_parent, holding across sequential, parallel,
+  hierarchical, and competitive execution (zero violations, n=50). The
+  property it buys, **bounded autonomy**, is what makes recursive
+  delegation safe: a child may itself spawn contract-issuing children and
+  still cannot exceed the constraint its parent was handed, so nesting
+  depth stops being a safety question. See
+  [[concepts/budget-as-ceiling]] in
+  [[mocs/autonomous-search-loop]] for the enforcement limits that bound
+  this — a ceiling is really ceiling-plus-one-call, because token spend is
+  unknown until a call returns.
 - [[concepts/hybrid-model-backends]] — let each role pick its own model
   family; a cheaper implementer often matches a frontier ideator's quality
   on mechanical sub-tasks at a fraction of the cost. Directly composes with
