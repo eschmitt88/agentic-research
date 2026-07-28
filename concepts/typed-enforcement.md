@@ -1,0 +1,173 @@
+---
+kind: concept
+name: "typed-enforcement"
+status: seedling
+added: "2026-07-28"
+sources:
+  - "[[literature/papers/palumbo2026formal]]"
+  - "[[literature/papers/mondl2026autoformalization]]"
+  - "[[literature/papers/khan2026token]]"
+  - "[[literature/papers/ye2026agent]]"
+  - "[[literature/papers/zhao2026agenticos]]"
+  - "[[literature/papers/madatha2026deterministic]]"
+  - "[[literature/papers/louck2026securing]]"
+related_concepts:
+  - "[[concepts/permission-gate-as-architecture]]"
+  - "[[concepts/budget-as-ceiling]]"
+  - "[[concepts/hierarchical-delegation]]"
+  - "[[concepts/scripted-tool-pipelines]]"
+  - "[[concepts/verified-memory-writes]]"
+related_experiments: []
+tags: [policy, enforcement, formal-methods, types, determinism, governance]
+---
+
+# typed-enforcement
+
+## Definition
+
+An agent's constraints — permissions, budgets, workflow order, data-flow
+rules — are expressed as a **machine-checkable artifact in a language with
+decidable static analyses**, held outside the agent's reasoning and
+enforced by a deterministic checker. The artifact is the policy; the
+agent's compliance is a consequence of the checker, not of the agent
+honoring prose.
+
+The contrast class is the dominant practice: policy written as
+natural-language instructions in a system prompt, with compliance
+delegated to the model. That form admits no enforcement semantics, cannot
+be checked for contradiction before it runs, and degrades exactly when
+optimization pressure is highest.
+
+## Why it matters here
+
+Seven sources converge on this from four unrelated starting points —
+programming languages, operating systems, formal verification, and an
+incident corpus — which is the main reason to treat it as a concept rather
+than a restatement of [[concepts/permission-gate-as-architecture]]. That
+concept says the gate is architecture and describes *where* it sits. This
+one is about *what the policy is written in*, and the payoff is that a
+formal language admits checks a prompt cannot support.
+
+**The language, not just the check.** [[literature/papers/palumbo2026formal]]
+is the clearest statement: policies in Datalog over abstract predicates,
+maintained by an observability service under an assume/guarantee contract,
+consulted by a reference monitor at every action, with a correctness
+theorem conditional on that contract. Datalog is chosen for four
+properties, and the underrated one is **tractable static analysis for
+contradiction, redundancy, subsumption, and conditional reachability** — a
+policy author can find out that their rules conflict *before* deployment.
+FORGE eliminates violations by construction (prompt-injection success
+100% → 0% with no benign false positives; τ²-bench compliance 58% → 98%;
+unauthorized accesses 40 → 0) at 19–38% latency overhead, and it does this
+over unmodified agents.
+
+**Types as the checker.** [[literature/papers/khan2026token]] reaches the
+same place from Rust: an affine `Budget` type makes cloning,
+double-spending, or use-after-delegating a budget a *compile error*. The
+enforcement is not a runtime monitor at all — the illegal program does not
+exist. [[literature/papers/ye2026agent]] supplies the algebra one level
+up: a contract seven-tuple with a **conservation law** guaranteeing
+delegated budgets never exceed the parent's, with zero conservation
+violations across 50 multi-agent trials.
+
+**What a policy signal may legitimately bind to.**
+[[literature/papers/louck2026securing]] is the negative theorem of the
+cluster, machine-checked in TLA+: any authority signal derived from
+*content* or a *derivation edge* is malleable and can be laundered, so
+only non-malleable origin binding is sound. This is the constraint on what
+predicates a typed policy may be written over — it is not enough for the
+policy language to be formal if its atoms are attacker-influenceable.
+
+**Why not just use an LLM to check.**
+[[literature/papers/madatha2026deterministic]] argues the enforcement layer
+must be ordinary testable code — hashing, state machines, blocklists — and
+explicitly **not further LLM orchestration**, on the grounds that a
+non-deterministic component cannot be a trustworthy control for another
+non-deterministic one. Its prevalence study is the empirical motivation:
+across 6,145 real agent-config files, **fewer than 1% declare any
+permission boundary at all.**
+
+**The compiler from prose.** The obvious objection to all of the above is
+that nobody writes Datalog for their agent, and hand-coded enforcement
+does not scale — prior work implemented 23 of an 88-rule policy.
+[[literature/papers/mondl2026autoformalization]] closes the gap with a
+generator–critic pipeline compiling prompts, tool schemas, and policy
+documents into Cedar, paired with a deterministic hard critic (syntax,
+schema, vacuity, rule conflict) and a semantic soft critic. Coverage, not
+soundness, was the binding constraint, and autoformalization is the answer
+to coverage.
+
+**The whole stack, as an OS.** [[literature/papers/zhao2026agenticos]] is
+the maximal version: agents never touch POSIX primitives, they submit a
+structured intent Manifest, and the system synthesizes a least-capability
+environment from it, with resource budgets bound into capability tokens.
+
+## The honest limit: every instance has a semantic escape hatch
+
+This is the part worth carrying forward, because each paper states it only
+about itself and the pattern is only visible across the set:
+
+- FORGE has `llm_check`, an explicitly probabilistic foreign function for
+  predicates Datalog cannot express structurally.
+- The autoformalization pipeline's soft critic is an LLM-as-judge
+  validating LLM-generated policy — generator and semantic verifier share
+  a failure mode; only the hard critic is independent, and it can catch
+  mechanical faults but never a *wrong* rule.
+- ye2026agent's negative result is sharper still: **true pre-flight spend
+  reservation is impossible with current provider APIs**, because token
+  consumption is unknown until a call returns. Contracts can stop the next
+  expensive call, not the current one.
+- mondl2026autoformalization concedes some enforceable constraints (FHIR
+  rules) are not derivable from the policy text at all and had to be
+  transcribed from the implementation.
+
+So the guarantee typed enforcement provides covers the **formal skeleton**,
+and the semantic predicates hanging off it are as reliable as the model
+evaluating them. "Formally enforced" should be read as "formally enforced
+modulo the escape hatches," and a design's quality is largely a question of
+how much it pushes into the skeleton versus the hatch. This is the
+cluster's open frontier, not a footnote.
+
+## Connections
+
+- [[concepts/permission-gate-as-architecture]] is the sibling concept:
+  that one covers gate placement, statefulness, and lifetime; this one
+  covers the policy artifact's language and its static checkability. Most
+  sources appear in both, from different angles — read them together.
+  louck2026securing's malleability theorem is the hinge: it constrains
+  what a gate may key on *and* what a typed policy may quantify over.
+- [[concepts/budget-as-ceiling]] is the instance this box actually runs.
+  `budget.yaml`'s ceilings are prose-adjacent config honored by skills;
+  khan2026token and ye2026agent describe what it would mean for them to be
+  a type or a conserved quantity instead.
+- [[concepts/hierarchical-delegation]] is where the difference bites:
+  point-in-time gates and prompt-resident policy both fail across agent
+  boundaries, which is exactly what conservation laws and multi-agent
+  reference monitors are built for.
+- Tension with [[concepts/scripted-tool-pipelines]]: both move work out of
+  the model into deterministic code, but scripted pipelines do it for
+  reliability and cost, while typed enforcement does it for guarantee.
+  They will often be the same refactor.
+
+## Open questions
+
+- **Cost/benefit at single-operator scale is unestablished.** Every result
+  here comes from a multi-tenant or security-critical setting. For this
+  box, the cheap importable piece is not a reference monitor — it is
+  **static analysis of the rule set**: this project's `CLAUDE.md` and
+  `.claude/rules/` are a natural-language policy that has never been
+  checked for contradiction, redundancy, or vacuity, and `/lint` checks
+  graph hygiene rather than rule consistency. That is the concrete
+  proposal this concept generates, and it is a `/elevate` candidate.
+- No source measures **false positives from autoformalized policy**.
+  mondl2026autoformalization explicitly evaluates coverage rather than
+  utility, which leaves the failure mode most likely to sink the approach
+  unmeasured.
+- No head-to-head between a formal policy engine and a well-prompted
+  frontier model on the same policy set. The prompt-based baseline is
+  argued to be unsound (correctly), but "unsound" and "worse in practice"
+  are different claims and only the first is established.
+- Whether static analysis over an *autoformalized* policy is meaningful
+  when the policy was generated from prose the analysis never sees —
+  contradiction-checking the output does not detect that the input was
+  misread.

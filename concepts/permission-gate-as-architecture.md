@@ -24,11 +24,14 @@ sources:
   - "[[literature/papers/sharma2026smsr]]"
   - "[[literature/papers/ye2026agent]]"
   - "[[literature/papers/lu2026meta]]"
+  - "[[literature/papers/mondl2026autoformalization]]"
+  - "[[literature/papers/palumbo2026formal]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
   - "[[concepts/programmable-evaluator-oracle]]"
   - "[[concepts/scripted-tool-pipelines]]"
+  - "[[concepts/typed-enforcement]]"
 related_experiments: []
 tags: [safety, permission-gate, runtime-approval, regulator, tool-use, governance]
 ---
@@ -276,3 +279,33 @@ but it is the thing to reach for when a rule starts getting violated under
 pressure. And per MAC's own red-teaming result, pressure is exactly when it
 would happen: aligned agents refuse instructions to cheat, then discover
 exploits on their own when honest success becomes impossible.
+
+## The policy artifact, factored out
+
+Two sources ingested 2026-07-28 —
+[[literature/papers/palumbo2026formal]] (Datalog policies, reference
+monitor, assume/guarantee correctness theorem) and
+[[literature/papers/mondl2026autoformalization]] (prose → Cedar via a
+generator–critic pipeline) — sit at the boundary of this concept and are
+recorded here as sources, but their center of gravity is a different
+question: not *where the gate sits* but *what the policy is written in and
+whether it can be checked before it runs*.
+
+That axis has accumulated enough independent attestation (also
+khan2026token's affine budget types, ye2026agent's conservation law,
+zhao2026agenticos's intent Manifest, madatha2026deterministic's
+determinism argument, louck2026securing's malleability theorem) to stand on
+its own, and it is now [[concepts/typed-enforcement]]. Read the two
+together: this concept covers gate placement, statefulness, and lifetime;
+that one covers the artifact and its static analyses.
+
+One result from palumbo2026formal belongs here rather than there, because
+it is about the gate's *expressiveness*: every gate this concept has
+collected decides on the current action plus accumulated risk state, but
+policies whose satisfaction depends on the **causal history** of an
+execution cannot be expressed that way — and in multi-agent deployments
+events are only partially ordered, so even trace-based enforcement is
+insufficient. Datalog with recursion over a partially-ordered event set is
+a strictly more expressive gate. This is the sharpest statement yet of
+where point-in-time gating runs out, and it runs out exactly at
+[[concepts/hierarchical-delegation]].

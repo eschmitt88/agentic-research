@@ -300,3 +300,8 @@ skills; read by `/lint`.
 2026-07-28 04:08 ingest raw/papers/lu2026meta.pdf
 2026-07-28 04:10 fetch-paper https://arxiv.org/abs/2605.11032 → raw/papers/ravindran2026portable.pdf
 2026-07-28 04:10 ingest raw/papers/ravindran2026portable.pdf
+2026-07-28 04:14 fetch-paper https://arxiv.org/abs/2602.16708 → raw/papers/palumbo2026formal.pdf
+2026-07-28 04:14 ingest raw/papers/palumbo2026formal.pdf
+2026-07-28 04:14 fetch-paper https://arxiv.org/abs/2606.26649 → raw/papers/mondl2026autoformalization.pdf
+2026-07-28 04:14 ingest raw/papers/mondl2026autoformalization.pdf
+2026-07-28 04:14 concept-seeded concepts/typed-enforcement.md (7 sources; thread flagged in 07-20 NOTES now ripe)
