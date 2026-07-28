@@ -309,3 +309,5 @@ skills; read by `/lint`.
 2026-07-28 04:15 ingest raw/papers/shang2026hypothesis.pdf
 2026-07-28 04:16 fetch-paper https://arxiv.org/abs/2605.29440 → raw/papers/hu2026skillbrew.pdf
 2026-07-28 04:16 ingest raw/papers/hu2026skillbrew.pdf
+2026-07-28 04:18 fetch-paper https://arxiv.org/abs/2605.18565 → raw/papers/lee2026minteval.pdf
+2026-07-28 04:18 ingest raw/papers/lee2026minteval.pdf
