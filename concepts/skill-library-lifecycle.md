@@ -24,6 +24,7 @@ sources:
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/zhao2026agenticos]]"
   - "[[literature/papers/shang2026hypothesis]]"
+  - "[[literature/papers/hu2026skillbrew]]"
   - "[[literature/papers/huang2026skillwiki]]"
   - "[[literature/papers/tang2026memory]]"
 used_by: []
@@ -414,3 +415,44 @@ promotion on the same task indices it reports gains on, so its admission
 signal and its headline metric are not separated. A library whose admission
 gate is tuned on the tasks it is then scored against will drift the way
 [[concepts/hce-evaluation]] describes. Skill promotion needs a holdout too.
+
+## The other gate: what leaves
+
+Admission is only half a lifecycle, and this concept has been weakest on
+the other half — what a library *removes*. [[literature/papers/hu2026skillbrew]]
+supplies a criterion. Its framing is that existing work judges skills **in
+isolation** and reduces curation to one scalar, leaving bank-level
+properties unexamined; it instead optimizes **diversity** and **coverage of
+the query distribution** on a Pareto frontier, subject to a minimum
+**utility** constraint. The asymmetry is the point: usefulness is a
+constraint that must hold before organization is worth optimizing, so
+tidiness never buys itself at the cost of measured performance.
+
+Mechanically: per-skill **counterfactual leave-one-out replay** produces
+KEEP / REWRITE / REMOVE evidence for each member, and a bi-level
+propose-then-verify loop proposes edits from trajectory evidence on a
+**support split** and verifies them by Pareto selection on a **held-out
+query split** — explicitly so that edits are not validated on the
+trajectories that motivated them. Against ten training-free baselines on
+ALFWorld and WebShop it beats append-only Voyager by 12.0%, and curated
+banks transfer across worker models of different scales.
+
+Together with HDSO the lifecycle's two gates are now both covered by
+sources, and they compose rather than compete:
+
+| gate | question | mechanism |
+|---|---|---|
+| admission ([[literature/papers/shang2026hypothesis]]) | should this candidate enter? | falsifiable hypothesis + paired control/treatment |
+| retention ([[literature/papers/hu2026skillbrew]]) | given a bank, who stays? | leave-one-out credit + Pareto selection under a utility floor |
+
+Worth noting that only SkillBrew separates the split it optimizes on from
+the split it verifies on. A library whose gates are tuned on the tasks it
+is then scored against drifts exactly the way [[concepts/hce-evaluation]]
+describes — **skill promotion needs a holdout too**, and this is the
+clearest open gap in the cluster.
+
+The standing caution on SkillBrew's own framing: coverage of the query
+distribution presupposes a known, stable query distribution. For a research
+agent the distribution is what shifts, so a bank optimized for yesterday's
+coverage is a different failure mode from an append-only log, not
+necessarily a smaller one.
