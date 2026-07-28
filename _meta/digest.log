@@ -269,3 +269,4 @@ That's a literal syntax example in prose, not a link — pre-existing and correc
 **`/promote-moc`: declined.** All 26 concepts are already mapped. The one plausible new cluster (resource governance) overlaps `agent-architecture`, `capability-layer`, and `autonomous-search-loop` at ≥half for any membership I didn't cherry-pick — and the sensitivity of ripeness to which concepts I included was itself the signal that I'd be manufacturing one. Updated `evaluation-integrity` and `agent-architecture` instead.
 
 **Left undone deliberately:** 15 of 20 candidates are uncurated. The file stays in `raw/_candidates/` (not archived) with a partial-curation header naming the five done and recommending the next three — HDSO, SpecBench, and one of the policy-as-code pair, each chosen because today's ingests opened the question it answers.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
