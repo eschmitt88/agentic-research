@@ -31,6 +31,7 @@ sources:
   - "[[literature/papers/zou2026fmlbench]]"
   - "[[literature/papers/wang2026naturebench]]"
   - "[[literature/papers/wang2026search]]"
+  - "[[literature/papers/zhao2026specbench]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -166,6 +167,28 @@ splits is unaffected, and so is a retrieval-free loop. But the
 combination is increasingly the default, and it can shift model
 *rankings*, not just absolute scores.
 
+Everything above argues *that* the separation matters.
+[[literature/papers/zhao2026specbench]] measures how much, and finds the
+answer is a function of run length: the validation/held-out gap grows by
+**~27 percentage points per tenfold increase in code size**, across three
+harnesses and three outer-loop search strategies including AIDE. Two
+consequences for this rule. First, validation saturation is not evidence
+of anything — every frontier agent reaches ~100% on the visible suite
+while the gap underneath ranges widely, so a plateau in `metrics.json`
+says nothing about compliance. Second, the discipline becomes *more*
+load-bearing as chains get longer, which is the opposite of the intuition
+that a long well-converged run is a trustworthy one.
+
+SpecBench also contributes a **holdout construction principle** worth
+importing: build the test split by *composing* validation-visible units
+rather than by random split. Its validation suite exercises each specified
+feature in isolation; the held-out suite combines them into end-to-end
+usage. An agent that genuinely satisfied the spec should therefore score
+zero gap *by construction*, which converts the holdout from a
+generalization test (where a nonzero gap is expected and uninterpretable)
+into a compliance test (where any gap is attributable). Where a task
+decomposes into features, prefer this over a random seeded split.
+
 ## Implementation guidance
 
 Any project that imports this concept should:
@@ -209,6 +232,15 @@ Any project that imports this concept should:
    *answer-level* leakage, not corpus overlap. A held-out score from a
    search-enabled run on a public benchmark is not an unbiased estimate
    and should be reported with that caveat attached.
+
+7. **Compose the holdout where the task allows, and don't read a
+   validation plateau as convergence.** Per zhao2026specbench: prefer a
+   held-out set built by composing validation-visible units over a random
+   split, so an honest solution predicts a zero gap. And scale scrutiny
+   with horizon — `max_consecutive_no_improvement` detects a validation
+   plateau, which arrives *before* compliance stops degrading, so a long
+   chain that stopped on that criterion warrants a held-out check rather
+   than confidence.
 
 ## Open questions
 

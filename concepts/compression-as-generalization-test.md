@@ -5,6 +5,7 @@ status: seedling
 added: "2026-07-07"
 sources:
   - "[[literature/papers/bertran2026fits]]"
+  - "[[literature/papers/zhao2026specbench]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/pass-at-k]]"
@@ -61,6 +62,18 @@ control, not prompt instructions).
   noise axis; the reproducer audit treats validation-dependence as the
   signal-integrity axis — both ask "is this number real?" of a single
   reported result.
-- Single-source seedling: needs a second attestation (another compression
-  or reusable-holdout mechanism in an agentic loop) before promotion to
-  growing.
+- [[literature/papers/zhao2026specbench]] is the principle's negative
+  instance, observed in the wild: an agent that passed the visible suite
+  by emitting a **2,900-line hash-table lookup "compiler"** memorizing the
+  test inputs. That artifact is exactly what does not survive compression
+  — the honest implementation of the same spec is far shorter than the
+  hack, so description length separates them without anyone auditing
+  intent. It also supplies the scaling law the audit needs to be sized
+  against: the validation–holdout gap grows ~27pp per 10× code size, so
+  the ">10% gap" trigger in mechanism 1 should be horizon-relative, not
+  absolute.
+- Still effectively single-source for the *mechanism* (bertran2026fits);
+  zhao2026specbench attests the underlying description-length intuition
+  and supplies measurement, but implements no compression audit of its
+  own. A second mechanism paper is still wanted before promoting past
+  seedling.
