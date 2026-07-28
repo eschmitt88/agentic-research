@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/zhou2026ready]]"
   - "[[literature/papers/ji2026memory]]"
   - "[[literature/papers/gao2026mempoison]]"
+  - "[[literature/papers/lee2026minteval]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -200,3 +201,41 @@ emits a trigger when it judges the current context is insufficient
   one task (e.g., embodied interaction) transfers to another
   (e.g., literature curation, code generation) is untested. The
   paper's evidence is within-task only.
+
+## The bottleneck has moved from acquisition to access
+
+[[literature/papers/lee2026minteval]] is the measurement this concept has
+been arguing without. Its premise is that real information does not
+*overwrite* prior information — it **revises** it — so recall degrades
+through interference from intervening updates, and existing benchmarks
+that test static independent recall miss the entire dynamic.
+
+The numbers are stark. Across seven systems (long-context LLMs, RAG, and
+memory-augmented agent frameworks) on 15.6k questions over contexts
+averaging 138.8k tokens and reaching 1.8M, average accuracy is **27.9%**
+and the best system reaches **33.4%** — against a 100% upper bound that
+holds by construction, since every question is generated directly from the
+source material. Long-range lookback questions average 21.0%; multi-target
+aggregation 26.5%.
+
+The decomposition is what matters here: **retrieval and memory
+construction is the dominant bottleneck**, with answer generation adding a
+further 25.2% drop. All four decomposed systems share an answering agent
+and still differ substantially, so the spread is attributable to how memory
+was built and retrieved, not to the reader. Memory-based agents degrade
+*less* than Full Context and RAG as intervening updates accumulate, which
+the authors credit to better temporal encoding — the first direct evidence
+in this cluster that structured memory beats raw context specifically under
+revision pressure, rather than merely at length.
+
+Consequence for this concept: retrieval quality cannot be evaluated on
+static stores. A gate that selects the right entry from a fixed corpus may
+still select a **superseded** entry from an evolving one, and staleness is
+not detectable from the entry itself — only from what came after it.
+Selection has to be temporal. See [[concepts/multi-granularity-memory]] for
+the state-evolution framing this implies, and
+[[concepts/context-eviction-policy]] for the eviction-side counterpart.
+
+Caveat worth carrying: none of the seven systems was designed for
+revision-heavy input, so this measures a gap nobody has targeted yet rather
+than an established hard limit.

@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/xu2025amem]]"
   - "[[literature/papers/gao2026mempoison]]"
   - "[[literature/papers/tang2026memory]]"
+  - "[[literature/papers/lee2026minteval]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

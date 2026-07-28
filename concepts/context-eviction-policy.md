@@ -30,6 +30,7 @@ sources:
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
   - "[[literature/papers/khan2026token]]"
+  - "[[literature/papers/lee2026minteval]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
