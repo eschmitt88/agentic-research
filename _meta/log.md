@@ -298,3 +298,5 @@ skills; read by `/lint`.
 2026-07-28 04:06 ingest raw/papers/wang2026evobrowsecomp.pdf
 2026-07-28 04:08 fetch-paper https://arxiv.org/abs/2606.04455 → raw/papers/lu2026meta.pdf
 2026-07-28 04:08 ingest raw/papers/lu2026meta.pdf
+2026-07-28 04:10 fetch-paper https://arxiv.org/abs/2605.11032 → raw/papers/ravindran2026portable.pdf
+2026-07-28 04:10 ingest raw/papers/ravindran2026portable.pdf

@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/yu2026knows]]"
   - "[[literature/papers/alzahrani2026persistent]]"
+  - "[[literature/papers/ravindran2026portable]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
@@ -157,3 +158,21 @@ state has accumulated enough drift to corrupt decisions.
   agent roles. Graduate to `active` when a downstream project runs
   an Orchestrator+specialist split with explicit per-role write
   permissions.
+
+## Across a trust boundary, the file needs to carry its own credentials
+
+Every instance above assumes a shared filesystem inside one trust domain:
+the bus works because everyone touching it is already trusted.
+[[literature/papers/ravindran2026portable]] is the version where that
+assumption is dropped — memory serialized to a signed artifact that a
+*different vendor's* agent re-hydrates, with capability-scoped tokens
+controlling which parts the receiver may read. The file is still the bus;
+it just has to authenticate itself now.
+
+Two ideas transfer even though the paper's evidence is thin (see the note
+for why): the artifact carries **its own authorization** rather than
+relying on filesystem permissions, and redaction **preserves DAG position**
+with typed tokens so erasure does not break downstream references — a
+deletion story `file-as-bus` currently lacks entirely. See
+[[concepts/verified-memory-writes]] for why the paper's provenance layer
+verifies the wrong property.
