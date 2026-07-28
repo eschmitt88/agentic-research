@@ -83,7 +83,6 @@ Sources (in-window candidates):
 - [Iterative Audit Convergence (2605.12280)](https://arxiv.org/abs/2605.12280)
 - [Dive into Claude Code (VILA-Lab)](https://github.com/VILA-Lab/Dive-into-Claude-Code)
 - [claw-code](https://github.com/ultraworkers/claw-code)
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 Digest complete. Wrote `raw/_candidates/2026-05-25-digest.md` with 8 items, updated `_meta/last_digest` and `_meta/log.md`.
 
 **Headline finding:** `2605.20086` — *"What Do Evolutionary Coding Agents Evolve?"* (Pelleriti et al., 2026-05-19, in window) introduces EvoTrace/EvoReplay and argues that ~30% of "added lines" in evolutionary coding agents are recycled previously-deleted code, with gains coming from re-tuning and recombining rather than novel structure. This directly challenges how the project should read the entire evolutionary-search cluster (CVEvolve, ToolMol, CodeEvolve, AlphaEvolve, FunSearch).
@@ -97,7 +96,6 @@ Digest complete. Wrote `raw/_candidates/2026-05-25-digest.md` with 8 items, upda
 **Deferred-item movement:** claw-code is unlocked (100K stars, no DMCA against the clean-room rewrite). The fetch the prior wrap deferred is now unblocked.
 
 Cross-batch: two converging memory-multi-granularity attestations (TriMem + H-Mem) and two converging critiques-of-self-improvement (EvoTrace + APEX) appeared in the same week.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 Digest complete. Wrote `raw/_candidates/2026-06-01-digest.md` with 6 candidates, bumped `_meta/last_digest`, appended `_meta/log.md`.
 
 **Headline:** two threads `NOTES.md` was tracking are now unblock-ready.
@@ -116,7 +114,6 @@ Sources:
 - [HASP (2605.17734)](https://arxiv.org/abs/2605.17734)
 - [Code as Agent Harness (2605.18747)](https://arxiv.org/abs/2605.18747)
 - [MemORAI (2605.01386)](https://arxiv.org/abs/2605.01386)
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 `/digest` complete. Everything committed and pushed to GitHub (final commit `93e99c9`).
 
 ## Summary
@@ -145,7 +142,6 @@ SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 
 **Suggested next step:** a `/curate` pass that seeds `multi-granularity-memory` and `permission-gate-as-architecture` (ingesting the two deferred items as their 4th attestations) — which would then make the memory cluster worth re-checking for MoC-ripeness.
 API Error: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 Pushed successfully (the failure was the sandbox blocking DNS). The `/digest` run is complete.
 
 ## `/digest` summary — 2026-06-22
@@ -241,7 +237,6 @@ Digest complete — 10 new candidates written, 2 auto-ingested under a `slow/low
 **Loose ends handled.** The remaining 8 candidates are left in place with a partial-curation note for the nightly 04:00 `/curate` sweep. I skipped `/promote-moc` deliberately: no new concepts were seeded, and the 07-18 sweep already found all 25 concepts mapped with the memory sub-cluster below its split threshold — logged in `_meta/log.md`. One heads-up: the dirty `_meta/curate.log` from session start (a one-line "SessionEnd hook cancelled" note from last night's sweep) got committed along with the first ingest batch — benign, but worth knowing it's now in history.
 
 **Worth flagging for the next `/curate` pass:** item 6 (the 63-incident budget-overrun catalog, 2606.04056) would give `budget-as-ceiling` its first empirical source, and item 2 (origin-bound memory authority, 2606.24322) bridges the two concepts strengthened today.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 That's a literal syntax example in prose, not a link — pre-existing and correct. Tree is clean and everything is pushed.
 
 ## Digest complete — 2026-07-27
@@ -269,4 +264,3 @@ That's a literal syntax example in prose, not a link — pre-existing and correc
 **`/promote-moc`: declined.** All 26 concepts are already mapped. The one plausible new cluster (resource governance) overlaps `agent-architecture`, `capability-layer`, and `autonomous-search-loop` at ≥half for any membership I didn't cherry-pick — and the sensitivity of ripeness to which concepts I included was itself the signal that I'd be manufacturing one. Updated `evaluation-integrity` and `agent-architecture` instead.
 
 **Left undone deliberately:** 15 of 20 candidates are uncurated. The file stays in `raw/_candidates/` (not archived) with a partial-curation header naming the five done and recommending the next three — HDSO, SpecBench, and one of the policy-as-code pair, each chosen because today's ingests opened the question it answers.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
