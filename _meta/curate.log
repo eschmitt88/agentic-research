@@ -699,3 +699,35 @@ That thread is the one to watch: it's accumulating fast on the literature side (
 
 No files written, no commit. One incidental observation while reading: `permission-gate-as-architecture` is still `status: seedling` at 11 sources — that looks stale rather than accurate, but promoting concept status is `/ingest`/`/lint` territory, not this skill's, so I left it.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+`/curate` complete — the standing backlog is drained. Working tree clean, everything pushed.
+
+## What happened
+
+One uncurated file (`2026-07-27-digest.md`, 15 of 20 items outstanding). Coordinator verdict **GO/high** throughout (23–24% weekly spend, resources idle), re-checked mid-batch.
+
+**Verification first:** all 15 remaining items dedup-checked against the graph (none present — HDSO's ID appeared only as a cross-reference inside `tang2026memory.md`), all 15 arXiv IDs confirmed to resolve *and* to map to the claimed titles via the arXiv API. No link-rot, no ID/title mismatches.
+
+**Ingested 9** · **declined 6** · already-in-graph 0.
+
+The declines are concentrated in the skill cluster (SkillPyramid, SkillLearnBench, SkillCoach) on purpose: it's the most source-rich cluster in the graph, and HDSO + SkillBrew already close its two open gates. Three more would have been accumulation, not curation. The Benchmark Ceiling failed the digest's own "only if grounded in measurement" gate; item 8 was a fifth memory-poisoning paper on a saturated front.
+
+## Two ingests didn't match their billing
+
+**The Meta-Agent Challenge** was ranked as a secondary evaluation item. It's actually a hard-enforcement implementation of `hce-evaluation` — holdout on a separate container filesystem, test scoring gated behind a cryptographic secret injected only *after* the development phase ends — which answers that concept's standing "soft-specified" open question. It also carries a methodological finding worth more than its headline: aligned agents refuse instructions to cheat, so the authors induced violations by resource starvation instead (7/8 trials). Filed rel 5.
+
+**Portable Agent Memory** went the other way. The design is sound but the evidence is a pilot (N=50, 2024-era models, self-authored non-adaptive attack battery), and its Merkle-DAG provenance verifies the wrong property under `louck2026securing`'s theorem — lineage is the launderable class. Filed rel 3 / cred 2, with the numbers explicitly flagged as not citable.
+
+## Graph effects
+
+**New concept `typed-enforcement`** — the thread the 07-20 NOTES flagged reached seven sources and was promoted. Its non-obvious content is the synthesis no single paper states: *every* instance keeps a semantic escape hatch (FORGE's `llm_check`, the autoformalizer's LLM soft critic, the proven impossibility of pre-flight token reservation), so "formally enforced" always means "modulo the hatch."
+
+Eleven existing concepts updated. `/promote-moc` **declined** — all 26 prior concepts were already mapped and `typed-enforcement` alone isn't a cluster; folded into `capability-layer` (now 6), splitting the governance clause into gate-placement vs policy-artifact.
+
+Also removed 6 stray `SessionEnd hook … failed` lines that had accumulated in `_meta/digest.log` across sessions.
+
+## Worth your attention
+
+- **`/elevate` candidate:** both policy papers point at the same cheap idea — `CLAUDE.md` and `.claude/rules/` are a natural-language policy set never checked for contradiction, redundancy, or vacuity. `/lint` checks graph hygiene, not rule consistency.
+- **`max_consecutive_no_improvement` may certify the wrong thing.** SpecBench shows a validation plateau arrives *before* compliance stops degrading, and the gap grows ~27pp per 10× code size — so the stopping rule fires exactly when scrutiny should increase.
+
+One unrelated note: the `claude.ai` and Google Drive MCP servers need authorization (claude.ai connector settings, or `claude mcp` in an interactive session). Nothing here depended on them.
