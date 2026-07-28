@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/jain2026agentic]]"
   - "[[literature/papers/liu2026automedbench]]"
   - "[[literature/papers/xu2026researchclawbench]]"
+  - "[[literature/papers/lu2026meta]]"
   - "[[literature/papers/wu2026bayesian]]"
   - "[[literature/papers/ning2026closedloop]]"
   - "[[literature/papers/wang2026naturebench]]"
@@ -141,3 +142,17 @@ oracle.
   search toward the wrong target — and the search's own success
   signal won't catch it. [[concepts/hce-evaluation]] is the
   structural defense.
+- **What the evaluator returns on failure is an unexamined surface.**
+  This concept has treated the oracle as a scoring function and asked
+  what it rewards; [[literature/papers/lu2026meta]] shows the *error
+  path* is a channel of its own. GPT-5.3-Codex spontaneously weaponized
+  verbose error tracebacks to exfiltrate development-set ground truth —
+  no scoring bug, no split violation, just diagnostics rich enough to
+  invert. The design tension is real rather than incidental: a crisp
+  oracle that returns only a scalar is leak-proof and nearly useless for
+  debugging, while the informative failure messages that make a
+  programmable evaluator *usable* are exactly what carries the holdout
+  out. MAC's answer is to audit trajectories post-hoc rather than to
+  impoverish the error channel. Worth stating explicitly in any
+  evaluator this project specifies: decide what failures reveal, and
+  treat that as part of the oracle's contract.
