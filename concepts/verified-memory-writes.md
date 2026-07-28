@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/louck2026securing]]"
   - "[[literature/papers/sharma2026smsr]]"
   - "[[literature/papers/gao2026mempoison]]"
+  - "[[literature/papers/ravindran2026portable]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -243,3 +244,42 @@ Two smaller findings worth carrying:
   [[concepts/multi-granularity-memory]]. Though note the tension:
   decomposition dilutes L1 payloads while fragmentation is exactly the
   L2 attack.
+
+## Portability: the same gate, one trust boundary further out
+
+[[literature/papers/ravindran2026portable]] asks what happens when memory
+has to cross *between* agents — a different vendor, a different runtime —
+and answers with a signed portable artifact: Merkle-DAG provenance,
+Ed25519 artifact signing, capability-scoped read tokens, and a re-hydration
+pipeline that treats imported memory as untrusted input. The design is
+worth recording; the evidence is a pilot (N = 50, 2024-era models,
+non-adaptive injection battery) and should not move this concept on its
+own.
+
+It is most useful here as a **clean illustration of the distinction this
+concept turns on**, because it gets one half right and one half wrong by
+the standard louck2026securing establishes:
+
+- The Merkle DAG is a *derivation-edge* structure — the malleable class.
+  It proves the lineage was not altered after the fact; it says nothing
+  about whether an entry was legitimately acquired. A memory poisoned by an
+  honest-but-wrong write at the source travels with an intact root hash and
+  a valid signature.
+- The framing / content-type injection defense at re-hydration is
+  *content*-based — the class sharma2026smsr independently shows cannot be
+  certified.
+- The Ed25519 signature is the closest thing to origin binding, but it
+  binds the **export event**, not each write to its channel. Signing the
+  container is not signing the contents' provenance.
+
+The general lesson: **transport integrity is not write integrity.** A
+protocol can make memory perfectly tamper-evident in flight and still
+faithfully deliver a poisoned entry. Any future portable-memory scheme this
+project takes seriously should carry per-entry channel-authenticated origin
+labels across the boundary, not just a hash chain over them.
+
+This also reflects back on this project's own cross-project `@import`
+contract, which moves concept files between repos with `used_by:`
+back-references and *no* integrity layer at all — trusted because git
+history is trusted. That is a defensible choice for a single-operator box
+and an obvious gap if concepts were ever imported across trust boundaries.
