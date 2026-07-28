@@ -28,6 +28,7 @@ related_concepts:
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/structured-world-model]]"
   - "[[concepts/file-as-bus]]"
+  - "[[concepts/typed-enforcement]]"
 related_experiments: []
 tags: [agent-architecture, delegation, roles, coordination]
 ---

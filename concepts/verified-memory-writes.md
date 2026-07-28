@@ -18,6 +18,7 @@ related_concepts:
   - "[[concepts/agent-native-memory]]"
   - "[[concepts/skill-library-lifecycle]]"
   - "[[concepts/permission-gate-as-architecture]]"
+  - "[[concepts/typed-enforcement]]"
 related_experiments: []
 tags: [memory, consolidation, write-policy, verification, trustworthiness, knowledge-organization]
 ---

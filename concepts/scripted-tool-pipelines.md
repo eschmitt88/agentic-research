@@ -19,6 +19,7 @@ related_concepts:
   - "[[concepts/agent-native-memory]]"
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/budget-as-ceiling]]"
+  - "[[concepts/typed-enforcement]]"
 related_experiments: []
 tags: [agent-architecture, tool-use, context-budget, efficiency, code-generation]
 ---

@@ -24,6 +24,7 @@ related_concepts:
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/evolutionary-expansion]]"
   - "[[concepts/typed-claim-partition]]"
+  - "[[concepts/typed-enforcement]]"
 related_experiments: []
 tags: [budget, halting, resources, autonomy]
 ---
