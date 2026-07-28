@@ -294,3 +294,5 @@ skills; read by `/lint`.
 2026-07-27 08:06 promote-moc declined: no ripe un-mapped cluster (all 26 concepts already in a MoC; the governance cluster budget/delegation/permission-gate/async/hybrid overlaps agent-architecture + capability-layer + autonomous-search-loop at >=half for any non-cherry-picked membership). Updated instead: evaluation-integrity (information-firewall no longer single-source; shared search bypass) and agent-architecture (delegation conservation law / bounded autonomy).
 2026-07-28 04:05 fetch-paper https://arxiv.org/abs/2605.21384 → raw/papers/zhao2026specbench.pdf
 2026-07-28 04:05 ingest raw/papers/zhao2026specbench.pdf
+2026-07-28 04:06 fetch-paper https://arxiv.org/abs/2606.13120 → raw/papers/wang2026evobrowsecomp.pdf
+2026-07-28 04:06 ingest raw/papers/wang2026evobrowsecomp.pdf
