@@ -23,6 +23,7 @@ sources:
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/zhao2026agenticos]]"
+  - "[[literature/papers/shang2026hypothesis]]"
   - "[[literature/papers/huang2026skillwiki]]"
   - "[[literature/papers/tang2026memory]]"
 used_by: []
@@ -369,3 +370,47 @@ concept most cares about — what happens when skills go stale, or when
 the library grows large enough that retrieval interference sets in.
 Whether admission gating and consolidation/retirement are substitutes or
 complements is open.
+
+## The admission rule, made testable
+
+This concept has been source-rich on acquisition, composition, retrieval,
+and consolidation, and thin on the one decision that determines whether a
+library degrades: **what earns a place in it.**
+[[literature/papers/shang2026hypothesis]] (HDSO) states that rule in a form
+that can be executed rather than asserted.
+
+A candidate skill must declare what behavior it will change, when it
+applies, what evidence motivated it, what risks it introduces, and **what
+observations would falsify it**. It is then tested *prospectively and
+paired*: run the current repository *S* against *S ∪ {candidate}* on the
+same task indices, and promote only if the behavior delta supports the
+proposed mechanism. The promotion gate logs success delta, step delta, and
+invalid-action delta — and deliberately declines to make the
+evidence-strength statistic a hard threshold, because the question is
+whether the *mechanism* held, not whether a number cleared a bar.
+
+Two design choices are worth copying independently of the rest:
+
+- **The unaugmented path stays live.** The executor consumes skills through
+  progressive disclosure (compact cards first, detail on request) and the
+  executor-only path is preserved when no skill is selected. The library
+  can therefore only help by being invoked, and its absence is a permanent
+  control rather than a condition someone has to reconstruct.
+- **Rejected hypotheses persist as auditable negative evidence** in a
+  ledger, so later cycles do not rediscover the same dead ends. This is
+  [[concepts/typed-claim-partition]] applied to procedural memory, and it
+  is nearly free — the evidence already exists once validation ran.
+  Compare this project's own `/curate` discipline, where a decline with a
+  recorded reason is a curation decision rather than an absence.
+
+Measured on ALFWorld: +6.9 Avg. SR for Qwen3-8B, +4.0 for Qwen3.6-27B, and
++7.1 preserved under 20% flipped success/failure feedback. Treat the
+magnitudes cautiously — the noisy-feedback gain exceeding the clean one,
+with no variance reported, suggests run-to-run spread comparable to the
+effect. The *design* is what to import, not the numbers.
+
+Open, and relevant to how this concept should be applied: HDSO validates
+promotion on the same task indices it reports gains on, so its admission
+signal and its headline metric are not separated. A library whose admission
+gate is tuned on the tasks it is then scored against will drift the way
+[[concepts/hce-evaluation]] describes. Skill promotion needs a holdout too.

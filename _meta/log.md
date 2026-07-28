@@ -305,3 +305,5 @@ skills; read by `/lint`.
 2026-07-28 04:14 fetch-paper https://arxiv.org/abs/2606.26649 → raw/papers/mondl2026autoformalization.pdf
 2026-07-28 04:14 ingest raw/papers/mondl2026autoformalization.pdf
 2026-07-28 04:14 concept-seeded concepts/typed-enforcement.md (7 sources; thread flagged in 07-20 NOTES now ripe)
+2026-07-28 04:15 fetch-paper https://arxiv.org/abs/2606.22330 → raw/papers/shang2026hypothesis.pdf
+2026-07-28 04:15 ingest raw/papers/shang2026hypothesis.pdf
