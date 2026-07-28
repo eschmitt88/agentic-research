@@ -311,3 +311,5 @@ skills; read by `/lint`.
 2026-07-28 04:16 ingest raw/papers/hu2026skillbrew.pdf
 2026-07-28 04:18 fetch-paper https://arxiv.org/abs/2605.18565 → raw/papers/lee2026minteval.pdf
 2026-07-28 04:18 ingest raw/papers/lee2026minteval.pdf
+2026-07-28 04:19 curate raw/_candidates/2026-07-27-digest.md ingested=9 declined=6 dup=0 (+5 previously auto-advanced; total 14/20) → _done/
+2026-07-28 04:19 promote-moc declined: typed-enforcement is the only un-mapped concept (1 < 5). Folded into mocs/capability-layer.md (now 6 concepts; governance clause split into gate-placement vs policy-artifact).

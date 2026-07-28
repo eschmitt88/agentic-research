@@ -9,6 +9,7 @@ concepts:
   - "[[concepts/scripted-tool-pipelines]]"
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/permission-gate-as-architecture]]"
+  - "[[concepts/typed-enforcement]]"
 tags: [moc, capability-layer, skills, tool-use, harness-ecosystem, governance]
 ---
 
@@ -22,10 +23,13 @@ runs it ([[mocs/agent-architecture]]), how it searches
 ([[mocs/evaluation-integrity]]). This one maps the agent's **action
 surface**: procedural capability packaged as skills and tool access, plus
 the harness machinery that curates it, ports it across executors,
-executes it cheaply, and gates it safely. The five concepts belong
+executes it cheaply, and gates it safely. The six concepts belong
 together because a capability is only real when all four clauses hold —
 well-curated, loadable where the agent runs, affordable in context, and
-safe to fire — and each concept owns one clause. The cluster is anchored
+safe to fire. The first three clauses take one concept each; the fourth
+takes two, because gating splits into *where the check sits*
+(`permission-gate-as-architecture`) and *what the policy is written in*
+(`typed-enforcement`). The cluster is anchored
 by the 2026 skill-ecosystem wave
 ([[literature/papers/ouyang2026skillos]],
 [[literature/papers/zhang2026skillcomposer]],
@@ -102,6 +106,30 @@ The layer that decides whether a capability fires at all.
   pipelines raise the stakes here: one script can fire many tools behind
   a single approval, so the gate and the script surface must be designed
   together.
+- [[concepts/typed-enforcement]] — the gate's *policy*, factored out from
+  the gate's placement. Constraints written as a machine-checkable
+  artifact in a language with decidable static analyses, held outside the
+  agent's reasoning: Datalog policies with a reference monitor and a
+  correctness theorem ([[literature/papers/palumbo2026formal]]), affine
+  budget types that make double-spending a compile error
+  ([[literature/papers/khan2026token]]), a conservation law over delegated
+  budgets ([[literature/papers/ye2026agent]]), and a compiler from prose
+  policy documents into Cedar
+  ([[literature/papers/mondl2026autoformalization]]). The pairing with the
+  gate concept is the useful frame: one asks *where the check happens*, the
+  other *what the check is written in and whether it can be checked before
+  it runs*.
+
+  Two results from this concept bear directly on the rest of the layer.
+  First, fewer than 1% of 6,145 real agent-config files declare any
+  permission boundary at all
+  ([[literature/papers/madatha2026deterministic]]) — the governance section
+  describes machinery almost nobody deploys. Second, every instance in the
+  cluster keeps a **semantic escape hatch** (FORGE's probabilistic
+  `llm_check`, the autoformalizer's LLM soft critic, the impossibility of
+  true pre-flight token reservation), so "formally enforced" always means
+  "modulo the hatch," and a design's quality is how much it pushes into the
+  formal skeleton rather than the hatch.
 
 ## Open thread
 

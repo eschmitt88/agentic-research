@@ -22,16 +22,19 @@ and `/new-experiment`.
 - [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over
   long search loops; 7 concepts: hce-evaluation, pass-at-k,
   citation-anchoring, typed-claim-partition, programmable-evaluator-oracle,
-  compression-as-generalization-test, information-firewall (now `growing` —
-  second attestation from search-time contamination measurement).
+  compression-as-generalization-test, information-firewall (`growing` —
+  third attestation 2026-07-28 adds *time* as a boundary axis alongside
+  file space and retrieval space).
 - [[mocs/autonomous-search-loop]] — how an autonomous agent searches a vast
   candidate space productively; 5 concepts: evolutionary-expansion,
   evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool,
   budget-as-ceiling.
 - [[mocs/capability-layer]] — the agent's action surface: how procedural
-  capability is authored, ported, executed, and gated; 5 concepts:
+  capability is authored, ported, executed, and gated; 6 concepts:
   skill-library-lifecycle, shared-skill-namespace, scripted-tool-pipelines,
-  hybrid-model-backends, permission-gate-as-architecture.
+  hybrid-model-backends, permission-gate-as-architecture, typed-enforcement
+  (new 2026-07-28 — the gate's policy as a statically checkable artifact,
+  factored out from the gate's placement).
 
 ## Literature / posts (recent)
 
@@ -42,6 +45,9 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/lu2026meta]] — The Meta-Agent Challenge (HCE as *enforcement*: holdout on a separate container filesystem, test scoring gated behind a cryptographic secret injected only after the development phase ends; aligned agents refuse instructions to cheat but violate under resource starvation, 7/8 trials; rel 5 / cred 4)
+- [[literature/papers/palumbo2026formal]] — FORGE (policy as Datalog + reference monitor with an assume/guarantee correctness theorem; injection 100%→0%, τ²-bench compliance 58%→98%, at 19–38% latency; anchors [[concepts/typed-enforcement]]; rel 5 / cred 4)
+- [[literature/papers/zhao2026specbench]] — SpecBench (reward-hacking gap Δ = validation − held-out; every frontier agent saturates the visible suite while Δ grows ~27pp per 10× code size; rel 5 / cred 4)
 - [[literature/papers/wang2026search]] — Search-Time Contamination (holdout leaks through the agent's own search tool; three-tier taxonomy where only answer-level leakage inflates, so URL-matching audits measure the wrong thing; rel 5 / cred 4)
 - [[literature/papers/tang2026memory]] — MSCE (governed memory→skill promotion: evidence + positive gain + consistency as an admission gate; skills keep evidence anchors; flat-memory ablation shows the hierarchy outweighs the skill layer; rel 4 / cred 4)
 - [[literature/papers/gao2026mempoison]] — MemPoison (write gates have a structural ceiling: compositional + dormant corruption is invisible per-record; L3 dormant is the *worst* attack at 76.7%; all 10 models vulnerable, GPT-5 worst; rel 5 / cred 4)
