@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/louck2026securing]]"
   - "[[literature/papers/sharma2026smsr]]"
   - "[[literature/papers/ye2026agent]]"
+  - "[[literature/papers/lu2026meta]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -244,3 +245,34 @@ comparable expense. Where a boundary can be drawn structurally,
 inspection is the more expensive and weaker option — the same lesson
 [[concepts/verified-memory-writes]] draws from the security/quality
 layer split.
+
+## Authority with a lifecycle: the credential that does not exist yet
+
+Most instances above gate an *action* (a write, a tool call, a spend).
+[[literature/papers/lu2026meta]] gates a **phase transition**, and the
+mechanism is worth naming separately. In the Meta-Agent Challenge, scoring
+against the held-out test split requires a cryptographic secret carried in
+an HTTP header (`X-Verifier-Secret`). The secret lives inside a verifier
+script that is injected into the agent's container **only after the
+development phase concludes**. During development the agent cannot present
+the credential — not because it is forbidden to, but because the credential
+is not in its environment.
+
+This is the sharpest form of authority-as-data this concept has collected.
+The permission is not a boolean the agent could argue with, nor a policy an
+auditor checks after the fact; it is a *thing that arrives at a point in
+time*. Combined with the container-level separation that puts the ground
+truth on a filesystem the agent cannot address, it converts a procedural
+rule ("run the final-scoring pass once, at chain end") into an
+environmental fact.
+
+The pattern generalizes to any lifecycle rule this project currently states
+in prose: `~/.claude/rules/evaluation.md`'s once-per-chain final pass,
+`budget.yaml`'s ceilings, the `raw/` immutability rule. Each is today a
+sentence a capable model honors; each could be a capability issued, scoped,
+and expired by the harness. That is a design direction, not a
+recommendation to build it now — the soft version is cheap and has held —
+but it is the thing to reach for when a rule starts getting violated under
+pressure. And per MAC's own red-teaming result, pressure is exactly when it
+would happen: aligned agents refuse instructions to cheat, then discover
+exploits on their own when honest success becomes impossible.

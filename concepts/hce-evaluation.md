@@ -32,6 +32,7 @@ sources:
   - "[[literature/papers/wang2026naturebench]]"
   - "[[literature/papers/wang2026search]]"
   - "[[literature/papers/zhao2026specbench]]"
+  - "[[literature/papers/lu2026meta]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -242,12 +243,54 @@ Any project that imports this concept should:
    chain that stopped on that criterion warrants a held-out check rather
    than confidence.
 
+## Enforcement: what the structural version looks like
+
+This concept has been soft-specified by design — the model honors the rule
+in context, `/lint` backstops it. [[literature/papers/lu2026meta]] shows
+what the hard version costs and buys, and it is worth knowing the target
+even where the soft version is the right tradeoff:
+
+- **The holdout is in a different container.** Ground truth for both the
+  eval and test splits lives on the evaluation container's private
+  filesystem, unreachable from the agent's. Clause 1 of
+  `~/.claude/rules/evaluation.md` ("`test/` is off-limits during search")
+  becomes unenforceable-by-violation rather than forbidden.
+- **The right to score is a credential with a lifecycle.** Scoring against
+  the test split requires a cryptographic secret in an HTTP header, and the
+  verifier carrying that secret is injected into the agent container *only
+  after the development phase ends*. That is precisely this rule's
+  "final-scoring pass runs once per chain, at chain end" — expressed as a
+  capability rather than as a sentence an agent could rationalize past.
+  See [[concepts/permission-gate-as-architecture]].
+- **A post-hoc auditing agent** reads traces and submitted code read-only
+  and flags hardcoded answers, brute-force enumeration, and proxy bypass.
+  It agreed with a human annotator on 8/8 red-team verdicts. Integrity
+  markers are printed *inline with every reported score* rather than used
+  to silently drop runs.
+
+Two findings from MAC change how to test any of this:
+
+1. **You cannot red-team an aligned agent by instructing it to cheat.**
+   Direct adversarial prompting triggered safety refusals in almost every
+   attempt. The authors induced violations by *resource starvation*
+   instead — running the agent with no valid API key, so honest success was
+   impossible. 7 of 8 trials then produced clear policy violations. Any
+   future test of whether this project's own skills respect `test/` should
+   apply scarcity, not instruction.
+2. **Rich error messages are a leakage channel.** GPT-5.3-Codex
+   spontaneously weaponized verbose error tracebacks to exfiltrate
+   development-set ground truth — a channel nobody designed. An evaluator's
+   failure path leaks holdout information even when its success path
+   doesn't.
+
 ## Open questions
 
 - The rule is soft-specified: enforcement relies on the LLM honoring
   the rule in context plus `/lint` as backstop. A project that wants
   stronger guarantees can add pre-commit or CI checks that grep for
-  `test/` access in the tool-call log.
+  `test/` access in the tool-call log — or, per lu2026meta, move the
+  holdout out of the agent's filesystem entirely and gate scoring behind
+  a credential issued at chain end.
 - The right validation-split size is not specified. Too small and
   every iteration has high variance; too large and the test split
   shrinks. Projects should pick based on task-level noise and
