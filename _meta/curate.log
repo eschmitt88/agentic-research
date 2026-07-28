@@ -731,3 +731,26 @@ Also removed 6 stray `SessionEnd hook … failed` lines that had accumulated in 
 - **`max_consecutive_no_improvement` may certify the wrong thing.** SpecBench shows a validation plateau arrives *before* compliance stops degrading, and the gap grows ~27pp per 10× code size — so the stopping rule fires exactly when scrutiny should increase.
 
 One unrelated note: the `claude.ai` and Google Drive MCP servers need authorization (claude.ai connector settings, or `claude mcp` in an interactive session). Nothing here depended on them.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+## `/promote-moc` — nothing ripe; declining to create a MoC
+
+**Coverage check.** 27 concepts, 5 existing MoCs. Every single concept is already a member of at least one MoC — the union of `mocs/*.md` `concepts:` lists covers the whole `concepts/` directory. There is no unmapped concept to build a cluster from.
+
+**Candidate clusters, grouped by shared tags:**
+
+| Cluster | Concepts | Existing coverage | Verdict |
+|---|---|---|---|
+| `memory` / `knowledge-organization` | 6 (agent-native-memory, context-eviction-policy, multi-granularity-memory, selective-memory-retrieval, verified-memory-writes, llm-wiki-pattern) | `knowledge-organization-for-research-agents` — 6/6 | mapped |
+| `evaluation` | 7 (hce-evaluation, pass-at-k, citation-anchoring, typed-claim-partition, programmable-evaluator-oracle, compression-as-generalization-test, information-firewall) | `evaluation-integrity` — 7/7 | mapped |
+| `evolutionary-search` | 5 (evolutionary-expansion, evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool, budget-as-ceiling) | `autonomous-search-loop` — 5/5 | mapped |
+| `agent-architecture` | 5 (agent-native-memory, file-as-bus, hierarchical-delegation, hybrid-model-backends, scripted-tool-pipelines) | `agent-architecture` — 5/5 | mapped |
+| `skills` / `tool-use` | 6 (skill-library-lifecycle, shared-skill-namespace, scripted-tool-pipelines, hybrid-model-backends, permission-gate-as-architecture, typed-enforcement) | `capability-layer` — 6/6 | mapped |
+
+**The one thread worth a second look — governance/enforcement — I'm declining.** NOTES flagged the typed-enforcement thread as accumulating, and `concepts/typed-enforcement.md` was seeded today with 7 sources. A "governance" MoC would pull `typed-enforcement` + `permission-gate-as-architecture` + `budget-as-ceiling` + `verified-memory-writes`. Two problems:
+
+1. **Strictly by tags it's a 2-concept cluster.** Only `typed-enforcement` and `permission-gate-as-architecture` carry `governance`/`policy`/`enforcement`. The other two join only under a loose "constraint" reading — `budget-as-ceiling` is tagged `[budget, halting, resources, autonomy]`, `verified-memory-writes` is `[memory, consolidation, write-policy, …]`. That's below the ≥5 bar without stretching.
+2. **It's already written.** `mocs/capability-layer.md` (2026-07-18) has a dedicated *"Governance: the gate as architecture"* section that carries exactly this pairing — where the check sits vs. what the policy is written in — with the FORGE/Cedar/affine-budget-types evidence and the "semantic escape hatch" observation. A governance MoC would duplicate a majority of it.
+
+The right move when this thread does mature is to update `capability-layer` (or split its governance section out once it clearly outgrows the parent), not to spawn an overlapping map now.
+
+**No files written, nothing committed.** The graph is fully navigable as-is.
