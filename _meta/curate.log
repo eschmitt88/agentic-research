@@ -754,3 +754,4 @@ SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 The right move when this thread does mature is to update `capability-layer` (or split its governance section out once it clearly outgrows the parent), not to spawn an overlapping map now.
 
 **No files written, nothing committed.** The graph is fully navigable as-is.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled

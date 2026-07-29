@@ -313,3 +313,4 @@ skills; read by `/lint`.
 2026-07-28 04:18 ingest raw/papers/lee2026minteval.pdf
 2026-07-28 04:19 curate raw/_candidates/2026-07-27-digest.md ingested=9 declined=6 dup=0 (+5 previously auto-advanced; total 14/20) → _done/
 2026-07-28 04:19 promote-moc declined: typed-enforcement is the only un-mapped concept (1 < 5). Folded into mocs/capability-layer.md (now 6 concepts; governance clause split into gate-placement vs policy-artifact).
+2026-07-29 04:00 promote-moc declined: no ripe cluster. All 27 concepts are already in >=1 MoC; every candidate theme (trust/enforcement 3/5 in capability-layer, memory 5/5 and provenance 4/6 already mapped) fails the not-already-mapped test. No concepts added since 2026-07-28.
