@@ -755,3 +755,18 @@ The right move when this thread does mature is to update `capability-layer` (or 
 
 **No files written, nothing committed.** The graph is fully navigable as-is.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**No cluster is ripe — nothing promoted.**
+
+Detection over all 27 concepts and 5 existing MoCs: **every concept is already a member of at least one MoC**, so no candidate cluster can clear the "not already mapped" test. The clusters I considered and declined:
+
+| Candidate theme | Concepts | Why declined |
+|---|---|---|
+| Trust / enforcement / governance | permission-gate-as-architecture, typed-enforcement, budget-as-ceiling, verified-memory-writes, scripted-tool-pipelines (5) | 3/5 already in `capability-layer` — majority overlap. This is the "typed-enforcement thread" flagged in NOTES; it matured into a *concept* (`typed-enforcement`), and that concept's home is `capability-layer`, where the governance section already splits gate-placement from policy-artifact. |
+| Memory systems | agent-native-memory, multi-granularity-memory, selective-memory-retrieval, context-eviction-policy, verified-memory-writes (5) | 5/5 in `knowledge-organization-for-research-agents`. Same call as the 2026-07-28 run; no new memory concept has landed since, so nothing has changed to justify a split. |
+| Provenance / grounding | citation-anchoring, typed-claim-partition, information-firewall, compression-as-generalization-test, structured-world-model, web-grounded-literature (6) | 4/6 in `evaluation-integrity`. |
+
+Nothing in `concepts/` or `mocs/` has changed since the last `/promote-moc` (2026-07-28 04:19) — the only commit touching either was that same curate batch. So this is a genuine no-op, not a stale re-check.
+
+Recorded the decline in `_meta/log.md` and pushed (`93cddf9`). The one incidental line in `_meta/curate.log` was pre-existing hook noise from the prior session, swept in with the commit.
+
+The thing to watch: `knowledge-organization-for-research-agents` now carries 12 concepts, which is large for one map. If a sixth memory concept lands, the memory sub-theme becomes a defensible split rather than a duplicate — that's the next real promotion candidate.
