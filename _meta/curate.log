@@ -778,3 +778,14 @@ Every ≥5-concept theme (evaluation 7/7, memory 5/5, agent-architecture 5/5, kn
 What to watch: the enforcement thread is one concept short. If a future ingest seeds something like a policy-artifact or spend-reservation concept (the khan2026token / mondl2026autoformalization direction), it becomes ripe as a clean split of `capability-layer`'s governance clause. I logged the decline with that trigger condition in `_meta/log.md` and pushed (commit `f9d65a5`), leaving the unrelated uncommitted `_meta/curate.log` change untouched.
 
 One unrelated note: the claude.ai Google Drive MCP server needs re-authorization (via your claude.ai connector settings) before its tools work — not needed for anything here, just flagging it.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Declined — no ripe cluster to promote.** The knowledge graph is git-verified unchanged since yesterday's identical decline: zero commits have touched `concepts/` or `mocs/` since `f9d65a5`, and the only uncommitted change in the repo is a stray SessionEnd-hook noise line in `_meta/curate.log`, which I left alone.
+
+The cluster picture, re-derived from the current files rather than yesterday's notes:
+
+- All 27 concepts sit in at least one of the five existing MoCs — there is no un-mapped cluster at all, so every ≥5-concept theme fails the "not already mapped" test. Evaluation/provenance is fully inside `evaluation-integrity` (7/7), memory is fully inside `knowledge-organization-for-research-agents` (5/5), and the skill/capability theme is fully inside `capability-layer` (6/6).
+- The closest candidate remains the enforcement/governance thread — `typed-enforcement`, `permission-gate-as-architecture`, `budget-as-ceiling`, `verified-memory-writes` — still at 4 coherent members. The trigger condition stands: one more enforcement-flavored concept (a spend-reservation or policy-artifact seed from the khan2026token direction is the likely source) makes it ripe as a clean split of `capability-layer`'s governance clause.
+
+Per `agency: max` precedent for declines, I appended the decline (with that trigger condition) to `_meta/log.md` and pushed it as commit `af00b49`.
+
+One side note: the claude.ai Google Drive MCP server needs re-authorization via your claude.ai connector settings before its tools work in future sessions — nothing here needed it, just flagging.
