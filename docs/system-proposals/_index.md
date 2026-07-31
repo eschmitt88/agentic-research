@@ -16,8 +16,9 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-06-28 | [lint-consolidation-check](2026-06-28-lint-consolidation-check.md) | `skills/lint/SKILL.md` | adopt-with-changes | **accepted** (minimal check-#5 amendment applied 2026-06-30, claude-system@f0b3aef; full 5b deferred) |
 | 2026-07-12 | [hce-spent-test-reads](2026-07-12-hce-spent-test-reads.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-07-14, claude-system@a16aa2d) |
 | 2026-07-14 | [experiment-loop-skill-scoping](2026-07-14-experiment-loop-skill-scoping.md) | `skills/` layout, new-project, propose, iterate | adopt | **accepted** (applied 2026-07-14, claude-system@ef0b199; 10 experiment projects symlinked) |
-| 2026-07-19 | [hce-evaluator-integrity](2026-07-19-hce-evaluator-integrity.md) | `rules/evaluation.md` | adopt | proposed |
-| 2026-07-26 | [token-metering-cumulative-double-count](2026-07-26-token-metering-cumulative-double-count.md) | `hooks/token_logger.sh` (+ `coordinator/policy.py`) | adopt | proposed |
+| 2026-07-19 | [hce-evaluator-integrity](2026-07-19-hce-evaluator-integrity.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-07-31, claude-system@e181a3b) |
+| 2026-07-26 | [token-metering-cumulative-double-count](2026-07-26-token-metering-cumulative-double-count.md) | `hooks/token_logger.sh` (+ `coordinator/policy.py`) | adopt | **accepted** (applied 2026-07-31, claude-system@422e4b7; historical rows backfilled, state.db.bak-20260731 kept; weekly default recalibrated to 150M against the post-fix measured ~100M/7d; /plan verified admitting) |
+| 2026-07-31 | [instruction-ablation-program](2026-07-31-instruction-ablation-program.md) | skills prose corpus, coordinator admission layer, hooks | adopt-in-phases | proposed |
 
 ## Considered and held (2026-07-26 run)
 

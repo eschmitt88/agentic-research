@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: true
 evidence_citekeys: [atinafu2026rewardhacking, zou2026fmlbench, ning2026closedloop]
 evidence_strength: "code-released (github.com/Yonas650/RewardHackingAgents; credibility 3) for the specific mechanism; structural-enforcement corroboration from zou2026fmlbench (code-released, credibility 4) and ning2026closedloop's pristine-scoring certification protocol; ~3-4 on balance"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 

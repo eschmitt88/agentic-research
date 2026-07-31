@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [khan2026token, li2025fm, hambardzumyan2026aira, kamelhar2026gsar, jia2026finharness]
 evidence_strength: "code-released (khan2026token artifact: crate + catalogue.csv + IRR sheets) + 5-attestations across distinct groups; credibility ~3.5 (khan 3, li 4, hambardzumyan 4)"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 
