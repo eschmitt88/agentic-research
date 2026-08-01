@@ -790,3 +790,17 @@ Per `agency: max` precedent for declines, I appended the decline (with that trig
 
 One side note: the claude.ai Google Drive MCP server needs re-authorization via your claude.ai connector settings before its tools work in future sessions — nothing here needed it, just flagging.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion — nothing is ripe. Every one of the 27 concepts is already mapped into at least one of the five existing MoCs, so no cluster passes the "not already mapped" test.
+
+What I checked and declined:
+
+| Candidate cluster | Size | Why declined |
+|---|---|---|
+| Memory (`agent-native-memory`, `selective-memory-retrieval`, `context-eviction-policy`, `multi-granularity-memory`, `verified-memory-writes`, + `llm-wiki-pattern`) | 6 | 100% covered by `mocs/knowledge-organization-for-research-agents.md`, which already organizes them into substrate / write-side / read-side layers. These concepts are that MoC's backbone — splitting them out would gut the parent, and the sub-theme hasn't outgrown it. |
+| Evaluation (`hce-evaluation`, `citation-anchoring`, `pass-at-k`, `information-firewall`, `compression-as-generalization-test`, `typed-claim-partition`, `programmable-evaluator-oracle`) | 7 | 100% covered by `mocs/evaluation-integrity.md`. |
+| Agent architecture (`file-as-bus`, `hierarchical-delegation`, `hybrid-model-backends`, `scripted-tool-pipelines`, `agent-native-memory`, `budget-as-ceiling`) | 6 | Covered by `mocs/agent-architecture.md`. |
+| Evolutionary search (`evolutionary-expansion`, `evolutionary-search-grain`, `programmable-evaluator-oracle`, `async-worker-pool`, `budget-as-ceiling`) | 5 | Covered by `mocs/autonomous-search-loop.md`. |
+| Skills / capability (`skill-library-lifecycle`, `shared-skill-namespace`, `scripted-tool-pipelines`, `typed-enforcement`, `permission-gate-as-architecture`, `hybrid-model-backends`) | 6 | Covered by `mocs/capability-layer.md`. |
+| Governance / safety (`typed-enforcement`, `permission-gate-as-architecture`, `budget-as-ceiling`) | 3 | Below the 5-concept threshold, and 2 of 3 already live in `capability-layer`. |
+
+The graph is currently well-mapped — five MoCs jointly cover the full concept set with sensible boundaries. The next genuine promotion candidate will likely come from the threads NOTES.md is already watching: the typed-enforcement/governance thread needs roughly two more concepts (e.g. if `information-firewall` ripens and a runtime-policy concept lands) to justify a governance MoC distinct from `capability-layer`. Nothing to write, commit, or push.
