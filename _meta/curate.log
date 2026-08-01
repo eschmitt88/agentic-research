@@ -789,3 +789,4 @@ The cluster picture, re-derived from the current files rather than yesterday's n
 Per `agency: max` precedent for declines, I appended the decline (with that trigger condition) to `_meta/log.md` and pushed it as commit `af00b49`.
 
 One side note: the claude.ai Google Drive MCP server needs re-authorization via your claude.ai connector settings before its tools work in future sessions — nothing here needed it, just flagging.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
