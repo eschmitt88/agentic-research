@@ -73,3 +73,7 @@ to GitHub (`git.auto_push: true`) so overnight curation persists off-box.
 - Run `/lint` weekly.
 - Experiments live downstream — this meta project curates literature
   and concepts and does not link the experiment-loop skill group.
+
+## Framework rules
+
+@~/claude-system/claude/rules/agency.md
