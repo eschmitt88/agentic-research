@@ -8,7 +8,7 @@ max_disk_gb: 500
 
 # Autonomy: this literature hub auto-fetches/ingests its digest backlog
 # while the coordinator's agency verdict permits and the ceilings above
-# hold. See ~/.claude/rules/agency.md.
+# hold. See ~/claude-system/claude/rules/agency.md.
 agency: max
 
 # Model roles. Skills read these as the defaults; CLI flags override per-call.
