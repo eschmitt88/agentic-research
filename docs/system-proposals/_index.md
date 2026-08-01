@@ -18,7 +18,7 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-07-14 | [experiment-loop-skill-scoping](2026-07-14-experiment-loop-skill-scoping.md) | `skills/` layout, new-project, propose, iterate | adopt | **accepted** (applied 2026-07-14, claude-system@ef0b199; 10 experiment projects symlinked) |
 | 2026-07-19 | [hce-evaluator-integrity](2026-07-19-hce-evaluator-integrity.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-07-31, claude-system@e181a3b) |
 | 2026-07-26 | [token-metering-cumulative-double-count](2026-07-26-token-metering-cumulative-double-count.md) | `hooks/token_logger.sh` (+ `coordinator/policy.py`) | adopt | **accepted** (applied 2026-07-31, claude-system@422e4b7; historical rows backfilled, state.db.bak-20260731 kept; weekly default recalibrated to 150M against the post-fix measured ~100M/7d; /plan verified admitting) |
-| 2026-07-31 | [instruction-ablation-program](2026-07-31-instruction-ablation-program.md) | skills prose corpus, coordinator admission layer, hooks | adopt-in-phases | proposed |
+| 2026-07-31 | [instruction-ablation-program](2026-07-31-instruction-ablation-program.md) | skills prose corpus, coordinator admission layer, hooks | adopt-in-phases | **accepted** (all 5 phases applied 2026-08-01, claude-system@d8be0f7/f934124/dc323da/4b85862/d7521bd; 16 project repos migrated to per-project rule imports; smoke tests 22/22) |
 
 ## Considered and held (2026-07-26 run)
 

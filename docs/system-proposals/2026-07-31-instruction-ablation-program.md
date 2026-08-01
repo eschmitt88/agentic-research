@@ -7,7 +7,7 @@ change_type: removal + consolidation (phased)
 adds_surface_area: false
 evidence_citekeys: [khan2026token, madatha2026deterministic, wu2026hasbench, hambardzumyan2026aira]
 evidence_strength: "primary evidence is box-local usage telemetry (3 months: state.db row counts, skill-mention grep across 18 projects, git churn) — stronger than any paper for a removal decision; literature corroborates direction (khan2026token code-released cred 3; wu2026hasbench cred 3; madatha2026deterministic cred 2, prevalence only)"
-status: proposed
+status: accepted
 recommendation: adopt-in-phases
 provenance: user-directed review (2026-07-31, Fable 5 session), not /elevate-gated — recorded here so the reasoning and the decision live in the same queue
 ---

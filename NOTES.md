@@ -466,3 +466,44 @@ SessionEnd hook backstops this if you forget.
   concept ripeness.
 - Still open from prior sessions: consider widening `agency: max` to
   the other literature repos.
+
+## 2026-08-01
+
+### Did
+- Applied the full instruction-ablation-program (system-proposal
+  2026-07-31, accepted): five phases as five claude-system commits
+  (d8be0f7, f934124, dc323da, 4b85862, d7521bd).
+- Phase 1 deleted the coordinator admission layer (/plan, job/plan
+  CLIs, policy.py, jobs/decisions/session_caps tables incl. live DB,
+  pretooluse_cap.sh, dashboard /queue). Telemetry untouched.
+- Phase 2 single-sourced the drifted contracts (root-detection
+  boilerplate, HCE restatements, Diagnostics key drift, agency batch
+  scale).
+- Phase 3 compiled prose-programs to scripts/kg_lint.py,
+  chain_budget.py, new_project.sh with a 22-assertion smoke suite.
+- Phase 4 added the Confirmation principle to agency.md (artifact
+  writes auto-commit; hypothesis selection confirms under standard,
+  auto-advances under max); propose/derive-experiment now branch on
+  agency instead of hard-coding confirm.
+- Phase 5 scoped rule loading per-project (@imports; global
+  ~/.claude/rules link removed) and made the candidates backlog an
+  obligation only in agency: max repos. Migrated 16 project repos and
+  pushed all.
+
+### Findings
+- Live instruction corpus 18.4k → 16.4k words (-11%): dedup was offset
+  by new principle/script-contract text. The bigger wins are
+  structural: ~1.6k words of rules no longer load on non-research
+  sessions, and lint/halting arithmetic now runs as tested code
+  instead of prose executed at inference time.
+- Dashboard survived the admission-layer removal cleanly (/ 200,
+  /queue 404); status + agency CLIs verified.
+
+### Next
+- Watch /propose's agency-branch behavior in the max repos — the first
+  autonomous proposal write is the real test of phase 4.
+- Deeper prose cuts remain available in ingest/digest if the corpus
+  number matters; deferred as conservative-by-default.
+- The elevate 2026-06-28/07-19 "already enacted" holds cited the now-
+  deleted PreToolUse cap + admission gate; re-examine those holds on
+  the next /elevate run.
