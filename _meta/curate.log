@@ -821,3 +821,4 @@ Candidate clusters and why each was declined:
 The one thing worth watching: the **agent-memory sub-cluster** is the closest to a legitimate *split*. The knowledge-organization MoC now holds 12 concepts, and memory accounts for about half of them. Per the skill, a split is warranted only when the sub-theme has clearly outgrown the parent — half isn't "clearly outgrown" yet. If two or three more memory concepts land (the ingest stream has been trending that way: three of the last four memory concepts are recent), splitting `mocs/agent-memory.md` out of the parent would be the right move. That's a judgment call for a future `/promote-moc agent-memory` run, not this one.
 
 No files were written or committed.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
