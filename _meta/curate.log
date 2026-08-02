@@ -804,3 +804,20 @@ What I checked and declined:
 | Governance / safety (`typed-enforcement`, `permission-gate-as-architecture`, `budget-as-ceiling`) | 3 | Below the 5-concept threshold, and 2 of 3 already live in `capability-layer`. |
 
 The graph is currently well-mapped — five MoCs jointly cover the full concept set with sensible boundaries. The next genuine promotion candidate will likely come from the threads NOTES.md is already watching: the typed-enforcement/governance thread needs roughly two more concepts (e.g. if `information-firewall` ripens and a runtime-policy concept lands) to justify a governance MoC distinct from `capability-layer`. Nothing to write, commit, or push.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion this run — nothing is ripe. Every candidate cluster is already covered by an existing MoC, and the skill's own rule is to decline rather than manufacture a redundant map.
+
+**What I checked:** 26 concept files grouped by shared tags, cross-referenced against the five existing MoCs (`agent-architecture`, `autonomous-search-loop`, `capability-layer`, `evaluation-integrity`, `knowledge-organization-for-research-agents`). Every one of the 26 concepts already belongs to at least one MoC, so no cluster passes the "not already mapped" test.
+
+Candidate clusters and why each was declined:
+
+| Cluster (by merged tags) | Size | Overlap with existing MoCs | Verdict |
+|---|---|---|---|
+| Agent memory (`agent-native-memory`, `multi-granularity-memory`, `selective-memory-retrieval`, `context-eviction-policy`, `verified-memory-writes`, plus `skill-library-lifecycle` via procedural-memory) | 5–6 | 100% inside `knowledge-organization-for-research-agents` | Declined — fully mapped; a new MoC would duplicate it |
+| Evaluation/grounding (`hce-evaluation`, `pass-at-k`, `citation-anchoring`, `typed-claim-partition`, `information-firewall`, `compression-as-generalization-test`, `programmable-evaluator-oracle`) | 7 | 100% inside `evaluation-integrity` | Declined — that MoC *is* this cluster |
+| Governance/safety (`typed-enforcement`, `permission-gate-as-architecture`, `budget-as-ceiling`, arguably `information-firewall`) | 3–4 | Majority in `capability-layer` / `autonomous-search-loop` | Declined — under 5 concepts and mostly mapped |
+| Coordination/shared-state (`file-as-bus`, `hierarchical-delegation`, `structured-world-model`, `async-worker-pool`) | 4 | Split across `agent-architecture` / `knowledge-organization` | Declined — under 5 concepts |
+
+The one thing worth watching: the **agent-memory sub-cluster** is the closest to a legitimate *split*. The knowledge-organization MoC now holds 12 concepts, and memory accounts for about half of them. Per the skill, a split is warranted only when the sub-theme has clearly outgrown the parent — half isn't "clearly outgrown" yet. If two or three more memory concepts land (the ingest stream has been trending that way: three of the last four memory concepts are recent), splitting `mocs/agent-memory.md` out of the parent would be the right move. That's a judgment call for a future `/promote-moc agent-memory` run, not this one.
+
+No files were written or committed.
