@@ -19,6 +19,57 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-07-19 | [hce-evaluator-integrity](2026-07-19-hce-evaluator-integrity.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-07-31, claude-system@e181a3b) |
 | 2026-07-26 | [token-metering-cumulative-double-count](2026-07-26-token-metering-cumulative-double-count.md) | `hooks/token_logger.sh` (+ `coordinator/policy.py`) | adopt | **accepted** (applied 2026-07-31, claude-system@422e4b7; historical rows backfilled, state.db.bak-20260731 kept; weekly default recalibrated to 150M against the post-fix measured ~100M/7d; /plan verified admitting) |
 | 2026-07-31 | [instruction-ablation-program](2026-07-31-instruction-ablation-program.md) | skills prose corpus, coordinator admission layer, hooks | adopt-in-phases | **accepted** (all 5 phases applied 2026-08-01, claude-system@d8be0f7/f934124/dc323da/4b85862/d7521bd; 16 project repos migrated to per-project rule imports; smoke tests 22/22) |
+| 2026-08-02 | [hce-retrieval-boundary](2026-08-02-hce-retrieval-boundary.md) | `rules/evaluation.md` | adopt | proposed |
+| 2026-08-02 | [budget-ceiling-reserve](2026-08-02-budget-ceiling-reserve.md) | `templates/project/budget.yaml` | adopt | proposed |
+| 2026-08-02 | [lint-rule-consistency-pass](2026-08-02-lint-rule-consistency-pass.md) | `skills/lint/SKILL.md` | adopt | proposed |
+
+## Considered and held (2026-08-02 run)
+
+Three proposals (above); 14 notes entered the graph 2026-07-27/28 plus
+the `typed-enforcement` concept. The rest was considered and held:
+
+- **khan2026token → pre-flight spend reservation** (the follow-up NOTES.md
+  queued for this run). **Resolved rather than proposed**: `ye2026agent`
+  (peer-reviewed, code, cred 3) shows token consumption is unknowable
+  mid-call, so true reservation is impossible against current provider
+  APIs — halt-after-cycle is the correct achievable design, and
+  `chain_budget.py` already implements it. The importable remainder (the
+  overshoot is structural; size ceilings with a reserve) is the
+  budget-ceiling-reserve proposal above.
+- **Permission-gate "already enacted" holds re-examined post-ablation**
+  (the other queued follow-up). The 2026-06-28 and 2026-07-26 holds cited
+  `pretooluse_cap.sh` + the coordinator admission gate, both deleted
+  2026-08-01 by the accepted instruction-ablation-program. **The holds
+  stand on updated grounds**: the harness permission layer and the agency
+  verdict now carry the gate function; re-introducing machinery days
+  after its evidence-based, accepted removal would require evidence of
+  harm from the removal, of which there is none (watch item, not
+  proposal). The concept's own strongest new source (`lu2026meta`, cred 4
+  + code, phase-gated credential injection) self-holds: "a design
+  direction, not a recommendation to build it now … the thing to reach
+  for when a rule starts getting violated under pressure."
+- **verified-memory-writes re-check** — evidence strengthened again
+  (`gao2026mempoison` cred 4, `sharma2026smsr` cred 3,
+  `ravindran2026portable` cred 2 join the cluster; status now `growing`).
+  **Still held on Gate 2**, unchanged from 2026-07-26: origin-binding the
+  harness's memory writes is net-new machinery with no simplifying form,
+  and `/ingest`'s trust-signal frontmatter + immutable `raw/` already
+  hand-roll the write-gate shape.
+- **typed-enforcement's heavier forms** (reference monitor, prose→Cedar
+  autoformalization, affine budget types). Held per the concept's own
+  cost/benefit note — every result comes from multi-tenant or
+  security-critical settings; the single-operator payoff is the static
+  rule-set analysis, which is the lint-rule-consistency-pass proposal
+  above.
+- **compression-as-generalization-test re-check** — `zhao2026specbench`
+  (the 2,900-line lookup-table "compiler") attests the description-length
+  intuition from the negative direction, but the concept notes it
+  "implements no compression audit of its own. A second mechanism paper
+  is still wanted before promoting past seedling." Hold stands.
+- **skill-library-lifecycle re-check** — three more attestations
+  (`hu2026skillbrew`, `shang2026hypothesis`, `tang2026memory`); the
+  deferred merge/split detector remains conditioned on graph size
+  ~40–50 concepts and the graph is at 27.
 
 ## Considered and held (2026-07-26 run)
 
