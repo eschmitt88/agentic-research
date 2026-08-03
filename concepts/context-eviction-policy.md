@@ -31,6 +31,7 @@ sources:
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
   - "[[literature/papers/khan2026token]]"
   - "[[literature/papers/lee2026minteval]]"
+  - "[[literature/papers/semenov2026beyond]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -142,6 +143,20 @@ what gets dropped to disk?
    state and channel logs* across compression. Truncation as a
    fallback is fine, but the default should be compaction.
 
+   [[literature/papers/semenov2026beyond]] argues a third option
+   dominates both: *structured eviction*. The agent annotates its
+   trajectory into typed episodes (`expl`/`act`) with declared
+   dependencies, and a deterministic, LLM-free policy strips content
+   in graduated levels (reasoning traces → bulk outputs →
+   intermediates → whole episodes), evicting action records whose
+   effects are already persisted in the environment before touching
+   exploratory context. This sidesteps compaction's four failure
+   modes (unpredictable lossiness, destroyed causal structure,
+   blocking cost, compression-induced hallucination) — at the price
+   of an annotation burden and a new failure mode: mis-typed
+   episodes. Single-demo evidence so far (89 tasks / 80M tokens, no
+   ablations).
+
 4. **Run compaction proactively, not reactively.** Savelis's writeup
    on the Claude Code source notes "self-healing compaction that
    runs proactively." Waiting for overflow forces a panic-compaction
@@ -204,5 +219,10 @@ what gets dropped to disk?
 - **Status is `seedling`** because the pattern is attested across
   four sources but no single source provides the canonical
   algorithm. ByteRover's paper has the closest thing to a quantitative
-  policy (importance scoring, recency decay, hysteresis), and is the
-  natural read for moving this to `growing`.
+  policy (importance scoring, recency decay, hysteresis).
+  [[literature/papers/semenov2026beyond]] (CWL) now states a full
+  explicit algorithm — typed episode DAG + graduated deterministic
+  eviction, in pseudocode — but from a low-credibility source with
+  single-demo evidence. The move to `growing` should wait for either
+  CWL's promised follow-up (benchmarks + ablations) or an independent
+  attestation of dependency-aware eviction.

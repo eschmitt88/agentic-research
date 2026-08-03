@@ -319,3 +319,4 @@ skills; read by `/lint`.
 2026-08-02 05:05 elevate proposals=3 considered=9 (proposed: hce-retrieval-boundary [re-raise of 07-26 hold, condition met], budget-ceiling-reserve [settles khan2026token reservation question via ye2026agent], lint-rule-consistency-pass [typed-enforcement's nominated candidate]; held: spend-reservation resolved-not-proposed, permission-gate holds re-grounded post-ablation, verified-memory-writes, typed-enforcement heavy forms, compression-audit, skill-library-lifecycle)
 2026-08-03 07:02 digest n=15 window_since=2026-07-27T07:02:00Z
 2026-08-03 07:04 fetch-paper https://arxiv.org/abs/2606.11213 → raw/papers/semenov2026beyond.pdf
+2026-08-03 07:08 ingest raw/papers/semenov2026beyond.pdf

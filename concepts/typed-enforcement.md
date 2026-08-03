@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/zhao2026agenticos]]"
   - "[[literature/papers/madatha2026deterministic]]"
   - "[[literature/papers/louck2026securing]]"
+  - "[[literature/papers/semenov2026beyond]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -101,6 +102,18 @@ to coverage.
 the maximal version: agents never touch POSIX primitives, they submit a
 structured intent Manifest, and the system synthesizes a least-capability
 environment from it, with resource budgets bound into capability tokens.
+
+**The pattern outside security.** [[literature/papers/semenov2026beyond]]
+attests the same shape in a domain with no adversary: context management.
+The agent declares typed structure (`expl`/`act` episodes with dependency
+edges) and a deterministic, LLM-free policy — not the model — decides
+what survives eviction, explicitly to rule out compression-induced
+hallucination "by construction." Same division of labor as
+madatha2026deterministic: the model authors the typed artifact, ordinary
+code enforces over it. Evidence is design-paper grade (one demo), but as
+an eighth source it shows the concept generalizes beyond
+permissions/budgets to any policy the agent must not be trusted to
+execute at inference time.
 
 ## The honest limit: every instance has a semantic escape hatch
 
