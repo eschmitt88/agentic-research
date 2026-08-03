@@ -321,3 +321,4 @@ skills; read by `/lint`.
 2026-08-03 07:04 fetch-paper https://arxiv.org/abs/2606.11213 → raw/papers/semenov2026beyond.pdf
 2026-08-03 07:08 ingest raw/papers/semenov2026beyond.pdf
 2026-08-03 07:12 fetch-paper https://arxiv.org/abs/2606.22528 → raw/papers/chen2026governance.pdf
+2026-08-03 07:16 ingest raw/papers/chen2026governance.pdf

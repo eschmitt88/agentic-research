@@ -32,6 +32,7 @@ sources:
   - "[[literature/papers/khan2026token]]"
   - "[[literature/papers/lee2026minteval]]"
   - "[[literature/papers/semenov2026beyond]]"
+  - "[[literature/papers/chen2026governance]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -109,6 +110,14 @@ policy is therefore not only a fidelity concern (see Open questions)
 but a documented cost control: the failure mode of not having one, or
 having a buggy one, shows up as a budget incident
 ([[concepts/budget-as-ceiling]]).
+
+[[literature/papers/chen2026governance]] adds a third face: *governance*.
+Compaction optimizes for task continuity and silently drops in-context
+standing policies — 0% violation while the policy is visible, 30%
+pooled (up to 59%) after one compaction step, reproduced in LangGraph,
+LangMem, and AutoGen's context managers. The eviction layer is thus a
+safety-critical surface, not just a fidelity/cost mechanism; the
+mitigation is [[concepts/constraint-pinning]].
 
 For this project specifically, eviction policy is currently
 *implicit*: `/digest` and `/ingest` produce small outputs (one

@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/madatha2026deterministic]]"
   - "[[literature/papers/louck2026securing]]"
   - "[[literature/papers/semenov2026beyond]]"
+  - "[[literature/papers/chen2026governance]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -114,6 +115,13 @@ code enforces over it. Evidence is design-paper grade (one demo), but as
 an eighth source it shows the concept generalizes beyond
 permissions/budgets to any policy the agent must not be trusted to
 execute at inference time.
+[[literature/papers/chen2026governance]] then supplies the measured
+cost of *not* doing this: prose policy left in evictable context goes
+from 0% to 30% violation (up to 59%) after one compaction pass,
+because a model — the summarizer — was trusted with policy survival.
+Its Constraint Pinning defense ([[concepts/constraint-pinning]]) is
+typed-enforcement applied to the context layer: harness code, not
+model judgment, guarantees the invariant.
 
 ## The honest limit: every instance has a semantic escape hatch
 

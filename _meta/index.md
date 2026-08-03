@@ -45,6 +45,8 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/chen2026governance]] — Governance Decay (compaction silently deletes in-context policy: 0%→30% violation, up to 59%, weaponizable via summarizer injection; ~47-token Constraint Pinning restores 0%; seeds [[concepts/constraint-pinning]]; rel 5 / cred 3)
+- [[literature/papers/semenov2026beyond]] — CWL structured context eviction (typed expl/act episode DAG + graduated deterministic LLM-free eviction; the explicit algorithm [[concepts/context-eviction-policy]] lacked; single-demo evidence; rel 4 / cred 2)
 - [[literature/papers/lu2026meta]] — The Meta-Agent Challenge (HCE as *enforcement*: holdout on a separate container filesystem, test scoring gated behind a cryptographic secret injected only after the development phase ends; aligned agents refuse instructions to cheat but violate under resource starvation, 7/8 trials; rel 5 / cred 4)
 - [[literature/papers/palumbo2026formal]] — FORGE (policy as Datalog + reference monitor with an assume/guarantee correctness theorem; injection 100%→0%, τ²-bench compliance 58%→98%, at 19–38% latency; anchors [[concepts/typed-enforcement]]; rel 5 / cred 4)
 - [[literature/papers/zhao2026specbench]] — SpecBench (reward-hacking gap Δ = validation − held-out; every frontier agent saturates the visible suite while Δ grows ~27pp per 10× code size; rel 5 / cred 4)
