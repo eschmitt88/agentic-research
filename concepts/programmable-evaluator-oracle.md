@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/wu2026bayesian]]"
   - "[[literature/papers/ning2026closedloop]]"
   - "[[literature/papers/wang2026naturebench]]"
+  - "[[literature/papers/wang2026androids]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -108,6 +109,19 @@ oracle.
    evaluator is `metrics.json`. At chain end a separate final-scoring
    pass writes `final_metrics.json`. The evaluator is allowed to be
    gamed; the final scorer is not.
+
+6. **Audit the oracle before trusting it.**
+   [[literature/papers/wang2026androids]] shows "the final scorer is
+   not gamed" is an assumption that fails empirically: automated
+   red-teaming achieved near-perfect scores on 9 of 10 major agent
+   benchmarks without solving a task (219 flaws in 8 classes;
+   MLE-Bench falls to shipped answers + evaluation-logic gaps;
+   SWE-bench Verified to a nine-line PyTest hook). Its Agent-Eval
+   Checklist (isolation, input handling, scoring robustness, sandbox
+   permissions) is a concrete pre-registration artifact for any
+   evaluator a proposal specifies — and its patching study shows
+   trust-boundary flaws (agent and evaluator sharing an environment)
+   cannot be patched after the fact, only designed out.
 
 ## Open questions
 

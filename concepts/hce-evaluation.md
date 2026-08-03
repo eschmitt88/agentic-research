@@ -33,6 +33,7 @@ sources:
   - "[[literature/papers/wang2026search]]"
   - "[[literature/papers/zhao2026specbench]]"
   - "[[literature/papers/lu2026meta]]"
+  - "[[literature/papers/wang2026androids]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -282,6 +283,16 @@ Two findings from MAC change how to test any of this:
    development-set ground truth — a channel nobody designed. An evaluator's
    failure path leaks holdout information even when its success path
    doesn't.
+
+[[literature/papers/wang2026androids]] supplies the audit-side
+complement: before trusting any scoring harness, red-team it. Its
+BenchJack agent achieved near-perfect scores on 9 of 10 major agent
+benchmarks without solving a task, and its patching study found that
+trust-boundary flaws — agent and evaluator sharing an environment —
+survive any code-only patch. That is the empirical case for
+lu2026meta's separate-container design over in-place hardening, and
+its 30-question Agent-Eval Checklist is a cheap pre-flight audit for
+any evaluator a downstream experiment proposes.
 
 ## Open questions
 

@@ -45,6 +45,7 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/wang2026androids]] — BenchJack (automated benchmark red-teaming: 9/10 major agent benchmarks hacked to near-perfect scores without solving a task, 219 flaws in 8 classes; trust-boundary flaws unpatchable by code — the audit-side complement to specbench/HCE; rel 4 / cred 4)
 - [[literature/papers/besanson2026green]] — Green SARC (predictive pre-action cost gate with split-conformal calibration: breach ≤ δ per action; soft penalty breaches budget 91.5% of seeds vs gate 0%; Θ(n²) State-Snowball theorem; CI-reproduced numbers; rel 4 / cred 3)
 - [[literature/papers/chen2026governance]] — Governance Decay (compaction silently deletes in-context policy: 0%→30% violation, up to 59%, weaponizable via summarizer injection; ~47-token Constraint Pinning restores 0%; seeds [[concepts/constraint-pinning]]; rel 5 / cred 3)
 - [[literature/papers/semenov2026beyond]] — CWL structured context eviction (typed expl/act episode DAG + graduated deterministic LLM-free eviction; the explicit algorithm [[concepts/context-eviction-policy]] lacked; single-demo evidence; rel 4 / cred 2)
