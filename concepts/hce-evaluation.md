@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/zhao2026specbench]]"
   - "[[literature/papers/lu2026meta]]"
   - "[[literature/papers/wang2026androids]]"
+  - "[[literature/papers/philippov2026glite]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -293,6 +294,15 @@ survive any code-only patch. That is the empirical case for
 lu2026meta's separate-container design over in-place hardening, and
 its 30-question Agent-Eval Checklist is a cheap pre-flight audit for
 any evaluator a downstream experiment proposes.
+
+[[literature/papers/philippov2026glite]] shows the detection side
+working in a live campaign: because every fold-level score was
+traceable to the code revision that produced it, an implausibly good
+ensemble (0.609 RMSE) was traced to four target-leaking feature sets
+within minutes and corrected to 0.802 before submission. Structure
+cannot judge that a feature is *semantically* leaking — a human made
+that call — but score-to-revision provenance is what made the
+implausible number investigable instead of publishable.
 
 ## Open questions
 
