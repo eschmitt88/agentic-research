@@ -325,3 +325,4 @@ skills; read by `/lint`.
 2026-08-03 07:20 fetch-paper https://arxiv.org/abs/2606.15954 → raw/papers/besanson2026green.pdf
 2026-08-03 07:23 ingest raw/papers/besanson2026green.pdf
 2026-08-03 07:28 fetch-paper https://arxiv.org/abs/2605.12673 → raw/papers/wang2026androids.pdf
+2026-08-03 07:31 ingest raw/papers/wang2026androids.pdf
