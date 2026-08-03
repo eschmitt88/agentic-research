@@ -331,3 +331,4 @@ skills; read by `/lint`.
 2026-08-03 07:44 fetch-paper https://arxiv.org/abs/2606.27416 → raw/papers/philippov2026glite.pdf
 2026-08-03 07:48 ingest raw/papers/philippov2026glite.pdf
 2026-08-03 07:48 digest-autoingest n=6 verdict=go/high
+2026-08-03 07:52 promote-moc governance-by-architecture (5 concepts)
