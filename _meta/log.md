@@ -327,3 +327,4 @@ skills; read by `/lint`.
 2026-08-03 07:28 fetch-paper https://arxiv.org/abs/2605.12673 → raw/papers/wang2026androids.pdf
 2026-08-03 07:31 ingest raw/papers/wang2026androids.pdf
 2026-08-03 07:36 fetch-paper https://arxiv.org/abs/2606.05408 → raw/papers/gurkan2026mutation.pdf
+2026-08-03 07:39 ingest raw/papers/gurkan2026mutation.pdf

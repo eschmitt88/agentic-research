@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/qu2026coral]]"
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/liu2026evolvemem]]"
+  - "[[literature/papers/gurkan2026mutation]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -85,6 +86,17 @@ The lineage shows the search pattern is robust across model
 generations — PaLM 2 (FunSearch) through Gemini Pro (AlphaEvolve)
 through Opus-class agents (FM Agent), the same architecture
 produces the same kind of result.
+
+A caution on where the diversity actually comes from:
+[[literature/papers/gurkan2026mutation]] shows the LLM mutation
+operator alone converges into attractors (selection-free chains
+revisit a handful of structural templates; classical GP mutation
+does not), so the population machinery — islands, MAP-Elites,
+novelty archives — is what supplies the variation the operator
+doesn't. Expansion breadth N is only real breadth if the N children
+escape the operator's attractor; phrasing the expansion prompt for
+diversity, and checking the children actually differ structurally,
+is load-bearing.
 
 ## Implementation guidance
 

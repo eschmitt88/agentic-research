@@ -45,6 +45,7 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/gurkan2026mutation]] — Mutation Without Variation (selection-free LLM mutation chains collapse into structural attractors — 87% of chains <20 unique skeletons/300 steps vs ~143 for classical GP; operator entropy is a new axis for search-grain; GECCO'26 wkshp; rel 4 / cred 3)
 - [[literature/papers/wang2026androids]] — BenchJack (automated benchmark red-teaming: 9/10 major agent benchmarks hacked to near-perfect scores without solving a task, 219 flaws in 8 classes; trust-boundary flaws unpatchable by code — the audit-side complement to specbench/HCE; rel 4 / cred 4)
 - [[literature/papers/besanson2026green]] — Green SARC (predictive pre-action cost gate with split-conformal calibration: breach ≤ δ per action; soft penalty breaches budget 91.5% of seeds vs gate 0%; Θ(n²) State-Snowball theorem; CI-reproduced numbers; rel 4 / cred 3)
 - [[literature/papers/chen2026governance]] — Governance Decay (compaction silently deletes in-context policy: 0%→30% violation, up to 59%, weaponizable via summarizer injection; ~47-token Constraint Pinning restores 0%; seeds [[concepts/constraint-pinning]]; rel 5 / cred 3)
