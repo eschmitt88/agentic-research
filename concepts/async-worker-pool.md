@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hu2026flashevolve]]"
+  - "[[literature/papers/philippov2026glite]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -58,6 +59,14 @@ discard — unlike weight-space staleness in async RL, which can only be
 down-weighted or dropped. Its Reflective Async policy (a dedicated
 reflection stage that repairs stale items) both preserved throughput and
 *improved* proposal quality — score jumps cluster right after repairs.
+
+[[literature/papers/philippov2026glite]] attests the pattern at
+*task* granularity inside a research campaign rather than candidate
+granularity inside one optimization problem: up to 12 coding-agent
+sessions in parallel git worktrees on a single laptop, 305 merges
+across two campaigns with zero cross-task corruption — the isolation
+mechanism (worktree + branch + pre-merge verifier) is what makes the
+concurrency safe, not agent coordination.
 
 ## Implementation guidance
 

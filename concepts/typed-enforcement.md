@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/louck2026securing]]"
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/chen2026governance]]"
+  - "[[literature/papers/philippov2026glite]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -122,6 +123,24 @@ because a model — the summarizer — was trusted with policy survival.
 Its Constraint Pinning defense ([[concepts/constraint-pinning]]) is
 typed-enforcement applied to the context layer: harness code, not
 model judgment, guarantees the invariant.
+
+**The pattern at research-campaign scale.**
+[[literature/papers/philippov2026glite]] deploys the thesis on the
+research process itself — "the rules of the research process live in
+code that fails loudly when violated, not in prose that agents are
+merely asked to follow" — and reports the operating point: across
+thousands of agent invocations, prompt-encoded rules never reach zero
+failure ("we tried"), while deterministic verifiers (versioned
+artefact specs + stable error codes gating every merge) cost ~1% of
+wall-clock and let a 12-agent, 273-task campaign win an external
+refereed shared task with zero cross-task corruption. It also states
+this cluster's escape hatch in its most concrete form yet: the
+verifiers are ordinary scripts in the agent-writable repository, so
+they stop accidental drift, not an agent instructed to rewrite the
+verifier — enforcement that lives inside the agent's write scope is
+advisory under adversarial pressure (cf. louck2026securing's
+origin-binding and chen2026governance's operator-impersonation
+residual).
 
 ## The honest limit: every instance has a semantic escape hatch
 

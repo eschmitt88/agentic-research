@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/yu2026knows]]"
   - "[[literature/papers/alzahrani2026persistent]]"
   - "[[literature/papers/ravindran2026portable]]"
+  - "[[literature/papers/philippov2026glite]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
@@ -50,6 +51,17 @@ map, fetch task-relevant artifacts) to dodge the alternative cost
 12-hour horizons the trade is strongly positive; the ablation
 suggests it widens for later-round refinement, where conversational
 state has accumulated enough drift to corrupt decisions.
+
+[[literature/papers/philippov2026glite]] runs the pattern at
+multi-week campaign scale with two refinements worth naming: a
+**corrections overlay** (completed task folders are immutable;
+downstream fixes are correction files in the fixing task's folder,
+applied at read time by aggregators — the original record is never
+rewritten) and a **materialized overview** (a committed, regenerated
+dashboard is the only human-facing summary; agents read through
+aggregator scripts, never by walking the workspace). Both exist
+because hand-maintained cross-task summaries drift ("Completed Tasks
+(75 of 64)"); the canonical view must be recomputable from the files.
 
 ## Implementation guidance
 
