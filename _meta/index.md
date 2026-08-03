@@ -35,6 +35,11 @@ and `/new-experiment`.
   hybrid-model-backends, permission-gate-as-architecture, typed-enforcement
   (new 2026-07-28 — the gate's policy as a statically checkable artifact,
   factored out from the gate's placement).
+- [[mocs/governance-by-architecture]] — what makes a stated constraint
+  *binding*: enforcement by deterministic code at structural sites, never
+  prose; 5 concepts: typed-enforcement, permission-gate-as-architecture,
+  budget-as-ceiling, constraint-pinning, verified-memory-writes (new
+  2026-08-03 — tipped ripe by constraint-pinning).
 
 ## Literature / posts (recent)
 
