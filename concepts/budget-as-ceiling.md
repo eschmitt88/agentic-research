@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/zhao2026agenticos]]"
   - "[[literature/papers/khan2026token]]"
   - "[[literature/papers/ye2026agent]]"
+  - "[[literature/papers/besanson2026green]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -172,6 +173,28 @@ reservation; it is the correct achievable design. What follows for us:
   model-level support; it operates at the orchestration layer between
   actions" — the same structural-not-behavioral argument as
   [[concepts/permission-gate-as-architecture]].
+
+## How much pre-flight value survives the impossibility
+
+[[literature/papers/besanson2026green]] shows the achievable remainder
+of the settled reservation question: a **predictive pre-action gate**
+that admits the next call only if a learned cost forecast plus a
+split-conformal margin fits the remaining budget. This does not evade
+ye2026agent's limit — the call in flight is still unbounded — but it
+turns "ceiling-plus-one-call" from a worst-case overshoot into a
+calibrated risk: per-action breach probability ≤ δ, distribution-free
+(the Normal-σ version under-covers on real right-skewed residuals,
+92% at nominal 95%; conformal holds at 95.2%). Two results sharpen
+this concept's argument directly: a soft Lagrangian penalty tuned to
+meet the budget in expectation still breaches it on **91.5% of
+seeds**, while the architectural gate breaches **0%** — the
+quantitative case that a ceiling must be a gate, not a reward term —
+and the State-Snowball theorem (naive full-context re-submission is
+Θ(n²) in loop depth; real plans accrete *faster*) gives the growth
+law behind khan2026token's context-amplification incidents. Practical
+consequence for our `budget.yaml`: ye2026agent's flat 10–15% reserve
+buffer has a principled replacement — size the reserve from the
+forecast-residual quantile of the workload.
 
 Fully enforceable this way: multi-call budgets, iteration limits,
 API-call limits, duration limits. Only *approximable*: cost ceilings in
