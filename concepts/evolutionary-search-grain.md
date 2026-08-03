@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/novikov2025alphaevolve]]"
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/zou2026fmlbench]]"
+  - "[[literature/papers/gurkan2026mutation]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -95,6 +96,26 @@ The grain choice cascades into the rest of the architecture:
    whole-file rewrites once the function has plateaued is intuitive
    but not yet shown in published work. Candidate for downstream
    experimentation.
+
+## The operator, not just the grain
+
+[[literature/papers/gurkan2026mutation]] adds an orthogonal axis this
+concept had been assuming away: the mutation operator's *intrinsic
+entropy*. Running LLM mutation chains with **no selection pressure**
+(every valid mutation accepted), 87% of chains spend >93% of their
+mutations revisiting already-seen structural forms — variation
+collapses to terminal substitutions inside a frozen control-flow
+template — while classical GP subtree mutation on the identical setup
+keeps exploring (~143 unique structures vs. <20 for most LLM chains).
+The bias is intrinsic to the LLM operator, prompt-sensitive
+(semantically similar prompts swing exploration 25×), and
+model-dependent (Claude Sonnet 4 collapsed to one structural form;
+reasoning-enabled models explore far more). Consequence for grain
+choice: a fine grain only buys its theoretical search-space if the
+operator actually leaves its attractor — otherwise the effective
+search space is the attractor, whatever the grain. Profile the
+operator with cheap neutral chains before committing a budget to a
+long search.
 
 ## Open questions
 
