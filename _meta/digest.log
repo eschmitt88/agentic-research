@@ -264,3 +264,21 @@ That's a literal syntax example in prose, not a link — pre-existing and correc
 **`/promote-moc`: declined.** All 26 concepts are already mapped. The one plausible new cluster (resource governance) overlaps `agent-architecture`, `capability-layer`, and `autonomous-search-loop` at ≥half for any membership I didn't cherry-pick — and the sensitivity of ripeness to which concepts I included was itself the signal that I'd be manufacturing one. Updated `evaluation-integrity` and `agent-architecture` instead.
 
 **Left undone deliberately:** 15 of 20 candidates are uncurated. The file stays in `raw/_candidates/` (not archived) with a partial-curation header naming the five done and recommending the next three — HDSO, SpecBench, and one of the policy-as-code pair, each chosen because today's ingests opened the question it answers.
+Digest complete — everything committed and pushed, working tree clean.
+
+## What ran
+
+**Sweep** (window since 2026-07-27): four scenario queries across the active fronts — context eviction/memory policy, evaluation integrity, budget/agency enforcement, and evolutionary search. After deduplicating against the graph (which removed a lot: MLEvolve, ResearchClawBench, SpecBench, Agent Contracts, CORAL were all already known), **15 new candidates** landed in `raw/_candidates/2026-08-03-digest.md`.
+
+**Auto-advance** (agency: max, verdict GO/high throughout — 47% weekly budget used with 10h to reset): ingested the top 6, each with a literature note, concept updates, and its own commit pair:
+
+1. **semenov2026beyond** — CWL structured context eviction: the explicit algorithm `context-eviction-policy` said it was missing (typed episode DAG + deterministic LLM-free eviction). Low credibility (single demo), high fit.
+2. **chen2026governance** — the batch's best find. Compaction silently deletes in-context policy (0%→30% violation, weaponizable, reproduced in LangGraph/LangMem/AutoGen); a ~47-token pinning defense restores 0%. **Seeded a new concept, `constraint-pinning`.**
+3. **besanson2026green** — calibrated pre-action cost gate: soft budget penalty breaches 91.5% of seeds vs 0% for the gate. Extends `budget-as-ceiling` with the achievable remainder of the settled reservation question and feeds the accepted `budget-ceiling-reserve` proposal.
+4. **wang2026androids** (UC Berkeley) — BenchJack hacks 9/10 major agent benchmarks to near-perfect scores without solving a task; trust-boundary flaws are unpatchable by code. Evaluator-side complement to SpecBench for `hce-evaluation`.
+5. **gurkan2026mutation** — selection-free LLM mutation collapses into structural attractors (87% of chains <20 unique structures vs ~143 for classical GP). Adds the operator-entropy axis to `evolutionary-search-grain`.
+6. **philippov2026glite** — Glite ARF "verifier-driven research" (rel 5): research-process rules as deterministic verifiers, ~1% overhead, 12 parallel agents, 1st at the BEA 2026 shared task, provenance catching four target-leaking feature sets. Validates several pillars of this repo's own architecture.
+
+**Follow-through**: `constraint-pinning` was the fifth enforcement-flavored concept — exactly what the 07-31 promote-moc decline was waiting for — so `/promote-moc` created **`mocs/governance-by-architecture.md`** (5 concepts, framed around the shared honest limit: authority can't be authenticated from inside the token stream).
+
+Two notes for the next session: the NOTES.md watch item on `information-firewall` is **stale** (it got its third attestation on 07-28; I dropped the old firewalls paper from the queue accordingly), and 9 candidates remain in the digest file with a recommended next-three for `/curate` (Self-GC, compute-allocation bandits, Reward Hacking Benchmark with an overlap check against atinafu2026rewardhacking).
