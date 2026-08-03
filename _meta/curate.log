@@ -832,3 +832,4 @@ No promotion — nothing is ripe. I checked all 26 concept notes against the 5 e
 - **Coordination/long-horizon** (`file-as-bus`, `structured-world-model`, `hierarchical-delegation`, `async-worker-pool`) — 4 concepts, below threshold, and split across `agent-architecture` and `knowledge-organization` MoCs.
 
 Every concept in the graph is currently reachable from at least one MoC, so coverage is complete — the graph doesn't need a new map, it needs the watched threads (memory-split, typed-enforcement) to accumulate a bit more. No files written, nothing committed.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
