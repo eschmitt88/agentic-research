@@ -822,3 +822,13 @@ The one thing worth watching: the **agent-memory sub-cluster** is the closest to
 
 No files were written or committed.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion — nothing is ripe. I checked all 26 concept notes against the 5 existing MoCs; every candidate cluster is already majority-covered, so per the skill's restraint rule I'm declining to create anything.
+
+**Clusters evaluated and declined:**
+
+- **Memory** (6 concepts: `agent-native-memory`, `multi-granularity-memory`, `selective-memory-retrieval`, `context-eviction-policy`, `verified-memory-writes`, plus `skill-library-lifecycle` via its procedural-memory tag) — clears the ≥5 bar, but all five core members already live in `mocs/knowledge-organization-for-research-agents.md`. That's 100% overlap, so a new MoC would be a duplicate. This is the strongest future *split* candidate: memory is now 6 of that MoC's 12 concepts, but it hasn't clearly outgrown the parent yet — worth revisiting if 2–3 more memory concepts land.
+- **Evaluation** (7 concepts tagged `evaluation`) — exactly the membership of `mocs/evaluation-integrity.md`. Fully mapped.
+- **Governance/enforcement** (`permission-gate-as-architecture`, `typed-enforcement`, `budget-as-ceiling`) — only 3 concepts, and two are already in `mocs/capability-layer.md`. Below threshold and overlapping. The typed-enforcement thread in NOTES.md is the thing to watch here; a couple more concepts on that theme could make this ripe.
+- **Coordination/long-horizon** (`file-as-bus`, `structured-world-model`, `hierarchical-delegation`, `async-worker-pool`) — 4 concepts, below threshold, and split across `agent-architecture` and `knowledge-organization` MoCs.
+
+Every concept in the graph is currently reachable from at least one MoC, so coverage is complete — the graph doesn't need a new map, it needs the watched threads (memory-split, typed-enforcement) to accumulate a bit more. No files written, nothing committed.
