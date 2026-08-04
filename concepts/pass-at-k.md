@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/jain2026agentic]]"
   - "[[literature/papers/wang2026naturebench]]"
   - "[[literature/papers/lupidi2026airsbench]]"
+  - "[[literature/papers/xing2026compute]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -47,6 +48,35 @@ The AIRA_2 scaling-laws analysis explicitly treats seed distribution
 as signal: predictable scaling across LLM variants emerges only when
 each configuration is run at k≥3.
 
+**The same pathology, measured in a different subfield.**
+[[literature/papers/xing2026compute]] audits the LLM-guided
+evolutionary-search literature and finds the reporting convention is
+best-of-an-unspecified-number-of-runs at an unspecified cost: FunSearch
+reports a 4-of-140 hit rate, CodeEvolve displays "only the best",
+AlphaEvolve a single number, and reported per-run budgets span **~510×**
+(≈150 LLM calls to 204,800 candidates). Their conclusion is this
+concept's thesis in the authors' own words — existing reports
+"characterize what is achievable on a favorable run, not what a
+practitioner should expect at a finite computational cost."
+
+Two things make this more than another citation. First, they show the
+variance is not incidental: at an *identical* configuration, some seeds
+climb to high fitness while others stagnate indefinitely, so a single
+run is a draw from a distribution with a heavy bad mode — which is
+precisely why k=1 medal rates mislead. Second, they demonstrate that
+this variance is *actionable*, not just a reporting hazard: routing
+budget across parallel trajectories converts run-to-run heterogeneity
+into a reliability gain (see [[concepts/evolutionary-expansion]]
+guidance 7). Reporting the distribution and exploiting the distribution
+turn out to be the same capability.
+
+The cost axis matters too. They argue LLM-call count is not comparable
+across systems because prefix-cache hit rates differ by protocol, and
+re-price everything in effective FLOPs — at which point much of the
+apparent capability ordering between model sizes dissolves. Any k-run
+comparison in this project should state the budget unit alongside k;
+"k=3" at unspecified and unequal cost is not a controlled comparison.
+
 ## Implementation guidance
 
 1. **Metrics files report distributions.** Instead of
@@ -67,6 +97,26 @@ each configuration is run at k≥3.
 4. **Comparison requires overlap in seed distribution.** A vs B is
    comparable only if they ran at matched seed lists. If not, the
    comparison is "A at seeds S1 vs B at seeds S2" and must say so.
+
+5. **Report time-to-threshold, not only final metric.**
+   [[literature/papers/xing2026compute]] reports, for each method, the
+   earliest generation and cumulative FLOPs at which **90% of bootstrap
+   samples reach a target fitness τ**. This is a better fit for a
+   budget-capped loop than final fitness: it answers "how reliably does
+   this clear the bar within budget" rather than "how high did the
+   luckiest seed get." It also exposes failures a mean hides — in their
+   results, several baselines simply *never reach* a threshold within
+   budget, which a mean-and-std summary reports as a merely lower score.
+   Where an experiment has a meaningful target, `metrics.json` should
+   carry the threshold, the fraction of seeds reaching it, and the cost
+   at which they did.
+
+6. **Use a distribution-aware statistical protocol.** xing2026compute
+   follows rliable (Agarwal et al. 2022) with stratified bootstrap
+   standard errors and 95% CIs over 1000 resamples at 10 seeds per
+   cell. For any comparison this project treats as load-bearing, a
+   bootstrap CI over the seed distribution is the minimum bar; a mean
+   ± std over k=3 does not support a claim that A beats B.
 
 ## Open questions
 
