@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/khan2026token]]"
   - "[[literature/papers/ye2026agent]]"
   - "[[literature/papers/besanson2026green]]"
+  - "[[literature/papers/hao2026selfgc]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -200,6 +201,21 @@ Fully enforceable this way: multi-call budgets, iteration limits,
 API-call limits, duration limits. Only *approximable*: cost ceilings in
 currency, which is why our token-denominated ceilings are the more
 defensible unit.
+
+**The counter-lever to State-Snowball has its own price.** Reducing the
+active view is the direct way to fight Θ(n²) context growth, but
+[[literature/papers/hao2026selfgc]] shows the reduction is not free:
+committing a context edit invalidates part of the provider prefix cache,
+so an eager eviction policy can spend more on cache misses than it saves
+on prompt surface. Their commit rule prices this explicitly —
+`CommitBenefit ≈ N_future(C − C′) − L_cache_break − L_GC`, where the last
+term is the governance call itself — and holds any plan pruning less than
+~0.3 of the active view until cache expiry or the next task boundary.
+Deployed, that yielded 10–15% lower daytime input tokens (peaks ~20%),
+though on covered traffic only and not as a matched billed-cost audit.
+The transferable point is that **context reduction is a budgeted action
+like any other**, with its own overhead term, not a pure saving — see
+[[concepts/context-eviction-policy]] guidance 8.
 
 ## Budgets survive delegation — the conservation law
 

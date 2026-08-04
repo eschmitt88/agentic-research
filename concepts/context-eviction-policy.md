@@ -1,7 +1,7 @@
 ---
 kind: concept
 name: "context-eviction-policy"
-status: seedling
+status: growing
 added: "2026-05-15"
 source_papers:
   - nguyen2026byterover
@@ -33,6 +33,7 @@ sources:
   - "[[literature/papers/lee2026minteval]]"
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/chen2026governance]]"
+  - "[[literature/papers/hao2026selfgc]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -166,6 +167,26 @@ what gets dropped to disk?
    episodes. Single-demo evidence so far (89 tasks / 80M tokens, no
    ablations).
 
+   [[literature/papers/hao2026selfgc]] independently attests
+   dependency-aware eviction at production scale and adds the
+   measurement that settles the design question: **pruning rate and
+   preservation trade against each other, and the heuristics win the
+   wrong one.** Across 332 production-derived sessions, position- and
+   type-based baselines prune 40–48% of prefix tokens but preserve
+   only 78–87% of future dependencies; Self-GC prunes *less* (31–34%)
+   and preserves 91–95%. The Hard Set is starker — baselines 62–70%
+   prune / 55–70% preservation, Self-GC 44% / 85%. Optimizing for
+   tokens removed selects the wrong operating point; the objective is
+   removing low-value context *while retaining future anchors*.
+
+   Its failure taxonomy is the practical payoff: what fixed heuristics
+   lose is never a generic "bad summary" but a specific class of
+   dependency — exact locators and handles, verbatim source text,
+   behavioral contracts ("do not replace the table header"), live
+   execution state. A chronological or type-based policy has no
+   representation for these distinctions, which is why it can remove
+   many tokens and still break the run.
+
 4. **Run compaction proactively, not reactively.** Savelis's writeup
    on the Claude Code source notes "self-healing compaction that
    runs proactively." Waiting for overflow forces a panic-compaction
@@ -184,6 +205,41 @@ what gets dropped to disk?
    event with the spans involved and the resulting summary — both
    for debugging and for the agent itself to consult when it suspects
    a compaction lost something relevant.
+
+7. **Split the policy by kind of judgment, not by who owns it.**
+   The agent-governed vs harness-governed framing is a false binary.
+   [[literature/papers/hao2026selfgc]] runs a side-channel planner that
+   proposes `fold`/`mask`/`prune` actions over stable object
+   identifiers, and a harness that rehearses the plan locally, drops
+   invalid or protected edits, normalizes overlaps, and commits only at
+   a safe turn boundary — rejected plans never touch the main agent
+   loop. The model supplies *semantic judgment about future value*; the
+   harness owns *recoverability, protocol validity, and commit timing*.
+   That boundary, not the locus, is the design decision — see
+   [[concepts/typed-enforcement]], where this paper supplies the
+   measured violation rate.
+
+   Two mechanisms are worth importing directly. **Distinguish the
+   lifecycle actions**: `fold` moves an exact payload to a sidecar and
+   leaves a recovery pointer, `mask` keeps structural boundaries while
+   eliding low-signal middle content, `prune` removes obsolete content
+   with no recovery guarantee. Collapsing these into one "compact"
+   operation is what makes compaction lossy. **Keep recovery metadata
+   on the control plane**: Self-GC attaches fold pointers to the
+   relevant *user* message rather than authoring them as assistant
+   prose, so later assistant turns don't imitate internal fold tags.
+
+8. **Eviction commits are a cache decision.** Committing an edit to
+   the active view invalidates part of the provider prefix cache, so a
+   policy that evicts eagerly can cost more than it saves.
+   [[literature/papers/hao2026selfgc]] commits incrementally and only
+   when `CommitBenefit ≈ N_future(C − C′) − L_cache_break − L_GC` is
+   positive, which in their deployment meant holding any plan pruning
+   less than ~0.3 of the active view until cache expiry or the next
+   task boundary. The 0.3 is fitted to one deployment and shouldn't be
+   copied as a constant, but the shape generalizes: eviction policy is
+   a spend policy ([[concepts/budget-as-ceiling]]), and the cache term
+   is why "evict as soon as you can" is wrong.
 
 ## Connections
 
@@ -225,13 +281,24 @@ what gets dropped to disk?
   compaction across a long-running session is non-trivial and
   largely invisible in current measurement. Worth a /lint extension
   that counts compaction calls.
-- **Status is `seedling`** because the pattern is attested across
-  four sources but no single source provides the canonical
-  algorithm. ByteRover's paper has the closest thing to a quantitative
-  policy (importance scoring, recency decay, hysteresis).
-  [[literature/papers/semenov2026beyond]] (CWL) now states a full
-  explicit algorithm — typed episode DAG + graduated deterministic
-  eviction, in pseudocode — but from a low-credibility source with
-  single-demo evidence. The move to `growing` should wait for either
-  CWL's promised follow-up (benchmarks + ablations) or an independent
-  attestation of dependency-aware eviction.
+- **Status moved `seedling` → `growing` on 2026-08-04.** The stated
+  precondition was "either CWL's promised follow-up (benchmarks +
+  ablations) or an independent attestation of dependency-aware
+  eviction." [[literature/papers/hao2026selfgc]] is that independent
+  attestation: a different group, a different substrate (indexed
+  runtime objects rather than typed episodes), a different motivation
+  (production cost rather than hallucination avoidance), converging on
+  the same core claim — that *future dependency*, not position or
+  type, is what eviction must be keyed on. It also supplies the
+  benchmarks CWL lacked (33- and 332-session suites with CIs, plus a
+  deployed split), so the pair now covers both the algorithm
+  ([[literature/papers/semenov2026beyond]], explicit pseudocode) and
+  the evidence (hao2026selfgc, production scale).
+
+  Not `mature`: neither source releases code, hao2026selfgc's headline
+  metric is LLM-judged on a 20-case calibration set, and the two agree
+  on the principle while differing on the mechanism — CWL evicts by a
+  deterministic LLM-free policy over declared dependencies, Self-GC by
+  a model-proposed plan under harness validation. Which of those is the
+  right default is unresolved, and that is the question a third source
+  should settle.
