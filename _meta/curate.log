@@ -833,3 +833,19 @@ No promotion — nothing is ripe. I checked all 26 concept notes against the 5 e
 
 Every concept in the graph is currently reachable from at least one MoC, so coverage is complete — the graph doesn't need a new map, it needs the watched threads (memory-split, typed-enforcement) to accumulate a bit more. No files written, nothing committed.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Lint is clean: **stale candidates 0** (backlog drained), 0 orphans, 0 sourceless concepts. The 4 dead wikilinks are all pre-existing — two are literal `[[wikilink]]` prose examples, and the fourth is a pre-existing `_done/` archive reference from May; none came from this run.
+
+## Curated: `2026-08-03-digest.md` — 15/15 resolved, archived
+
+The uncurated pile is now empty. Verdict was **SLOW (low)** throughout (plenty of token quota, GPU at 92%), so I took the canonical ~2-item batch, one fetch→ingest at a time, re-checking between units.
+
+**Ingested (2)**
+
+- **`hao2026selfgc`** — Self-GC. This one tips [`context-eviction-policy`](concepts/context-eviction-policy.md) from `seedling` → `growing`: the concept's own file named "an independent attestation of dependency-aware eviction" as its precondition, and this is it, with production-scale evidence (332-session suite + deployed A/B) where the existing source had a single demo. It also **corrects the framing the item was surfaced under** — the digest called it agent-governed context vs. harness-governed, but the paper actually splits by *kind of judgment*: the model proposes semantic future value, the harness owns recoverability and commit timing. Bonus find: its 4–8% planner breach rate on a protected invariant is the first hard number for [`typed-enforcement`](concepts/typed-enforcement.md)'s open "no head-to-head vs. a well-prompted model" question.
+- **`xing2026compute`** — bandit compute allocation. +12.3% fitness with model, prompt, and evaluator held fixed. Its audit of the evolutionary-search literature (~510× spread in reported per-run budgets; "only the best" reporting) is hard evidence for [`pass-at-k`](concepts/pass-at-k.md) — which the downstream `mle-bench` project imports, so this propagates.
+
+**Declined (7)**, each against its stated condition: TokenPilot (cache angle now covered by Self-GC's commit rule), Reward Hacking Benchmark (**failed its overlap check** — restates `atinafu2026rewardhacking`'s two vectors), Log Analysis (position-only), SWE-Marathon (SE scope), Sovereign-OS + Pylva (reservation question settled by `/elevate` on 2026-08-02), Firewalls (its watch item closed 2026-07-28).
+
+`/promote-moc` **declined** — this run seeded zero new concepts (it deepened five existing ones), and all 28 concepts remain mapped. Manufacturing a MoC here would have been redundant.
+
+Two things worth your attention for the next `/wrap`: both open watch items in NOTES.md are now closed — the `information-firewall` second-attestation watch was already stale (third source landed 2026-07-28), and the `khan2026token` pre-flight reservation question is settled. Five commits pushed (`b029fec`…`b37c440`).
