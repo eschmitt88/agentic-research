@@ -333,3 +333,4 @@ skills; read by `/lint`.
 2026-08-03 07:48 digest-autoingest n=6 verdict=go/high
 2026-08-03 07:52 promote-moc governance-by-architecture (5 concepts)
 2026-08-04 04:01 fetch-paper https://arxiv.org/abs/2607.00692 → raw/papers/hao2026selfgc.pdf
+2026-08-04 04:12 ingest raw/papers/hao2026selfgc.pdf

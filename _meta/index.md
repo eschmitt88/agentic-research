@@ -50,6 +50,7 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/hao2026selfgc]] — Self-GC (context as indexed runtime objects with fold/mask/prune lifecycles; planner proposes, harness validates + commits at safe boundaries; prunes *less* than heuristics 31–44% vs 40–70% but preserves 85–95% of future dependencies vs 55–87%; tips [[concepts/context-eviction-policy]] to `growing`; 4–8% measured planner breach of a protected invariant; rel 4 / cred 3)
 - [[literature/papers/philippov2026glite]] — Glite ARF verifier-driven research (research-process rules as deterministic verifier scripts, ~1% wall-clock overhead; 12 parallel agents, 273 tasks, 1st @ BEA 2026 closed track; per-fold provenance caught 4 target-leaking feature sets; verifiers honestly not agent-proof; rel 5 / cred 4)
 - [[literature/papers/gurkan2026mutation]] — Mutation Without Variation (selection-free LLM mutation chains collapse into structural attractors — 87% of chains <20 unique skeletons/300 steps vs ~143 for classical GP; operator entropy is a new axis for search-grain; GECCO'26 wkshp; rel 4 / cred 3)
 - [[literature/papers/wang2026androids]] — BenchJack (automated benchmark red-teaming: 9/10 major agent benchmarks hacked to near-perfect scores without solving a task, 219 flaws in 8 classes; trust-boundary flaws unpatchable by code — the audit-side complement to specbench/HCE; rel 4 / cred 4)

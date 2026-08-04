@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/chen2026governance]]"
   - "[[literature/papers/philippov2026glite]]"
+  - "[[literature/papers/hao2026selfgc]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -142,6 +143,40 @@ advisory under adversarial pressure (cf. louck2026securing's
 origin-binding and chen2026governance's operator-impersonation
 residual).
 
+**How often the model would actually breach the invariant.**
+[[literature/papers/hao2026selfgc]] is the first source here to measure
+the quantity this cluster keeps assuming. Its context-governance planner
+is well-prompted, given an explicit object-action contract with hard
+rules and few-shot examples, and told never to touch the latest visible
+user turn. Across three backbones it proposed cutting that protected
+turn in **25/330 (Qwen3.6-Plus), 15/330 (Qwen3.7-Max), and 12/328
+(GLM-5.1)** parsed plans — roughly 4–8% of the time. The paper's own
+reading is the concept in one line: "the prompt usually works, but the
+residual risk justifies mandatory last-turn protection."
+
+That number is worth carrying because it cuts both ways. It is small
+enough to explain why prompt-only enforcement *looks* fine in
+development and in demos, and large enough that at production volume it
+is a steady stream of violations — which is exactly the shape
+philippov2026glite reports qualitatively ("we tried"; prompt-encoded
+rules never reach zero). It also partially answers this concept's open
+question about a head-to-head between formal enforcement and a
+well-prompted frontier model: on a single, simple, structurally
+checkable invariant, the model's error rate is a few percent and the
+deterministic check costs nearly nothing. It is only a partial answer —
+one invariant, non-adversarial, and the harness check is trivial to
+write — but it is a real measurement where the cluster previously had
+only argument.
+
+The paper's other contribution is the cleanest statement of the division
+of labor: "the model supplies semantic judgment about future value,
+while the harness enforces runtime invariants such as recoverability and
+protocol validity." Note the corollary its deployment result supplies —
+because the harness owns the invariants, a **mid-tier planner suffices**
+(all three backbones exceed 90% no-impact). Deterministic enforcement is
+not only a safety property; it is what makes the expensive model
+optional.
+
 ## The honest limit: every instance has a semantic escape hatch
 
 This is the part worth carrying forward, because each paper states it only
@@ -207,6 +242,14 @@ cluster's open frontier, not a footnote.
   frontier model on the same policy set. The prompt-based baseline is
   argued to be unsound (correctly), but "unsound" and "worse in practice"
   are different claims and only the first is established.
+  **Partially answered** by [[literature/papers/hao2026selfgc]]'s 4–8%
+  cut-turn violation rate across three planner backbones — the first
+  measured error rate for a well-prompted model on an invariant a
+  deterministic check enforces for free. Still open in the general case:
+  one simple structural invariant, no adversary, and no comparison on a
+  policy set rich enough that the deterministic checker is itself hard to
+  write. The interesting regime is where the invariant is *expensive* to
+  check deterministically, and nobody has measured that.
 - Whether static analysis over an *autoformalized* policy is meaningful
   when the policy was generated from prose the analysis never sees —
   contradiction-checking the output does not detect that the input was
