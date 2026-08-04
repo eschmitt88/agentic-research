@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/liu2026evolvemem]]"
   - "[[literature/papers/gurkan2026mutation]]"
+  - "[[literature/papers/xing2026compute]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -123,6 +124,54 @@ is load-bearing.
    children (by validation metric) and discard the rest rather
    than hedging — the search budget for later generations needs
    the headroom.
+
+6. **Allocation is its own lever — treat it as a design choice, not
+   a leftover.** [[literature/papers/xing2026compute]] holds model,
+   prompt, and evaluator fixed and gets +12.3% mean fitness purely by
+   changing how a fixed budget of LLM calls is distributed: "not a
+   model improvement, nor a prompt improvement, but an allocation
+   improvement." Under a fixed budget `C = T·N`, the depth–breadth
+   split is the only remaining degree of freedom, and where it lands
+   on the fitness surface is task-dependent — their bilinear fit
+   `log(1−V) = β₀ + a·log T + b·log N + c·log T·log N` has an
+   interaction term `c` that alone decides the regime: |c|≈0 means the
+   optimum sits at the all-depth corner (refine one line deeply),
+   large negative `c` means a balanced interior optimum with plateau
+   half-width ∝ 1/√|c|. Guidance 3's "N=3, above N=5 the payoff
+   fades" is a corner-regime default; it is wrong for interior-ridge
+   tasks, and nothing tells you which you have in advance.
+
+7. **Allocate *between* trajectories, not just within one.** The
+   sharper finding is that fixed within-run allocation cannot remove
+   cross-run heterogeneity: identical configurations produce a
+   *distribution*, with some seeds stagnating at low fitness forever.
+   xing2026compute's BaSE treats K parallel trajectories as bandit
+   arms and routes each next call to the most promising, which
+   decomposes cleanly into a **pool effect** (run K trajectories,
+   keep the best) and an **allocation effect** (adaptively route
+   budget) — both measured to survive independently. Gains concentrate
+   exactly where guidance 5's greedy pruning is most dangerous: on
+   hard, high-variance tasks. On Heilbronn Triangle, UCB clears
+   fitness 0.70 within 60 generations while greedy and two island
+   protocols never reach it at all inside 512 calls. Moderate pools
+   (K ∈ {5,10,20}) win; K=50 dilutes refinement.
+
+   Caveat before importing: their arms share a seed program and never
+   exchange information, so this is not a replacement for island
+   migration — it is a scheduler on top of whatever protocol runs
+   inside each arm, and the paper shows it composes with OpenEvolve,
+   CodeEvolve, and ShinkaEvolve parent sampling rather than replacing
+   them.
+
+8. **Allocation cannot manufacture signal.** The same paper's negative
+   result is the boundary condition: model capability and prompt
+   jointly set a ceiling, and allocation only governs how efficiently
+   a run approaches it. On Llama-3.1-8B/HT the best allocator reaches
+   0.4387 while Qwen3-8B reaches 0.8736 on the same task — an order of
+   magnitude of headroom that no scheduler recovers. Where a model
+   fails to cross the capability threshold, depth gains are
+   statistically indistinguishable from selection noise. Fix
+   capability first, then spend effort on allocation.
 
 ## Open questions
 
