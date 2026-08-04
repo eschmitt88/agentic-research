@@ -282,3 +282,4 @@ Digest complete — everything committed and pushed, working tree clean.
 **Follow-through**: `constraint-pinning` was the fifth enforcement-flavored concept — exactly what the 07-31 promote-moc decline was waiting for — so `/promote-moc` created **`mocs/governance-by-architecture.md`** (5 concepts, framed around the shared honest limit: authority can't be authenticated from inside the token stream).
 
 Two notes for the next session: the NOTES.md watch item on `information-firewall` is **stale** (it got its third attestation on 07-28; I dropped the old firewalls paper from the queue accordingly), and 9 candidates remain in the digest file with a recommended next-three for `/curate` (Self-GC, compute-allocation bandits, Reward Hacking Benchmark with an overlap check against atinafu2026rewardhacking).
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
