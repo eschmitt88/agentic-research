@@ -336,3 +336,4 @@ skills; read by `/lint`.
 2026-08-04 04:12 ingest raw/papers/hao2026selfgc.pdf
 2026-08-04 04:15 fetch-paper https://arxiv.org/abs/2605.29268 → raw/papers/xing2026compute.pdf
 2026-08-04 04:22 ingest raw/papers/xing2026compute.pdf
+2026-08-04 04:25 curate 2026-08-03-digest.md ingested=2 declined=7 dup=0 (prior digest-autoingest=6; 15/15 resolved, archived to _done/)
