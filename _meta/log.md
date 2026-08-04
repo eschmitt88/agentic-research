@@ -337,3 +337,4 @@ skills; read by `/lint`.
 2026-08-04 04:15 fetch-paper https://arxiv.org/abs/2605.29268 → raw/papers/xing2026compute.pdf
 2026-08-04 04:22 ingest raw/papers/xing2026compute.pdf
 2026-08-04 04:25 curate 2026-08-03-digest.md ingested=2 declined=7 dup=0 (prior digest-autoingest=6; 15/15 resolved, archived to _done/)
+2026-08-04 04:28 promote-moc declined: no ripe cluster. This /curate run seeded zero new concepts (updated 5 existing: context-eviction-policy seedling→growing, typed-enforcement, budget-as-ceiling, evolutionary-expansion, pass-at-k). All 28 concepts remain in >=1 MoC. Closest un-mapped theme is memory/runtime-policy (context-eviction-policy, selective-memory-retrieval, multi-granularity-memory, agent-native-memory, verified-memory-writes, constraint-pinning = 6) but knowledge-organization-for-research-agents already covers 5 of the 6, failing the not-already-mapped test.
