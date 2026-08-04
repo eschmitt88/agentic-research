@@ -849,3 +849,24 @@ The uncurated pile is now empty. Verdict was **SLOW (low)** throughout (plenty o
 `/promote-moc` **declined** — this run seeded zero new concepts (it deepened five existing ones), and all 28 concepts remain mapped. Manufacturing a MoC here would have been redundant.
 
 Two things worth your attention for the next `/wrap`: both open watch items in NOTES.md are now closed — the `information-firewall` second-attestation watch was already stale (third source landed 2026-07-28), and the `khan2026token` pre-flight reservation question is settled. Five commits pushed (`b029fec`…`b37c440`).
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Declined — no ripe cluster.** State is unchanged since today's earlier `/promote-moc` run (commit `b37c440`): `git diff b37c440 HEAD -- concepts mocs` is empty, and the only working-tree change is `_meta/curate.log`.
+
+**Coverage check** (computed from the actual files, not the log): all 28 concepts appear in ≥1 of the 6 MoCs. Zero unmapped concepts, so any new MoC would necessarily be a split of an existing one.
+
+**Candidate clusters and why each fails:**
+
+| Cluster | N | Overlap with existing MoC | Verdict |
+|---|---|---|---|
+| memory / runtime-policy — agent-native-memory, context-eviction-policy, selective-memory-retrieval, multi-granularity-memory, verified-memory-writes, constraint-pinning | 6 | 5/6 in `knowledge-organization-for-research-agents` | Decline — fails not-already-mapped |
+| governance / enforcement | 5 | 5/5 in `governance-by-architecture` (promoted 2026-08-03) | Decline — is the MoC |
+| evaluation / grounding | 7 | 7/7 in `evaluation-integrity` | Decline |
+| evolutionary search | 5 | 5/5 in `autonomous-search-loop` | Decline |
+| skills / tool-use | 6 | 6/6 in `capability-layer` | Decline |
+| multi-agent coordination — hierarchical-delegation, file-as-bus, structured-world-model, async-worker-pool | 4 | 4/4 mapped across three MoCs | Decline — fails both prongs |
+
+The one case worth arguing is splitting the 12-concept `knowledge-organization-for-research-agents`, since it's the largest MoC and the memory/runtime-policy group is 6 concepts. But that MoC already organizes those concepts under an explicit **"Read-side: when and how stored knowledge is consulted"** section — the sub-theme is a labeled part of the parent's structure, not something that outgrew it. Splitting would hand a reader two overlapping maps of the same material. The one member outside the parent, `constraint-pinning`, is already load-bearing in `governance-by-architecture`.
+
+**What would tip it:** a new memory concept that is genuinely *runtime* rather than *organizational* — an admission/refresh policy, or a second concept in the `constraint-pinning` vein — would put the read-side group at 7+ with 2 outside the parent, at which point a `memory-runtime-policy` split becomes defensible.
+
+No files written, no commit. I did not append a second decline line to `_meta/log.md` — today's decline is already recorded there at 04:28 with the same reasoning, and a duplicate entry for an unchanged graph would just be audit noise.
