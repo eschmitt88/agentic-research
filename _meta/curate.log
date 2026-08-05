@@ -871,3 +871,20 @@ The one case worth arguing is splitting the 12-concept `knowledge-organization-f
 
 No files written, no commit. I did not append a second decline line to `_meta/log.md` — today's decline is already recorded there at 04:28 with the same reasoning, and a duplicate entry for an unchanged graph would just be audit noise.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Declined — no ripe cluster.** The graph is unchanged since yesterday's decline (last touch of `concepts/` or `mocs/` is `d5123b0`, 2026-08-04), and all 28 concepts already sit in at least one of the 6 MoCs.
+
+Candidate clusters and why each fails the not-already-mapped test:
+
+| Cluster | Concepts | Overlap with existing MoC |
+|---|---|---|
+| memory / runtime-policy | 6 | 5/6 in `knowledge-organization-for-research-agents` (all but `constraint-pinning`) |
+| evaluation | 7 | 7/7 in `evaluation-integrity` |
+| governance / enforcement | 5 | 5/5 in `governance-by-architecture` (created 2026-08-03) |
+| skills / capability | 6 | 6/6 in `capability-layer` |
+| evolutionary search | 5 | 5/5 in `autonomous-search-loop` |
+| agent architecture | 6 | 5/6 in `agent-architecture` (`structured-world-model` sits in knowledge-organization) |
+| retrieval / discovery | ~4 | under 5, and members already mapped |
+
+The only argument worth re-examining is splitting the 12-concept `knowledge-organization-for-research-agents` into an organizational half and a memory-runtime-policy half. It stays below threshold for the same reason as the 07-20 and 08-04 assessments: 5 of the 6 runtime-flavored concepts are inside the parent, so the split would be a re-cut rather than new structure. What tips it is one more genuinely *runtime* memory concept — an admission/refresh policy, or a second seed in the `constraint-pinning` vein — putting the read-side group at 7+ with 2 members outside the parent.
+
+Logged the decline in `_meta/log.md` and pushed (`cc1190f`); the commit also carries the stray SessionEnd hook-failure line that had been sitting uncommitted in `_meta/curate.log`. No MoC written, no concept files touched.
