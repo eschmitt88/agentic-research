@@ -870,3 +870,4 @@ The one case worth arguing is splitting the 12-concept `knowledge-organization-f
 **What would tip it:** a new memory concept that is genuinely *runtime* rather than *organizational* — an admission/refresh policy, or a second concept in the `constraint-pinning` vein — would put the read-side group at 7+ with 2 outside the parent, at which point a `memory-runtime-policy` split becomes defensible.
 
 No files written, no commit. I did not append a second decline line to `_meta/log.md` — today's decline is already recorded there at 04:28 with the same reasoning, and a duplicate entry for an unchanged graph would just be audit noise.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
