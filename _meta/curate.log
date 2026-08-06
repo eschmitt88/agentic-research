@@ -888,3 +888,4 @@ Candidate clusters and why each fails the not-already-mapped test:
 The only argument worth re-examining is splitting the 12-concept `knowledge-organization-for-research-agents` into an organizational half and a memory-runtime-policy half. It stays below threshold for the same reason as the 07-20 and 08-04 assessments: 5 of the 6 runtime-flavored concepts are inside the parent, so the split would be a re-cut rather than new structure. What tips it is one more genuinely *runtime* memory concept — an admission/refresh policy, or a second seed in the `constraint-pinning` vein — putting the read-side group at 7+ with 2 members outside the parent.
 
 Logged the decline in `_meta/log.md` and pushed (`cc1190f`); the commit also carries the stray SessionEnd hook-failure line that had been sitting uncommitted in `_meta/curate.log`. No MoC written, no concept files touched.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
