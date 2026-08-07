@@ -889,3 +889,22 @@ The only argument worth re-examining is splitting the 12-concept `knowledge-orga
 
 Logged the decline in `_meta/log.md` and pushed (`cc1190f`); the commit also carries the stray SessionEnd hook-failure line that had been sitting uncommitted in `_meta/curate.log`. No MoC written, no concept files touched.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Declined — no ripe cluster.** No MoC was created; the decline is logged and pushed (`c6d95f4`).
+
+What I checked:
+
+- **Graph unchanged.** No commits have touched `concepts/` or `mocs/` since yesterday's decline (last touch was `d5123b0` on 2026-08-04). The two 2026-08-05 session commits didn't add or modify any concepts.
+- **All 28 concepts already sit in at least one of the six MoCs**, so every candidate tag cluster fails the not-already-mapped test, same as the 08-04 and 08-05 assessments: memory/runtime-policy is 5/6 inside `knowledge-organization-for-research-agents`, evaluation 7/7 in `evaluation-integrity`, governance 5/5 in `governance-by-architecture`, skills 6/6 in `capability-layer`, evolutionary-search 5/5 in `autonomous-search-loop`, architecture 5/6 in `agent-architecture`.
+- **The one live question — splitting the 12-concept knowledge-organization MoC into an organizational half and a memory-runtime half — stays below threshold.** The tipping condition from the prior assessments still holds: it needs one more genuinely runtime memory concept (an admission/refresh policy, or a second seed in the `constraint-pinning` vein) to put the runtime group at 7+ with 2 members outside the parent.
+
+The commit also sweeps in a stray SessionEnd hook-failure line that was sitting uncommitted in `_meta/curate.log`, matching how the prior decline commit handled the same situation. (Separately: that hook has now failed with "Hook cancelled" after both of the last two sessions — worth a look at `~/.claude/hooks/session-end.sh` at some point.)
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Declined — no ripe cluster.** The knowledge graph is unchanged since yesterday's decline (no `concepts/` or `mocs/` commits), so no new MoC was created.
+
+The detection pass confirmed the standing picture:
+
+- All 28 concepts already sit in at least one of the 6 existing MoCs, so every candidate cluster fails the "not already mapped" test.
+- The clusters I checked and declined: **memory/runtime-policy** (6 concepts, 5 already in `knowledge-organization-for-research-agents`), **evaluation** (7/7 in `evaluation-integrity`), **governance** (5/5 in `governance-by-architecture`), **skills/capability** (6/6 in `capability-layer`), **evolutionary search** (5/5 in `autonomous-search-loop`), and **architecture/coordination** (majority in `agent-architecture`).
+- The only plausible future promotion remains a split of the 12-concept knowledge-organization MoC into a runtime-memory sub-MoC — still below threshold. It needs a new runtime-memory concept (in the `constraint-pinning` vein) to put that group at 7+ with at least 2 concepts outside the parent.
+
+Logged the decline in `_meta/log.md` and pushed as `970a201` per `agency: max`.
