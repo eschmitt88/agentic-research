@@ -908,3 +908,20 @@ The detection pass confirmed the standing picture:
 - The only plausible future promotion remains a split of the 12-concept knowledge-organization MoC into a runtime-memory sub-MoC — still below threshold. It needs a new runtime-memory concept (in the `constraint-pinning` vein) to put that group at 7+ with at least 2 concepts outside the parent.
 
 Logged the decline in `_meta/log.md` and pushed as `970a201` per `agency: max`.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Declined — no ripe cluster.** Recorded in `_meta/log.md` and pushed as `528037b`.
+
+The graph is unchanged since yesterday's decline: no `concepts/` or `mocs/` commits since d5123b0 (the 08-07 aiserver2026 session added literature/session material only). All 28 concepts sit in at least one of the six existing MoCs, and every candidate tag cluster fails the not-already-mapped test:
+
+| Cluster | Size | Already covered by |
+|---|---|---|
+| memory / runtime-policy | 6 | knowledge-organization (5/6) |
+| evaluation | 7 | evaluation-integrity (7/7) |
+| governance / enforcement | 5 | governance-by-architecture (5/5) |
+| skills / tool-use | 6 | capability-layer (6/6) |
+| evolutionary search | 5 | autonomous-search-loop (5/5) |
+| architecture / coordination | 6 | agent-architecture (5/6) |
+
+The nearest future promotion remains a split of the 12-concept knowledge-organization MoC, which still needs a new runtime-memory concept (in the constraint-pinning vein) to put the read-side group at 7+ with at least 2 concepts outside the parent. Left the uncommitted `_meta/curate.log` change untouched since it isn't mine.
+
+One unrelated note: the claude.ai Google Drive MCP server needs authentication before its tools work — this session is non-interactive, so you'd authorize it via your claude.ai connector settings if you need it.
