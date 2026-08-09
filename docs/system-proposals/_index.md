@@ -23,6 +23,80 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-08-02 | [budget-ceiling-reserve](2026-08-02-budget-ceiling-reserve.md) | `templates/project/budget.yaml` | adopt | proposed |
 | 2026-08-02 | [lint-rule-consistency-pass](2026-08-02-lint-rule-consistency-pass.md) | `skills/lint/SKILL.md` | adopt | proposed |
 
+## Considered and held (2026-08-09 run)
+
+Zero-proposal cycle. Eight papers entered the graph 2026-08-03/04
+(semenov2026beyond, chen2026governance, besanson2026green,
+wang2026androids, gurkan2026mutation, philippov2026glite, hao2026selfgc,
+xing2026compute) plus the `constraint-pinning` concept and the
+governance-by-architecture MoC; no new literature since 08-04. A
+structural constraint shaped this run: all three 2026-08-02 proposals
+are still `proposed`, so their targets (`rules/evaluation.md`,
+`templates/project/budget.yaml`, `skills/lint/SKILL.md`) are blocked
+for stacking per the 2026-07-26 precedent. Seven threads considered:
+
+- **constraint-pinning → the box's compaction/rules layer** — the
+  strongest near-miss this cycle. `chen2026governance` measures
+  compaction silently dropping in-context standing policy (0%→30%
+  violation, up to 59%, after one compaction; survival predicts
+  violation almost binarily) and the ~47-token re-injection defense.
+  **Fails Gate 1**: cred 3, no code, not peer-reviewed;
+  `semenov2026beyond` (cred 2) is the only other in-graph attestation
+  — the concept's cited concurrent work (Gamage 2026, Dente 2026,
+  Santos-Grueiro 2026 "SafeContext") is not ingested or rated. Gate 2
+  is also unfavorable: the harness already pins CLAUDE.md/rules via
+  per-turn re-injection, the exposed channel is mid-session
+  in-conversation directives, and the fix (a PreCompact hook) is
+  net-new machinery. **Watch item with a concrete unlock**: ingesting
+  SafeContext or Gamage as a rated third attestation would put Gate 1
+  within reach; the simplest form would then be a one-line agency.md
+  amendment (re-verify standing constraints after any compaction),
+  not a hook.
+- **information-firewall second attestation** (the NOTES.md watch
+  item) — arrived and then some: now 3 sources, status `growing`. Its
+  importable piece is **already the pending hce-retrieval-boundary
+  proposal**, whose citekeys are exactly the concept's three sources.
+  Nothing further to raise while that pends.
+- **wang2026androids (cred 4 + code) → evaluation.md** — the
+  evaluator-side audit (eight flaw classes; Agent-Eval Checklist).
+  Held on **process** (same-file stacking while hce-retrieval-boundary
+  pends) and on **largely-enacted**: clause 4 ("the evaluator is part
+  of the holdout," applied 2026-07-31) already covers the tamper
+  direction; the un-enacted remainder (a design-time checklist pass
+  over proposed evaluators) is downstream-experiment guidance, and
+  the note's own actionable line aims it there. Re-examine when
+  evaluation.md is unblocked.
+- **philippov2026glite (cred 4 + code) → typed-enforcement targets** —
+  the first campaign-scale deployment of "process rules live in code
+  that fails loudly" with measured overhead (~1% wall-clock) and an
+  external refereed anchor. **Already enacted** here by the
+  instruction-ablation program's phase 3 (kg_lint.py, chain_budget.py,
+  smoke suite); records as strengthening evidence for the pending
+  lint-rule-consistency-pass, not a new proposal.
+- **besanson2026green (cred 3 + code) → budget-ceiling-reserve
+  refinement** — replaces ye2026agent's flat 10–15% reserve with a
+  conformal forecast-residual sizing, and adds the 91.5%-of-seeds
+  soft-penalty-breach vs 0% architectural-gate result. Strengthens the
+  **pending** budget-ceiling-reserve proposal; not stacked. The
+  reviewer deciding that proposal should read this note first.
+- **hao2026selfgc + semenov2026beyond → context-eviction-policy**
+  (now `growing`) — dependency-aware eviction is now twice-attested,
+  but there is **no claude-system target**: compaction lives inside
+  the Claude Code harness, not this box's skills. The new evidence
+  argues *against* the 2026-06-23-held Last-K heuristic (position- and
+  type-based policies win the wrong trade-off), so that hold hardens
+  rather than weakens.
+- **xing2026compute (cred 4 + code) + gurkan2026mutation
+  (peer-reviewed workshop, code) → evolutionary skills / pass-at-k** —
+  xing's 510× reported-budget spread is the strongest
+  reporting-discipline evidence yet, but the pass-at-k already-enacted
+  hold (2026-07-05) stands, and the concept still self-gates on a
+  downstream end-to-end run. The threshold-reaching metric for
+  `/iterate` and gurkan's neutral-chain operator probing are
+  downstream-experiment methods on the papers' own critique (three
+  cheap geometric tasks; evaluation cost assumed free) — fodder for
+  `/derive-experiment`, not harness edits.
+
 ## Considered and held (2026-08-02 run)
 
 Three proposals (above); 14 notes entered the graph 2026-07-27/28 plus
