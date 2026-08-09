@@ -934,3 +934,4 @@ The full picture, same as the last five runs:
 - The one plausible future move remains a split of the 12-concept knowledge-organization MoC, but that still needs a new runtime-memory concept (in the `constraint-pinning` vein) to put the read-side group at 7+ with at least 2 concepts outside the parent.
 
 Logged the decline in `_meta/log.md` and pushed as commit `93685d3`, leaving the unrelated uncommitted `_meta/curate.log` change untouched. This restraint is by design — the next real trigger will be `/curate` or `/ingest` seeding genuinely new concepts, not another daily pass over the same graph.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
