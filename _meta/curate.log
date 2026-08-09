@@ -925,3 +925,12 @@ The graph is unchanged since yesterday's decline: no `concepts/` or `mocs/` comm
 The nearest future promotion remains a split of the 12-concept knowledge-organization MoC, which still needs a new runtime-memory concept (in the constraint-pinning vein) to put the read-side group at 7+ with at least 2 concepts outside the parent. Left the uncommitted `_meta/curate.log` change untouched since it isn't mine.
 
 One unrelated note: the claude.ai Google Drive MCP server needs authentication before its tools work — this session is non-interactive, so you'd authorize it via your claude.ai connector settings if you need it.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Declined — no ripe cluster today. The knowledge graph is unchanged since yesterday's decline: the only commits since then touched `_meta/curate.log` and `journal/`, with nothing new in `concepts/` or `mocs/`.
+
+The full picture, same as the last five runs:
+
+- All 28 concepts already sit in at least one of the 6 existing MoCs, so every candidate cluster fails the "not already mapped" test: memory/runtime-policy is 5/6 covered by `knowledge-organization-for-research-agents`, evaluation 7/7 by `evaluation-integrity`, governance 5/5 by `governance-by-architecture`, skills 6/6 by `capability-layer`, evolutionary search 5/5 by `autonomous-search-loop`, and architecture 5/6 by `agent-architecture`.
+- The one plausible future move remains a split of the 12-concept knowledge-organization MoC, but that still needs a new runtime-memory concept (in the `constraint-pinning` vein) to put the read-side group at 7+ with at least 2 concepts outside the parent.
+
+Logged the decline in `_meta/log.md` and pushed as commit `93685d3`, leaving the unrelated uncommitted `_meta/curate.log` change untouched. This restraint is by design — the next real trigger will be `/curate` or `/ingest` seeding genuinely new concepts, not another daily pass over the same graph.
