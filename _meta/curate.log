@@ -935,3 +935,22 @@ The full picture, same as the last five runs:
 
 Logged the decline in `_meta/log.md` and pushed as commit `93685d3`, leaving the unrelated uncommitted `_meta/curate.log` change untouched. This restraint is by design — the next real trigger will be `/curate` or `/ingest` seeding genuinely new concepts, not another daily pass over the same graph.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion this run — nothing is ripe. Every candidate cluster is already substantially covered by one of the six existing MoCs.
+
+**What I checked:** all 27 concept files (excluding `_README.md`), grouped by shared tags, tested against the two ripeness conditions (≥5 concepts AND not already majority-covered by an existing MoC).
+
+**Clusters found, and why each is declined:**
+
+| Cluster (by tags) | Size | Overlap with existing MoCs |
+|---|---|---|
+| memory / retrieval / consolidation | 5 (agent-native-memory, multi-granularity-memory, context-eviction-policy, selective-memory-retrieval, verified-memory-writes) | 5/5 already in `knowledge-organization-for-research-agents` |
+| evaluation / grounding | 7 | 7/7 in `evaluation-integrity` |
+| governance / enforcement / safety | 5 | 5/5 in `governance-by-architecture` |
+| evolutionary search / autonomy | 5 | 5/5 in `autonomous-search-loop` |
+| skills / tool-use / harness | 6 | 6/6 in `capability-layer` |
+| architecture / coordination | 5 | 5/5 in `agent-architecture` |
+| context-window management (cross-cut: constraint-pinning, context-eviction-policy, scripted-tool-pipelines, selective-memory-retrieval, multi-granularity-memory) | 5 | 3/5 (≥ half) split across `knowledge-organization…` and `governance-by-architecture` |
+
+In fact every concept in `concepts/` currently appears in at least one MoC's `concepts:` list — the graph is fully mapped. The only borderline case is the memory sub-theme (5 of the 12 concepts in `knowledge-organization-for-research-agents`), but a split is only warranted when the sub-theme has clearly outgrown the parent, and 5-of-12 with no navigation pain evident doesn't meet that bar. If the memory cluster grows past ~7 concepts (e.g. if the watched typed-enforcement or information-firewall threads seed memory-adjacent concepts), an `agent-memory` split becomes the natural next promotion.
+
+No files written, nothing committed — per the skill, restraint is the correct outcome here.

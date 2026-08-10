@@ -126,3 +126,4 @@ The most interesting outcomes:
 - The context-eviction pair (`hao2026selfgc` + `semenov2026beyond`) has no claude-system target since compaction lives inside the Claude Code harness — and their dependency-aware results actively harden the old 2026-06-23 hold against a Last-K eviction heuristic. The evolutionary-search papers (`xing2026compute`, `gurkan2026mutation`) are `/derive-experiment` fodder for downstream repos, not harness edits.
 
 One housekeeping note: the pre-existing uncommitted change to `_meta/curate.log` (from the earlier aiserver2026 session) was left alone — only the elevate files were committed. The main thing waiting on you is still the three 2026-08-02 proposals; deciding those unblocks two held threads.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
