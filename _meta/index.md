@@ -16,13 +16,18 @@ and `/new-experiment`.
   skill-library-lifecycle, typed-claim-partition, citation-anchoring,
   selective-memory-retrieval, context-eviction-policy,
   multi-granularity-memory, verified-memory-writes,
-  web-grounded-literature. *Split-watch:* the runtime-memory concept
-  the 2026-08-04→08-09 promote-moc declines were waiting on now
-  exists ([[concepts/lossless-context-offload]], seeded 2026-08-10) —
-  the read-side/runtime cluster (context-eviction-policy,
-  selective-memory-retrieval, multi-granularity-memory,
-  agent-native-memory, verified-memory-writes, constraint-pinning,
-  lossless-context-offload) is at 7.
+  web-grounded-literature. The runtime sub-theme split out to
+  [[mocs/runtime-memory-policy]] on 2026-08-10; five concepts remain
+  in both views.
+- [[mocs/runtime-memory-policy]] — what the agent's memory layer
+  decides *at inference time*: 7 concepts across the window
+  (context-eviction-policy, constraint-pinning,
+  lossless-context-offload), the hot/cold flux
+  (selective-memory-retrieval, verified-memory-writes), and the store
+  (multi-granularity-memory, agent-native-memory). Split from
+  knowledge-organization when the cluster the 2026-08-04→08-09
+  promote-moc declines tracked reached 7 with 2 outside the parent
+  (new 2026-08-10 — tipped ripe by lossless-context-offload).
 - [[mocs/agent-architecture]] — how a long-horizon autonomous agent is
   built (substrate / orchestration / execution).
 - [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over

@@ -349,3 +349,5 @@ skills; read by `/lint`.
 2026-08-10 07:07 ingest raw/papers/li2026acm.pdf
 2026-08-10 07:09 fetch-paper https://arxiv.org/abs/2607.02599 → raw/papers/elkoussy2026agentltl.pdf
 2026-08-10 07:11 ingest raw/papers/elkoussy2026agentltl.pdf
+2026-08-10 07:11 digest-autoingest n=2 verdict=slow/low
+2026-08-10 07:13 promote-moc runtime-memory-policy (7 concepts) — split from knowledge-organization-for-research-agents per the 08-04→08-09 decline rationale, tipped by lossless-context-offload
