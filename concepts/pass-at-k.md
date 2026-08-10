@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/wang2026naturebench]]"
   - "[[literature/papers/lupidi2026airsbench]]"
   - "[[literature/papers/xing2026compute]]"
+  - "[[literature/papers/li2026acm]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -76,6 +77,19 @@ re-price everything in effective FLOPs — at which point much of the
 apparent capability ordering between model sizes dissolves. Any k-run
 comparison in this project should state the budget unit alongside k;
 "k=3" at unspecified and unequal cost is not a controlled comparison.
+
+**Decompose the distribution: pass@k vs passᵏ.**
+[[literature/papers/li2026acm]] reads the same k runs two ways —
+pass@4 (any-of-4 succeeds) as a proxy for the *capability boundary*,
+pass⁴ (all-of-4 succeed) as a proxy for *consistency* — and shows an
+intervention can move them independently: agentic context management
+lifts pass⁴ from 34.1 to 59.3 on BrowseComp-Plus while pass@4 moves
+only 73.5 → 82.0. The mean (pass@1) conflates the two; a treatment
+that "helps" on the mean may be widening the capability boundary,
+tightening consistency, or both, and those imply different follow-ups
+(harder tasks vs variance reduction). Where k runs already exist, both
+statistics are free — `metrics.json` distributions should let a reader
+compute each.
 
 ## Implementation guidance
 

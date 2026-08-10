@@ -34,11 +34,13 @@ sources:
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/chen2026governance]]"
   - "[[literature/papers/hao2026selfgc]]"
+  - "[[literature/papers/li2026acm]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
   - "[[concepts/skill-library-lifecycle]]"
+  - "[[concepts/lossless-context-offload]]"
 related_experiments: []
 tags: [memory, context-window, eviction, compaction, working-set, runtime-policy]
 ---
@@ -302,3 +304,24 @@ what gets dropped to disk?
   a model-proposed plan under harness validation. Which of those is the
   right default is unresolved, and that is the question a third source
   should settle.
+
+  **The third source arrived (2026-08-10) and voted for a third
+  option.** [[literature/papers/li2026acm]] puts the locus in the
+  *trained agent*: two tools (`manage_context`, `query_memory`), no
+  external trigger, and a teacher–student pipeline that explicitly
+  teaches both when to compress and when *not* to (dual-constraint
+  annotation). Its evidence cuts two ways. For the agent locus: even
+  untrained tool-equipped Qwen3.5-9B beats threshold-triggered ReSum
+  and ACON, and post-training adds a further 27% relative on
+  BrowseComp-Plus with ~20% lower peak tokens — with released code,
+  data, and checkpoints, addressing the no-code caveat above. Against
+  free-riding on scale: GPT-5.5 given the same tools makes near-zero
+  management calls, so the agent locus only works *because* the policy
+  is trained — which is exactly the annotation-burden objection CWL's
+  deterministic policy was designed to avoid, relocated from inference
+  time to training time. The three-way split (deterministic LLM-free /
+  planner-under-harness-validation / trained-agent-initiated) is now
+  the concept's central open question, but all three sources agree the
+  eviction must be a lossless offload with addressable recall — that
+  invariant is factored out to
+  [[concepts/lossless-context-offload]].

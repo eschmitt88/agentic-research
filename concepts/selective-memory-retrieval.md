@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/ji2026memory]]"
   - "[[literature/papers/gao2026mempoison]]"
   - "[[literature/papers/lee2026minteval]]"
+  - "[[literature/papers/li2026acm]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -90,6 +91,12 @@ emits a trigger when it judges the current context is insufficient
    A literal trigger token (`[Retrieve]`, `[Consult]`,
    `[Need-Guidance]`) is the simplest implementation; structured
    tool-call invocations are equivalent.
+   [[literature/papers/li2026acm]] adds an *addressed* variant: its
+   `query_memory` tool retrieves by the identifier a prior compression
+   step left in context, so the gate targets a known span rather than
+   a similarity search — and its trained agent interleaves such probes
+   with compression mid-task (see
+   [[concepts/lossless-context-offload]]).
 
 2. **Gate on uncertainty signals, not schedules.** Triggers that
    correlate with reasoning difficulty work — token-level entropy,
