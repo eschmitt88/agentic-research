@@ -347,3 +347,5 @@ skills; read by `/lint`.
 2026-08-10 07:03 digest n=12 window_since=2026-08-03T07:02:35Z
 2026-08-10 07:04 fetch-paper https://arxiv.org/abs/2607.23809 → raw/papers/li2026acm.pdf
 2026-08-10 07:07 ingest raw/papers/li2026acm.pdf
+2026-08-10 07:09 fetch-paper https://arxiv.org/abs/2607.02599 → raw/papers/elkoussy2026agentltl.pdf
+2026-08-10 07:11 ingest raw/papers/elkoussy2026agentltl.pdf

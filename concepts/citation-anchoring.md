@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/xu2026researchclawbench]]"
   - "[[literature/papers/wang2026search]]"
   - "[[literature/papers/tang2026memory]]"
+  - "[[literature/papers/elkoussy2026agentltl]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -102,6 +103,23 @@ explicit anchors moves the defect from invisible to grepable.
    justification away can only be trusted or deleted. Generalizes to any
    distillation step: summaries, concept notes, and MoCs should link to
    their sources for the same reason, not merely for etiquette.
+
+8. **The anchor check can be a deterministic predicate over the
+   trace.** [[literature/papers/elkoussy2026agentltl]] formalizes
+   this concept's rule as κ_ground: every referential entity in the
+   final answer (identifiers, file paths, numeric literals) must have
+   a witness in some tool output of the same trace — checkable by
+   parsing, no judge. It catches exactly the failure this concept
+   targets: models producing *correct-but-ungrounded* answers from
+   parametric memory (correctness falls 52% → 24% as repository
+   popularity falls — recall, not retrieval). Two calibration points
+   worth importing: a trace-aware LLM judge treats κ_ground as
+   **necessary but not sufficient** (it grants "grounded" to 6.4% of
+   answers vs the predicate's 20.9%), so the deterministic check is a
+   floor, not the bar; and *vacuous grounding* — a refusal with no
+   entities passes trivially, so strict-grounding prompts inflate the
+   metric with empty answers. Any `/lint`-style anchor check needs a
+   non-emptiness condition alongside the witness condition.
 
 ## Open questions
 

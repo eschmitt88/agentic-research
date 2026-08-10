@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/chen2026governance]]"
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/hao2026selfgc]]"
+  - "[[literature/papers/elkoussy2026agentltl]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -176,6 +177,31 @@ because the harness owns the invariants, a **mid-tier planner suffices**
 (all three backbones exceed 90% no-impact). Deterministic enforcement is
 not only a safety property; it is what makes the expensive model
 optional.
+
+**One spec, three uses — and the first negative enforcement result.**
+[[literature/papers/elkoussy2026agentltl]] extends the pattern along
+the temporal axis: procedural rules (ordering, branching, iteration,
+grounding) as FO-LTL constraints over the tool-call trace, yielding a
+deterministic judge-free compliance score that a *single*
+specification drives three ways — offline measurement, online
+pre-execution gating, and a dense RL reward. The shared language is
+the point: evaluation, deployment, and training cannot drift apart
+when they read the same artifact, and finetuning against the score
+transfers structurally (+38pp accuracy on held-out patterns with
+unseen tool aliases — the model learns the procedure, not the tool
+names). But it is also the cluster's first measured evidence that
+**enforcement placement can hurt**: block-and-warn improves 5/7 models
+(most on the weakest) yet regresses two strong models already near
+their compliance ceiling, and a kill-switch variant (terminate after 3
+violations) is the *worst* setting for most models because forced
+termination prevents recovery the gate would otherwise permit. The
+gap between the two settings is itself a diagnostic — it measures how
+much non-compliance is locally recoverable. Deterministic checking of
+the policy is uncontested across the cluster; *what the checker does
+on violation* (log, warn-and-retry, block, kill, roll back) is now an
+open design axis with evidence that the harshest response is usually
+wrong, and that in irreversible workflows mid-procedure blocking can
+itself leave the system inconsistent.
 
 ## The honest limit: every instance has a semantic escape hatch
 
