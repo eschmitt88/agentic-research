@@ -16,7 +16,13 @@ and `/new-experiment`.
   skill-library-lifecycle, typed-claim-partition, citation-anchoring,
   selective-memory-retrieval, context-eviction-policy,
   multi-granularity-memory, verified-memory-writes,
-  web-grounded-literature.
+  web-grounded-literature. *Split-watch:* the runtime-memory concept
+  the 2026-08-04→08-09 promote-moc declines were waiting on now
+  exists ([[concepts/lossless-context-offload]], seeded 2026-08-10) —
+  the read-side/runtime cluster (context-eviction-policy,
+  selective-memory-retrieval, multi-granularity-memory,
+  agent-native-memory, verified-memory-writes, constraint-pinning,
+  lossless-context-offload) is at 7.
 - [[mocs/agent-architecture]] — how a long-horizon autonomous agent is
   built (substrate / orchestration / execution).
 - [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over
@@ -50,6 +56,7 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/li2026acm]] — ACM agentic context management (agent-initiated *lossless* compression: `manage_context` offloads raw spans under stable identifiers, `query_memory` recalls by address; dual-constraint teacher pipeline trains when/when-not to compress; +27% BCP for Qwen3.5-9B at ~20% lower peak tokens, code+data+checkpoints; seeds [[concepts/lossless-context-offload]], third source on eviction policy-locus, pass@4-vs-pass⁴ decomposition for [[concepts/pass-at-k]]; rel 4 / cred 4)
 - [[literature/papers/xing2026compute]] — BaSE bandit compute allocation (fixed-budget depth-breadth study: +12.3% mean fitness from allocation alone with model/prompt/evaluator fixed; bandit over K parallel trajectories clears thresholds greedy never reaches; ~510× budget spread across *Evolve systems is hard evidence for [[concepts/pass-at-k]]; code + rliable bootstrap CIs; rel 4 / cred 4)
 - [[literature/papers/hao2026selfgc]] — Self-GC (context as indexed runtime objects with fold/mask/prune lifecycles; planner proposes, harness validates + commits at safe boundaries; prunes *less* than heuristics 31–44% vs 40–70% but preserves 85–95% of future dependencies vs 55–87%; tips [[concepts/context-eviction-policy]] to `growing`; 4–8% measured planner breach of a protected invariant; rel 4 / cred 3)
 - [[literature/papers/philippov2026glite]] — Glite ARF verifier-driven research (research-process rules as deterministic verifier scripts, ~1% wall-clock overhead; 12 parallel agents, 273 tasks, 1st @ BEA 2026 closed track; per-fold provenance caught 4 target-leaking feature sets; verifiers honestly not agent-proof; rel 5 / cred 4)
