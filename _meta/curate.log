@@ -954,3 +954,4 @@ No promotion this run — nothing is ripe. Every candidate cluster is already su
 In fact every concept in `concepts/` currently appears in at least one MoC's `concepts:` list — the graph is fully mapped. The only borderline case is the memory sub-theme (5 of the 12 concepts in `knowledge-organization-for-research-agents`), but a split is only warranted when the sub-theme has clearly outgrown the parent, and 5-of-12 with no navigation pain evident doesn't meet that bar. If the memory cluster grows past ~7 concepts (e.g. if the watched typed-enforcement or information-firewall threads seed memory-adjacent concepts), an `agent-memory` split becomes the natural next promotion.
 
 No files written, nothing committed — per the skill, restraint is the correct outcome here.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
