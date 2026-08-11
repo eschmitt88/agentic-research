@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/gao2026mempoison]]"
   - "[[literature/papers/lee2026minteval]]"
   - "[[literature/papers/li2026acm]]"
+  - "[[literature/papers/wu2026remember]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -125,6 +126,23 @@ emits a trigger when it judges the current context is insufficient
    analysis shows the self-termination is well calibrated (max useful
    turns ≈ average turns taken) and that spending the same budget as
    parallel one-shot retrieval cannot substitute for adaptive depth.
+
+   *A fourth gating axis: push-side intervention.* The Proactive
+   Memory Agent ([[literature/papers/wu2026remember]]) moves the gate
+   out of the acting agent entirely: a parallel memory agent observes
+   the trajectory, maintains a structured bank, and each interval
+   either injects one targeted reminder or explicitly stays silent
+   (`<no_intervention/>`). Its ablations are the cleanest test of
+   this concept's core claim so far — selective intervention (64.3
+   macro on τ²-Bench) beats passive full-bank exposure (61.5),
+   always-on injection (63.5), bank-less advisor guidance (61.0),
+   and Mem0-style general retrieval (62.1). The framing also names
+   the failure mode precisely: **behavioral state decay** — state
+   can still sit *inside the window* and yet stop influencing
+   decisions, which is why the read-side policy is not reducible to
+   storage or retrieval quality. Push vs pull is now an open
+   sub-axis: an observer that decides when to remind, or an actor
+   that decides when to ask.
 
 3. **Cheap-default, escalation-on-trigger.** The default action
    path should run *without* memory consultation. Retrieval kicks
