@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/ye2026agent]]"
   - "[[literature/papers/besanson2026green]]"
   - "[[literature/papers/hao2026selfgc]]"
+  - "[[literature/papers/hamri2026zebra]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -241,6 +242,45 @@ reduction came with **525× lower variance** and a success-rate change of
 optimization that happens to be safe; they are a variance-elimination
 mechanism whose mean-quality effect is roughly neutral. Argue for them
 on tail risk, not on average savings.
+
+## The counter-pole: a ceiling says stop, not where to spend
+
+[[literature/papers/hamri2026zebra]] names the axis this concept has
+been sitting at one end of. Everything above governs *whether* spend
+continues — halt conditions, enforcement locus, overshoot bounds.
+ZEBRA governs *where* spend goes while the ceiling holds: an LLM
+estimates a saturating utility curve per pipeline phase and an
+explicit water-filling solver splits the budget as a continuous
+knapsack. Under a binding budget the split dominates outcomes — 94.4%
+vs 88.1% of unconstrained quality at half budget on APPS, with the
+gap *growing* as the budget tightens, precisely the regime where a
+ceiling-only design leaves quality on the table.
+
+Three points transfer:
+
+- **Allocation survives the reservation-impossibility.** ye2026agent
+  settled that no mechanism can bound a single call's cost; ZEBRA
+  needs no mid-call enforcement — per-phase caps are ordinary
+  between-action ceilings the harness already knows how to enforce.
+  Allocation is the achievable half of "spend planning."
+- **LLM estimates, solver optimizes.** Handing the split itself to
+  an LLM loses 4+ points *given the same curves* (LLMs demonstrably
+  fail at knapsack); the arithmetic belongs in code, the judgment
+  (curve elicitation) in the model — the
+  [[concepts/scripted-tool-pipelines]] division applied to budgeting.
+- **Allocation only matters when the budget binds.** Easy tasks tie
+  under any policy; the win concentrates on hard tasks under tight α.
+  A project whose ceilings never bind (this one, mostly) gains
+  nothing from an allocator; a downstream chain that routinely halts
+  at `max_tokens` would.
+
+Caveats for import: ~33% controller overhead at tight budgets,
+one-shot pre-execution allocation (their mid-pipeline reallocation
+variant didn't help), and a hard scope limit — the method presupposes
+discrete phases, so *phaseless agentic loops* (our dominant shape)
+are explicitly out of scope. The coordinator's suggested session
+budget is the single-phase degenerate case; ZEBRA is the shape a
+multi-phase version would take.
 
 ## Open questions
 
