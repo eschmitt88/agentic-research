@@ -966,3 +966,26 @@ Curation complete — the uncurated pile is now empty. All 12 items in `2026-08-
 **Declined (6, with reasons recorded in the file):** the Lean-4 and ContextCov typed-enforcement items (thread already at 12 sources; angles covered by the "heavy forms" hold and philippov2026glite), MMBench-Live (rotation defense already in-graph with sharper mechanisms), CUAAudit (computer-use domain, off-mission), EcoAgent-Bench (substrate without a mechanism; re-surface when a downstream experiment needs it), and — worth flagging — **item 8, the ACM "Contamination Prevention" paper, was a false match**: it's about hiding *bias-assessment awareness* from agents under test, not benchmark/method leakage, and it's paywalled with no arXiv version. The information-firewall "second attestation" watch item in NOTES was already stale anyway (the concept has been 3-source `growing` since wang2026search/wang2026evobrowsecomp).
 
 `/promote-moc` correctly declined to create anything new and instead updated `runtime-memory-policy` to 8 concepts, absorbing `context-proprioception` and the sharpened locus evidence. One housekeeping note: the pre-existing dirty `_meta/digest.log` from yesterday's digest run was swept into the first ingest commit via `git add -A` — it's the digest's own telemetry, so nothing lost, but mentioning it for the record. Headroom stayed GO throughout (~1% weekly used).
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion — nothing is ripe. Every candidate cluster is already substantially covered by an existing MoC, so per the skill's restraint rule I'm declining to create anything.
+
+Here's the detection pass across all 29 concepts (excluding `_README.md`) against the 7 existing MoCs:
+
+| Candidate cluster (merged tags) | Concepts | Overlap with existing MoC |
+|---|---|---|
+| memory / context-window / eviction | 8 | `runtime-memory-policy` covers all 8 (it absorbed context-proprioception in this morning's update) |
+| evaluation / overfitting / provenance | 7 | `evaluation-integrity` covers all 7 |
+| skills / tool-use / enforcement | 6 | `capability-layer` covers all 6 |
+| agent-architecture / coordination | 5–6 | `agent-architecture` covers them |
+| evolutionary-search / expansion | 5 | `autonomous-search-loop` covers all 5 |
+| governance / safety / pinning | 5 | `governance-by-architecture` covers all 5 |
+| knowledge-organization / pkm | 6+ | `knowledge-organization-for-research-agents` covers them (14 concepts) |
+
+The only groupings not already mapped fall below the 5-concept threshold:
+
+- **Long-horizon shared state** (`file-as-bus`, `structured-world-model`, `hierarchical-delegation`, `async-worker-pool`) — 4 concepts, and each already lives in `agent-architecture` or `autonomous-search-loop`. Declined: under threshold and majority-mapped.
+- **Typed/deterministic enforcement** (`typed-enforcement`, `constraint-pinning`, `permission-gate-as-architecture`) — 3 concepts, all in `governance-by-architecture`. Declined; NOTES.md already flags this thread as one to watch for ripeness, and it isn't there yet.
+
+Notably, all 29 concepts have at least one MoC home — zero orphans — so the graph is fully mapped at the moment. The next likely promotion is the typed-enforcement thread if it picks up 2+ more concepts, or a split of `knowledge-organization-for-research-agents` (14 concepts, the largest MoC) if a sub-theme inside it coheres. No files written, nothing committed.
+
+One unrelated note: the claude.ai Google Drive MCP server needs authentication before its tools work here — this session is non-interactive, so you'd authorize it via your claude.ai connector settings if you need it.
