@@ -356,3 +356,4 @@ skills; read by `/lint`.
 2026-08-11 04:05 fetch-paper https://arxiv.org/abs/2607.08716 → raw/papers/wu2026remember.pdf
 2026-08-11 04:05 fetch-paper https://arxiv.org/abs/2605.20485 → raw/papers/hamri2026zebra.pdf
 2026-08-11 04:05 ingest raw/papers/dang2026addressable.pdf
+2026-08-11 04:07 ingest raw/papers/xu2026llm.pdf

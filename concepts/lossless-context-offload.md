@@ -8,6 +8,7 @@ sources:
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/hao2026selfgc]]"
   - "[[literature/papers/dang2026addressable]]"
+  - "[[literature/papers/xu2026llm]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -44,7 +45,7 @@ structure, compression-induced hallucination — because the raw span is
 gone by the time the agent discovers the summary dropped what
 mattered.
 
-Three independent attestations, three mechanisms, one invariant:
+Five independent attestations, five mechanisms, one invariant:
 
 - **ACM** ([[literature/papers/li2026acm]]): `manage_context` assigns
   each summary a unique identifier mapping to the raw messages in
@@ -72,10 +73,18 @@ Three independent attestations, three mechanisms, one invariant:
   exact recovery. Also the first to price the invariant in serving
   cost: 38.8–73.5% HBM-traffic reduction alongside the accuracy gain,
   so lossless offload is cheaper to *serve*, not just safer.
+- **VISTA** ([[literature/papers/xu2026llm]]): `archive(S, ρ)` leaves
+  a handle carrying path, level, size, and checksum; recovery is an
+  *ordinary file read* of the archive path — no third context tool,
+  no retrieval oracle — and archiving is hierarchical (bundles
+  re-archived into coarser handles as pressure grows). Its Prop. 1 is
+  the invariant's formal floor: under budget pressure, any
+  non-recovering method's correctness is information-theoretically
+  bounded, regardless of how clever the compression is.
 
 The disagreement between them is the open axis inherited from
 context-eviction-policy — who initiates (trained agent vs
-deterministic policy vs planner-under-harness) — but all four agree
+deterministic policy vs planner-under-harness) — but all five agree
 on the invariant, which is therefore the more settled claim and the
 one worth importing first. ARC sharpens the axis by *splitting* the
 locus: its write side (compaction) is fully deterministic — no LLM

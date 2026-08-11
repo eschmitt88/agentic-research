@@ -36,6 +36,7 @@ sources:
   - "[[literature/papers/hao2026selfgc]]"
   - "[[literature/papers/li2026acm]]"
   - "[[literature/papers/dang2026addressable]]"
+  - "[[literature/papers/xu2026llm]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
