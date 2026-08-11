@@ -11,6 +11,7 @@ concepts:
   - "[[concepts/verified-memory-writes]]"
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/agent-native-memory]]"
+  - "[[concepts/context-proprioception]]"
 tags: [moc, memory, runtime-policy, context-window, eviction, retrieval, agent-memory]
 ---
 
@@ -19,7 +20,7 @@ tags: [moc, memory, runtime-policy, context-window, eviction, retrieval, agent-m
 While the agent is *reasoning*, a second set of decisions runs
 alongside the task: what stays in the context window, what leaves and
 under what guarantee, what gets pulled back in, and what is allowed to
-persist. This MoC collects the seven concepts that govern that
+persist. This MoC collects the eight concepts that govern that
 inference-time traffic. It is a split from
 [[mocs/knowledge-organization-for-research-agents]], whose center of
 gravity is *compile-time* curation — how a knowledge library is
@@ -43,7 +44,12 @@ lives. Two members also appear in [[mocs/governance-by-architecture]]
   ([[literature/papers/semenov2026beyond]]), planner-proposed under
   harness validation ([[literature/papers/hao2026selfgc]]), and
   trained agent-initiated management
-  ([[literature/papers/li2026acm]]).
+  ([[literature/papers/li2026acm]]). Two 2026-08-11 ingests
+  complicate the split productively: VISTA
+  ([[literature/papers/xu2026llm]]) shows the self-managed pole works
+  *untrained* once state is visible, and ARC
+  ([[literature/papers/dang2026addressable]]) splits the locus —
+  deterministic write-side compaction, agentic read-side recall.
 - [[concepts/constraint-pinning]] — the exemption list: standing
   policies are quarantined from eviction and re-injected verbatim
   after every compression, because a summarizer trusted with policy
@@ -52,7 +58,17 @@ lives. Two members also appear in [[mocs/governance-by-architecture]]
 - [[concepts/lossless-context-offload]] — the invariant on leaving:
   eviction is an offload to a stable address, never a deletion, so
   the summary left behind can be traded back for the raw span on
-  demand. The one claim all three eviction-locus camps agree on.
+  demand. The one claim all the eviction-locus camps agree on — now
+  five attestations, one formal
+  ([[literature/papers/dang2026addressable]]).
+- [[concepts/context-proprioception]] — the instrument panel every
+  policy above reads from: per-block token cost, recency, archive
+  status, and remaining budget surfaced to the decider as an explicit
+  ledger. VISTA's theorem-plus-ablation pair
+  ([[literature/papers/xu2026llm]]) shows state visibility is a
+  resource distinct from both the eviction policy and the recovery
+  tools — remove the dashboard and a lossless archive still
+  over-archives and under-recovers.
 
 ## The flux — reads and writes across the hot/cold boundary
 
