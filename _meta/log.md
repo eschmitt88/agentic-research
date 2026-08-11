@@ -360,3 +360,4 @@ skills; read by `/lint`.
 2026-08-11 04:09 ingest raw/papers/wu2026remember.pdf
 2026-08-11 04:11 ingest raw/papers/hamri2026zebra.pdf
 2026-08-11 04:12 curate raw/_candidates/2026-08-10-digest.md ingested=6 declined=6 dup=0
+2026-08-11 04:13 promote-moc: no new cluster ripe; updated mocs/runtime-memory-policy.md (+context-proprioception, 8 concepts)
