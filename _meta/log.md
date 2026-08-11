@@ -359,3 +359,4 @@ skills; read by `/lint`.
 2026-08-11 04:07 ingest raw/papers/xu2026llm.pdf
 2026-08-11 04:09 ingest raw/papers/wu2026remember.pdf
 2026-08-11 04:11 ingest raw/papers/hamri2026zebra.pdf
+2026-08-11 04:12 curate raw/_candidates/2026-08-10-digest.md ingested=6 declined=6 dup=0
