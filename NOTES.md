@@ -26,8 +26,7 @@ SessionEnd hook backstops this if you forget.
   cross-project `@import` back-reference sub-contract (idempotent
   `used_by:` appends, retired-status warnings). Takes effect on
   next session start.
-- Installed weekly `/digest` cron: Mon 7am via
-  `~/.claude/schedule/agentic-research-digest.sh`.
+- Installed a weekly `/digest` cron job.
 - Ran a seed `/digest` — 3 April-2026 arXiv candidates in-window,
   `_meta/last_digest` populated.
 - Ran `/lint` inline: caught one dead wikilink
@@ -73,15 +72,9 @@ SessionEnd hook backstops this if you forget.
 
 - Diagnosed and fixed a three-layer cron failure that had silently
   prevented `/digest` from running since installation:
-  1. Added `export PATH="$HOME/.local/bin:$PATH"` to
-     `~/.claude/schedule/agentic-research-digest.sh` so cron's
-     restricted PATH can find `claude`.
-  2. Added `permissions.allow: ["WebSearch", "WebFetch"]` to
-     user-level `~/.claude/settings.json` (via the symlink target)
-     so headless `/digest` and `/discover` don't fail closed.
-  3. Added `--permission-mode bypassPermissions` to the cron
-     `claude -p "/digest"` invocation so file writes persist in
-     headless mode.
+  Fixed the headless cron invocation (PATH resolution and
+  permission configuration) so `/digest` and `/discover` run
+  unattended. (Details redacted from the public repo.)
 - Re-ran `/digest` manually end-to-end. Produced 6 in-window
   arXiv candidates in `raw/_candidates/2026-05-11-digest.md`;
   `_meta/last_digest` updated to 2026-05-11T20:26:13Z.
@@ -363,8 +356,8 @@ SessionEnd hook backstops this if you forget.
   knowledge-organization MoC (8 → 9 concepts) rather than spawning a
   redundant memory MoC; declined a new agent-memory MoC and a safety MoC.
 - Two commits pushed (1672700 curate batch, 7ae8835 MoC); plus index/log fixes.
-- Set up a **nightly 04:00 `/curate` + `/promote-moc` cron sweep**
-  (`~/.claude/schedule/agentic-research-curate.sh`) to drain deferred digest
+- Set up a **scheduled `/curate` + `/promote-moc` cron sweep**
+  to drain deferred digest
   items automatically — closes the structural leak. Recorded in
   `docs/decisions/0001-nightly-curate-sweep.md`.
 - Removed 4 stale day-1 (2026-04-24) experiment proposals from
@@ -377,7 +370,7 @@ SessionEnd hook backstops this if you forget.
   (peer-reviewed / code / >=3 attestations, credibility >=3) AND simplicity
   (prefer remove/consolidate; net-new surface area must justify itself).
   Writes proposals to `docs/system-proposals/` for **human review** only;
-  never edits claude-system. Weekly cron Sun 05:00. ADR 0002.
+  never edits claude-system. Runs on a weekly cron. ADR 0002.
 
 ### Findings
 
@@ -453,12 +446,12 @@ SessionEnd hook backstops this if you forget.
 - A typed-enforcement thread is accumulating across khan2026token,
   zhao2026agenticos, louck2026securing, madatha2026deterministic
   (flagged in khan note) — watch for concept-promotion ripeness.
-- The nightly 04:00 curate sweep would have drained today's backlog
+- The scheduled curate sweep would have drained today's backlog
   anyway; this session mainly pulled that work forward under an idle
   GO/high window and validated the sequential-subagent ingest pattern.
 
 ### Next
-- `/elevate` next weekly run (Sun 05:00) should evaluate khan2026token's
+- `/elevate` next weekly run should evaluate khan2026token's
   pre-flight spend-reservation idea against the coordinator's current
   halt-after-cycle ceilings.
 - Watch information-firewall (single-source seedling) for a second
