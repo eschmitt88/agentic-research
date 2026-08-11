@@ -31,9 +31,8 @@ that reads the knowledge graph, compares it against the live
   do. Default to rejecting complexity.
 - **Restraint is normal.** Most cycles produce zero proposals; that is the
   healthy outcome, logged rather than padded with weak proposals.
-- **Cadence.** Weekly cron, Sundays 05:00
-  (`~/.claude/schedule/agentic-research-elevate.sh`) — after the 04:00
-  nightly `/curate` (graph freshly drained) and before Monday 07:00
+- **Cadence.** Weekly cron — after the nightly `/curate` (graph
+  freshly drained) and before the weekly
   `/digest`. Can also be run by hand with `/elevate`.
 - **Location.** Proposals live in this meta repo (tracked alongside the
   concepts that justify them), keeping `~/claude-system` clean — it changes

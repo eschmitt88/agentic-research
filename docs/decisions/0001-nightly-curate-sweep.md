@@ -5,7 +5,7 @@
 
 ## Context
 
-`/digest` (cron, Mondays 07:00) auto-advances only ~3 top candidates per run
+`/digest` (weekly cron) auto-advances only ~3 top candidates per run
 under a "slow/normal" headroom cap and **defers the rest, leaving the
 candidate file in place**. Nothing ran a follow-up `/curate` to drain those
 deferrals, so they accumulated: between 2026-06-03 and 2026-06-23, three
@@ -15,11 +15,11 @@ working per-digest; the gap was the absence of a periodic drain.
 
 ## Decision
 
-Add a **nightly 04:00** sweep that runs `/curate` (when the backlog is
+Add a **nightly** sweep that runs `/curate` (when the backlog is
 non-empty) followed by `/promote-moc` (auto-detect). Mechanism mirrors the
 existing digest cron:
 
-- Script: `~/.claude/schedule/agentic-research-curate.sh` (OS-drive config,
+- Script: a schedule script under `~/.claude/` (OS-drive config,
   not tracked by this repo — same location as
   `agentic-research-digest.sh`).
 - Crontab: `0 4 * * * .../agentic-research-curate.sh`.
@@ -29,7 +29,7 @@ existing digest cron:
   that ripened from a prior ingest gets promoted even on a no-candidate
   night. Both skills are no-ops when there is nothing to do.
 
-Timing: 04:00 nightly is offset from the Monday 07:00 digest, so Monday's
+Timing: the nightly sweep is offset from the weekly digest, so digest-day
 fresh candidates are drained on Tuesday's sweep — there is no urgency, and
 the point is to prevent accumulation, not to drain within the hour.
 
@@ -38,12 +38,12 @@ the point is to prevent accumulation, not to drain within the hour.
 - Deferred digest items can no longer pile up for weeks; the uncurated count
   trends to zero on its own.
 - Costs one (usually cheap / skipped) `claude -p` invocation per night under
-  `--permission-mode bypassPermissions`, gated by the same coordinator
+  headless permission configuration, gated by the same coordinator
   headroom verdict every skill respects (a `hold` verdict stops new
   autonomous work mid-sweep).
 - Alternative considered: raise `/digest`'s auto-advance cap under a GO/high
   verdict so it defers less up front. Rejected as the *primary* fix because
   it couples backlog-drain to digest cadence (weekly) and to whatever the
-  verdict happens to be at 07:00 Monday; a dedicated nightly drain is
+  verdict happens to be at digest time; a dedicated nightly drain is
   cadence-independent. The cap increase remains a reasonable complementary
   tweak.
