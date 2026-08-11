@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/chen2026governance]]"
   - "[[literature/papers/hao2026selfgc]]"
   - "[[literature/papers/li2026acm]]"
+  - "[[literature/papers/dang2026addressable]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

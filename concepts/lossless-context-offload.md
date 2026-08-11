@@ -7,6 +7,7 @@ sources:
   - "[[literature/papers/li2026acm]]"
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/hao2026selfgc]]"
+  - "[[literature/papers/dang2026addressable]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -61,12 +62,27 @@ Three independent attestations, three mechanisms, one invariant:
   records whose effects are *already persisted in the environment* —
   the environment itself is the addressable store, and the episode
   annotation is the address.
+- **ARC** ([[literature/papers/dang2026addressable]]): every tool
+  observation hashed into an append-only content-addressed store;
+  eviction leaves a `§id` citation the agent dereferences with a
+  budgeted `_recall`. The only formal attestation: an (informal)
+  theorem that the active view stays ≤ budget while every stored
+  observation is exactly reconstructible, plus a lower-bound argument
+  that linear external-memory growth is unavoidable for worst-case
+  exact recovery. Also the first to price the invariant in serving
+  cost: 38.8–73.5% HBM-traffic reduction alongside the accuracy gain,
+  so lossless offload is cheaper to *serve*, not just safer.
 
 The disagreement between them is the open axis inherited from
 context-eviction-policy — who initiates (trained agent vs
-deterministic policy vs planner-under-harness) — but all three agree
+deterministic policy vs planner-under-harness) — but all four agree
 on the invariant, which is therefore the more settled claim and the
-one worth importing first.
+one worth importing first. ARC sharpens the axis by *splitting* the
+locus: its write side (compaction) is fully deterministic — no LLM
+call — while its read side (recall) is agentic. The two policies the
+protocol joins need not sit at the same locus, and ARC's framing
+says why: "recovery is a decision that the agent makes," whereas
+what-to-show under a hard budget is arithmetic a harness can do.
 
 ## Implementation guidance (provisional — seedling)
 
