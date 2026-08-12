@@ -989,3 +989,24 @@ The only groupings not already mapped fall below the 5-concept threshold:
 Notably, all 29 concepts have at least one MoC home — zero orphans — so the graph is fully mapped at the moment. The next likely promotion is the typed-enforcement thread if it picks up 2+ more concepts, or a split of `knowledge-organization-for-research-agents` (14 concepts, the largest MoC) if a sub-theme inside it coheres. No files written, nothing committed.
 
 One unrelated note: the claude.ai Google Drive MCP server needs authentication before its tools work here — this session is non-interactive, so you'd authorize it via your claude.ai connector settings if you need it.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No promotion — nothing is ripe. Here's the detection breakdown.
+
+## Cluster analysis
+
+29 concepts, 7 existing MoCs. Every concept is currently a member of at least one MoC, and every tag cluster of ≥5 concepts is already majority-covered by an existing MoC:
+
+| Candidate cluster | Size | Existing coverage | Verdict |
+|---|---|---|---|
+| memory / context-window (`agent-native-memory`, `context-eviction-policy`, `lossless-context-offload`, `context-proprioception`, `selective-memory-retrieval`, `multi-granularity-memory`, `verified-memory-writes`) | 7 | `mocs/runtime-memory-policy` (added 2026-08-10) covers all 7, plus `knowledge-organization-for-research-agents` | Decline — fully mapped 2 days ago |
+| evaluation (`hce-evaluation`, `pass-at-k`, `citation-anchoring`, `typed-claim-partition`, `information-firewall`, `compression-as-generalization-test`, `programmable-evaluator-oracle`) | 7 | `mocs/evaluation-integrity` covers all 7 | Decline |
+| governance / enforcement (`typed-enforcement`, `permission-gate-as-architecture`, `budget-as-ceiling`, `constraint-pinning`, `verified-memory-writes`) | 5 | `mocs/governance-by-architecture` (added 2026-08-03) is exactly this set | Decline |
+| skills / tool-use (`skill-library-lifecycle`, `shared-skill-namespace`, `scripted-tool-pipelines`, `hybrid-model-backends`, `typed-enforcement`, `permission-gate-as-architecture`) | 6 | `mocs/capability-layer` is exactly this set | Decline |
+| evolutionary search (`evolutionary-expansion`, `evolutionary-search-grain`, `programmable-evaluator-oracle`, `async-worker-pool`, `budget-as-ceiling`) | 5 | `mocs/autonomous-search-loop` is exactly this set | Decline |
+| coordination / shared-state (`file-as-bus`, `hierarchical-delegation`, `structured-world-model`, `async-worker-pool`) | 4 | Under threshold, and 3 of 4 already sit in `agent-architecture` | Decline — too small and mapped |
+
+## Conclusion
+
+The graph is currently well-mapped: the two most recent MoCs (`governance-by-architecture` on 2026-08-03 and `runtime-memory-policy` on 2026-08-10) absorbed the clusters that had been accumulating, and no new unmapped theme has reached 5 concepts since. Per the skill's restraint rule, I'm not manufacturing a thin or duplicate MoC — no files written, nothing committed.
+
+The nearest future candidate is the coordination/shared-state group (`file-as-bus`, `hierarchical-delegation`, `structured-world-model`, `async-worker-pool`) at 4 concepts — if a fifth multi-agent-coordination concept lands (e.g. from the typed-enforcement or information-firewall watch threads in NOTES.md), that cluster would be worth re-checking, though its overlap with `agent-architecture` may still argue for updating that MoC instead.
