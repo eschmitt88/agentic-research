@@ -1010,3 +1010,4 @@ No promotion — nothing is ripe. Here's the detection breakdown.
 The graph is currently well-mapped: the two most recent MoCs (`governance-by-architecture` on 2026-08-03 and `runtime-memory-policy` on 2026-08-10) absorbed the clusters that had been accumulating, and no new unmapped theme has reached 5 concepts since. Per the skill's restraint rule, I'm not manufacturing a thin or duplicate MoC — no files written, nothing committed.
 
 The nearest future candidate is the coordination/shared-state group (`file-as-bus`, `hierarchical-delegation`, `structured-world-model`, `async-worker-pool`) at 4 concepts — if a fifth multi-agent-coordination concept lands (e.g. from the typed-enforcement or information-firewall watch threads in NOTES.md), that cluster would be worth re-checking, though its overlap with `agent-architecture` may still argue for updating that MoC instead.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
