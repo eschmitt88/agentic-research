@@ -1011,3 +1011,20 @@ The graph is currently well-mapped: the two most recent MoCs (`governance-by-arc
 
 The nearest future candidate is the coordination/shared-state group (`file-as-bus`, `hierarchical-delegation`, `structured-world-model`, `async-worker-pool`) at 4 concepts — if a fifth multi-agent-coordination concept lands (e.g. from the typed-enforcement or information-firewall watch threads in NOTES.md), that cluster would be worth re-checking, though its overlap with `agent-architecture` may still argue for updating that MoC instead.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**No cluster is ripe — nothing to promote.** All 29 concept notes are already covered by the seven existing MoCs, and every candidate cluster I could form is majority-owned by one of them.
+
+What I checked: I grouped `concepts/*.md` by shared tags (merging near-synonyms) and compared each cluster against the `concepts:` lists of the existing MoCs. Candidate clusters and why each is declined:
+
+| Candidate theme | Cluster (size) | Declined because |
+|---|---|---|
+| Memory / context-window | eviction-policy, lossless-offload, proprioception, constraint-pinning, selective-retrieval, multi-granularity… (8) | `runtime-memory-policy` (added 2026-08-10) covers all 8 — this exact cluster was promoted three days ago |
+| Governance / enforcement | typed-enforcement, permission-gate, budget-as-ceiling, constraint-pinning, verified-memory-writes (5) | Identical to `governance-by-architecture` (added 2026-08-03) |
+| Evaluation / grounding | hce-evaluation, pass-at-k, citation-anchoring, typed-claim-partition, information-firewall, compression-as-generalization-test (7) | Identical to `evaluation-integrity` |
+| Skills / tool-use | skill-library-lifecycle, shared-skill-namespace, scripted-tool-pipelines, hybrid-model-backends (6) | Identical to `capability-layer` |
+| Long-horizon coordination / shared state | file-as-bus, structured-world-model, hierarchical-delegation, agent-native-memory, citation-anchoring (5) | `agent-architecture` covers 3/5 and `knowledge-organization-for-research-agents` covers 4/5 — both past the ≥half threshold |
+| Discovery / retrieval | web-grounded-literature, selective-memory-retrieval, citation-anchoring, llm-wiki-pattern, information-firewall (5) | `knowledge-organization-for-research-agents` covers 4/5 |
+| Memory trust / security | verified-memory-writes, permission-gate, typed-enforcement, constraint-pinning, information-firewall (5) | `governance-by-architecture` covers 4/5 |
+
+No concept is orphaned from the MoC layer entirely — every one appears in at least one existing map, so there's no un-mapped seed to build around either. Per the skill's restraint rule, I'm not manufacturing a redundant MoC; no files written, nothing committed.
+
+The graph will next get ripe from the growing single-MoC threads: if the typed-enforcement/formal-methods sources keep accumulating (it's the largest source list among seedlings), a formal-verification sub-theme could eventually outgrow `governance-by-architecture` — worth rechecking after the next few ingest bursts or when `/lint` flags a candidate.
