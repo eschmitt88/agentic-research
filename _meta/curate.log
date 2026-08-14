@@ -1028,3 +1028,21 @@ What I checked: I grouped `concepts/*.md` by shared tags (merging near-synonyms)
 No concept is orphaned from the MoC layer entirely — every one appears in at least one existing map, so there's no un-mapped seed to build around either. Per the skill's restraint rule, I'm not manufacturing a redundant MoC; no files written, nothing committed.
 
 The graph will next get ripe from the growing single-MoC threads: if the typed-enforcement/formal-methods sources keep accumulating (it's the largest source list among seedlings), a formal-verification sub-theme could eventually outgrow `governance-by-architecture` — worth rechecking after the next few ingest bursts or when `/lint` flags a candidate.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+No ripe cluster — I'm declining to promote anything this run.
+
+**What I checked:** all 29 concept notes' `tags:` and the membership of the 7 existing MoCs. Every concept already appears in at least one MoC, and every coherent tag cluster of ≥5 concepts is majority-covered by an existing map:
+
+| Candidate cluster (by shared tags) | Size | Verdict |
+|---|---|---|
+| memory / context-window / eviction | 8 | Fully covered by `mocs/runtime-memory-policy.md` (8 members) |
+| evaluation / provenance / overfitting | 7 | Fully covered by `mocs/evaluation-integrity.md` (7 members) |
+| knowledge-organization / retrieval / write-policy | 6 | Fully covered by `mocs/knowledge-organization-for-research-agents.md` (14 members) |
+| skills / tool-use / interop | 6 | Fully covered by `mocs/capability-layer.md` (6 members) |
+| agent-architecture / coordination | 5 | Fully covered by `mocs/agent-architecture.md` (5 members) |
+| evolutionary-search / halting | 5 | Fully covered by `mocs/autonomous-search-loop.md` (5 members) |
+| governance / enforcement / safety | 5 | Fully covered by `mocs/governance-by-architecture.md` (5 members) |
+
+The remaining cross-cutting tags top out well below the threshold: `coordination`/`long-horizon` (3: file-as-bus, structured-world-model, hierarchical-delegation — all already mapped), `hallucination` (2), `discovery` (2), `retrieval`-outside-memory (web-grounded-literature is the only one, and it lives in the knowledge-organization MoC).
+
+The graph is currently well-mapped — 7 MoCs tile the 29 concepts with sensible overlap, and no sub-theme has outgrown its parent. Per the skill's restraint rule, manufacturing an eighth would only duplicate existing structure, so no files were written and nothing was committed. The next likely candidate is the typed-enforcement thread NOTES.md is already watching: if it ripens into 2–3 new concepts, a promotion (or a split of `governance-by-architecture`) would become worth revisiting.
