@@ -1046,3 +1046,20 @@ No ripe cluster — I'm declining to promote anything this run.
 The remaining cross-cutting tags top out well below the threshold: `coordination`/`long-horizon` (3: file-as-bus, structured-world-model, hierarchical-delegation — all already mapped), `hallucination` (2), `discovery` (2), `retrieval`-outside-memory (web-grounded-literature is the only one, and it lives in the knowledge-organization MoC).
 
 The graph is currently well-mapped — 7 MoCs tile the 29 concepts with sensible overlap, and no sub-theme has outgrown its parent. Per the skill's restraint rule, manufacturing an eighth would only duplicate existing structure, so no files were written and nothing was committed. The next likely candidate is the typed-enforcement thread NOTES.md is already watching: if it ripens into 2–3 new concepts, a promotion (or a split of `governance-by-architecture`) would become worth revisiting.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Nothing is ripe — no new MoC created.** The concept graph is fully mapped: all 29 concepts already appear in at least one of the 7 existing MoCs, and every candidate cluster fails the "not already mapped" test by a wide margin.
+
+Clusters I evaluated and declined:
+
+| Candidate cluster (by tags) | Size | Why declined |
+|---|---|---|
+| memory / context-window / eviction | 7–8 | Fully covered by `mocs/runtime-memory-policy.md` (all 8 of its concepts are this cluster) |
+| evaluation / hce / provenance | 7 | Fully covered by `mocs/evaluation-integrity.md` |
+| knowledge-organization | 6 | Subset of `mocs/knowledge-organization-for-research-agents.md` (14 concepts) |
+| agent-architecture | 5 | Exactly `mocs/agent-architecture.md` |
+| governance / safety / enforcement | 5 | Exactly `mocs/governance-by-architecture.md` |
+| skills / tool-use / capability | 5 | Exactly `mocs/capability-layer.md` |
+| evolutionary-search | 4–5 | Covered by `mocs/autonomous-search-loop.md`, and under 5 on its own |
+| coordination / long-horizon (file-as-bus, hierarchical-delegation, structured-world-model, async-worker-pool) | ~4 | Under the 5-concept threshold, and members already live in agent-architecture / knowledge-organization MoCs |
+
+The nearest future candidate is the **coordination / shared-state** theme — if the typed-enforcement or information-firewall watch threads (per NOTES.md) seed one or two more concepts around multi-agent coordination, that cluster could ripen into a MoC distinct from `agent-architecture`. Until then, the right move per the skill's restraint rule is no action, so I made no writes and no commit.
