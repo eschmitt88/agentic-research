@@ -22,6 +22,75 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-08-02 | [hce-retrieval-boundary](2026-08-02-hce-retrieval-boundary.md) | `rules/evaluation.md` | adopt | proposed |
 | 2026-08-02 | [budget-ceiling-reserve](2026-08-02-budget-ceiling-reserve.md) | `templates/project/budget.yaml` | adopt | proposed |
 | 2026-08-02 | [lint-rule-consistency-pass](2026-08-02-lint-rule-consistency-pass.md) | `skills/lint/SKILL.md` | adopt | proposed |
+| 2026-08-16 | [precompact-addressable-offload](2026-08-16-precompact-addressable-offload.md) | `hooks/pre-compact.sh` | adopt | proposed |
+
+## Considered and held (2026-08-16 run)
+
+One proposal (above). Six papers entered the graph 2026-08-10/11
+(`li2026acm`, `elkoussy2026agentltl`, `dang2026addressable`, `xu2026llm`,
+`wu2026remember`, `hamri2026zebra`) plus two new concepts
+(`lossless-context-offload`, `context-proprioception`) and the
+`runtime-memory-policy` MoC — the largest single-cycle addition since the
+07-27/28 batch, and all of it on the runtime-memory axis. The three
+2026-08-02 proposals remain `proposed`, so `rules/evaluation.md`,
+`templates/project/budget.yaml`, and `skills/lint/SKILL.md` stay blocked
+for stacking per the 2026-07-26 precedent; the proposal above targets
+`hooks/pre-compact.sh`, which is uncontested. Five threads held:
+
+- **context-proprioception → surfacing headroom at session start** — the
+  closest miss. `xu2026llm` (cred 4, code, formal) technically clears
+  Gate 1 alone on the code-released disjunct, and its ablation is
+  unusually clean: removing the dashboard (37.3) hurts *more* than
+  removing the recovery tools (45.3) against 50.7 full, matching its
+  Thm. 1. The gap it names is real here — `/headroom` is **pull-only**,
+  so an agent that never runs it is in the same position as one with no
+  ledger. **Held on Gate 2 and on single-attestation prudence**: the
+  concrete form (session-start.sh also emits the agency verdict) adds
+  permanent per-session token cost for a claim measured on *context-window*
+  keep/archive decisions this box's agent never makes — the harness
+  compacts on its own. The session-scale transfer is the concept note's
+  analogy, not VISTA's measurement, and the concept self-rates seedling at
+  one source. **Unlock**: a second rated attestation that state exposure
+  (not policy) carries the gain, or evidence that a skill made a wrong
+  spend call it would have avoided with the verdict in view. Note the
+  enforcement half already consults it — `/digest` logs
+  `verdict=slow/low` before auto-ingesting.
+- **`wu2026remember` (cred 4 + code) → selective-memory-retrieval** — the
+  strongest ablated evidence yet for the concept's core claim (passive
+  bank exposure 61.5 and always-inject 63.5 both lose to selective 64.3;
+  Mem0 retrieval 62.1), and it adds a genuinely new push-side pole with
+  an explicit null action. **Held on Gate 2**: the mechanism is a second
+  Opus-class agent observing every step — net-new machinery of the exact
+  kind this skill defaults to rejecting, and the paper doesn't price its
+  own overhead. Its "behavioral state decay" naming (state present in the
+  window yet behaviorally inert) is the better label for what the
+  runtime-memory cluster keeps circling and is worth adopting in concept
+  prose — a `/curate` action, not a harness edit.
+- **`hamri2026zebra` (cred 3, no code) → budget allocation** — names the
+  counter-pole to `budget-as-ceiling`: ceilings govern *whether* spend
+  continues, ZEBRA governs *where* it goes. It also partly rehabilitates
+  the khan2026token thread the 2026-08-02 run closed, since allocation
+  needs no mid-call enforcement and so survives `ye2026agent`'s
+  reservation-impossibility. **Fails Gate 1** on its own (single
+  attestation, no code, workshop preprint) and its own limitations
+  section excludes the relevant regime: it allocates once before
+  execution and "phaseless agentic loops are out of scope." Blocked on
+  target too (`budget.yaml` template pends). Its "LLM estimates, solver
+  optimizes" split is the same move as ablation phase 3 — recorded as
+  strengthening evidence for `scripted-tool-pipelines`.
+- **`elkoussy2026agentltl` (cred 3) → typed-enforcement / lint** —
+  measure/enforce/train from one formal spec, and the cluster's first
+  *negative* enforcement evidence (strong models regress under gating;
+  kill-switches worst). **Held on process** — same-file stacking while
+  `lint-rule-consistency-pass` pends — and on artifact: the paper claims
+  a release but the link doesn't resolve from the PDF, so `code_url` is
+  null. Its L1–L6 layered weighting is a reusable design for
+  `kg_lint.py`'s check taxonomy whenever that file is unblocked.
+- **`constraint-pinning` re-check** (the 2026-08-09 watch item) — no
+  movement: no SafeContext/Gamage/Dente ingest this cycle, so it still
+  sits at 2 rated attestations (`chen2026governance` cred 3,
+  `semenov2026beyond` cred 2) and still fails Gate 1. The unlock recorded
+  last cycle is unchanged.
 
 ## Considered and held (2026-08-09 run)
 
