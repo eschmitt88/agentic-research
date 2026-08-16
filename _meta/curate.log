@@ -1063,3 +1063,27 @@ Clusters I evaluated and declined:
 | coordination / long-horizon (file-as-bus, hierarchical-delegation, structured-world-model, async-worker-pool) | ~4 | Under the 5-concept threshold, and members already live in agent-architecture / knowledge-organization MoCs |
 
 The nearest future candidate is the **coordination / shared-state** theme — if the typed-enforcement or information-firewall watch threads (per NOTES.md) seed one or two more concepts around multi-agent coordination, that cluster could ripen into a MoC distinct from `agent-architecture`. Until then, the right move per the skill's restraint rule is no action, so I made no writes and no commit.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Nothing is ripe — no MoC created.** All 30 concepts already sit in at least one of the 7 existing MoCs, and the graph hasn't changed since `0f6684c` (2026-08-11).
+
+Clusters evaluated:
+
+| Candidate theme | Size | Verdict |
+|---|---|---|
+| memory / context-window / runtime-policy | 8 | Exactly `runtime-memory-policy` |
+| evaluation / hce / overfitting | 7 | Exactly `evaluation-integrity` |
+| knowledge-organization | 12 | Exactly `knowledge-organization-for-research-agents` |
+| skills / tool-use | 6 | Exactly `capability-layer` |
+| governance / enforcement / safety | 5 | Exactly `governance-by-architecture` |
+| agent-architecture | 5 | Exactly `agent-architecture` |
+| evolutionary-search | 5 | Exactly `autonomous-search-loop` |
+| grounding / provenance | 6 | `evaluation-integrity` covers 3/6 — fails at exactly half |
+| **spend / compute-economy** | **4+1** | **Only theme that passes the overlap test — declined on membership** |
+
+The spend theme is the one worth naming, since it's the first candidate since the runtime-memory split that isn't already absorbed: `budget-as-ceiling`, `hybrid-model-backends`, `scripted-tool-pipelines`, `context-proprioception`, plus `async-worker-pool`. No existing MoC holds more than 2 of the 5 (`autonomous-search-loop` has budget+async; `capability-layer` has hybrid+scripted), so it clears "not already mapped."
+
+It fails on honest membership. Merging the budget-flavored tags (`budget`, `context-budget`, `budget-awareness`, `resources`) yields four concepts; `async-worker-pool` joins only by judgment about parallelism being the spend multiplier. That's the same 4+1 shape this repo correctly declined for governance from 2026-07-07 through 08-02, until `constraint-pinning` arrived as a real fifth. A spend MoC would also be a *third* framing of `budget-as-ceiling`, whose halting-and-parallelism economics `autonomous-search-loop` already articulates in its own framing paragraph.
+
+It tips ripe on one genuine spend-policy concept — the `khan2026token` pre-flight reservation thread NOTES.md is already watching, or the `besanson2026green` energy-cost line. Both are currently sources on existing concepts with nothing seeded of their own.
+
+Logged the decline with that rationale to `_meta/log.md` and pushed (`40bdff1`). Left the unrelated dirty `_meta/curate.log` alone for the session hook.
