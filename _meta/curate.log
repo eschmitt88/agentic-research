@@ -1111,3 +1111,4 @@ The spend theme is still the one live candidate: `budget-as-ceiling`, `hybrid-mo
 Ripening condition is unchanged: one genuine spend-policy concept — the `khan2026token` pre-flight-reservation thread NOTES.md is already watching, or the `besanson2026green` energy-cost line. Both are sources on existing concepts with nothing seeded of their own.
 
 Logged the decline to `_meta/log.md` and pushed (`71d5287`). Left the pre-existing dirty `_meta/curate.log` and `_meta/elevate.log` from the 08-16 session untouched.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
