@@ -5,11 +5,13 @@ status: seedling
 added: "2026-08-11"
 sources:
   - "[[literature/papers/xu2026llm]]"
+  - "[[literature/papers/bai2026how]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
   - "[[concepts/lossless-context-offload]]"
   - "[[concepts/budget-as-ceiling]]"
+  - "[[concepts/spend-forecast-calibration]]"
   - "[[concepts/selective-memory-retrieval]]"
 related_experiments: []
 tags: [memory, context-window, self-management, dashboard, runtime-state, budget-awareness, meta-decision]
@@ -76,6 +78,26 @@ is acting under partial observability of the one state it most needs.
 - claude-system instances: `/headroom`, the hardware poller, and the
   agency verdict — session-scale proprioception feeding an explicit
   spend policy.
+
+## Perception is not prediction
+
+[[literature/papers/bai2026how]] marks this concept's boundary from the
+outside. Its agents were given what proprioception provides and more —
+full tool access, permission to inspect the repository and run
+preliminary commands, and an explicit instruction to produce a
+stage-decomposed cost estimate before acting — and still reached only
+Pearson r ≤ 0.39 against their own actual token usage, with **every model
+biased low**, worst on the dominant input-token term. Access to state did
+not yield a usable forecast.
+
+So the claim here should stay narrow: surfacing present resource state
+(per-block cost, recency, archive status, remaining headroom) improves
+meta-decisions about what to keep, archive, or recover — that is an
+interface problem and xu2026llm shows the interface fixes it. Predicting
+*future* spend is a different problem that the same interface does not
+solve, because the trajectory's own branching sets the number. Expose
+state; do not trust prediction. See
+[[concepts/spend-forecast-calibration]].
 
 ## Open questions
 
