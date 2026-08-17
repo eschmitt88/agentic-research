@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/hao2026selfgc]]"
   - "[[literature/papers/hamri2026zebra]]"
   - "[[literature/papers/bai2026how]]"
+  - "[[literature/papers/mason2026missing]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -313,6 +314,21 @@ extra tokens for GPT-5/5.2, ~2M for Kimi-K2) because models lack a
 reliable mechanism to recognize an unsolvable task and stop: the ceiling
 substitutes for a missing capability, and how much it must substitute
 depends on the backend.
+
+## Context churn is a spend line, and it can exhaust the rate limit first
+
+[[literature/papers/mason2026missing]] supplies a ceiling failure this
+concept has not accounted for. In a 681-turn production session its pager
+thrashed — 680 evictions, 659 page faults — and the session died on the
+**API rate limit, not the context limit**. Each fault is an inference-priced
+round trip, so "fault cost is not merely computational but monetary" and
+thrashing consumed the rate budget faster than useful work. Two things follow.
+A ceiling denominated only in total tokens misses a *rate* ceiling that can
+bind first, which matters for any parallel design ([[concepts/async-worker-pool]]).
+And an eviction policy is a spend policy: churn that looks like savings on the
+token-surface metric can be net negative on the bill — the paper's own
+"bytes saved" number was partly self-inflicted re-reads, which it says
+outright. See [[concepts/context-eviction-policy]].
 
 ## Open questions
 

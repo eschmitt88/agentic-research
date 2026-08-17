@@ -9,6 +9,7 @@ sources:
   - "[[literature/papers/hao2026selfgc]]"
   - "[[literature/papers/dang2026addressable]]"
   - "[[literature/papers/xu2026llm]]"
+  - "[[literature/papers/mason2026missing]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -111,6 +112,42 @@ what-to-show under a hard budget is arithmetic a harness can do.
    addressable by citekey); the in-session analogue would be
    compaction summaries that cite the journal/transcript span they
    replaced.
+
+## The handle resolves to *current* content, not archived content
+
+[[literature/papers/mason2026missing]] adds a property the offload sources
+so far have left implicit, and it is the one that makes handles safer than
+archives. Its eviction summary — `[Paged out: Read /path/to/file.py (12,450
+bytes, 287 lines). Re-read if you need its content.]` — was designed as a
+space-saving marker (~200 bytes regardless of the original size) but
+functions as a **late-binding retrieval handle**: it stores minimal metadata
+and resolves on demand. Because it stores a *path*, not a payload, a file
+edited since eviction materializes at its new state when faulted, so **stale
+cached content is structurally impossible**. An offload that stores the bytes
+has to solve invalidation; an offload that stores an address does not.
+
+Two further observations transfer. The format is self-describing enough to
+need no instruction: a fresh model instance resuming a session containing
+paged-out content stated unprompted, "Let me re-read the files I need since
+some were paged out, then create the task list and start implementing" —
+it recognized the handles, inferred the recovery mechanism from the summary
+text alone, and chose to fault content in before acting. And the paper's
+cooperative side channel gives the *agent-side* half of the same protocol:
+phantom tools `memory_release(paths)` (the model voluntarily releases cold
+pages — a reference bit supplied rather than inferred) and
+`memory_fault(paths)` (the model requests restoration from the proxy's
+eviction cache, cheaper than a real Read round-trip). Paired with
+[[literature/papers/li2026acm]]'s agent-initiated `manage_context` /
+`query_memory`, the design space now has both directions instrumented, which
+is the practical argument that the policy locus should be *both* — the
+harness informs, the agent directs — rather than either alone.
+
+Scale evidence, on a corpus that happens to be this project's own harness:
+1,393,000 simulated evictions at a **0.0254% fault rate** over 8.49 GB of
+evicted content, and 37.1% fewer effective input tokens in a controlled
+paired run with the task still completing correctly. Lossless offload is not
+a research aspiration at this point; a deliberately minimal FIFO policy
+achieves it.
 
 ## Connections
 

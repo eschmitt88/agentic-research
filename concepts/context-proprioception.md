@@ -1,11 +1,12 @@
 ---
 kind: concept
 name: "context-proprioception"
-status: seedling
+status: growing
 added: "2026-08-11"
 sources:
   - "[[literature/papers/xu2026llm]]"
   - "[[literature/papers/bai2026how]]"
+  - "[[literature/papers/mason2026missing]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -98,6 +99,44 @@ interface problem and xu2026llm shows the interface fixes it. Predicting
 solve, because the trajectory's own branching sets the number. Expose
 state; do not trust prediction. See
 [[concepts/spend-forecast-calibration]].
+
+## Second attestation: pressure zones as a deployed proprioceptive interface
+
+[[literature/papers/mason2026missing]] is this concept's second source, and
+unlike xu2026llm it is a production deployment rather than a benchmark
+harness — on 857 Claude Code sessions. Its **graduated pressure zones** are
+this concept's interface, built as a policy rather than a dashboard:
+
+- **Normal** (<60K tokens): observe only; the agent is told nothing.
+- **Advisory** (60K–100K): inject memory-pressure information into the
+  model's context — current fill percentage, the **five largest resident
+  blocks**, and the available cleanup operations. Explicitly "the graduated
+  equivalent of the 'low memory' notification in desktop operating
+  systems."
+- **Involuntary** (100K–120K): automatic eviction proceeds; the model is
+  informed but not consulted.
+- **Aggressive** (≥120K): emergency eviction, context survival over
+  working-set preservation.
+
+Two design points are worth more than the thresholds. First, the 60K
+advisory trigger was chosen to leave **~40K tokens of runway** — enough for
+the model to finish a coherent thought and emit cleanup directives *before*
+losing agency over the process. Proprioception with no time to act on it is
+just a notification; the interface has to fire while the agent can still
+choose. Second, the zones make the perception→action loop explicit and
+bidirectional: the proxy informs the model of memory state (phantom tools
+`memory_release` / `memory_fault`), and the model directs the proxy through
+cleanup tags parsed from its output (`drop`, `summarize`, `anchor`,
+`collapse: turns N-M`). The paper argues this two-way protocol is a genuinely
+new design point, because hardware replacement algorithms assume a
+**non-cooperative** application, whereas an LLM has an incentive to
+cooperate — cleaner context means better output and a longer session. "The
+processor wants to help manage its own cache."
+
+The concept's core claim gets independent behavioral support too: without
+any instruction, a model resuming a session recognized retrieval handles it
+had never been told about and chose to fault content in before acting. Give
+the agent legible state and it uses it.
 
 ## Open questions
 

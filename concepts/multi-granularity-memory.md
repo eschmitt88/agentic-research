@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/gao2026mempoison]]"
   - "[[literature/papers/tang2026memory]]"
   - "[[literature/papers/lee2026minteval]]"
+  - "[[literature/papers/mason2026missing]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -115,6 +116,41 @@ did this claim change") is the read-side counterpart to
    consolidation policy ([[concepts/context-eviction-policy]]) or it grows
    unbounded; the coarse grain is cheap to keep. Different grains warrant
    different retention budgets.
+
+## The hierarchy, with an eviction policy and a fault mechanism per level
+
+[[literature/papers/mason2026missing]] states this concept in its strongest
+form by borrowing the OS memory hierarchy wholesale. The granularity levels
+are not just sizes; **each level has its own eviction criterion and its own
+fault mechanism**:
+
+| Level | Contents | Eviction | Fault |
+|---|---|---|---|
+| L1 | generation window | — | — |
+| L2 | working set (pinned) | pressure-based | re-read |
+| L3 | session history | age-based | summary expansion |
+| L4 | cross-session memory | LRU / relevance | retrieval query |
+| Storage | full corpus | none | search + ingest |
+
+That table is the useful artifact. A granularity tier without a stated
+eviction rule silently becomes permanent, and a tier without a fault path is
+write-only — the two failure modes this concept exists to prevent. The
+paper's framing of the payoff is also sharper than "more tiers help": "the
+context limit does not disappear — it becomes the L1 cache size. The total
+addressable memory is unbounded. System performance is determined by **hit
+rates at each level**, not by L1 capacity alone." Which is the argument
+against the field's actual response to context pressure: growing the window
+from 4K to 32K to 128K to 1M "is the equivalent of building machines with
+more physical RAM instead of inventing virtual memory. It works but does not
+scale," because attention is quadratic and even million-token windows fill
+and degrade.
+
+Honest scope: L1 and L2 are implemented and evaluated, L3 (rolling
+compaction with declared losses) is implemented but not evaluated at scale,
+and L4 (cross-session persistent memory, retrieved by graph traversal or
+similarity) is design only — which is precisely the tier this project's
+`literature/` + `concepts/` graph occupies. The hierarchy above is therefore
+a map with our own level unmeasured.
 
 ## Connections
 
