@@ -28,8 +28,10 @@ sources:
   - "[[literature/papers/ning2026closedloop]]"
   - "[[literature/papers/wang2026naturebench]]"
   - "[[literature/papers/wang2026androids]]"
+  - "[[literature/papers/ng2026agent]]"
 used_by: []
 related_concepts:
+  - "[[concepts/evidence-gated-completion]]"
   - "[[concepts/evolutionary-expansion]]"
   - "[[concepts/hce-evaluation]]"
 related_experiments: []
@@ -122,6 +124,27 @@ oracle.
    evaluator a proposal specifies — and its patching study shows
    trust-boundary flaws (agent and evaluator sharing an environment)
    cannot be patched after the fact, only designed out.
+
+## The oracle's access restriction, stated formally
+
+[[literature/papers/ng2026agent]] gives a precise definition of the
+verifier class this concept assumes: a deterministic polynomial-time
+procedure that takes an event and a property, with **access to external
+reference state but not to the agent's internal state**. That last clause
+is what makes an oracle an environment rather than a participant. An
+evaluator that reads the agent's own account of what it did — a summary, a
+claimed diff, a chain of thought — has readmitted the agent's self-report
+as ground truth and stopped being an oracle, however programmatic its
+scoring code looks.
+
+The paper also marks a boundary this concept should keep: hard evidence is
+not *correct* evidence. "A flaky test still produces wrong gates." A
+programmable oracle relocates trust from the model to the artifact and the
+verifier; it does not eliminate trust. What it buys is that failures are
+now localizable to a specific verifier and observable rather than silent.
+The complementary use of the same verifiers — deciding whether a
+submission may be accepted at all, rather than what it scores — is
+[[concepts/evidence-gated-completion]].
 
 ## Open questions
 

@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/lu2026meta]]"
   - "[[literature/papers/wang2026androids]]"
   - "[[literature/papers/philippov2026glite]]"
+  - "[[literature/papers/ng2026agent]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -303,6 +304,38 @@ within minutes and corrected to 0.802 before submission. Structure
 cannot judge that a feature is *semantically* leaking — a human made
 that call — but score-to-revision provenance is what made the
 implausible number investigable instead of publishable.
+
+## The other half: hiding the holdout vs grounding the result
+
+HCE keeps the agent away from the answer. [[literature/papers/ng2026agent]]
+argues the complementary discipline — refusing to accept a *result* until
+the trajectory contains verifiable artifacts — and its cited base rates
+are the argument for why hiding the test set is necessary but not
+sufficient. Even with a clean holdout, **7.8% of plausible
+SWE-bench-Verified patches fail the developer test suite when actually
+re-run** under the tests modified for the pull request, 28.6% of
+behaviorally different patches were confirmed wrong on manual check, and
+15.7% more incorrect patches surfaced across leaderboard submissions. The
+holdout was not leaked in those cases; the *submission* was simply never
+checked against it.
+
+Its evidential framing renames what HCE's `test/` boundary is really for.
+An "output-producing" harness accepts any trajectory whose final message
+says done; an evidence-gated harness accepts only a submission it can
+verify — and a held-out test run is precisely a hard-evidence event, one a
+deterministic verifier can decide from an exit code without consulting the
+agent's reasoning. So the holdout is not only a contamination barrier; it
+is the verifier that makes the completion claim checkable at all. Its
+false-completion audit found the smallest sufficient schema for 7 of its
+32 cases was exactly one test run.
+
+The paper's 12-system trajectory audit also locates the practical gap: the
+field captures the artifacts (9/12 file diffs, 11/12 tool output, 7/12
+structured logs) and gates on them **2/12**. HCE discipline here has the
+same shape — this project runs `scripts/kg_lint.py` and hard-fails on HCE
+violations when `/lint` is invoked, but nothing makes a passing lint a
+precondition for a skill declaring itself done. See
+[[concepts/evidence-gated-completion]].
 
 ## Open questions
 
