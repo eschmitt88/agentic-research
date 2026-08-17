@@ -1087,3 +1087,27 @@ It fails on honest membership. Merging the budget-flavored tags (`budget`, `cont
 It tips ripe on one genuine spend-policy concept — the `khan2026token` pre-flight reservation thread NOTES.md is already watching, or the `besanson2026green` energy-cost line. Both are currently sources on existing concepts with nothing seeded of their own.
 
 Logged the decline with that rationale to `_meta/log.md` and pushed (`40bdff1`). Left the unrelated dirty `_meta/curate.log` alone for the session hook.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**No cluster is ripe. Nothing promoted.**
+
+The graph is unchanged since the 2026-08-16 decline — last `concepts/`/`mocs/` commit is still `0f6684c` (2026-08-11), `raw/_candidates/` is empty, and the three commits since touched only elevate/session/journal files.
+
+Verified mechanically rather than by tag-eyeballing: all 30 concepts sit in ≥1 of the 7 MoCs (14 in exactly one, 14 in two, 2 in three). With zero unmapped concepts, no theme can clear the not-already-mapped test on new material.
+
+**Candidates considered and declined:**
+
+| Cluster | N | Why declined |
+|---|---|---|
+| memory / runtime-policy | 8 | Exactly `runtime-memory-policy` |
+| evaluation / grounding | 7 | Exactly `evaluation-integrity` |
+| skills / tool-use | 6 | Exactly `capability-layer` |
+| governance / enforcement | 5 | Exactly `governance-by-architecture` |
+| evolutionary-search | 5 | Exactly `autonomous-search-loop` |
+| agent-architecture | 5 | Exactly `agent-architecture` |
+| **spend / compute-economy** | **4+1** | Only theme passing the overlap test — declined on membership |
+
+The spend theme is still the one live candidate: `budget-as-ceiling`, `hybrid-model-backends`, `scripted-tool-pipelines`, `context-proprioception`, plus `async-worker-pool`. No MoC holds more than 2 of the 5, so it clears "not already mapped" — but it fails honest membership. Four concepts join on budget-flavored tags; `async-worker-pool` joins only by judgment that parallelism is the spend multiplier. That's the same 4+1 shape this repo correctly declined for governance from 07-07 through 08-02, until `constraint-pinning` arrived as a real fifth. It would also be a *third* framing of `budget-as-ceiling`, whose halting-and-parallelism economics `autonomous-search-loop` already states.
+
+Ripening condition is unchanged: one genuine spend-policy concept — the `khan2026token` pre-flight-reservation thread NOTES.md is already watching, or the `besanson2026green` energy-cost line. Both are sources on existing concepts with nothing seeded of their own.
+
+Logged the decline to `_meta/log.md` and pushed (`71d5287`). Left the pre-existing dirty `_meta/curate.log` and `_meta/elevate.log` from the 08-16 session untouched.

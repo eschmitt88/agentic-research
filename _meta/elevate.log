@@ -127,3 +127,24 @@ The most interesting outcomes:
 
 One housekeeping note: the pre-existing uncommitted change to `_meta/curate.log` (from the earlier aiserver2026 session) was left alone — only the elevate files were committed. The main thing waiting on you is still the three 2026-08-02 proposals; deciding those unblocks two held threads.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Elevate cycle complete — **1 proposal, 6 considered**. Pushed to `main` (`5027195`).
+
+## Proposed: [`2026-08-16-precompact-addressable-offload`](docs/system-proposals/2026-08-16-precompact-addressable-offload.md)
+
+**Target:** `~/claude-system/claude/hooks/pre-compact.sh` — an uncontested file (the three pending 08-02 proposals block `evaluation.md`, `budget.yaml`, `lint/SKILL.md`).
+
+The hook currently reads `# Swallow stdin payload; we do not currently need its fields.` then emits a flush-to-disk reminder. That's the write half of an offload protocol with no address half — after compaction the agent holds a summary and no handle to the span it replaced, so its only recovery move is the content whose fidelity is in doubt. The harness hands the hook `transcript_path`; the transcripts are verified on disk at `~/.claude/projects/<slug>/<session-id>.jsonl`, retained back to mid-July. The proposed edit is 9 lines: parse the field, hand the path back.
+
+**Gate 1** — `concepts/lossless-context-offload` reached 5 attestations this cycle: `li2026acm` (cred 4, code+data+checkpoints), `xu2026llm` (cred 4, code, formal), `dang2026addressable` (cred 3, theorem + matching lower bound), `hao2026selfgc`, `semenov2026beyond`. Two of them disagree sharply on *who* decides evictions and still agree on the invariant, which is what makes it the importable part.
+
+**Gate 2** — no new file, hook, rule, or knob; it deletes a discard. It's also the pattern the repo already runs everywhere else (immutable `raw/`, citekey addressing, lint check #12) applied to the one place compression is involuntary. It does not re-open the eviction-policy question that the 06-23 and 08-09 holds correctly parked — the policy side is harness-internal, the address side isn't, which is why it has a target where the policy side doesn't.
+
+**Before applying:** the `transcript_path` field name is written from the hook source and docs, not a captured payload — verify it. The `// empty` guard means a wrong name silently no-ops rather than breaking, which is safe but also means a wrong guess does nothing visible.
+
+## Closest hold
+
+**context-proprioception → headroom at session start.** `xu2026llm` alone clears Gate 1 on the code-released disjunct, and its ablation is clean — removing the dashboard (37.3) hurts more than removing recovery tools (45.3) vs 50.7 full. The gap is real: `/headroom` is pull-only. Held because the concrete form buys permanent per-session token cost for a result measured on context-window keep/archive decisions this box's agent never makes — the harness compacts on its own — and it's one source. The three other holds and the unchanged `constraint-pinning` watch item are in `_index.md`.
+
+I left `~/claude-system` untouched (it has a pre-existing uncommitted `settings.json` change that isn't mine), and left `_meta/curate.log` out of the commit for the same reason.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+{"id":"rt1uj3XDxsu9","time":1786856678,"expires":1786899878,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• precompact-addressable-offload\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
