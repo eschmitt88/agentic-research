@@ -11,6 +11,7 @@ concepts:
   - "[[concepts/programmable-evaluator-oracle]]"
   - "[[concepts/compression-as-generalization-test]]"
   - "[[concepts/information-firewall]]"
+  - "[[concepts/evidence-gated-completion]]"
 tags: [moc, evaluation, evaluation-integrity, overfitting, grounding, architecture]
 ---
 
@@ -119,6 +120,27 @@ against, and it implicitly bounds what can be found at all.
   subtly-buggy oracle steers the whole search wrong without tripping its own
   success signal. [[concepts/hce-evaluation]] is the named structural defense
   — the evaluator may be gamed; the final scorer must not be.
+
+## The completion boundary
+
+- [[concepts/evidence-gated-completion]] — the newest member (2026-08-17,
+  `growing`), and the one that closes the loop the other concepts open.
+  Hiding the holdout, grounding the citations, and programming the oracle
+  all improve the *quality* of a verdict; this one asks whether a verdict
+  was reached at all. The default harness "accepts any terminating
+  trajectory whose final `model_message` payload says 'done'"
+  ([[literature/papers/ng2026agent]]) — and of 12 audited agent systems, 9
+  capture file diffs and 11 capture tool output while only **2** gate a
+  submission on them. Claude Code, the harness this project runs on, scores
+  *no* on the submit gate. The remedy is cheap: all 32 rows of that paper's
+  false-completion audit reduce to a *one-element* evidence schema (8 a
+  citation lookup, 7 a test run, 5 a human approval). Arrived at
+  independently by [[literature/papers/ding2026autonomous]] from the
+  AI-scientist side as failure mode → **hiding proxy** → minimum evidence,
+  where the hiding proxy is always cheaper and more persuasive than the
+  evidence it stands in for. Directly actionable here: nothing makes a
+  passing `scripts/kg_lint.py` a precondition for a graph-writing skill
+  declaring itself done.
 
 ## Open thread
 
