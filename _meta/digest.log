@@ -296,3 +296,37 @@ Digest complete — 8 commits pushed, working tree clean. The headline: this cyc
 
 **Left open.** Items 2–4 and 6–12 remain uncurated in the candidates file, marked partially curated. Recommended next for `/curate`: item 8 (the contamination-prevention paper — it's the information-firewall watch item), item 3 (VISTA, the self-managed pole of the policy-locus question), and item 11 (ZEBRA, which feeds the khan2026token `/elevate` item).
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Digest complete. All work committed and pushed (9 commits, clean tree, nothing unpushed).
+
+## Sweep
+
+Window `2026-08-10T07:03:38Z → 2026-08-17T07:04Z`. Five scenario queries, weighted toward the gap the graph itself named. **18 candidates** written to `raw/_candidates/2026-08-17-digest.md`, deduplicated against 138 known arXiv IDs (24 already-in-graph hits excluded, ~20 more declined with reasons).
+
+## Auto-advance
+
+Verdict **GO (high)** → canonical batch ~6. Re-checked twice mid-run, held. Ingested 6:
+
+| Paper | What it added |
+|---|---|
+| `bai2026how` | Agents can't forecast their own spend: r ≤ 0.39, **all 8 models biased low**. Seeded `spend-forecast-calibration` |
+| `ng2026agent` (in-window, Aug 11) | Harness-as-enforcer; 40/52 incidents preventable, submit gates 2/12. Seeded `evidence-gated-completion` |
+| `mason2026missing` | The **inverted cost model** (keeping costs every turn, faulting once); 21.8% waste measured on 857 Claude Code sessions |
+| `panigrahy2026energy` | Normalize by *completed goals* — per-inference accounting hid 62.4% of one goal's real cost |
+| `bhardwaj2026agent` | 1,980 sessions across 7 models |
+| `ding2026autonomous` (in-window) | The **eight-tier verification-signal ladder**; no LLM-era closed loop has an externally validated oracle |
+
+Two concepts seeded, seven updated with prose, `context-proprioception` and `evidence-gated-completion` moved seedling → growing.
+
+## MoC
+
+**`mocs/compute-economy` promoted** (6 concepts). This is the cluster declined five times from 2026-07-07 through yesterday, and it ripened exactly on the stated condition — one genuine spend-policy concept from the `khan2026token` or `besanson2026green` threads. `spend-forecast-calibration` came from both. Max overlap with any existing MoC: 2/6. Organized as know the number → spend it well → stop when it's gone; the measurement axis was stated nowhere else in the graph.
+
+Also **declined** in the same pass: a standalone verification MoC for `evidence-gated-completion` — `evaluation-integrity` already held 4/7 of that cluster, so the concept went into two existing MoCs instead.
+
+## Two things worth flagging
+
+**I corrected my own candidate-file characterization of `bhardwaj2026agent`.** I ranked it as the "typed enforcement prevents what prose misses" evidence NOTES has been watching for. Reading it, that's not what it shows. Contracted agents log 5.2–6.8 soft violations/session vs 0.0–0.3 uncontracted — but the control condition has no predicate to violate, so the huge effect sizes measure the *presence of a yardstick*, not a behavior change. Hard compliance was already at ceiling in both arms, its own ablation shows the reliability index *rises* when the soft detector is removed, and the artifacts are patent-pending and unreleased. Ingested as an observability refinement to `typed-enforcement`, with the correction recorded in both the literature note and the candidate file. The watch item remains open.
+
+**12 of 18 candidates are uncurated,** so the file stayed in `raw/_candidates/` rather than moving to `_done/`, per the skill's rule. Recommended next three are recorded in it: item 10 (enforceability upper bound), 12 (IntegrityBench pressure protocol), 14 (Hack-Verifiable Environments).
+
+Lint is clean — 0 orphans, 0 sourceless concepts, no new dead wikilinks (the 4 shown are pre-existing illustrative `[[wikilink]]` text). One incidental note: my `git add -A` picked up the `_meta/curate.log` edit left dirty by the 08-16 session; it's a tracked prose log, so committing it was the right call, but it wasn't my content.
