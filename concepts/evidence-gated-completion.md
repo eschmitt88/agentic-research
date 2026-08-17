@@ -1,10 +1,11 @@
 ---
 kind: concept
 name: "evidence-gated-completion"
-status: seedling
+status: growing
 added: "2026-08-17"
 sources:
   - "[[literature/papers/ng2026agent]]"
+  - "[[literature/papers/ding2026autonomous]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -117,6 +118,46 @@ alphabets are **pairwise disjoint**, and degrade to assume-guarantee
 reasoning (exponential in general) when they share events. Real hook
 layers share events routinely.
 
+## Independent derivation: failure mode → hiding proxy → minimum evidence
+
+[[literature/papers/ding2026autonomous]] arrives at this concept's core move
+from the opposite direction — auditing the AI-scientist literature rather
+than cataloguing safety incidents — and lands on the same structure: for each
+recurring failure mode, name the **evaluation proxy that hides it today** and
+the **minimum evidence** that would expose it.
+
+| Failure mode | Hidden by | Minimum evidence |
+|---|---|---|
+| Hallucinated citation | fluent prose | resolvable bibliography |
+| Novelty overclaim | idea-rating | stated novelty-verification method |
+| Weak baseline | the headline metric | baseline provenance |
+| Unreproducible run | a single score | seeds, execution traces |
+| Result selection | best-of-n | attempt count + selection rule |
+| Hidden labor | the word "autonomous" | per-stage human-in-the-loop points |
+| Dual use | task focus | safety review |
+
+The "hiding proxy" column is the addition worth importing. An evidence gate
+is not only a missing check; it is a check that something *else* is currently
+standing in for — and the substitute is always cheaper to produce and more
+persuasive than the evidence. Fluent prose is easier than a resolvable
+citation; a single score is easier than seeds. That is why the default drifts
+toward the proxy without anyone deciding to.
+
+The survey also measures how often the field supplies each disclosure, across
+24 runnable systems: human-in-the-loop points stated **88%**, code released
+**83%**, attempts and selection policy **67%**, seeds or execution traces
+**38%**, novelty-verification method **38%** — with the caveat that
+second-coder agreement was lower on the novelty and selection dimensions, so
+those two are the softest numbers. The shape matches ng2026agent's 12-system
+audit exactly: artifacts are commonly released, and the checks that would let
+a reviewer *verify* a claim are not. "Code availability is less scarce than
+reproducibility-grade and claim-verification evidence."
+
+For this repo the actionable gap is result selection. A
+`max_consecutive_no_improvement` chain is a best-of-n procedure, and nothing
+in `/derive-experiment` or the experiment template requires recording n and
+the selection rule — the disclosure that targets exactly that failure mode.
+
 ## Implementation guidance
 
 1. **Declare the schema per skill, and keep it one or two elements.** The
@@ -166,10 +207,13 @@ layers share events routinely.
 
 ## Open questions
 
-- **Single-source and unimplemented.** ng2026agent is a position paper
-  with no deployed gate and no before/after measurement. The pattern is
-  cheap and the argument is strong, but a second, empirical attestation
-  should land before this is elevated into claude-system.
+- **Two sources, both unimplemented.** ng2026agent is a position paper with
+  no deployed gate and no before/after measurement; ding2026autonomous is a
+  survey coding other people's reporting. The convergence is real — two
+  independent literatures (safety incidents, AI-scientist audits) derived the
+  same failure-mode → minimum-evidence structure — but neither supplies a
+  deployed gate with a measured effect, so what is still missing before
+  elevation is an *implementation* attestation rather than a third argument.
 - What is the false-*rejection* rate of a real gate? Every check that can
   refuse valid work has a cost the paper does not measure, and a gate
   that blocks a correct submission on a flaky verifier is a new failure

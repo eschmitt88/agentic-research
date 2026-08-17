@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/wang2026naturebench]]"
   - "[[literature/papers/wang2026androids]]"
   - "[[literature/papers/ng2026agent]]"
+  - "[[literature/papers/ding2026autonomous]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -124,6 +125,51 @@ oracle.
    evaluator a proposal specifies — and its patching study shows
    trust-boundary flaws (agent and evaluator sharing an environment)
    cannot be patched after the fact, only designed out.
+
+## Oracles have a strength ordering, and most agents sit near the bottom
+
+This concept has argued for a programmable oracle against the LLM-judge
+alternative as if it were a binary. [[literature/papers/ding2026autonomous]]
+supplies the ordinal scale — a **verification-signal ladder** where a
+domain's trustworthiness under autonomy rises with the strength of the
+independent check it admits:
+
+| Tier | Signal | Exemplar domain |
+|---|---|---|
+| I | sound formal verifier | theorem proving |
+| II | executable tests / process reward | coding agents |
+| III | physical oracle / simulator | self-driving labs |
+| IV | citation / source grounding | deep research |
+| V | proxy reward / threat-to-validity | mechanical L4 loops |
+| VI | human-expert judgment | human–AI collaboration |
+| VII | weak inter-agent signals / logs | multi-agent frameworks |
+| VIII | the model's own judgment | LLM-as-judge |
+
+Two findings make the ladder more than a diagram. First, the placement:
+"most LLM-agent subareas surveyed here rely heavily on the lower tiers
+(IV–VIII) unless a task-specific executable, physical, or formal oracle is
+available." So this concept's preferred design is Tier II at best, and
+achieving even that requires the task to admit an executable check —
+which is the real scarcity, not the willingness to write one. Second, the
+closed-loop finding: of nine L4 (closed-loop) systems in the coded corpus,
+**seven verify by mechanical re-run (Tier V) and one is author-claimed with
+no external check**, so no LLM-era system in the corpus demonstrates an
+externally validated in-loop oracle. The single externally validated case
+predates LLM agents. An autonomous loop whose fitness function is its own
+re-run is at Tier V, not Tier II, however programmatic the code looks.
+
+The tier that matters most for us is the honest one about Tier V: the
+survey notes that the defenses this tier has developed — adversarial
+hacker-fixer loops that harden benchmark verifiers, learned compact
+executable verifiers, weak-to-strong aggregation of many imperfect LLM
+verifiers — "all concede that any single learned check is attackable and
+must be defended or ensembled." A *learned* oracle is not a substitute for
+a deterministic one; it is a Tier-V artifact that needs its own adversary.
+
+Practical use: state which tier a loop's oracle occupies, and treat
+climbing as the improvement direction. This project's own graph checks are
+Tier II where `scripts/kg_lint.py` decides (dead wikilinks, missing
+frontmatter) and Tier VIII wherever a skill judges its own output.
 
 ## The oracle's access restriction, stated formally
 

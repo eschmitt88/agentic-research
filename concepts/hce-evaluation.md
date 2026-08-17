@@ -36,6 +36,7 @@ sources:
   - "[[literature/papers/wang2026androids]]"
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/ng2026agent]]"
+  - "[[literature/papers/ding2026autonomous]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -336,6 +337,42 @@ same shape — this project runs `scripts/kg_lint.py` and hard-fails on HCE
 violations when `/lint` is invoked, but nothing makes a passing lint a
 precondition for a skill declaring itself done. See
 [[concepts/evidence-gated-completion]].
+
+## Nobody's closed loop has an externally validated oracle
+
+[[literature/papers/ding2026autonomous]] audits exactly the systems this
+concept's discipline is meant to protect, and the finding is stark. Of the
+nine closed-loop (L4) systems in its coded corpus, **seven verify by
+mechanical re-run and one is author-claimed with no external check** — so no
+LLM-era system in the corpus demonstrates an externally validated in-loop
+oracle. The single externally validated case predates LLM agents and is
+included as a contrast benchmark. On its eight-tier verification-signal
+ladder, mechanical L4 re-runs sit at **Tier V** (proxy reward /
+threat-to-validity), four tiers below executable tests and five below a sound
+formal verifier.
+
+That is worth internalizing before trusting any autonomous loop's own report
+of its own success, including this project's. A loop whose fitness signal is
+its own re-run has not validated anything externally; it has confirmed that
+its procedure is deterministic.
+
+The survey also supplies the disclosure rates that show where the field's
+integrity effort actually goes, across 24 runnable systems: code released
+83%, human-in-the-loop points stated 88%, attempts and selection policy 67%,
+but **seeds or execution traces 38% and novelty-verification method 38%**
+(the two softest numbers by its own inter-coder agreement). "Code
+availability is less scarce than reproducibility-grade and
+claim-verification evidence; the harder problem is verifying the claims these
+systems produce." HCE's holdout discipline addresses contamination; these
+numbers say the neighbouring failure — a result nobody can re-derive — is
+just as prevalent and less defended.
+
+One caution from its Tier-V discussion that applies directly to how this
+concept's checks should be built: the defenses that tier has developed
+(adversarial verifier-hardening loops, learned executable verifiers,
+weak-to-strong aggregation of imperfect LLM verifiers) "all concede that any
+single learned check is attackable and must be defended or ensembled." Prefer
+a deterministic check to a learned one wherever the property admits it.
 
 ## Open questions
 

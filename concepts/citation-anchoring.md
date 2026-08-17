@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/tang2026memory]]"
   - "[[literature/papers/elkoussy2026agentltl]]"
   - "[[literature/papers/ng2026agent]]"
+  - "[[literature/papers/ding2026autonomous]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -148,6 +149,26 @@ asserts is relevant is still soft evidence. `/lint`'s dead-wikilink check
 is the deterministic verifier this concept already has; the missing step is
 making it a precondition rather than a report. See
 [[concepts/evidence-gated-completion]].
+
+## Anchoring is Tier IV — better than model opinion, weaker than a test
+
+[[literature/papers/ding2026autonomous]]'s verification-signal ladder places
+citation/source grounding at **Tier IV** of eight, above proxy rewards
+(V), human judgment (VI), weak inter-agent signals (VII), and the model's own
+judgment (VIII) — but below a physical oracle (III), executable tests (II),
+and a sound formal verifier (I). That is a useful calibration for this
+concept: an anchor is a real independent check and a large improvement over
+fluent prose, and it is *not* the strongest check available. Where a claim
+could instead be settled by running something, running it is a tier better.
+
+The survey also puts a number on how often a resolvable bibliography is the
+minimum evidence that would have caught a failure — hallucinated citation is
+the first row of its auditability table, hidden by fluent prose — and its
+scope note is worth remembering: most surveyed LLM-agent subareas rely on
+tiers IV–VIII precisely *because* no executable or formal oracle is available
+for their task. Anchoring is the best check available for prose claims, which
+is exactly why it should be enforced mechanically rather than requested
+politely.
 
 ## Open questions
 

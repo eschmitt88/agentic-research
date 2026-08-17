@@ -376,3 +376,5 @@ skills; read by `/lint`.
 2026-08-17 07:34 ingest raw/papers/mason2026missing.pdf → literature/papers/mason2026missing.md (+context-eviction-policy, lossless-context-offload, context-proprioception [seedling→growing, 2nd attestation], multi-granularity-memory, budget-as-ceiling)
 2026-08-17 07:41 ingest raw/papers/panigrahy2026energy.pdf → literature/papers/panigrahy2026energy.md (+spend-forecast-calibration [2nd source], pass-at-k)
 2026-08-17 07:49 ingest raw/papers/bhardwaj2026agent.pdf → literature/papers/bhardwaj2026agent.md (+typed-enforcement [observability-not-prevention refinement], permission-gate-as-architecture, budget-as-ceiling [scope note])
+2026-08-17 07:58 ingest raw/papers/ding2026autonomous.pdf → literature/papers/ding2026autonomous.md (+programmable-evaluator-oracle [verification-signal ladder], evidence-gated-completion [2nd source, seedling→growing], citation-anchoring, hce-evaluation)
+2026-08-17 07:58 digest-autoingest n=6 verdict=go/high

@@ -58,7 +58,13 @@ spend-*policy* concept alongside budget-as-ceiling, hybrid-model-backends,
 scripted-tool-pipelines and context-proprioception. `spend-forecast-calibration`
 (new 2026-08-17, seeded by bai2026how) is that fifth member — whose estimate a
 budget gate may act on, as distinct from where the gate halts. Re-test the
-cluster on the next `/promote-moc`.
+cluster on the next `/promote-moc`. Also new 2026-08-17:
+`evidence-gated-completion` (`growing`, 2 sources — ng2026agent +
+ding2026autonomous), which sits with permission-gate-as-architecture,
+typed-enforcement, citation-anchoring, typed-claim-partition and
+programmable-evaluator-oracle; those are already spread across
+evaluation-integrity, governance-by-architecture and capability-layer, so
+test it for overlap rather than assuming a new theme.
 
 ## Literature / posts (recent)
 
@@ -69,6 +75,7 @@ cluster on the next `/promote-moc`.
 
 ## Literature / papers
 
+- [[literature/papers/ding2026autonomous]] — Autonomous Research Agents: the Verification Gap (119-pp survey reorganized around *verifiability* not capability; 125→35→26 coded corpus, 7 audit dimensions. **The eight-tier verification-signal ladder** — I sound formal verifier → II executable tests → III physical oracle → IV citation grounding → V proxy reward → VI human judgment → VII weak inter-agent → VIII model's own judgment — with most LLM-agent subareas at IV–VIII. Of nine closed-loop L4 systems, 7 verify by mechanical re-run and 1 is author-claimed: **no LLM-era system shows an externally validated in-loop oracle**. Auditability table maps failure mode → *hiding proxy* → minimum evidence; checklist rates: code 83%, HITL 88%, selection policy 67%, seeds/traces 38%, novelty method 38%. Rates self-qualified as directional; rel 5 / cred 3)
 - [[literature/papers/bhardwaj2026agent]] — Agent Behavioral Contracts / AgentAssert (DbC for agent *sessions*: hard/soft invariants + governance + recovery in a YAML DSL, (p,δ,k)-satisfaction, OU drift-bound and compositionality theorems; 1,980 sessions × 7 models × 6 vendors. **Key nuance: the measured effect is observability, not prevention** — contracted agents log 5.2–6.8 soft violations/session vs 0.0–0.3 uncontracted because the control has no predicate to violate, while hard compliance was already at ceiling in both arms; its own ablation shows Θ *rises* when the soft detector is removed. Artifacts patent-pending and unreleased; benchmark grades the DSL against synthetic traces; rel 4 / cred 2)
 - [[literature/papers/panigrahy2026energy]] — A-LEMS / Energy per Successful Goal (energy-per-inference is the wrong unit: inference count is an implementation artifact, so retries vanish — a measured failed attempt drew 2,256.1 J vs 1,358.4 J for the success, hiding 62.4% of true cost. EpG normalizes total workflow energy incl. failures by *accepted* goals; OOI compares against a matched linear baseline. 4.33× overhead across 827 goals (888.1 J vs 205.3 J) from orchestration structure, and OOI *inverts* below 1.0× on tool-augmented tasks — the directional-correctness check. Also names the boundary/attribution/reproducibility biases and a three-hash provenance protocol; 2nd source for spend-forecast-calibration; rel 4 / cred 3)
 - [[literature/papers/mason2026missing]] — Pichay demand paging for context windows (the context window is L1, not RAM; four-level hierarchy L1–L4+Storage each with its own eviction rule and fault path; **21.8% of input tokens measured as structural waste** across 857 production *Claude Code* sessions / 4.45B input tokens; 0.0254% fault rate over 1.39M simulated evictions, 37.1% token reduction in paired runs, and an honest 97%-fault thrashing session that died on the rate limit. Key theory: the **inverted cost model** — keeping costs every turn, faulting costs once, so aggressive eviction is correct by default, Belady's MIN is not optimal, and fault cost scales n² so policy should get *more* conservative at high fill. Code released; 6th source for lossless-context-offload, 2nd for context-proprioception → `growing`; rel 5 / cred 3)
