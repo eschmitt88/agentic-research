@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/hamri2026zebra]]"
   - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/mason2026missing]]"
+  - "[[literature/papers/bhardwaj2026agent]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -329,6 +330,24 @@ And an eviction policy is a spend policy: churn that looks like savings on the
 token-surface metric can be net negative on the bill — the paper's own
 "bytes saved" number was partly self-inflicted re-reads, which it says
 outright. See [[concepts/context-eviction-policy]].
+
+## Scope: a ceiling bounds consumption, not conduct
+
+Worth stating explicitly, because the two get conflated.
+[[literature/papers/bhardwaj2026agent]] draws the line cleanly against
+ye2026agent, which this concept already leans on: resource contracts govern
+*how much* an agent may consume — tokens, time, cost, delegation hierarchies
+with conservation laws — while behavioral contracts govern *how it must
+behave* — preconditions, invariants, drift bounds, recovery. "The two
+frameworks address orthogonal concerns and could be composed: resource
+contracts bounding computation, behavioral contracts bounding behavior."
+
+So a `budget.yaml` ceiling is not a governance mechanism and should not be
+argued as one. It cannot prevent an agent from doing the wrong thing cheaply,
+and the fact that a chain halted at `max_tokens` says nothing about whether
+its work was correct. Behavioral constraints belong to
+[[concepts/typed-enforcement]] and [[concepts/permission-gate-as-architecture]];
+this concept's claim is narrower and stronger for staying narrow.
 
 ## Open questions
 

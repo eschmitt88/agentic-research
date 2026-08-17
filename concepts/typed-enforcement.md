@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/hao2026selfgc]]"
   - "[[literature/papers/elkoussy2026agentltl]]"
+  - "[[literature/papers/bhardwaj2026agent]]"
   - "[[literature/papers/ng2026agent]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -229,6 +230,62 @@ evaluating them. "Formally enforced" should be read as "formally enforced
 modulo the escape hatches," and a design's quality is largely a question of
 how much it pushes into the skeleton versus the hatch. This is the
 cluster's open frontier, not a footnote.
+
+## What the largest cross-vendor test actually shows: measurement, not compliance
+
+NOTES has been watching this thread for evidence that a typed specification
+prevents violations that prose instructions miss.
+[[literature/papers/bhardwaj2026agent]] is the largest attempt so far —
+declarative YAML contracts (preconditions, hard/soft invariants, governance
+policies, recovery) enforced by a runtime monitor over 1,980 sessions, 7
+models, 6 vendors, with an ablation and an adversarial condition — and the
+honest reading is that it does **not** show that. It shows something narrower
+and worth stating precisely.
+
+Contracted agents registered **5.23–6.83 soft violations per session against
+0.00–0.30 uncontracted** (all models, p < 0.0001, Cohen's d 6.70–33.82). Those
+effect sizes look overwhelming until you notice what the control condition
+measures: nothing. Without a specification there is no predicate to violate,
+so the delta is the presence of a *yardstick*, not a change in behavior. The
+paper says so directly: "The value of ABC contracts is not that they eliminate
+violations, but that they make violations measurable. Without a contract, an
+agent's behavioral compliance is undefined." Meanwhile hard compliance was
+already at ceiling in both conditions (five of seven models ≥ 0.989
+contracted; two perfect in *both*), so the contract's contribution to actual
+constraint satisfaction is undemonstrated — and one model logged 4.23 hard
+violations per *contracted* session.
+
+Two refinements for this concept:
+
+1. **Argue the concept on observability and auditability, not on a
+   compliance lift.** A machine-checkable artifact makes non-compliance a
+   defined, countable, attributable event. That is a real and sufficient
+   benefit — it is what turns "the agent seemed to drift" into a number with
+   a timestamp — and it does not require the stronger claim the evidence
+   does not support. Paired with
+   [[literature/papers/elkoussy2026agentltl]], where enforcement *regressed*
+   two strong models, the cluster's honest position is: type the policy
+   because it makes violations visible and reviewable, and be cautious about
+   claiming it makes agents behave better.
+2. **The deterministic half is the enforcing half.** ABC's hard-invariant
+   pass is a separate deterministic evaluation, confirmed by ablation to be
+   structurally independent of everything else; its soft-violation
+   *recovery* path is LLM re-prompting and succeeds 0.17–1.00 of the time
+   depending on backend. The recovery half therefore reintroduces exactly
+   the executor dependency typed enforcement exists to remove. Keep the
+   checker deterministic and treat model-mediated remediation as a
+   best-effort layer, not as part of the guarantee.
+
+A methodological caution about the metric, too: the paper's ablation shows
+its reliability index Θ *rises* by +0.025 when soft constraints are removed,
+because Θ is computed from detected soft violations — ablating the detector
+improves the score. Any enforcement metric defined over its own detections
+has this hazard, which is worth remembering before this project defines one.
+
+Scope limits to carry: single-domain (financial advisory), the benchmark
+grades the DSL against synthetic traces with pre-computed feature fields
+rather than testing live detection, the judge model is also a subject, and
+the implementation and benchmark are patent-pending and **not released**.
 
 ## Composition: when several checkers are cheap, and when they are not
 

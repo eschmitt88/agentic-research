@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/mondl2026autoformalization]]"
   - "[[literature/papers/palumbo2026formal]]"
   - "[[literature/papers/ng2026agent]]"
+  - "[[literature/papers/bhardwaj2026agent]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -326,6 +327,19 @@ interaction passes through the harness), and auditability (tamper-evident
 logs). Complete mediation is the one most easily lost in practice: a
 single tool path that skips the gate voids the property, which is the same
 exclusivity argument this concept already makes.
+
+## Stacking gates is not free
+
+[[literature/papers/bhardwaj2026agent]] reports the practical face of
+ng2026agent's non-disjoint-monitor caveat: layering a declarative contract
+runtime on top of an existing platform guardrail produced *incompatibility*,
+and the paper's conclusion is that "organizations cannot simply layer
+behavioral contracts on top of platform guardrails without compatibility
+testing" — motivating a three-way analysis across no-guardrail, platform
+default, and platform strict configurations. Two gates that each work alone
+can interfere when they observe and act on the same events. Worth treating as
+an integration requirement rather than an edge case whenever a new gate is
+added to an existing stack.
 
 ## The policy artifact, factored out
 
