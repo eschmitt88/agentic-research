@@ -5,6 +5,7 @@ status: seedling
 added: "2026-08-17"
 sources:
   - "[[literature/papers/bai2026how]]"
+  - "[[literature/papers/panigrahy2026energy]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -125,6 +126,42 @@ get:
    its ceiling but blew past its forecast is a calibration failure worth
    logging even though nothing halted; that is the data the next
    forecast needs.
+
+## Normalize by outcomes, not attempts
+
+[[literature/papers/panigrahy2026energy]] supplies the denominator this
+concept's third design consequence asserted without a source. Its argument
+is that the field's unit is simply wrong for agentic work: inference count
+is an *implementation artifact* rather than a task property, so a system
+that retries four times before succeeding reports the same
+energy-per-inference as one that succeeds immediately while consuming ~5×
+the energy. Failed attempts are invisible by construction — and they are not
+cheap. In a measured GSM8K trace the failed attempt drew **2,256.1 J against
+1,358.4 J for the successful one**, so inference-level accounting missed
+**62.4% of that goal's true cost**; failures often cost more than successes
+because the model exhausts more computation before producing invalid output.
+
+Their replacement is **Energy per Successful Goal**: aggregate every attempt
+associated with a goal, divide by the goals an evaluation function accepted.
+Measured this way, agentic workflows cost **4.33× more per successful goal**
+than matched linear baselines (888.1 J vs 205.3 J across 827 goals), with
+the overhead attributed to orchestration structure — retries, intermediate
+planning, recovery — rather than to more inference compute.
+
+Two things follow for forecasting. A forecaster fitted to per-call cost, or
+to successful runs only, is fitted to the wrong quantity and will underrun
+reality by whatever the local retry rate happens to be — compounding the
+downward bias bai2026how already measures. And the anti-gaming rule
+generalizes: goal granularity must be fixed by the *specification*, never by
+the system's internal decomposition, or the unit can be improved by
+re-splitting the work. That is the same structural instinct as fixing the
+holdout outside the agent's reach.
+
+One methodological caution worth carrying into any forecaster built here:
+the paper's *boundary problem*. Allocating cost as rate × wall-time folds in
+fixed setup/teardown, and because short runs finish faster that fixed cost is
+a larger fraction of their total — biasing any agentic-vs-linear ratio toward
+1.0× and hiding real overhead. Measure the window deliberately.
 
 ## Connections
 

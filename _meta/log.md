@@ -374,3 +374,4 @@ skills; read by `/lint`.
 2026-08-17 07:14 ingest raw/papers/bai2026how.pdf → literature/papers/bai2026how.md (seeded concepts/spend-forecast-calibration; +budget-as-ceiling, hybrid-model-backends, context-proprioception, context-eviction-policy)
 2026-08-17 07:22 ingest raw/papers/ng2026agent.pdf → literature/papers/ng2026agent.md (seeded concepts/evidence-gated-completion; +permission-gate-as-architecture, typed-enforcement, typed-claim-partition, hce-evaluation, citation-anchoring, programmable-evaluator-oracle)
 2026-08-17 07:34 ingest raw/papers/mason2026missing.pdf → literature/papers/mason2026missing.md (+context-eviction-policy, lossless-context-offload, context-proprioception [seedling→growing, 2nd attestation], multi-granularity-memory, budget-as-ceiling)
+2026-08-17 07:41 ingest raw/papers/panigrahy2026energy.pdf → literature/papers/panigrahy2026energy.md (+spend-forecast-calibration [2nd source], pass-at-k)
