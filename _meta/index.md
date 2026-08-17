@@ -52,6 +52,14 @@ and `/new-experiment`.
   budget-as-ceiling, constraint-pinning, verified-memory-writes (new
   2026-08-03 — tipped ripe by constraint-pinning).
 
+**MoC candidate — spend / compute economy.** The 2026-08-04→08-17
+`/promote-moc` declines all named the same ripening condition: one genuine
+spend-*policy* concept alongside budget-as-ceiling, hybrid-model-backends,
+scripted-tool-pipelines and context-proprioception. `spend-forecast-calibration`
+(new 2026-08-17, seeded by bai2026how) is that fifth member — whose estimate a
+budget gate may act on, as distinct from where the gate halts. Re-test the
+cluster on the next `/promote-moc`.
+
 ## Literature / posts (recent)
 
 - [[literature/posts/gist-github-com-karpathy-llm-wiki]] — Karpathy's LLM Wiki gist (primary source for [[concepts/llm-wiki-pattern]]: compile-time curation, raw/wiki/schema layers)
@@ -61,6 +69,7 @@ and `/new-experiment`.
 
 ## Literature / papers
 
+- [[literature/papers/bai2026how]] — agent token consumption at scale (8 frontier LLMs × 4 runs × 500 SWE-bench-Verified: input/output ratio 153.85, 4.17M tokens & $1.86/task, ~30× cross-run spread; accuracy peaks at *intermediate* cost with repeated file view/edit as the signature of expensive failure; token efficiency persists across shared-success and shared-failure subsets — a model property, not a task property; cache reads dominate billed cost in every phase; **self-prediction of own token cost r ≤ 0.39 and biased low for all 8 models** — seeds [[concepts/spend-forecast-calibration]]; project site with code + all trajectories; rel 5 / cred 4)
 - [[literature/papers/elkoussy2026agentltl]] — AgentLTL (FO-LTL constraints over tool-call traces: one spec measures, gates, and trains procedural compliance; block-and-warn helps 5/7 models but *regresses* two strong ones and kill-switch enforcement is worst — the cluster's first negative enforcement evidence; κ_ground deterministic trace-grounding predicate for [[concepts/citation-anchoring]] incl. the vacuous-grounding caveat; +38pp held-out accuracy from compliance-reward GRPO; rel 4 / cred 3)
 - [[literature/papers/li2026acm]] — ACM agentic context management (agent-initiated *lossless* compression: `manage_context` offloads raw spans under stable identifiers, `query_memory` recalls by address; dual-constraint teacher pipeline trains when/when-not to compress; +27% BCP for Qwen3.5-9B at ~20% lower peak tokens, code+data+checkpoints; seeds [[concepts/lossless-context-offload]], third source on eviction policy-locus, pass@4-vs-pass⁴ decomposition for [[concepts/pass-at-k]]; rel 4 / cred 4)
 - [[literature/papers/xing2026compute]] — BaSE bandit compute allocation (fixed-budget depth-breadth study: +12.3% mean fitness from allocation alone with model/prompt/evaluator fixed; bandit over K parallel trajectories clears thresholds greedy never reaches; ~510× budget spread across *Evolve systems is hard evidence for [[concepts/pass-at-k]]; code + rliable bootstrap CIs; rel 4 / cred 4)

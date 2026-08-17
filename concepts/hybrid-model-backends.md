@@ -19,10 +19,12 @@ sources:
   - "[[literature/papers/wang2026act]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
+  - "[[literature/papers/bai2026how]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/budget-as-ceiling]]"
+  - "[[concepts/spend-forecast-calibration]]"
   - "[[concepts/skill-library-lifecycle]]"
 related_experiments: []
 tags: [model-selection, budget, ideator-implementer, agent-architecture]
@@ -92,6 +94,30 @@ a role.
    so the project can tell whether the split is earning its keep.
    A project where the implementer burns 10x the ideator's tokens
    but produces worse results should shift budget, not ratios.
+
+## Token efficiency is a model property, not a task property
+
+[[literature/papers/bai2026how]] gives this concept the measurement it was
+missing. Across 8 frontier models × 4 runs × 500 SWE-bench-Verified
+instances, relative token usage holds its ranking on **both** the
+shared-success subset (n=230, solved by every model) and the
+shared-failure subset (n=100, solved by none) — so the spread is not
+"stronger models take on harder problems," it is behavioral. On identical
+tasks Kimi-K2 and Claude Sonnet 4.5 consume over 1.5M more tokens than
+GPT-5, and the fine-grained cause is visible: token-efficient models issue
+fewer file views and edits, while the expensive ones repeat ~50% of their
+file actions on the same file.
+
+Two consequences for role assignment. First, backend choice is a *cost*
+lever independent of capability, so an ideator/implementer split can be
+priced from measured per-model efficiency rather than guessed — and the
+parameters are per-model, which is also why
+[[concepts/spend-forecast-calibration]] must fit per backend. Second, the
+divergence is worst on failure: the success→failure cost increase runs
+<0.5M tokens for GPT-5/5.2 but ~2M for Kimi-K2, because models differ in
+whether they can recognize an unsolvable task and stop. A backend that
+overspends specifically when it is losing is a bad fit for any
+unsupervised chain, however good its ceiling-free benchmark score.
 
 ## Open questions
 

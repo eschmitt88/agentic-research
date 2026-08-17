@@ -20,10 +20,12 @@ sources:
   - "[[literature/papers/besanson2026green]]"
   - "[[literature/papers/hao2026selfgc]]"
   - "[[literature/papers/hamri2026zebra]]"
+  - "[[literature/papers/bai2026how]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
 related_concepts:
+  - "[[concepts/spend-forecast-calibration]]"
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/evolutionary-expansion]]"
   - "[[concepts/typed-claim-partition]]"
@@ -281,6 +283,36 @@ discrete phases, so *phaseless agentic loops* (our dominant shape)
 are explicitly out of scope. The coordinator's suggested session
 budget is the single-phase degenerate case; ZEBRA is the shape a
 multi-phase version would take.
+
+## Whose estimate the gate may use
+
+besanson2026green's predictive pre-action gate needs a cost forecast, and
+[[literature/papers/bai2026how]] settles where that forecast may *not*
+come from: the agent itself. Eight frontier models given full tool
+access, permission to inspect the repository, and an explicit instruction
+to estimate rather than fix reach Pearson r ≤ 0.39 against their own
+actual token usage, and **every one underestimates**, worst on input
+tokens — which are the dominant term (input/output ratio 153.85 in
+agentic coding, ~$1.86 and 4.17M tokens per SWE-bench-Verified task
+against $0.023 for multi-turn chat). A self-estimated reservation
+therefore fails in the admitting direction. This does not weaken the
+gate; it relocates the estimator outside the agent and makes the
+one-sided conformal margin mandatory rather than tidy. The full argument,
+including why forecasting is a different problem from
+[[concepts/context-proprioception]], lives in
+[[concepts/spend-forecast-calibration]].
+
+Two further results from the same paper bear on ceilings directly. The
+inverse-scaling finding — accuracy peaks at intermediate cost and then
+saturates, with high-cost runs showing sharply more *repeated* file views
+and edits — means an expensive run is weak evidence of a hard problem and
+decent evidence of an unproductive loop, which is the empirical case for
+`max_consecutive_no_improvement` as a first-class ceiling rather than a
+nicety. And the success→failure cost increase is model-specific (<0.5M
+extra tokens for GPT-5/5.2, ~2M for Kimi-K2) because models lack a
+reliable mechanism to recognize an unsolvable task and stop: the ceiling
+substitutes for a missing capability, and how much it must substitute
+depends on the backend.
 
 ## Open questions
 

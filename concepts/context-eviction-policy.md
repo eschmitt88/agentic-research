@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/chen2026governance]]"
   - "[[literature/papers/hao2026selfgc]]"
+  - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/li2026acm]]"
   - "[[literature/papers/dang2026addressable]]"
   - "[[literature/papers/xu2026llm]]"
@@ -244,6 +245,31 @@ what gets dropped to disk?
    copied as a constant, but the shape generalizes: eviction policy is
    a spend policy ([[concepts/budget-as-ceiling]]), and the cache term
    is why "evict as soon as you can" is wrong.
+
+## Cache reads are the dominant cost line
+
+Eviction policies are usually argued in tokens; the bill is in dollars,
+and [[literature/papers/bai2026how]] shows the two diverge. Decomposing
+Claude Sonnet 4.5 trajectories into the four separately-priced categories
+(non-cached input, output, cache creation, cache read), **cache reads
+dominate both raw token volume and dollar cost in every phase** of the
+trajectory — Setup, Explore, Fix, Validate, Closeout — even though output
+tokens are priced roughly 80× higher per token. Accumulated reuse of
+prior context simply outweighs generation. Per-round cost is
+non-monotonic, and the spikes come from what the agent *adds* to context
+that round (repository exploration, file creation, test execution, final
+summarization), not from the steady accumulated cost of re-reading it.
+
+Two things follow. First, hao2026selfgc's `L_cache_break` term is not a
+rounding error — if cache reads are the largest cost category, then
+invalidating the provider prefix cache is the most expensive thing an
+eviction can do, and a policy tuned on token surface will misprice it.
+Evaluate eviction on billed cost. Second, the behavioral signature of
+expensive failure is measured here: repeated file *view* and *modify*
+actions on the same file rise sharply with cost quartile, and accuracy
+peaks at intermediate cost then saturates. Redundant re-reading is both
+the thing eviction should target and the reason an expensive run is weak
+evidence of a hard problem.
 
 ## Connections
 
