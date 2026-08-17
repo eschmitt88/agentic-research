@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/lupidi2026airsbench]]"
   - "[[literature/papers/xing2026compute]]"
   - "[[literature/papers/li2026acm]]"
+  - "[[literature/papers/panigrahy2026energy]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -131,6 +132,29 @@ compute each.
    cell. For any comparison this project treats as load-bearing, a
    bootstrap CI over the seed distribution is the minimum bar; a mean
    ± std over k=3 does not support a claim that A beats B.
+
+## The same denominator argument, in energy
+
+[[literature/papers/panigrahy2026energy]] makes this concept's move on the
+cost side rather than the score side, which is a useful independent
+statement of the principle. Its objection to energy-per-inference is exactly
+pass@1's problem with a single sample: the unit counts *attempts* and so is
+blind to the distribution of outcomes across them. Its fix — Energy per
+Successful Goal, aggregating every attempt including failures and retries
+and dividing by goals actually accepted — is the cost-side analogue of
+scoring a method by what it delivers over k tries rather than by one run.
+
+Measured consequence: a failed attempt drew 2,256.1 J against 1,358.4 J for
+the successful one on the same goal, so per-inference accounting missed
+62.4% of true cost; agentic workflows come out at 4.33× the energy per
+successful goal of matched linear baselines. Two rules transfer. Always
+normalize by outcomes, never by attempts — on both axes, since a method that
+looks efficient per call and a method that looks strong per sample can be
+the same method measured twice charitably. And **granularity must be fixed
+by the specification, not by the system**: the paper pins one benchmark row
+to one goal precisely so a system cannot improve its number by
+re-decomposing the work, the same defense pass@k needs against redefining
+what counts as an attempt.
 
 ## Open questions
 
