@@ -372,3 +372,4 @@ skills; read by `/lint`.
 2026-08-17 07:06 fetch-paper https://arxiv.org/abs/2602.22302 → raw/papers/bhardwaj2026agent.pdf
 2026-08-17 07:06 fetch-paper https://arxiv.org/abs/2608.05179 → raw/papers/ding2026autonomous.pdf
 2026-08-17 07:14 ingest raw/papers/bai2026how.pdf → literature/papers/bai2026how.md (seeded concepts/spend-forecast-calibration; +budget-as-ceiling, hybrid-model-backends, context-proprioception, context-eviction-policy)
+2026-08-17 07:22 ingest raw/papers/ng2026agent.pdf → literature/papers/ng2026agent.md (seeded concepts/evidence-gated-completion; +permission-gate-as-architecture, typed-enforcement, typed-claim-partition, hce-evaluation, citation-anchoring, programmable-evaluator-oracle)

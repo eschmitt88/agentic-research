@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/hao2026selfgc]]"
   - "[[literature/papers/elkoussy2026agentltl]]"
+  - "[[literature/papers/ng2026agent]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -228,6 +229,42 @@ evaluating them. "Formally enforced" should be read as "formally enforced
 modulo the escape hatches," and a design's quality is largely a question of
 how much it pushes into the skeleton versus the hatch. This is the
 cluster's open frontier, not a footnote.
+
+## Composition: when several checkers are cheap, and when they are not
+
+[[literature/papers/ng2026agent]] answers a question this concept has been
+silent on: what happens when you deploy *several* deterministic checkers
+at once. Model each as a deterministic finite automaton over an
+observation alphabet (a harness monitor) and each evidential gate as an
+evidence-chain checker; the composed harness enforces the conjunction of
+their properties. The cost of verifying the composition is **polynomial
+when the observation alphabets are pairwise disjoint** (standard parallel
+composition of finite-state monitors, with disjointness guaranteeing
+non-interference) and in the disjoint or sequential cases stays tractable
+for the small-state monitors typical of deployed harnesses. When monitors
+**share events**, disjointness fails, non-interference is no longer free,
+and one falls back to assume-guarantee reasoning — exponential in the
+general case.
+
+That condition is the load-bearing caveat for us, because a real hook
+layer violates it by default: a permission gate and a trajectory monitor
+both observe `tool_call`. So "add another checker" is not automatically a
+free move, and a claude-system hook set whose members observe overlapping
+events has no polynomial guarantee behind it. Worth knowing before
+treating hook composition as costless.
+
+The paper is also careful about what a checker buys, in terms this concept
+should adopt: the guarantee is not that a checked artifact is correct — "a
+flaky test still produces wrong gates" — but that **architectural
+responsibility** moves, with the burden of producing the artifact on the
+agent and the burden of verifying it on the harness, "not to a reasoning
+chain inside the model." Its hard/soft evidence criterion gives the
+type-level version: a property is checkable if some deterministic
+polynomial-time verifier can decide it from an event plus *external
+reference state, without access to the agent's internal state*. That
+access restriction is the cleanest formal statement of what makes an
+artifact enforceable rather than merely asserted. See
+[[concepts/evidence-gated-completion]].
 
 ## Connections
 

@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/wang2026search]]"
   - "[[literature/papers/tang2026memory]]"
   - "[[literature/papers/elkoussy2026agentltl]]"
+  - "[[literature/papers/ng2026agent]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -120,6 +121,33 @@ explicit anchors moves the defect from invisible to grepable.
    entities passes trivially, so strict-grounding prompts inflate the
    metric with empty answers. Any `/lint`-style anchor check needs a
    non-emptiness condition alongside the witness condition.
+
+## Anchoring is the largest single category of false completion
+
+[[literature/papers/ng2026agent]]'s false-completion audit gives this
+concept its base rate. Of 32 documented cases where an agent claimed
+correctness contradicted by ground truth, the largest group — **8 of 32**
+— would have been caught by nothing more than a citation lookup, more than
+test runs (7), human approval (5), external-state checks (3), or a
+screenshot (1). The canonical instances are the ones now in the public
+record: six fabricated federal appellate citations in *Mata v. Avianca*, a
+false Washington Post quote accusing a law professor of misconduct, Air
+Canada's assistant inventing a refund policy the airline was held to,
+Cursor's support bot fabricating its own company policy, and OpenAI's
+Whisper hallucinating phrases in ~1% of audio transcriptions.
+
+It also gives the concept a type criterion. A "plausible model output
+serves as soft evidence (it relies on trusting the agent's self-report),
+while a grounded citation or a passing test re-run offers hard evidence
+(the harness can verify its existence without the model's reasoning)."
+That distinction tightens this concept's rule: an anchor is only an anchor
+if a deterministic verifier can resolve it against external state — a
+wikilink that resolves to an existing file, a `metrics.json` field that
+exists, a `file:line` that is really there. An anchor the agent merely
+asserts is relevant is still soft evidence. `/lint`'s dead-wikilink check
+is the deterministic verifier this concept already has; the missing step is
+making it a precondition rather than a report. See
+[[concepts/evidence-gated-completion]].
 
 ## Open questions
 

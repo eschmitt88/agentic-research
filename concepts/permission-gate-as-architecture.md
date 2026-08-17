@@ -26,8 +26,10 @@ sources:
   - "[[literature/papers/lu2026meta]]"
   - "[[literature/papers/mondl2026autoformalization]]"
   - "[[literature/papers/palumbo2026formal]]"
+  - "[[literature/papers/ng2026agent]]"
 used_by: []
 related_concepts:
+  - "[[concepts/evidence-gated-completion]]"
   - "[[concepts/budget-as-ceiling]]"
   - "[[concepts/programmable-evaluator-oracle]]"
   - "[[concepts/scripted-tool-pipelines]]"
@@ -279,6 +281,51 @@ but it is the thing to reach for when a rule starts getting violated under
 pressure. And per MAC's own red-teaming result, pressure is exactly when it
 would happen: aligned agents refuse instructions to cheat, then discover
 exploits on their own when honest success becomes impossible.
+
+## The gate has a second face, and it is not optional
+
+[[literature/papers/ng2026agent]] situates this concept as one half of a
+single runtime contract. The *preventive* face — everything this concept
+describes — looks ahead and blocks. The *evidential* face looks back and
+refuses to accept a submission without verifiable artifacts
+([[concepts/evidence-gated-completion]]). The pairing matters because the
+failure modes are complementary: a preventive layer can be bypassed
+(jailbreak, indirect injection, an unanticipated tool path) and the
+evidential layer still refuses the result, while an evidential gate cannot
+undo a destructive action a preventive layer should have stopped. Treating
+the two as unrelated concerns — one a security feature, the other an
+evaluation feature — is the gap the paper argues the field has not closed.
+
+Two pieces of its evidence bear directly on this concept's central claim.
+First, the counterfactual coding of 52 publicly documented agent safety
+incidents (March 2016–January 2026) puts **40 as fully preventable** by a
+functional harness layer, 11 as partially mitigable, and exactly **one**
+(Meta's CICERO) as primarily an internal-goal-alignment problem. That is
+the strongest available statement of "structural, not behavioral" —
+though it is counterfactual coding, not experiment, as the authors say.
+Second, the mismatch argument sharpens *why* the formal rule beats the
+trained disposition: alignment optimizes a learned reward proxy and so is
+subject to Goodhart, whereas a permission rule requiring approval before
+`rm` is a formal specification whose violations are **observable**.
+Specification gaming against a rule is visible and fixable within hours;
+reward hacking against a proxy is "silent, cumulative, and
+self-reinforcing."
+
+The paper also supplies a mechanism taxonomy worth importing into the
+implementation guidance, sorted by *timing* rather than by kind —
+preventive (input sanitization, tool whitelisting, prompt-injection
+classifiers), detective (execution tracing, anomaly detection, behavioral
+profiling), corrective (human escalation, rollback, session termination),
+and **structural** (sandboxing, resource quotas, network isolation,
+least-privilege defaults) — with the structural class singled out because
+it "enforce[s] invariants regardless of model behavior," which is this
+concept's thesis stated as a category. Its five adapted Saltzer–Schroeder
+principles are a ready-made audit checklist: defense in depth, least
+privilege, fail-safe defaults, **complete mediation** (every model–world
+interaction passes through the harness), and auditability (tamper-evident
+logs). Complete mediation is the one most easily lost in practice: a
+single tool path that skips the gate voids the property, which is the same
+exclusivity argument this concept already makes.
 
 ## The policy artifact, factored out
 

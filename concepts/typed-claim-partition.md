@@ -12,8 +12,10 @@ sources:
   - "[[literature/papers/xu2026researchclawbench]]"
   - "[[literature/papers/yu2026knows]]"
   - "[[literature/papers/sharma2026smsr]]"
+  - "[[literature/papers/ng2026agent]]"
 used_by: []
 related_concepts:
+  - "[[concepts/evidence-gated-completion]]"
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -129,6 +131,35 @@ in any one entity type. Two unrelated projects converging on "type
 the claim, don't just score it" from opposite directions (evaluation
 vs. interchange format) is stronger evidence for the pattern than
 either paper alone.
+
+## The type criterion, stated as a verifier
+
+This concept's provenance annotations (tool-observed / signal-observed /
+model-inferred) have been a useful taxonomy without a decision procedure.
+[[literature/papers/ng2026agent]] supplies one. Let V be a set of
+deterministic polynomial-time verifiers, each able to read an event and
+**external reference state but not the agent's internal state**; an event
+provides *hard* evidence for a property φ if some v ∈ V returns
+ACCEPT/REJECT on it, and *soft* evidence otherwise — where soft means its
+support for φ depends on the correctness of model-generated content.
+
+The access restriction is what makes this a type and not a vibe. A
+chain-of-thought trace, a claimed diff, and a self-assessment are all soft
+by construction, because verifying them means trusting the producer. A
+test-suite exit code, a commit hash, a content-addressed file diff, a
+citation lookup against a known URL, and a database snapshot diff are
+hard, because acceptance "does not depend on trust in the agent's internal
+state." Mapped onto this concept: *grounded* should mean hard-verified,
+not merely accompanied by a reference the agent asserts is relevant.
+
+The paper's false-completion audit is the cost of getting this wrong,
+sorted by what the missing type would have caught: of 32 documented cases
+where an agent claimed correctness that ground truth contradicted, 13 were
+hallucinated, 8 broken, 5 side-effect, 4 partial, 2 reward-hacked — and
+each reduced to a *one-element* evidence requirement (8 citation lookups,
+7 test runs, 5 human approvals, 3 external-state checks, 1 screenshot).
+The typology is cheap to act on once the types are decidable. The
+completion-boundary application is [[concepts/evidence-gated-completion]].
 
 ## Open questions
 
