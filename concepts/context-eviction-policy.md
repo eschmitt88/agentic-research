@@ -38,6 +38,7 @@ sources:
   - "[[literature/papers/li2026acm]]"
   - "[[literature/papers/dang2026addressable]]"
   - "[[literature/papers/xu2026llm]]"
+  - "[[literature/papers/mason2026missing]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -270,6 +271,114 @@ actions on the same file rise sharply with cost quartile, and accuracy
 peaks at intermediate cost then saturates. Redundant re-reading is both
 the thing eviction should target and the reason an expensive run is weak
 evidence of a hard problem.
+
+## The cost model is inverted, and it changes the optimal policy
+
+Every classical replacement algorithm — FIFO, LRU, Clock, Working Set,
+Belady's MIN — minimizes *faults*, because in virtual memory keeping a page
+is free and faulting costs disk I/O.
+[[literature/papers/mason2026missing]] points out that LLM context inverts
+both terms: **keeping costs tokens on every turn, faulting costs once.** A
+5,000-token file resident for 20 turns costs 100,000 input tokens; re-reading
+it when needed costs 5,000. So the objective is not fault minimization but
+
+    min Σ_p [ C_keep(p) + C_fault(p) ],  C_keep = |p|·T_resident·c_token
+
+with break-even `|p|·T_until_next_ref > |p|`, which reduces to a rule this
+concept can state in one line: **evict whenever the page will not be
+referenced for more than one turn.** Two consequences follow that are the
+opposite of received wisdom. Aggressive eviction is *correct by default* —
+which is why the paper's deliberately minimal FIFO policy (τ = 4 user-turns)
+achieved a 0.0254% fault rate over 1,393,000 simulated evictions, despite
+FIFO being the worst-performing classical policy. And Belady's MIN is not
+optimal here: under inverted costs the optimal policy evicts a page whose
+next reference is distant *immediately*, trading one fault for many turns of
+keep cost.
+
+Four refinements the paper argues (and does not yet evaluate) are worth
+importing as guidance, because each contradicts an intuition:
+
+1. **Get more conservative as pressure rises, not less.** Fault cost is not
+   linear in page size: a fault requires an extra full inference pass, and
+   attention is O(n²) in sequence length, so the true cost is proportional
+   to n² at the *current* fill. At low fill (~40K) faults are cheap and
+   aggressive eviction is right; above ~100K the extra pass costs roughly
+   (n+|p|)² ≈ n², so the policy should evict only what it is highly
+   confident will never be referenced again. The naive instinct — evict
+   harder under pressure — is backwards.
+2. **Size drives eviction priority.** Unlike classical VM's uniform 4KB
+   pages, a recalled object may be a 3-line summary or a 200-line file, and
+   a 10,000-token page costs ten times as much per turn as a 1,000-token
+   one. Evict large pages eagerly unless access frequency justifies the keep
+   cost. The paper calls for a *size-aware, fill-sensitive* policy with no
+   analogue in the VM literature.
+3. **Batch structural mutations; they invalidate the prefix cache.** A
+   collapse of 12 orientation turns dropped the observed cache hit rate from
+   100% to 25% for one turn — ~105K tokens of recompute, comparable to
+   several page faults — before recovering. "A collapse that saves 10KB of
+   context but invalidates a 100K-token cached prefix is a net loss." Prefer
+   infrequent large collapses to frequent small ones and pay the
+   invalidation once. This is independent confirmation of hao2026selfgc's
+   `L_cache_break` term, measured on a different system.
+4. **Pins should decay.** One fault currently pins a page for the session,
+   but a fault says the content was needed *then*. Halve pin strength every
+   K turns since last access and let the page become evictable when
+   projected keep cost exceeds fault cost — LRU-like behavior with
+   cost weighting, and a guard against the monotonic working-set growth
+   permanent pinning causes.
+
+## Count garbage collection separately from paging
+
+The same paper supplies a measurement discipline this concept needs to state
+its own fault rates honestly. Ephemeral tool output — Bash results, search
+output, directory listings — has no stable identity and cannot be
+meaningfully re-requested, so removing it is *garbage collection* and
+**cannot** cause a fault. Only *paging* of addressable content (file reads,
+plan documents, specifications) can. Conflating them "inflates the eviction
+denominator and deflates the apparent fault rate." In the paper's own
+steady-state production session, 11 of 15 evictions were garbage collection
+and only 4 were pageable — a 3.75× difference in the denominator.
+
+## The failure mode has a name, and a monetary cost
+
+The concept's honest negative evidence is this paper's 681-turn multi-agent
+session: 680 evictions, **659 page faults — a 97% fault rate**. Three
+diagnosable patterns, all classical: a *thrashing cycle* (three files
+faulted repeatedly across turns 163–170+ because the working set exceeded
+the resident set), a *sequential scan* (planning across three repositories
+re-read the same 7 files, a working set larger than the age threshold
+allowed), and **self-inflicted inflation** — the 5,038KB pre-compaction size
+included re-reads *caused by previous evictions*, so the proxy was measuring
+its own overhead as "bytes saved." The session terminated on the API **rate
+limit**, not the context limit: at 659 faults, each an inference-priced
+round trip, thrashing consumed the rate budget faster than useful work.
+
+Three things to carry from that. Age is the wrong signal for a hot page —
+the single fault in the paper's *healthy* session was a plan file read early
+and needed throughout, which FIFO treats as cold, "the classic working set
+failure: the eviction policy measures age, not access pattern." Fault cost
+is monetary, so an eviction policy is a spend policy
+([[concepts/budget-as-ceiling]]). And a compaction mechanism that does not
+**count its own faults cannot distinguish savings from churn** — the 97%
+rate was visible only because the proxy logged every decision, which argues
+a fault-rate counter belongs in the harness alongside the eviction itself.
+
+## Why the waste exists at all
+
+Worth recording because it explains why this is an architectural concern
+rather than a bug queue. mason2026missing measures 21.8% of input tokens as
+structural waste across 857 production Claude Code sessions (4.45B effective
+input tokens) — dead tool output, tool-definition schemas for tools never
+invoked (18 definitions sent per call against a median of 3 used, ~52.5KB
+wasted), static system-prompt re-send, and skill lists sent three times —
+and attributes it to four reinforcing causes: training data consists of
+monotonically growing conversations with no examples of intelligent content
+removal; the Messages API is a list whose natural operation is append, with
+no way to mark content stale; every orchestration framework appends by
+default; and **token consumption is billed after the fact, so there is no
+backpressure signal**. Quality degradation from bloat is invisible unless
+someone measures it. That last point is the reason this concept has to be
+designed rather than discovered.
 
 ## Connections
 
