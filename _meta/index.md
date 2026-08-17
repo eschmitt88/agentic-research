@@ -28,6 +28,15 @@ and `/new-experiment`.
   knowledge-organization when the cluster the 2026-08-04→08-09
   promote-moc declines tracked reached 7 with 2 outside the parent
   (new 2026-08-10 — tipped ripe by lossless-context-offload).
+- [[mocs/compute-economy]] — how an autonomous agent decides what to
+  spend, knows what it will spend, and accounts for what it spent;
+  6 concepts in three layers: **know the number**
+  (spend-forecast-calibration, context-proprioception), **spend it well**
+  (hybrid-model-backends, scripted-tool-pipelines, async-worker-pool),
+  **stop when it's gone** (budget-as-ceiling). New 2026-08-17 — tipped ripe
+  by spend-forecast-calibration, the exact ripening condition the five
+  2026-07-07→08-17 promote-moc declines named. Max overlap with any existing
+  MoC is 2/6.
 - [[mocs/agent-architecture]] — how a long-horizon autonomous agent is
   built (substrate / orchestration / execution).
 - [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over
@@ -52,19 +61,15 @@ and `/new-experiment`.
   budget-as-ceiling, constraint-pinning, verified-memory-writes (new
   2026-08-03 — tipped ripe by constraint-pinning).
 
-**MoC candidate — spend / compute economy.** The 2026-08-04→08-17
-`/promote-moc` declines all named the same ripening condition: one genuine
-spend-*policy* concept alongside budget-as-ceiling, hybrid-model-backends,
-scripted-tool-pipelines and context-proprioception. `spend-forecast-calibration`
-(new 2026-08-17, seeded by bai2026how) is that fifth member — whose estimate a
-budget gate may act on, as distinct from where the gate halts. Re-test the
-cluster on the next `/promote-moc`. Also new 2026-08-17:
-`evidence-gated-completion` (`growing`, 2 sources — ng2026agent +
-ding2026autonomous), which sits with permission-gate-as-architecture,
-typed-enforcement, citation-anchoring, typed-claim-partition and
-programmable-evaluator-oracle; those are already spread across
-evaluation-integrity, governance-by-architecture and capability-layer, so
-test it for overlap rather than assuming a new theme.
+**MoC candidate — verification / completion.** `evidence-gated-completion`
+(new 2026-08-17, `growing`) was tested as a possible standalone theme with
+permission-gate-as-architecture, typed-enforcement, citation-anchoring,
+typed-claim-partition and programmable-evaluator-oracle, and **declined**:
+[[mocs/evaluation-integrity]] already holds 4 of those 7 (≥ half), so per the
+overlap rule the concept was added to the two existing MoCs it belongs to
+([[mocs/evaluation-integrity]] as the completion boundary,
+[[mocs/governance-by-architecture]] as the backward-looking gate) rather than
+spawning a fourth framing of the same material.
 
 ## Literature / posts (recent)
 

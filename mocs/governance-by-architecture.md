@@ -9,6 +9,7 @@ concepts:
   - "[[concepts/budget-as-ceiling]]"
   - "[[concepts/constraint-pinning]]"
   - "[[concepts/verified-memory-writes]]"
+  - "[[concepts/evidence-gated-completion]]"
 tags: [moc, governance, enforcement, policy, determinism, safety, architecture]
 ---
 
@@ -75,6 +76,36 @@ enforcement logic rather than their home subsystem.
   store's *write path*: coverage / preservation / faithfulness
   checked at consolidation time, because a flawed write compounds
   across every later retrieval.
+
+## The other direction: gates that look backward
+
+Every gate above looks *ahead* and blocks. [[literature/papers/ng2026agent]]
+argues that a runtime contract has a second, complementary face that looks
+*back* and refuses to accept — and that treating the two as unrelated
+concerns (one a security feature, one an evaluation feature) is the gap the
+field has not closed.
+
+- [[concepts/evidence-gated-completion]] — "done" is a harness verdict, not
+  a model assertion: the harness accepts a submission only when it can
+  construct an evidence chain of events a deterministic verifier can check
+  *without access to the agent's internal state*. That access restriction is
+  this MoC's determinism requirement stated at the type level, and it gives
+  the cluster its cleanest hard/soft criterion — a chain-of-thought trace is
+  soft, a test exit code, commit hash, or resolvable citation is hard.
+  Tamper-resistance is structural: the trajectory is a hash chain, so
+  editing a cited event invalidates every hash after it.
+
+The asymmetry is why both faces are needed. A preventive layer can be
+bypassed and the evidential layer still refuses the result; an evidential
+gate cannot undo a destructive action a preventive layer should have
+stopped. One caveat this MoC should carry: composing monitors is
+polynomial only when their observation alphabets are **pairwise disjoint**,
+and real hook layers routinely share events (a permission gate and a
+trajectory monitor both observe `tool_call`), which drops the guarantee to
+assume-guarantee reasoning. Empirically confirmed the hard way — layering a
+contract runtime over an existing platform guardrail produced
+incompatibility rather than defense in depth
+([[literature/papers/bhardwaj2026agent]]).
 
 ## The shared honest limit
 
