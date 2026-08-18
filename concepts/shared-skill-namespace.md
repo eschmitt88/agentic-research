@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/huang2026skillwiki]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
+  - "[[literature/papers/kim2026why]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"

@@ -40,6 +40,7 @@ sources:
   - "[[literature/papers/xu2026llm]]"
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/cheng2026agenticsts]]"
+  - "[[literature/papers/kim2026why]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/huang2026skillwiki]]"
   - "[[literature/papers/tang2026memory]]"
   - "[[literature/papers/cheng2026agenticsts]]"
+  - "[[literature/papers/kim2026why]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -312,6 +313,61 @@ a separate diagnostic rather than pooled, because they do not transfer
 cleanly. A distilled skill library may be a per-model artifact, which would
 be a real constraint on [[concepts/shared-skill-namespace]] — worth
 watching for a second source.
+
+## The loading function is a first-class component, and an unscoped library is worth nothing
+
+The strongest result in this cluster, and it is a negative one.
+[[literature/papers/kim2026why]] holds a **159-skill inventory, model,
+pipeline and budget constant** across 8 MLE-Bench competitions and varies
+only *which skills enter context*:
+
+| Loading | Medal rate | Output tokens | Tokens/medal |
+|---|---|---|---|
+| Tiered (scope-matched, 10–60 entries) | **8/8** | 2.27M | **284K** |
+| Flat (all 159, ~145K chars) | 5/8 | 3.78M | 756K |
+| Empty (no skills) | 5/8 | 1.86M | 371K |
+
+**Flat loading performs exactly as well as loading nothing, at twice the
+token cost.** A skill library without a scoping function is not a weak
+library — it is inert, and per token spent it is worse than having no
+library. Flat also ran the *most* experiments (75 vs 60) at a slightly
+higher execution success rate, so the additional attempts were simply
+poorly directed.
+
+Three mechanisms, diagnosed from logs rather than asserted:
+
+- **Signal dilution** — relevant skills buried among entries scoped to
+  unrelated tasks.
+- **Context budget displacement** — 145K characters of skill dump "crowds
+  out the agent's own reasoning and code analysis."
+- **Overconfident priors** — the sharpest instance: on one NLP task the
+  flat-loaded agent repeatedly attempted DeBERTa-v3-large and hit OOM,
+  while the **skill-free** agent picked simpler models and scored *higher*
+  (0.985 vs 0.981). A domain prior actively misled it.
+
+The scoping axis is **applicability scope**, and it is made to coincide
+with the agent hierarchy: global skills (5) load for every specialist,
+domain skills (19 tabular / 12 NLP / 15 vision) only for the matching
+specialist, competition skills (108) only on a re-run of that task. An
+agent structurally cannot see out-of-scope knowledge — an information
+boundary enforced by architecture rather than by relevance ranking.
+
+**Promotion keeps contradictions instead of resolving them.** Each new
+learning is classified `skip` / `competition` / `domain` / `global` /
+`conflict`, and "when two learnings conflict, both are kept and annotated
+with conditions" — e.g. ensembling helps when correlation is below 0.95 but
+hurts when a weak member drags down a strong one. That is the right default
+for a store that accumulates across contexts, and it is the opposite of a
+last-write-wins update; compare [[concepts/verified-memory-writes]].
+
+Two honest limits before importing. The promotion step — the thing that
+*builds* the hierarchy — is explicitly unevaluated ("we do not yet measure
+how often it assigns the correct tier"), so the evidence is for loading
+given a hierarchy, not for constructing one. And the flat baseline is
+dump-everything, not **retrieval over a flat pool at matched context
+size**, which is what most systems would actually build. The finding
+supports *scope your loading*; it does not yet establish that a hand-built
+tier hierarchy beats good retrieval.
 
 ## Open questions
 
