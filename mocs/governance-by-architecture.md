@@ -10,6 +10,7 @@ concepts:
   - "[[concepts/constraint-pinning]]"
   - "[[concepts/verified-memory-writes]]"
   - "[[concepts/evidence-gated-completion]]"
+  - "[[concepts/refusal-cost-symmetry]]"
 tags: [moc, governance, enforcement, policy, determinism, safety, architecture]
 ---
 
@@ -17,8 +18,8 @@ tags: [moc, governance, enforcement, policy, determinism, safety, architecture]
 
 When an autonomous agent must obey a constraint — a permission, a
 budget, a standing policy, a memory-integrity rule — what actually
-guarantees compliance? The five concepts here converge on one answer
-from five directions: **the constraint is enforced by deterministic
+guarantees compliance? The seven concepts here converge on one answer
+from several directions: **the constraint is enforced by deterministic
 code at a structural site in the harness, never by prose the model is
 asked to honor.** Prose policy admits no enforcement semantics and
 degrades exactly when optimization pressure is highest; the measured
@@ -106,6 +107,35 @@ assume-guarantee reasoning. Empirically confirmed the hard way — layering a
 contract runtime over an existing platform guardrail produced
 incompatibility rather than defense in depth
 ([[literature/papers/bhardwaj2026agent]]).
+
+## What the enforcement numbers do not show
+
+Every measured failure rate in this MoC is one-directional: violations that
+got through. [[concepts/refusal-cost-symmetry]] is the counterweight — the
+claim that a gate scored only on what it catches has not been scored at all,
+because the conservative failure is invisible to that metric and a gate that
+blocks everything wins it outright.
+
+The magnitudes justify the concern. [[literature/papers/ray2026what]]'s
+closed-loop gate cuts attack success from .047 to .004 by blocking **78% of
+all calls**, taking task success from .254 to .180 — and its conformal
+calibration returns the vacuous block-all rule for every one of 23 judges at
+the tight tolerance. [[literature/papers/ge2026governance]] shows why this
+worsens in deployment rather than improving: at a realistic 1% attack
+prevalence, even the best judge's precision falls to **22.7%**, so three of
+four blocks are false alarms. And [[literature/papers/ho2026soundnessbench]]
+demonstrates that instructing a model to be stricter does not make it
+discerning — it moves the errors from one class to the other while the
+aggregate quality metric falls.
+
+This settles the standing false-refusal-cost question in
+[[concepts/permission-gate-as-architecture]] in the unwelcome direction: the
+cost is large, not marginal, and it is where the frontier sits rather than a
+tuning defect. What stays open is the **weighting** — every source scores a
+wrong block and a wrong allow as equal, which is a modeling choice nobody in
+the cluster has justified, and in a research loop the two errors plainly
+differ (a wrongly-permitted fabricated result may be unrecoverable; a
+wrongly-blocked experiment costs a retry).
 
 ## The shared honest limit
 

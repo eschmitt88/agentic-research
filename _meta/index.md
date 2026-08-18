@@ -40,11 +40,14 @@ and `/new-experiment`.
 - [[mocs/agent-architecture]] — how a long-horizon autonomous agent is
   built (substrate / orchestration / execution).
 - [[mocs/evaluation-integrity]] — keeping the evaluation signal honest over
-  long search loops; 7 concepts: hce-evaluation, pass-at-k,
+  long search loops; 9 concepts: hce-evaluation, pass-at-k,
   citation-anchoring, typed-claim-partition, programmable-evaluator-oracle,
-  compression-as-generalization-test, information-firewall (`growing` —
-  third attestation 2026-07-28 adds *time* as a boundary axis alongside
-  file space and retrieval space).
+  compression-as-generalization-test, information-firewall,
+  evidence-gated-completion, refusal-cost-symmetry (`growing` — 2026-08-18
+  adds refusal-cost-symmetry, which sits *outside* the containment
+  hierarchy: it is the check on whether any of the other eight is working,
+  since each one's headline number improves monotonically as it gets
+  stricter).
 - [[mocs/autonomous-search-loop]] — how an autonomous agent searches a vast
   candidate space productively; 5 concepts: evolutionary-expansion,
   evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool,
@@ -57,9 +60,11 @@ and `/new-experiment`.
   factored out from the gate's placement).
 - [[mocs/governance-by-architecture]] — what makes a stated constraint
   *binding*: enforcement by deterministic code at structural sites, never
-  prose; 5 concepts: typed-enforcement, permission-gate-as-architecture,
-  budget-as-ceiling, constraint-pinning, verified-memory-writes (new
-  2026-08-03 — tipped ripe by constraint-pinning).
+  prose; 7 concepts: typed-enforcement, permission-gate-as-architecture,
+  budget-as-ceiling, constraint-pinning, verified-memory-writes,
+  evidence-gated-completion, refusal-cost-symmetry (new 2026-08-03 — tipped
+  ripe by constraint-pinning; 2026-08-18 adds the counterweight to every
+  one-directional enforcement number in it).
 
 **MoC candidate — verification / completion.** `evidence-gated-completion`
 (new 2026-08-17, `growing`) was tested as a possible standalone theme with
