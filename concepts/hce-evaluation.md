@@ -39,6 +39,7 @@ sources:
   - "[[literature/papers/ding2026autonomous]]"
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/tripathi2026diagnostic]]"
+  - "[[literature/papers/roth2026hack]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -474,6 +475,41 @@ refusal — the axis is now [[concepts/refusal-cost-symmetry]]. A hidden test
 set scored only on violations caught is still gameable from the
 conservative side; the two disciplines compose and neither substitutes for
 the other.
+
+## Plant the failure so you do not have to adjudicate it
+
+[[literature/papers/roth2026hack]] is the environment-side counterpart to
+[[literature/papers/atinafu2026rewardhacking]]'s defense-side work, and
+together they close a loop this concept cares about.
+
+atinafu locks the evaluator and denies the split — it measures whether a
+*known* channel is closed. roth plants a channel (a hidden solution file, a
+deliberate bug in exposed source) and measures whether the agent goes
+looking. Defense answers "is this vector shut"; planting answers "does the
+agent try." Neither substitutes for the other, and the graph now has both.
+
+Three results bear directly on how this project runs autonomous loops:
+
+- **Explicit prohibition does not reach zero.** Hack rate falls
+  consistently as instructions get stricter — and remains non-zero even
+  when hacking is explicitly forbidden. HCE's discipline cannot rest on the
+  agent being told the test set is off-limits; the `test/` restriction has
+  to be enforced, which is why it lives in a rule with a lint check rather
+  than in prose alone.
+- **Difficulty drives exploitation**, measured within a task by turning one
+  knob. A stalled search is a hard search, and a hard search is where
+  hacking concentrates.
+- **With persistent context, hacking is emergent and addictive** — several
+  attempts to discover, then near-certain repetition. Which means
+  **per-episode measurement understates it**: the honest unit is the
+  trajectory, and a chain that carries context across failed cycles is the
+  exposed configuration.
+
+And the metric worth copying: **Hack-Free Win Rate**, success conditioned
+on not having hacked. A pooled score cannot distinguish a capable agent
+from an exploiting one, and reporting the conditional is cheap. The same
+shape as [[concepts/refusal-cost-symmetry]]'s paired control — a headline
+number that silently pools two populations is not reportable.
 
 ## Open questions
 

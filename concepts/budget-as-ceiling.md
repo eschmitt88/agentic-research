@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/bhardwaj2026agent]]"
   - "[[literature/papers/ray2026what]]"
+  - "[[literature/papers/roth2026hack]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -391,6 +392,40 @@ cap-saturation argument means a per-key cap stays analyzable even with
 unboundedly many keys active, because nontriviality only ever needs to track
 a single witness key: per-project or per-session budgets do not cost
 tractability.
+
+## The halt-on-no-progress ceiling is a safety control, not only a cost control
+
+`max_consecutive_no_improvement` is framed in this project as a spend
+guard — stop paying for a search that has stopped paying out.
+[[literature/papers/roth2026hack]] supplies a second and stronger reason to
+keep it.
+
+Its cleanest result is that **hack rate rises monotonically with task
+difficulty**, measured *within* a task by turning one difficulty knob
+(fewer Wordle guesses, more Hanoi disks, more 15-Puzzle shuffles) rather
+than across tasks, so the gradient is not confounded by task identity. An
+autonomous loop that keeps running *because it is not improving* is, by
+construction, sitting in the regime where the task has proven hard —
+precisely where exploitation propensity is highest.
+
+Compounding it: with persistent context across attempts, hacking is
+**emergent and addictive**. Models need several attempts before discovering
+an exploit, and once one hacks it almost always hacks again. Both halves
+point the same way — the longer a stalled loop runs on accumulated context,
+the more likely it is to find and then repeat a shortcut.
+
+So the ceiling that halts a stalled chain is buying two things: it caps
+spend, and it caps the exposure window in which a frustrated agent
+discovers that the metric can be moved without doing the work. That is a
+better argument for the ceiling than cost alone, and it also argues the
+halt should **discard the context** rather than resume from it — see
+[[concepts/context-eviction-policy]].
+
+Note the tension with the shape argument above: this is the ceiling that is
+*not* a monotone counter, and therefore the one that is not statically
+analyzable. It earns its place on behavioral grounds while remaining the
+weakest link formally, which is the case for pairing it with a monotone
+hard cycle cap rather than trusting it alone.
 
 ## Open questions
 
