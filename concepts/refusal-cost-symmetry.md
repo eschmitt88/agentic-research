@@ -1,13 +1,14 @@
 ---
 kind: concept
 name: "refusal-cost-symmetry"
-status: seedling
+status: growing
 added: "2026-08-18"
 sources:
   - "[[literature/papers/tripathi2026diagnostic]]"
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/ge2026governance]]"
   - "[[literature/papers/wu2026hasbench]]"
+  - "[[literature/papers/ho2026soundnessbench]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -36,10 +37,10 @@ rate is an artifact of that easiness.
 
 ## Why it matters here
 
-Four sources reach this from four directions — benchmark design, formal
-enforcement theory, judge calibration, and human-in-the-loop scheduling —
-and each finds the conservative failure to be *larger than the permissive
-one it was measuring*.
+Five sources reach this from five directions — research-integrity benchmark
+design, formal enforcement theory, judge calibration, human-in-the-loop
+scheduling, and research-proposal triage — and each finds the conservative
+failure to be *larger than the permissive one it was measuring*.
 
 **The mechanism, stated as a design rule.**
 [[literature/papers/tripathi2026diagnostic]] pairs each of 18 research-
@@ -126,6 +127,60 @@ fixture of documents that *should* pass but superficially resemble
 violations, scored alongside the ones that should fail — the same file
 count on both sides, so a rule that gets stricter cannot improve the
 headline.
+
+## The clearest instance: strictness inverts the error, it does not reduce it
+
+[[literature/papers/ho2026soundnessbench]] is the fifth attestation and the
+first on a **research** gate rather than a safety one — can a model reject a
+methodologically unsound research proposal before compute is spent on it? —
+and it exhibits this concept's pattern in its purest measured form.
+
+Over 1,099 ML proposals labeled by ICLR reviewer soundness sub-scores, 12
+frontier LLMs under a standard prompt approve **74.0%** of the unsound ones
+while catching 91.8% of the sound ones. Told to be strict, they do not
+become discerning:
+
+| Prompt | False approvals (bad ideas passed) | Recall on good ideas | Macro F1 |
+|---|---|---|---|
+| Standard | 74.0% | 91.8% | 54.9 |
+| Aggressive | **19.9%** | **36.1%** | **49.3** |
+
+The aggregate metric gets **worse** while the headline safety number
+improves fourfold. And the degenerate corner is reached explicitly: GPT-5.4
+and GPT-5.4-Mini land at **0% false approvals with 0.0% and 0.2% recall on
+good proposals** — they reject everything. That is the block-all rule
+[[literature/papers/ray2026what]] shows conformal calibration actually
+returns for every judge it tested, arrived at independently from a
+completely different literature.
+
+**Scale does not help and may hurt.** Within one model family from 2B to
+122B under standard prompting, recall on good proposals rises (71.8% →
+92.8%) while recall on bad ones *falls* (31.0% → 19.2%): "larger models
+become more permissive toward weak proposals, not less."
+
+**Models see blatant flaws and miss subtle ones.** Injecting severe
+hypothesis–experiment mismatches into 100 sound proposals drops one model's
+approval rate from 77.0% to 1.0%. So the failure is not inattention to
+methodology — it is insufficient criticality toward flaws that look normal,
+which is the same surface-cue dependence tripathi2026diagnostic measures
+from the other side.
+
+## What this obliges of `/elevate` specifically
+
+The obligation this concept states generally has a named target now.
+`/elevate`'s design posture is that "most cycles correctly produce zero
+proposals," guarded by two bars (reputability, simplicity) and nothing
+measuring what was wrongly held back. That is an aggressive prompt in
+skill form, and SoundnessBench is the measurement of what an aggressive
+prompt does to research judgment: near-uniform rejection, with the
+aggregate quality metric falling while the safety number improves.
+
+The cheap fix is this concept's standard one — construct the paired
+legitimate case. Score a handful of **known-good historical proposals**
+alongside each cycle's candidates, so that "zero proposals this week" is
+distinguishable from "the gate is now rejecting everything." Without that
+control, a correctly-quiet cycle and a broken gate produce identical
+output.
 
 ## Connections
 
