@@ -19,6 +19,7 @@ related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/programmable-evaluator-oracle]]"
+  - "[[concepts/refusal-cost-symmetry]]"
 tags: [safety, governance, permission-gate, intent-verification, prompt-injection, skill-plugins, audit-log, defense-in-depth]
 ---
 

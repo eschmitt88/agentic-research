@@ -19,6 +19,7 @@ related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/pass-at-k]]"
+  - "[[concepts/refusal-cost-symmetry]]"
 tags: [permission-gate, human-in-the-loop, governance, benchmark, evaluation, coordination, agent-architecture]
 ---
 

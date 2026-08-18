@@ -31,11 +31,13 @@ sources:
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ding2026autonomous]]"
   - "[[literature/papers/ray2026what]]"
+  - "[[literature/papers/tripathi2026diagnostic]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
   - "[[concepts/evolutionary-expansion]]"
   - "[[concepts/hce-evaluation]]"
+  - "[[concepts/refusal-cost-symmetry]]"
 related_experiments: []
 tags: [evaluation, fitness-signal, oracle, evolutionary-search, evaluator-defined-problem]
 ---
@@ -227,6 +229,38 @@ This sharpens rather than replaces the strength ordering above: a Tier-VIII
 model judgment is not merely weak evidence, it is evidence with **no stated
 operating point**, and the fix is not a better model but a declared
 miss/false-block target the judge must meet.
+
+## Grounding beats classification, measured
+
+[[literature/papers/tripathi2026diagnostic]] supplies the cleanest direct
+test yet of this concept's core preference — check the artifact, don't ask
+the model what it thinks is wrong.
+
+Its three question types form a strictly monotone difficulty ordering across
+18 model variants (paired Wilcoxon over 36 task means, W = 152, p = .004):
+**misconduct classification 56.8 → ethical action reasoning 66.6 →
+artifact-grounded decision making 80.8**. A 24-point gap between naming the
+problem and acting correctly on the data. On the legitimate-case half the
+spread is wider still: 41.6 → 62.7 → 89.1.
+
+The decisive cut is the conditional. Models that get the **classification
+wrong** score *equally well or better* on the artifact-grounded decision
+(85.7 vs 79.4). The facets are "structurally dissociated": correct action
+does not require correct diagnosis, and — the direction that matters here —
+**a correct diagnosis is not a prerequisite the oracle needs to collect**.
+Gating on a model's stated account of what is wrong is strictly worse than
+gating on a check against the artifact, because the account is the weakest
+of the three signals and its failure does not even predict the others.
+
+This sits exactly where ding2026autonomous's verification-signal ladder puts
+it — artifact-grounded checks above model self-report — derived
+independently, from measurement rather than from a coding of the
+literature.
+
+The complement is [[concepts/refusal-cost-symmetry]]: an oracle's advantage
+over a judge is partly that its false-positive behavior is stable and
+inspectable, but determinism is not immunity from being systematically
+over-strict, and only a paired legitimate case detects that.
 
 ## Open questions
 
