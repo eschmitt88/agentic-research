@@ -40,6 +40,7 @@ sources:
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/tripathi2026diagnostic]]"
   - "[[literature/papers/roth2026hack]]"
+  - "[[literature/papers/cheng2026agenticsts]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -510,6 +511,42 @@ on not having hacked. A pooled score cannot distinguish a capable agent
 from an exploiting one, and reporting the conditional is cheap. The same
 shape as [[concepts/refusal-cost-symmetry]]'s paired control — a headline
 number that silently pools two populations is not reportable.
+
+## Ablatability is a property of the harness, not of the experiment
+
+[[literature/papers/cheng2026agenticsts]] makes an argument this concept
+should own: **a harness whose memory is an undifferentiated transcript
+cannot answer which part of the context earned the result.**
+
+Its case is that appending prior observations, tool calls and reflections to
+every prompt turns context into "a jumbled mixture in which the effect of
+any single memory component is hard to isolate." Its alternative — compose
+each decision prompt fresh from five typed slots, never append raw
+cross-decision turns — is justified first as an *evaluation* property and
+only second as a cost property. The contract yields four handles: growth
+capped by slot budget, retrieved evidence labeled by layer, individual
+layers toggleable without rewriting the prompt, and condition tags carried
+by every run, store, prompt record and script.
+
+That inverts the usual order of argument, and the inversion is the
+importable part. HCE's discipline is about what the *evaluation* may see;
+this is about whether the *architecture* admits an evaluation at all. Every
+autonomous-loop post-mortem in this project wants to ask "which part of the
+accumulated context produced this," and a design that pools everything into
+one blob has answered "unanswerable" before the question is posed.
+
+**The paper is also a worked example of reporting an underpowered result
+honestly**, which is worth copying independently of the memory question.
+Its headline ablation is 3/10 vs 6/10 wins; the abstract itself states the
+comparison is "directional rather than statistically decisive (Fisher exact
+p ≈ 0.37)," figure captions mark which panels are illustrative rather than
+measured, external baselines are labeled "operational comparisons rather
+than controlled tests of the contract variable itself," non-peer-reviewed
+references are annotated as such in the bibliography, and Limitations opens
+by naming the comparison it did not run. That last item — stating the
+missing cell rather than the ones you filled — is the practice
+[[literature/papers/ray2026what]]'s evaluation contract and
+ding2026autonomous's disclosure checklist both ask for, demonstrated.
 
 ## Open questions
 
