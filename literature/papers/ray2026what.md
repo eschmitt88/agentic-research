@@ -20,6 +20,7 @@ related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
   - "[[concepts/budget-as-ceiling]]"
+  - "[[concepts/refusal-cost-symmetry]]"
 related_experiments: []
 tags: [enforcement, formal-methods, runtime-guardrails, decidability, calibration, conformal, closed-loop, evaluation-integrity, provenance, governance]
 ---

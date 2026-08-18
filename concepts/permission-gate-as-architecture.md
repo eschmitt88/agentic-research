@@ -36,6 +36,7 @@ related_concepts:
   - "[[concepts/programmable-evaluator-oracle]]"
   - "[[concepts/scripted-tool-pipelines]]"
   - "[[concepts/typed-enforcement]]"
+  - "[[concepts/refusal-cost-symmetry]]"
 related_experiments: []
 tags: [safety, permission-gate, runtime-approval, regulator, tool-use, governance]
 ---
@@ -220,11 +221,17 @@ hook.
   benchmark-bound results and admits no adaptive-attacker robustness — a
   gate tuned to a fixed threat distribution may be evadable by an agent (or
   user) that learns the threshold.
-- **False-refusal cost.** Mostly reported at a single operating point;
-  wu2026hasbench is the first source to measure the over-escalation tax
-  directly (CRJ metric; A4's +50% turns for diminishing returns), but
-  only for *human*-approval gates with a simulated human — the tradeoff
-  curve for automated gates remains uncharacterized.
+- **False-refusal cost. Largely answered, and the answer is "large."**
+  wu2026hasbench measured the over-escalation tax for *human*-approval
+  gates (CRJ metric; A4's +50% turns for diminishing returns); the
+  automated-gate curve is now characterized too — ray2026what's gate buys
+  .047 → .004 attack success by blocking **78% of calls** and costing 7.4
+  points of task success, with conformal calibration returning block-all
+  for all 23 judges at the tight tolerance; ge2026governance's base-rate
+  analysis puts precision at **22.7% at 1% attack prevalence**. The axis
+  has its own concept now: [[concepts/refusal-cost-symmetry]]. What
+  remains open is the *weighting* — every source scores a wrong block and
+  a wrong allow equally, which is a modeling choice nobody has justified.
 - **Where the state lives.** The session risk cumulant is per-session;
   whether cross-session memory of prior gate decisions
   ([[concepts/agent-native-memory]]) improves or biases future gating is

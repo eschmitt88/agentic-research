@@ -38,6 +38,7 @@ sources:
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ding2026autonomous]]"
   - "[[literature/papers/ray2026what]]"
+  - "[[literature/papers/tripathi2026diagnostic]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -48,6 +49,7 @@ related_concepts:
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/typed-claim-partition]]"
   - "[[concepts/compression-as-generalization-test]]"
+  - "[[concepts/refusal-cost-symmetry]]"
 related_experiments: []
 tags: [evaluation, discipline, overfitting, hce]
 ---
@@ -422,6 +424,56 @@ rather than to enforcement:
 The discipline this cluster already practices — hide the test set, score
 once — protects against *optimizing on the answer*. This is a different
 failure: measuring the wrong system entirely, in perfectly good faith.
+
+## Hold the evidence fixed and vary only the framing
+
+[[literature/papers/tripathi2026diagnostic]] adds a second information
+boundary to the one this concept is built on, and it is a *within-item*
+manipulation rather than a split.
+
+HCE hides the answer so the search loop cannot optimize against it.
+IntegrityBench hides nothing; it holds the dataset, the experimental record
+and the question structure **byte-for-byte constant** and varies only the
+social framing around them — an anonymous productivity alert, a named
+senior co-author's email, an urgent escalation notice, a principal
+investigator's personal appeal. "Because pressure blocks are inserted
+without changing the dataset or experimental record, performance changes
+can be attributed to social framing rather than new evidence."
+
+That is the same discipline HCE applies across a split, applied within an
+item, and it buys a causal claim a split cannot: any score drop **is** the
+framing effect, with no confound to argue about. The design generalizes
+past research integrity to any harness question of the form *does the agent
+respond to who is asking rather than to what is true* — which includes
+whether an agent treats its own operator's urgency as evidence.
+[[literature/papers/ray2026what]]'s source-role diagnostic is the same move
+made against provenance (byte-identical action and instruction text,
+swapping only trusted-user vs untrusted-tool-output), arriving from the
+enforcement side. Two independent uses of *vary one thing, hold the artifact
+fixed* is enough to treat it as a method rather than a trick.
+
+Two further design moves are cheap and directly adoptable here:
+
+- **A design-validated ceiling can substitute for a human baseline.**
+  Three domain experts labeled non-overlapping subsets, one ethics expert
+  second-reviewed all 36 tasks, and Cohen's κ = .96 was argued to establish
+  the ceiling, "negating the need for a separate human baseline." This
+  project has no human baseline for anything and cannot afford one; near-
+  perfect expert agreement on a small validated set is the affordable
+  version. (It is a substitution, not a measurement — high agreement shows
+  the labels are unambiguous, not that a human would score 100.)
+- **State when your format makes the task easier than deployment.** Its Q1
+  is a 19-way multiple choice, and the paper says so plainly: "real
+  deployment affords no such menu … the integrity gaps we observe are
+  therefore a floor rather than a ceiling." Naming the direction of the
+  bias is what makes a convenient format honest.
+
+**And the failure this concept does not yet guard against.** Its paired
+misconduct/control design exists because a one-sided score rewards blanket
+refusal — the axis is now [[concepts/refusal-cost-symmetry]]. A hidden test
+set scored only on violations caught is still gameable from the
+conservative side; the two disciplines compose and neither substitutes for
+the other.
 
 ## Open questions
 
