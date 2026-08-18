@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/zou2026fmlbench]]"
   - "[[literature/papers/gurkan2026mutation]]"
+  - "[[literature/papers/ishibashi2026effective]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -116,6 +117,34 @@ operator actually leaves its attractor — otherwise the effective
 search space is the attractor, whatever the grain. Profile the
 operator with cheap neutral chains before committing a budget to a
 long search.
+
+## How much to spend per individual, and the answer is "more than you think"
+
+This concept frames the grain of *code* — how large a span the LLM rewrites
+each generation. [[literature/papers/ishibashi2026effective]] measures an
+orthogonal grain: the **effort budget per candidate**, under a fixed total.
+
+Its finding runs against the evolutionary intuition. At an identical 40M
+token budget on Circle Packing, harnesses that spent **54K–465K tokens per
+algorithm and produced 87–742 candidates** beat one that spent ~25K tokens
+each across ~1,500 candidates, by a wide margin (2.636 vs 2.541 on the same
+model). "Scaling the quality of each individual is more budget-efficient
+than scaling the number of evolutionary generations." The good harness
+passed the weak one's *final* score at roughly one eighth of the budget.
+
+The mechanism the paper points at is that a coding agent — stateful, able
+to run and test its own candidate — is a categorically different mutation
+operator than a stateless single-shot API call, which is what OpenEvolve
+and comparable reimplementations use. So the depth is not "think longer
+before emitting"; it is "iterate on this individual against the evaluator
+before submitting it."
+
+Two caveats. The comparison confounds four harness changes at once
+(coding-agent integration, hack detection, worktree isolation, database
+observation) and only the latter two are ablated, so *depth* is the
+plausible explanation rather than the isolated one. And it is 2 runs per
+condition on a single problem with a known optimum. Treat the direction as
+a strong prior for setting per-candidate budgets, not as a tuned parameter.
 
 ## Open questions
 

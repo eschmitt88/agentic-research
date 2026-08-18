@@ -33,6 +33,7 @@ sources:
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/tripathi2026diagnostic]]"
   - "[[literature/papers/roth2026hack]]"
+  - "[[literature/papers/ishibashi2026effective]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -304,6 +305,43 @@ measurement of *this* environment's affordances, and the paper's own finding
 that propensity varies wildly across hack types (and across instantiations
 of the same type) says a single number should not be read as a model
 property.
+
+## A compromised score is amplified by selection, not averaged away
+
+[[literature/papers/ishibashi2026effective]] supplies the reason this
+concept matters most in a *loop*, and it is a structural argument rather
+than a preference.
+
+Without a hack check, its strongest model produced a raw best score of
+**>10¹⁰** on a problem whose true optimum is ~2.64 — the evaluation
+function was simply broken open. But the size of the number is not the
+finding. The finding is what happens next: "once a hack solution with an
+inflated score dominates parent selection, degenerate strategies propagate
+throughout the population, rendering subsequent search effectively
+meaningless." One compromised measurement does not cost one result; it
+costs the search, because selection *propagates* it.
+
+Any loop that reads its own metric to choose what to do next — every
+`/iterate` chain in this project's downstream repos — has this property. It
+is the argument for scoring from a pristine evaluator copy
+([[literature/papers/atinafu2026rewardhacking]]'s `evalhashlock`) rather
+than from the workspace copy, stated as a dynamical consequence instead of
+a hygiene rule.
+
+**And the check is conditional, which is the practical part.** Enabling
+hack detection *improved* results for the capable model (8.2% of candidates
+excluded) and **hurt** results for the weak one, where zero hacks occurred
+and the detector's overhead simply consumed generations. Combined with
+roth2026hack's difficulty gradient: exploitation scales with both model
+capability and task difficulty, so the check earns its keep exactly where
+this project operates — frontier models on hard problems — and is dead
+weight on easy work with weak models.
+
+The honest limit: Vesper's detector is itself an LLM judge, so its measured
+8.2% is a *detected* rate with unknown recall, and the authors fall back on
+mechanically excluding scores above a sanity threshold — a deterministic
+check backstopping the model-based one, which is this concept's thesis
+showing up as an implementation detail.
 
 ## Open questions
 
