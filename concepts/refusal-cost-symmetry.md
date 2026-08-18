@@ -106,11 +106,14 @@ describes:
 
 - `/lint` counts violations — orphans, dead wikilinks, sourceless concepts —
   with no paired measure of **correct structure it flags anyway**. A lint
-  rule that fires on every legitimate illustrative `[[wikilink]]` is
-  indistinguishable, in the reported number, from a lint rule that works.
-  (The 08-17 run already carried "the 4 shown are pre-existing illustrative
-  wikilink text" as a manual annotation — that is a false positive being
-  tracked in prose because no metric holds it.)
+  rule that fires on every legitimate illustrative double-bracket example in
+  prose is indistinguishable, in the reported number, from a lint rule that
+  works. (The 08-17 run already carried "the 4 shown are pre-existing
+  illustrative wikilink text" as a manual annotation — a false positive
+  tracked in prose because no metric holds it. Writing *this* paragraph
+  produced a fifth one, which is the argument in miniature: the check has no
+  way to tell an example from a mistake, and only the count of true hits is
+  ever reported.)
 - `/curate` counts ingests and declines but nothing measures **wrongly
   declined** items. A curation pass that declined everything would produce
   a clean, fast, fully-resolved backlog.
