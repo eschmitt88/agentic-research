@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/elkoussy2026agentltl]]"
   - "[[literature/papers/bhardwaj2026agent]]"
   - "[[literature/papers/ng2026agent]]"
+  - "[[literature/papers/ray2026what]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -322,6 +323,77 @@ reference state, without access to the agent's internal state*. That
 access restriction is the cleanest formal statement of what makes an
 artifact enforceable rather than merely asserted. See
 [[concepts/evidence-gated-completion]].
+
+## The upper bound: what a deterministic checker cannot enforce at all
+
+Every other source in this cluster builds a checker and reports its
+violation rate. [[literature/papers/ray2026what]] asks the prior question —
+*which policies admit a checker at all* — and the answers bound the whole
+concept from above.
+
+- **The enforceable class is exactly the safety properties with
+  register-recognizable good prefixes** (T1), relative to whatever oracle
+  predicate bits the checker is given. "Effective" means sound *and*
+  transparent: never commit a violating action, and never block or alter an
+  action of a compliant run. Both halves matter — soundness alone is
+  satisfied by blocking everything.
+- **Irreversibility, not model capability, is what makes the class small.**
+  A pre-execution gate is *strictly weaker* than an edit automaton, and the
+  witness is elementary: "every `pay` is eventually followed by a `confirm`"
+  cannot be enforced, because once the irreversible `pay` commits it cannot
+  be retracted, and blocking it violates transparency on the compliant run
+  `pay confirm`. Liveness — "X eventually happens" — is outside the class
+  entirely. Any constraint in this project phrased as "the agent must
+  eventually write NOTES.md" or "every experiment must end with a result
+  field" is *not* gate-enforceable in this sense; it is checkable only after
+  the fact, which is a different guarantee.
+- **Rewriting instead of blocking buys utility, not power.** Extending the
+  gate with substitution (`sub(a')`) does not enlarge the enforceable class.
+  Neither does human escalation, except when modeled as a prefix-safe oracle
+  adjudicating blocks — and no separate escalation theorem is proved.
+- **Decidability splits on counter shape** (T3). Whether a policy is even
+  *nontrivial* — whether it forbids anything at all — is **undecidable with
+  two decrementable zero-test counters**, but **PSPACE** for the separable,
+  key-local, constant-guard **monotone** fragment. That fragment is not a
+  toy: it is what deployed caps, quotas, and rate limits are. This is the
+  formal reason the static-analysis proposal in Open Questions is tractable
+  for some rule shapes and hopeless for others, and it gives
+  [[concepts/budget-as-ceiling]] a sharp design rule — monotone counters
+  stay analyzable, resettable ones do not.
+
+The escape-hatch pattern this note documents empirically now has a formal
+counterpart. The hatch is not sloppiness: T1 says the gate is only ever as
+expressive as its oracle interface `Pi`, and the paper is explicit that the
+interface "does not grant access to any other semantic fact." Semantic
+predicates are outside the skeleton *by construction*, not by neglect —
+which is a stronger version of the same conclusion.
+
+## Enforcement changes what gets proposed, so ungated evidence may not identify anything
+
+The result with the widest blast radius here is not about enforcement power
+at all. Once a gate blocks, the agent proposes differently, so the system is
+a *controlled* process: "static scores and ungated trajectories need not
+identify the closed-loop frontier." Measuring a checker on traces collected
+without it is not conservative — it is **unidentified**.
+
+[[literature/papers/ray2026what]] demonstrates the effect rather than only
+proving it. In paired closed-loop reruns its 3B gate produced **5 attacks
+that occurred only because the gate was there** (against 34 that occurred
+only without it), and its 7B gate produced 22 against 29 — nearly a wash.
+A gate does not merely subtract violations from a fixed distribution; it
+moves the distribution.
+
+This is the strongest available argument that the cluster's reported
+violation-rate deltas — FORGE's 100% → 0%, hao2026selfgc's 4–8%,
+chen2026governance's 0% → 30% — are *policy-specific outcomes rather than
+frontier estimates*, and it is why the paper's evaluation contract asks
+whether blocking was visible to the agent and whether paired reruns were
+run. Almost nothing in this cluster reports either.
+
+The price is also stated plainly: the gate that got attack success from
+.047 to .004 blocked **78% of all calls** and cost 7.4 points of absolute
+task success. Enforcement power and utility are on one frontier, and most
+sources in this cluster report only the safety coordinate.
 
 ## Connections
 

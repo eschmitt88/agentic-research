@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/bhardwaj2026agent]]"
+  - "[[literature/papers/ray2026what]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -348,6 +349,48 @@ and the fact that a chain halted at `max_tokens` says nothing about whether
 its work was correct. Behavioral constraints belong to
 [[concepts/typed-enforcement]] and [[concepts/permission-gate-as-architecture]];
 this concept's claim is narrower and stronger for staying narrow.
+
+## Monotone counters stay analyzable; resettable ones do not
+
+[[literature/papers/ray2026what]]'s decidability result is a design rule for
+this concept's central artifact, and it cuts `budget.yaml` in two.
+
+Asking whether a policy is even **nontrivial** — whether it forbids anything
+at all — is **undecidable** for a checker with two decrementable zero-test
+counters, but **PSPACE** for the separable, key-local, constant-guard
+**monotone** fragment. Monotone means the counter only ever goes one way.
+The paper notes this fragment is exactly what deployed caps, quotas, and
+rate limits use, and that it is the deliberate middle ground: plain
+registers cannot count at all, unrestricted counters are undecidable.
+
+Sorting this repo's ceilings by that line:
+
+- `max_tokens`, `max_wall_hours`, `max_experiments`, `max_disk_gb` are
+  **monotone accumulators against a constant bound** — the tractable
+  fragment. Whether a set of them is contradictory, redundant, or vacuous is
+  a decidable question, which is what makes the static-analysis proposal in
+  [[concepts/typed-enforcement]] worth attempting on this file.
+- `max_consecutive_no_improvement` is **not** monotone. It increments on a
+  bad cycle and **resets to zero on an improvement** — a decrementable
+  counter with a zero test, which is the construct T3 shows tips
+  nontriviality into undecidability. It is also the ceiling most exposed to
+  gaming, since the agent's own notion of "improvement" is what resets it.
+
+The practical reading is not that the reset ceiling is wrong — it encodes
+something the monotone ones cannot, namely *stop when progress stops*. It is
+that it belongs to a different tier: the monotone ceilings can be checked
+for consistency ahead of time and the reset one cannot, so it needs an
+independent monotone backstop (a hard cycle count) rather than being trusted
+alone. That backstop does not exist in `budget.yaml` today.
+
+Two smaller notes from the same source. A ceiling is a **safety** property
+in the formal sense — "spend never exceeds c" has a bad prefix the moment it
+is crossed — which is why it sits inside the gate-enforceable class at all,
+unlike anything phrased as "eventually finish." And the paper's exact
+cap-saturation argument means a per-key cap stays analyzable even with
+unboundedly many keys active, because nontriviality only ever needs to track
+a single witness key: per-project or per-session budgets do not cost
+tractability.
 
 ## Open questions
 

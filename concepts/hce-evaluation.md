@@ -37,6 +37,7 @@ sources:
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ding2026autonomous]]"
+  - "[[literature/papers/ray2026what]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -373,6 +374,54 @@ concept's checks should be built: the defenses that tier has developed
 weak-to-strong aggregation of imperfect LLM verifiers) "all concede that any
 single learned check is attackable and must be defended or ensembled." Prefer
 a deterministic check to a learned one wherever the property admits it.
+
+## A harness feature you evaluate on ungated traces is not measured, it is unidentified
+
+HCE hides the answers from the search loop so a number means what it
+claims. [[literature/papers/ray2026what]] names a second way the number can
+fail to mean what it claims, and it is one this project is exposed to
+directly.
+
+Once an intervention **changes what the agent proposes next**, the system is
+a controlled process, and a comparison against traces recorded *without* the
+intervention "need not identify the closed-loop frontier." Not noisier —
+unidentified. The static score and the deployed behavior are answers to
+different questions, and no amount of held-out data closes the gap; what
+closes it is a specified controlled model, or paired reruns under both
+conditions.
+
+The paper's own numbers make this concrete rather than theoretical. In
+paired closed-loop reruns (N = 389) its gate produced **5 attacks that
+existed only because the gate was there**, against 34 that existed only
+without it; a second, lighter gate produced 22 against 29 — close to a
+wash. The gate did not subtract from a fixed distribution, it moved one.
+
+**What this obliges here.** Any ablation in this graph of the form "harness
+with feature X vs baseline trace recorded without X" inherits the problem
+whenever X is visible to the agent — which covers permission gates, context
+eviction, budget ceilings that halt a run, and anything that blocks, warns,
+or truncates. The honest report is a paired rerun under both conditions,
+plus a statement of whether the intervention was visible to the agent. That
+second item is a one-line disclosure and nothing in this repo currently
+records it.
+
+Two further items from the same paper's evaluation contract belong to HCE
+rather than to enforcement:
+
+- **Report an operating point, not an aggregate.** "AUC cannot be inverted
+  into a required deployment quality because it does not identify a
+  particular ROC operating point." A single headline score is not a
+  specification, and a component chosen by aggregate score has not been
+  chosen against any requirement.
+- **A certificate needs its population stated.** Any claimed guarantee
+  carries an exchangeability assumption and an adversarial margin; the
+  paper's own conformal calibration is **vacuous (block-all) at every
+  judge** at the tightest tolerance it tried, and it says so rather than
+  reporting the loose setting alone.
+
+The discipline this cluster already practices — hide the test set, score
+once — protects against *optimizing on the answer*. This is a different
+failure: measuring the wrong system entirely, in perfectly good faith.
 
 ## Open questions
 

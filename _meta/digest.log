@@ -282,7 +282,6 @@ Digest complete — everything committed and pushed, working tree clean.
 **Follow-through**: `constraint-pinning` was the fifth enforcement-flavored concept — exactly what the 07-31 promote-moc decline was waiting for — so `/promote-moc` created **`mocs/governance-by-architecture.md`** (5 concepts, framed around the shared honest limit: authority can't be authenticated from inside the token stream).
 
 Two notes for the next session: the NOTES.md watch item on `information-firewall` is **stale** (it got its third attestation on 07-28; I dropped the old firewalls paper from the queue accordingly), and 9 candidates remain in the digest file with a recommended next-three for `/curate` (Self-GC, compute-allocation bandits, Reward Hacking Benchmark with an overlap check against atinafu2026rewardhacking).
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 Digest complete — 8 commits pushed, working tree clean. The headline: this cycle finally unblocked the MoC split that six consecutive `promote-moc` runs had declined.
 
 **Sweep (window since 2026-08-03).** Four scenario queries over the active fronts produced 12 deduplicated candidates in `raw/_candidates/2026-08-10-digest.md`. Several strong hits were excluded as already in the graph (Beyond Compaction, TokenPilot, FORGE, Search-Time Contamination, the token-overrun catalog).
@@ -295,7 +294,6 @@ Digest complete — 8 commits pushed, working tree clean. The headline: this cyc
 **MoC promotion.** With the cluster at 7 concepts (2 outside the parent — exactly the threshold the 08-04→08-09 declines defined), I split **`mocs/runtime-memory-policy`** out of knowledge-organization: the window (eviction, pinning, lossless offload), the flux (selective retrieval, verified writes), and the store (multi-granularity, agent-native).
 
 **Left open.** Items 2–4 and 6–12 remain uncurated in the candidates file, marked partially curated. Recommended next for `/curate`: item 8 (the contamination-prevention paper — it's the information-firewall watch item), item 3 (VISTA, the self-managed pole of the policy-locus question), and item 11 (ZEBRA, which feeds the khan2026token `/elevate` item).
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 Digest complete. All work committed and pushed (9 commits, clean tree, nothing unpushed).
 
 ## Sweep

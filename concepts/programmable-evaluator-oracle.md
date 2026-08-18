@@ -30,6 +30,7 @@ sources:
   - "[[literature/papers/wang2026androids]]"
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ding2026autonomous]]"
+  - "[[literature/papers/ray2026what]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -191,6 +192,41 @@ now localizable to a specific verifier and observable rather than silent.
 The complementary use of the same verifiers — deciding whether a
 submission may be accepted at all, rather than what it scores — is
 [[concepts/evidence-gated-completion]].
+
+## A judge is only admissible against a stated operating point
+
+[[literature/papers/ray2026what]] supplies the precise form of this
+concept's argument for deterministic oracles over model judgment — not by
+asserting judges are bad, but by showing what a judge would have to
+demonstrate to be usable.
+
+- **Aggregate scores are not specifications.** "AUC cannot be inverted into
+  a required deployment quality because it does not identify a particular
+  ROC operating point." The admissible spec is a constraint like
+  `roc(.05) <= .10` — at most a 5% miss rate within a 10% false-block
+  budget — "rather than model size or AUC alone."
+- **The certificate is frequently vacuous, and honest reporting says so.**
+  Across 23 judges scored on the same 132 items, conformal calibration at
+  the tightest tolerance tried returns **block-all for every judge**. At a
+  looser tolerance the best judge reaches a .010 miss rate — with a **.780
+  false-block rate**. A judge that is never wrong about violations because
+  it rejects four-fifths of legitimate work is exactly the failure mode this
+  concept exists to avoid, and it is the *calibrated* outcome, not a bug.
+- **Judge quality is not monotone in scale, and the study is honest about
+  its own power.** AUC .660–.858 across the 23; no familywise-adjusted
+  superiority against the best mid-size model; and the median detectable
+  difference (.104) is large enough that the data support **neither** a tie
+  **nor** a capacity ceiling. Anyone reading "bigger model, better judge"
+  off a leaderboard is reading past the confidence intervals.
+- **Benign calibration does not survive contact.** One *predeclared*
+  16-token suffix inserted into the judge-visible text raises the miss rate
+  by .200–.600 for 8 of 11 judges. A guarantee established on clean data is
+  not a guarantee.
+
+This sharpens rather than replaces the strength ordering above: a Tier-VIII
+model judgment is not merely weak evidence, it is evidence with **no stated
+operating point**, and the fix is not a better model but a declared
+miss/false-block target the judge must meet.
 
 ## Open questions
 
