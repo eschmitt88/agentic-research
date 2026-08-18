@@ -23,6 +23,7 @@ sources:
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xin2026eurekagent]]"
+  - "[[literature/papers/kim2026why]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -83,6 +84,35 @@ per-role focus. At MLE-bench scale the trade is strongly positive.
    [[concepts/structured-world-model]] that sub-agents write into
    (rather than returning full transcripts) keeps manager context
    from exploding.
+
+## A hierarchy over knowledge scope, coupled to the agent hierarchy
+
+[[literature/papers/kim2026why]] is an instance where the hierarchy is not
+over task decomposition but over **what each level is allowed to know** —
+and the two are deliberately made to coincide. An orchestrator assigns
+competitions to domain specialists (tabular / NLP / vision), and each
+specialist loads only the skill tier matching its scope: global skills for
+everyone, domain skills for the matching specialist only, task-specific
+skills only on a re-run of that task.
+
+The consequence is that an agent *structurally cannot see* out-of-scope
+knowledge — the delegation boundary and the information boundary are the
+same boundary. That is the same move [[concepts/permission-gate-as-architecture]]
+makes for capability, applied to context.
+
+The measured payoff is large and comes from a controlled ablation with the
+skill inventory held fixed: scope-matched loading medals 8/8 where flat
+loading of the identical 159 skills medals 5/8 — the same as loading
+nothing — at 2× the tokens. So the hierarchy is not organizational tidiness;
+it is where the benefit lives.
+
+The orchestrator's own role is worth noting as a delegation pattern: it
+does classification, scheduling, and **promotion** (deciding which of a
+specialist's learnings rise to domain or global scope). Promotion is
+upward information flow across the delegation boundary, which most
+hierarchical-agent designs in this cluster lack — subagents report results,
+not generalizations. The paper concedes the promotion step is itself
+unevaluated.
 
 ## Open questions
 
