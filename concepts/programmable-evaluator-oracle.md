@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/tripathi2026diagnostic]]"
   - "[[literature/papers/roth2026hack]]"
   - "[[literature/papers/ishibashi2026effective]]"
+  - "[[literature/papers/ho2026soundnessbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
