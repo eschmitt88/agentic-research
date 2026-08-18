@@ -30,6 +30,7 @@ sources:
   - "[[literature/papers/lee2026minteval]]"
   - "[[literature/papers/li2026acm]]"
   - "[[literature/papers/wu2026remember]]"
+  - "[[literature/papers/cheng2026agenticsts]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

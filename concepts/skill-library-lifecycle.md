@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/hu2026skillbrew]]"
   - "[[literature/papers/huang2026skillwiki]]"
   - "[[literature/papers/tang2026memory]]"
+  - "[[literature/papers/cheng2026agenticsts]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -285,6 +286,32 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
   policy). It's not population-based search (no parallel curator
   siblings), but the "earlier decisions evaluated by later
   outcomes" structure is shared.
+
+## Distilling a skill from a failure rather than from a success
+
+Most sources in this cluster build the library from trajectories that
+*worked*. [[literature/papers/cheng2026agenticsts]] populates its skill
+layer two ways, and the second is the unusual one: **mistake-driven
+discovery**, which reads combat losses against per-enemy baselines and
+distills a guide from what went wrong. (The other is human-authored seed
+skills.)
+
+The entries themselves are also more structured than most: each guide
+carries an **explicit trigger condition**, a prose body, and an index over
+recurring state classes, so retrieval is keyed rather than semantic — the
+skill fires when its trigger matches the current state type, not when an
+embedding is nearby.
+
+Two findings temper the import. The skill layer is where the paper's
+largest observed win-rate difference sits (3/10 → 6/10) but the difference
+is **not significant** (Fisher p ≈ 0.37, n = 10 per cell), so this is not
+evidence that a skill library helps. And the frozen store is
+**backbone-sensitive**: the skills were distilled from Gemini 3.1 Pro
+trajectories and transplanting them to other model families is reported as
+a separate diagnostic rather than pooled, because they do not transfer
+cleanly. A distilled skill library may be a per-model artifact, which would
+be a real constraint on [[concepts/shared-skill-namespace]] — worth
+watching for a second source.
 
 ## Open questions
 

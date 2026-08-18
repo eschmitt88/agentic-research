@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/dang2026addressable]]"
   - "[[literature/papers/xu2026llm]]"
   - "[[literature/papers/mason2026missing]]"
+  - "[[literature/papers/cheng2026agenticsts]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -161,6 +162,30 @@ achieves it.
   stable.
 - **[[concepts/file-as-bus]]** — same move at inter-agent scope:
   durable addressable artifacts instead of ephemeral message passing.
+
+## Mandatory offload: the same mechanism with the opposite default
+
+This concept moves material to a colder tier while keeping it addressable —
+an offload taken when the window is under pressure.
+[[literature/papers/cheng2026agenticsts]] runs the same mechanism with the
+default inverted: **"any information that survives across decisions must
+first be written into a bounded store."** Nothing is offloaded because
+nothing was implicitly resident; the store is the only path across a
+decision boundary, and the prompt is rebuilt from typed slots each time.
+
+The pair is worth holding together because it isolates what this concept's
+real variable is. Both designs are lossless in the sense that matters
+(material remains reachable), both are deterministic, and both bound
+growth. They differ only on whether **residence is the default and offload
+the exception**, or offload is the default and residence must be earned by
+an explicit write. mason2026missing's page-fault restore is the reactive
+form; this is the pre-emptive form.
+
+For this box, the pre-emptive version is the stricter and more auditable
+discipline — but note it comes from a closed-rule game with an enumerable
+action space, and the paper never established that it performs better than
+accumulation (its win-rate differences are directional, p ≈ 0.37, and the
+same-codebase accumulating-context comparison was not run).
 
 ## Open questions
 

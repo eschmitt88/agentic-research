@@ -39,6 +39,7 @@ sources:
   - "[[literature/papers/dang2026addressable]]"
   - "[[literature/papers/xu2026llm]]"
   - "[[literature/papers/mason2026missing]]"
+  - "[[literature/papers/cheng2026agenticsts]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -397,6 +398,51 @@ designed rather than discovered.
   set version of the same operations on the *transient* prompt
   buffer. Naming both makes clear that "lifecycle" is not one
   thing — it has different policies at different scopes.
+
+## Memory as a contract, and the version with no overflow event
+
+[[literature/papers/cheng2026agenticsts]] reframes what this concept is
+about, in one sentence worth adopting: "memory for a long-horizon LLM agent
+is not a place to store text; it is **a contract about what each future
+decision is allowed to see**."
+
+Under that framing the definition above — a rule for what stays when the
+buffer *would otherwise overflow* — describes only one family of contracts,
+the ones that let material in by default and then reclaim it under
+pressure. The alternative has no overflow event at all. AgenticSTS composes
+every decision prompt fresh from five typed slots and **never appends the
+raw message turns from earlier decisions**; the governing rule is that "any
+information that survives across decisions must first be written into a
+bounded store." Nothing crosses a decision boundary implicitly, so growth
+is capped by slot budgets rather than by an eviction policy, and a
+transcript interface's worst-case `Ω(d · s̄)` growth over `d` decisions
+never arises.
+
+This is the far deterministic pole of the policy-locus axis the 08-03/08-10
+cycles opened: fixed slot budgets and typed retrieval, with the model given
+no say whatsoever, sitting opposite model-initiated compaction. Between
+mason2026missing's proxy (deterministic, but reactive — evict, then restore
+on a page fault) and this (deterministic and *pre*-emptive — nothing is
+admitted unless a store holds it), the deterministic half of the axis now
+has two distinct designs, and they differ on whether the default is
+inclusion or exclusion.
+
+**The argument for it is about measurement, not cost.** Appending
+everything makes context "a jumbled mixture in which the effect of any
+single memory component is hard to isolate." A typed contract gives four
+handles a raw prompt-history setup hides: growth capped by slot budget,
+retrieved evidence labeled by layer, individual layers toggleable without
+rewriting the prompt, and runs tagged by condition for reuse. That is an
+*evaluation* property of a memory architecture, and it is the more
+interesting half of the paper — see [[concepts/hce-evaluation]].
+
+Two honest caveats before importing. The paper never ran the
+accumulating-context comparison in its own codebase, so it establishes that
+the contract is ablatable, **not that it performs better** — its win-rate
+differences are directional at p ≈ 0.37. And its typed layers lean on an
+enumerable action space (`L2` ships legal action formats for each state
+type), which a closed-rule game has and an open-ended research loop does
+not.
 
 ## Open questions
 
