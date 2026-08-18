@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/sharma2026smsr]]"
   - "[[literature/papers/gao2026mempoison]]"
   - "[[literature/papers/ravindran2026portable]]"
+  - "[[literature/papers/zhu2026lossy]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -63,6 +64,39 @@ The pattern generalizes beyond conversational memory:
   `raw/`) is a hand-rolled instance: verification happens at write time,
   and `raw/` immutability guarantees the evidence a write was judged
   against stays auditable.
+
+## The read side: a recall you can check
+
+This concept covers making a *write* trustworthy.
+[[literature/papers/zhu2026lossy]] covers the symmetric gap — making a
+**recall** checkable — and the graph was thin there.
+
+TierMem keeps every compressed summary unit **linked to the raw pages it
+was derived from**, in an immutable raw-log tier. A recalled fact is
+therefore not merely retrieved but *traceable*: the agent can produce the
+source that justified it. When a consolidated finding is written back after
+an escalation, the new unit inherits pointers to the raw evidence used,
+which the paper calls **maintaining the chain of custody**. That is
+[[concepts/citation-anchoring]] turned inward — a claim ships with the
+means to check it, where the claim is the agent's own memory rather than a
+literature citation.
+
+The measured payoff is specific and worth the detail. Ablating the
+provenance links (escalation falls back to global BM25 retrieval) costs
+1.5pp overall — but the loss is concentrated exactly where the mechanism is
+supposed to act: accuracy on **escalated** queries falls 81.7% → 77.5%,
+while the summary-only path is unchanged. Links do not change what the
+memory contains; they change how reliably the decisive evidence is found
+when the summary proves insufficient.
+
+Two caveats before importing. Tier-2 immutability is a **design
+convention, not an enforced property** — nothing described prevents raw-log
+mutation, where atinafu2026rewardhacking's `evalhashlock` makes the
+analogous claim checkable by content-addressing. And write-back
+re-introduces lossiness at one remove: the consolidated unit is a new
+summary chosen under a *past* query's notion of salience, so the tier
+drifts even while each unit stays traceable. Recoverability is the
+mitigation, not a cure.
 
 ## Connections
 

@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/xu2026llm]]"
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/cheng2026agenticsts]]"
+  - "[[literature/papers/zhu2026lossy]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -186,6 +187,43 @@ discipline — but note it comes from a closed-rule game with an enumerable
 action space, and the paper never established that it performs better than
 accumulation (its win-rate differences are directional, p ≈ 0.37, and the
 same-codebase accumulating-context comparison was not run).
+
+## Why addressability is a safety property, not an optimization
+
+[[literature/papers/zhu2026lossy]] gives this concept the argument it has
+been making on cost grounds a much harder form, and names it: the
+**write-before-query barrier**.
+
+Compression "forces irreversible retention decisions under uncertainty,
+requiring a preemptive bet on saliency before the query distribution is
+known." The consequence is stated as an impossibility rather than a quality
+problem: **any fixed-budget summary admits a worst-case query it cannot
+support with traceable evidence.** No better summarizer escapes it, because
+the deficiency is in the ordering — the write happens before the query
+exists. The paper's example is a "severe peanut allergy" compressed to
+"dietary preferences"; the later question "is this snack safe?" is then
+unanswerable *with a citable source*, which is a different and worse
+failure than answering it wrongly.
+
+That is why keeping offloaded material addressable is not a nice-to-have:
+addressability is what makes taking the summary **safe in the first place**.
+A lossy compaction with a live pointer back to the source is a bet you can
+lose and recover from; the same compaction without the pointer is a bet you
+cannot audit.
+
+The measured scale of the problem: summary-centric memory systems on LoCoMo
+carry **Unverifiable Omission Rates of 14.7–23.3%** — errors caused by the
+evidence being absent rather than misread — rising to ~30% on the
+longer-range LongMemEval. So roughly one error in five to one in three is
+an omission the summary tier cannot even flag.
+
+TierMem's resolution is the same shape mason2026missing's page fault takes,
+one level up: default to the cheap tier, detect insufficiency at query
+time, escalate to the immutable raw store, and — the addition — **write the
+verified finding back with its provenance links intact**. Across three
+replay epochs that moves queries onto the cheap path without losing
+accuracy, which is what amortization of an offload looks like when it
+works.
 
 ## Open questions
 

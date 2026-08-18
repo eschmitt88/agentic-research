@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/tang2026memory]]"
   - "[[literature/papers/lee2026minteval]]"
   - "[[literature/papers/mason2026missing]]"
+  - "[[literature/papers/zhu2026lossy]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -169,6 +170,30 @@ a map with our own level unmeasured.
 - **[[concepts/structured-world-model]]** — the coarse semantic grain is a
   compressed world model the agent reasons over without re-reading raw
   history.
+
+## Pick the granularity at query time, and make the tiers point at each other
+
+[[literature/papers/zhu2026lossy]] runs this concept in its more
+interesting form: the granularity is not fixed at write time but chosen
+**per query**, framed as "an inference-time evidence allocation problem —
+retrieve the lowest-cost memory granularity that still provides sufficient
+evidence for faithful, auditable answering."
+
+Two results are worth carrying:
+
+- **The links between tiers matter more than the tiers.** With provenance
+  pointers from summary units to their source raw pages, escalated queries
+  score 81.7%; replacing them with global BM25 retrieval over the same raw
+  store drops that to 77.5%, with the cheap path unchanged. A tiered store
+  without back-pointers gets most of the cost saving and little of the
+  fidelity.
+- **A mediocre selector still captures most of the benefit.** The trained
+  router's standalone classification F1 is only ~40.6% — it escalates 39%
+  of queries to catch 71.7% of the hard ones — yet end-to-end accuracy
+  lands at 0.851 against a 0.873 raw-only ceiling, at 54% fewer input
+  tokens. The architecture is forgiving because the escalation path
+  recovers what the summary tier lost. Useful calibration: the value here
+  is in *having* an escalation path, not in routing to it precisely.
 
 ## Open questions
 
