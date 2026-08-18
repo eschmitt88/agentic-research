@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/bhardwaj2026agent]]"
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ray2026what]]"
+  - "[[literature/papers/roth2026hack]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -442,6 +443,17 @@ sources in this cluster report only the safety coordinate.
   policy set rich enough that the deterministic checker is itself hard to
   write. The interesting regime is where the invariant is *expensive* to
   check deterministically, and nobody has measured that.
+
+  A third measured floor arrives from a setting with **no adversary at all**.
+  [[literature/papers/roth2026hack]] plants exploitable shortcuts in 21
+  environments and varies the instruction strictness: hack rate falls
+  consistently from "here are the rules" to "follow the rules" to "hacking is
+  explicitly forbidden" — and stays **non-zero at the strictest setting**,
+  across every model tested. That is the most favorable case prose policy
+  will ever get — a cooperative model, a stated prohibition, no attacker —
+  and it still leaks. Sits beside hao2026selfgc's 4–8% cut-turn violation
+  rate as evidence that instruction-based suppression has a floor above zero,
+  while a deterministic check on the same invariant has none.
 - Whether static analysis over an *autoformalized* policy is meaningful
   when the policy was generated from prose the analysis never sees —
   contradiction-checking the output does not detect that the input was

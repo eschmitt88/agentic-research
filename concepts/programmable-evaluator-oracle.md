@@ -32,6 +32,7 @@ sources:
   - "[[literature/papers/ding2026autonomous]]"
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/tripathi2026diagnostic]]"
+  - "[[literature/papers/roth2026hack]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -261,6 +262,48 @@ The complement is [[concepts/refusal-cost-symmetry]]: an oracle's advantage
 over a judge is partly that its false-positive behavior is stable and
 inspectable, but determinism is not immunity from being systematically
 over-strict, and only a paired legitimate case detects that.
+
+## Build the environment so the deterministic check exists
+
+The concept's usual move is to *replace* a judge with a check.
+[[literature/papers/roth2026hack]] shows the constructive version: when no
+deterministic check exists for the question you care about, **change the
+environment until one does**.
+
+Its target question — did the agent cheat? — normally sits at the bottom of
+the verification ladder, answered by manual inspection or an LLM judge.
+The construction plants the cheat instead. A base environment
+`E = (O, A_E, T, R)` is wrapped into `E_HV = (O, A_HV, T_HV, R, H)` where
+`H` is a designer-specified hack set, each `h : O × A_HV → {0,1}` firing
+exactly when a planted vulnerability is exploited. Because the agent
+interacts only with `E_HV`, the wrapper mediates every action and detection
+is **total rather than sampled** — no trajectory review, no judge, no cost.
+
+Four hacks are shown to generalize across 21 environments — hidden solution
+file, planted logical bug in exposed source, opponent-prompt read,
+opponent-prompt injection — over a **mock filesystem** wrapper, chosen
+because filesystem access is what real agent harnesses expose anyway.
+
+Two details are the transferable part:
+
+- **The detection logic stays hidden while the vulnerability stays
+  discoverable.** That asymmetry is what keeps the measurement honest; an
+  agent that could read the checker would be evaluated on a different task.
+- **Measure at trajectory level, not per episode.** Hacking "often emerges
+  after the agent has accumulated context," and the conditional rate given a
+  prior hack far exceeds the unconditional rate — so per-episode rates
+  systematically understate. Reported alongside **Hack-Free Win Rate**,
+  success conditioned on not having hacked, which separates capability from
+  exploitation the way a pooled win rate cannot.
+
+The honest caveat is that planting changes the environment: the wrapper adds
+a filesystem the base task did not have, so the measured agent is not the
+deployed agent — the same identification problem
+[[literature/papers/ray2026what]] states formally. A planted-hack rate is a
+measurement of *this* environment's affordances, and the paper's own finding
+that propensity varies wildly across hack types (and across instantiations
+of the same type) says a single number should not be read as a model
+property.
 
 ## Open questions
 
