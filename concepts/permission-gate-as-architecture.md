@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/palumbo2026formal]]"
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/bhardwaj2026agent]]"
+  - "[[literature/papers/ray2026what]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -370,3 +371,43 @@ insufficient. Datalog with recursion over a partially-ordered event set is
 a strictly more expressive gate. This is the sharpest statement yet of
 where point-in-time gating runs out, and it runs out exactly at
 [[concepts/hierarchical-delegation]].
+
+## Where point-in-time gating runs out, stated as a theorem
+
+palumbo2026formal's causal-history point (above) says the gate's decision
+*input* is too thin. [[literature/papers/ray2026what]] bounds the gate from
+the other side — its decision *output* — and three results land directly on
+design choices this concept has collected.
+
+- **Substitution is not a capability upgrade.** Several designs here reach
+  for rewrite-instead-of-block as a way to keep utility while staying safe.
+  Formally, extending a gate with substitution **does not enlarge the class
+  of policies it can enforce**; prefix-safe rewrites only improve utility
+  within a class already fixed by what the gate can recognize. Same for
+  human escalation, which is only analogous to a prefix-safe oracle
+  adjudicating blocks — and gets no separate theorem.
+- **Irreversibility is the binding constraint, not judgment quality.** No
+  pre-execution gate can enforce "every `pay` is eventually followed by a
+  `confirm`": once the irreversible `pay` commits it cannot be retracted,
+  and blocking it breaks transparency on the compliant run. The enforceable
+  class is the **safety** properties — bad things never happen — and
+  liveness is outside it entirely. A better judge does not move this line.
+- **Provenance-sensitivity is a capability threshold, and it is measurable.**
+  This concept's temporal and authority axes (santosgrueiro2026lingering's
+  epoch-bound handles, louck2026securing's non-malleable origin binding)
+  both assume a gate can tell *where an instruction came from*.
+  ray2026what tests the assumption directly: pairing 123 task plans with
+  **byte-identical action and instruction text** and swapping only whether
+  the instruction was trusted-user input or untrusted tool output — so
+  chance is exactly .500 by construction — a 3B judge scores **.561**, a 7B
+  scores **.967**, and a 0.5B control sits at .500. A small guard model
+  keyed on provenance is close to not reading provenance at all. Any
+  deployment of the origin-binding designs above needs this checked, not
+  assumed.
+
+And the cost, which this concept's Open Questions flags as unmeasured:
+the gate that cut attack success from .047 to .004 did it by blocking
+**78% of all calls**, taking task success from .254 to .180. wu2026hasbench's
+over-asking finding and ge2026governance's PPV-collapse-at-low-base-rate
+result now have a third, formal companion — over-blocking is not a tuning
+failure, it is where the frontier sits when the judge is this good.
