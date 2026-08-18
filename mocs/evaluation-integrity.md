@@ -12,6 +12,7 @@ concepts:
   - "[[concepts/compression-as-generalization-test]]"
   - "[[concepts/information-firewall]]"
   - "[[concepts/evidence-gated-completion]]"
+  - "[[concepts/refusal-cost-symmetry]]"
 tags: [moc, evaluation, evaluation-integrity, overfitting, grounding, architecture]
 ---
 
@@ -22,7 +23,7 @@ How do you keep the evaluation signal of an autonomous research agent
 capability rather than learning to game its own measuring stick? This is
 the failure mode that distinguishes a long-horizon agent from a
 short-horizon one: over enough iterations, any signal the search loop can
-read, it will eventually optimize *against* rather than *toward*. The seven
+read, it will eventually optimize *against* rather than *toward*. The nine
 concepts here are the structural defenses, each guarding a different point
 where the signal can rot. Where the sibling MoC
 [[mocs/knowledge-organization-for-research-agents]] is about the knowledge
@@ -142,9 +143,53 @@ against, and it implicitly bounds what can be found at all.
   passing `scripts/kg_lint.py` a precondition for a graph-writing skill
   declaring itself done.
 
+## Measuring the mechanism, not just the failure it catches
+
+Every defense above is a *mechanism*, and a mechanism has two ways to be
+wrong. The eight concepts preceding this one guard against the permissive
+failure — the loop reads what it shouldn't, the claim ships unanchored, the
+oracle gets gamed. This one guards the direction none of them measure.
+
+- [[concepts/refusal-cost-symmetry]] — a safety mechanism must be scored
+  against **paired instances of the legitimate case**, constructed to be
+  superficially indistinguishable from the violation and differing only in
+  the feature that actually determines permissibility. An evaluation that
+  counts only the permissive failure does not measure safety; it measures
+  conservatism, and a mechanism that refuses everything tops it.
+
+Five sources converge, and each finds the conservative failure larger than
+the permissive one it set out to measure.
+[[literature/papers/tripathi2026diagnostic]] pairs every misconduct task
+with an ethical control and finds models score 71.9 on the violation
+against **41.6 on its matched legitimate twin**, with p-hacking inverting by
+44.3 points — they read surface cues, not the procedural context that makes
+those cues permissible. [[literature/papers/ho2026soundnessbench]] shows
+what happens when you respond by tightening: false approvals of unsound
+research proposals fall 74.0% → 19.9% while recall on *sound* proposals
+collapses 91.8% → 36.1%, and the aggregate F1 **gets worse**; two frontier
+models land at 0% false approvals with ~0% true positives.
+[[literature/papers/ray2026what]] supplies the formal reason — a gate is
+effective only if it is both *sound* and *transparent*, because soundness
+alone is satisfied by blocking everything — and finds conformal calibration
+returns exactly that block-all rule for all 23 judges it tested.
+[[literature/papers/ge2026governance]] adds the deployment arithmetic
+(precision 22.7% at a 1% base rate) and
+[[literature/papers/wu2026hasbench]] the human cost (+50% turns for
+negative returns).
+
+**Why this belongs in an evaluation MoC rather than a governance one.** The
+finding is not that gates over-block; it is that *the standard way of
+scoring them cannot see it*. Every metric in this MoC is exposed: a hidden
+test split scored only on violations caught is still gameable from the
+conservative side, and a `/lint` that counts orphans has no paired measure
+of correct structure it flags anyway. The obligation it creates here is
+concrete and cheap — build the small fixture of documents that *should*
+pass but superficially resemble violations, and score it alongside the ones
+that should fail.
+
 ## Open thread
 
-The seven form a containment hierarchy: the information firewall keeps the
+Eight of the nine form a containment hierarchy: the information firewall keeps the
 task from leaking its own solution, HCE keeps the loop from reading the
 truth, pass@k keeps it from promoting noise, compression-testing certifies
 what survived selection, anchoring + typed-partition
@@ -159,3 +204,12 @@ pairing — whether requiring anchored, distribution-reported claims actually
 closes Kosmos's accuracy gap, or whether the gap is in the underlying
 reasoning and anchoring only makes the defect grepable (the ablation flagged
 in `citation-anchoring`'s open questions).
+
+**The ninth concept sits outside that hierarchy, and deliberately.**
+`refusal-cost-symmetry` is not another containment layer — it is the check
+on whether any of the eight is working, because each one's headline number
+improves monotonically as it gets stricter. That makes it the MoC's most
+under-applied idea: this project measures none of its own gates against a
+legitimate-case control, and the `/elevate` skill's stated posture ("most
+cycles correctly produce zero proposals") is indistinguishable, in its
+output, from a gate that has begun rejecting everything.
