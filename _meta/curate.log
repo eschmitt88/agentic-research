@@ -1112,3 +1112,41 @@ Ripening condition is unchanged: one genuine spend-policy concept — the `khan2
 
 Logged the decline to `_meta/log.md` and pushed (`71d5287`). Left the pre-existing dirty `_meta/curate.log` and `_meta/elevate.log` from the 08-16 session untouched.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Backlog closed. `raw/_candidates/` is empty — **0 uncurated files**.
+
+## What ran
+
+One file, `2026-08-17-digest.md`, with 12 items left over from the 08-17 auto-advance. Verdict was **GO (high)** throughout (6% → 9% weekly). All 12 URLs re-checked against the graph (0 duplicates) and all 12 arXiv IDs verified to resolve with matching titles — including item 12, whose `2608.12345` looked like a placeholder and is real.
+
+**8 ingested, 4 declined.** 11 commits, all pushed.
+
+## Ingested
+
+| # | Note | Why it mattered |
+|---|---|---|
+| 10 | `ray2026what` | Enforceability **upper bound** — a gate enforces exactly the safety properties its register model recognizes, strictly below edit automata; substitution buys no power |
+| 12 | `tripathi2026diagnostic` | Paired misconduct/control design; pressure protocol holding evidence fixed |
+| 14 | `roth2026hack` | Plant the hack so detection is deterministic; hack rate rises with task difficulty |
+| 7 | `cheng2026agenticsts` | Memory as a contract about what each decision may see — recorded as a **null result** on performance |
+| 6 | `zhu2026lossy` | Write-before-query barrier; provenance-linked recall |
+| 17 | `kim2026why` | Flat skill loading performs **identically to loading no skills**, at 2× the tokens |
+| 18 | `ishibashi2026effective` | Same model, same budget, different harness — cheap model on good harness beats strong model on weak one |
+| 13 | `ho2026soundnessbench` | Strictness **inverts** the error rather than reducing it; Macro F1 falls |
+
+## The thing worth your attention
+
+These converged on a gap the graph had no home for, so I seeded **`concepts/refusal-cost-symmetry`** — it reached `growing` (5 sources) within the same pass. The claim: an evaluation counting only the permissive failure measures conservatism, not safety, and a mechanism refusing everything tops it. It largely closes the standing false-refusal-cost open question in `permission-gate-as-architecture`.
+
+It names a concrete change to **`/elevate`**. That skill's posture — "most cycles correctly produce zero proposals" — is structurally an aggressive prompt, and SoundnessBench measures what those do to research judgment: near-uniform rejection while the safety number improves. A quiet cycle and a gate that has started rejecting everything currently produce identical output. The fix is cheap (score known-good historical proposals alongside candidates), but it's your call — I recorded it rather than editing the skill.
+
+Two papers also supply measured backing for choices this box already made on judgment: worktree isolation for parallel file-writing agents, and scoped rather than global rule loading.
+
+## Declines and flags
+
+Reasoned, not silent — each with the transferable idea recorded so it isn't lost. Item 4's nomination premise didn't survive reading it: an edge-cloud object-detection paper queued against `hybrid-model-backends`, which is about role-based model assignment, not per-query cascades. Items 3 and 8 are framing surveys whose theses the graph already holds. Item 15 is a rubric-based RL training setting this project doesn't operate in.
+
+`/promote-moc` **declined** — 32 of 33 concepts are already mapped, so the new concept joined `evaluation-integrity` and `governance-by-architecture` rather than spawning an overlapping MoC.
+
+Two things to flag. Four PDFs downloaded before the decline decisions got swept into ingest commits by `git add -A`; I removed them from HEAD, but they remain in history, including a **24 MB survey** that exceeds the 10 MB DVC threshold in `.claude/rules/data.md`. I didn't rewrite history for it. Separately, I removed a stray `SessionEnd hook … failed: Hook cancelled` line that had leaked into `_meta/digest.log` (twice) — worth checking why that hook is failing.
+
+Lint is clean: 0 orphans, 0 sourceless concepts, 0 stale candidates, and the 4 remaining dead wikilinks are all pre-existing.
