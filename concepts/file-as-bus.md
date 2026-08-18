@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/alzahrani2026persistent]]"
   - "[[literature/papers/ravindran2026portable]]"
   - "[[literature/papers/philippov2026glite]]"
+  - "[[literature/papers/ishibashi2026effective]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
@@ -114,6 +115,36 @@ because hand-maintained cross-task summaries drift ("Completed Tasks
 - Writes to the bus benefit from
   [[concepts/citation-anchoring]] discipline so downstream agents
   can audit claims back to source artifacts.
+
+## Same model, same budget, different harness — the cleanest instance yet
+
+[[literature/papers/ishibashi2026effective]] is the component-level
+attestation this concept has been waiting for, and its control is tight
+where it counts: **identical model, identical 40M-token budget**, only the
+harness differs. On Circle Packing (n=26), OpenEvolve with `gpt-5.2-codex`
+scores 2.54142; Vesper with the same model scores 2.63599 — past the human
+best (2.6340) and level with AlphaEvolve (2.6358). The good harness passed
+the weak harness's *final* score at roughly one eighth of the budget.
+
+The sharper form of the claim: **the cheap model on the good harness beats
+the strong model on the weak one.** Vesper with `gpt-5.1-codex-mini` (2.636)
+outperforms OpenEvolve with `gpt-5.2` (2.419), at $42 against $27. If the
+harness can invert a model-capability ordering, the harness is not a
+multiplier on model quality — it is a comparable term.
+
+The stated design premise is the same one this concept encodes: existing
+implementations "use LLMs as stateless code generators through single-shot
+API calls, without leveraging the capabilities of coding agents." A
+stateful agent that can run and test its own candidate against the evaluator
+is a different operator than a text generator, and the harness is what makes
+that difference available.
+
+**Caveat that should travel with the citation:** Vesper differs from
+OpenEvolve in four ways at once — coding-agent integration, evaluation-hack
+detection, Git worktree isolation, and database observation — and only the
+last two are ablated. So "the harness matters" is well supported and *which
+part* is not. Read alongside philippov2026glite, which makes the same
+argument at research-campaign scale with a different mechanism.
 
 ## Open questions
 

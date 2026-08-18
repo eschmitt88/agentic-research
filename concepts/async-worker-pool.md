@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hu2026flashevolve]]"
   - "[[literature/papers/philippov2026glite]]"
+  - "[[literature/papers/ishibashi2026effective]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -110,6 +111,27 @@ concurrency safe, not agent coordination.
    median stage rate. Accepted-proposal throughput beat any fixed
    allocation — more raw proposals is not the goal; more *validated*
    ones is.
+
+## Worktree isolation is what makes a pool of file-writing workers safe
+
+[[literature/papers/ishibashi2026effective]] states the constraint this
+concept has been implicit about: agents with **unrestricted filesystem
+access** cannot share a working tree, because concurrent writes corrupt each
+other's state. Its answer is to assign each agent its own **Git worktree**,
+which gives complete filesystem isolation and is what "allows multiple
+agents to operate safely in parallel."
+
+The framing is worth keeping because it inverts the usual justification.
+This project's own rule treats worktrees as a *safety* measure — destructive
+runs never touch the primary checkout. Vesper treats them as the enabler of
+*parallelism*: isolation is not the cost of running many workers, it is the
+precondition. Same mechanism, and the second payoff was going unclaimed
+here.
+
+The cheapness matters too. A worktree is a filesystem-level construct with
+no coordination protocol, no lock manager, and no shared-state reasoning —
+the isolation is total and the merge story is `git`. For a worker pool whose
+members write code, that is a much simpler answer than arbitrating access.
 
 ## Open questions
 

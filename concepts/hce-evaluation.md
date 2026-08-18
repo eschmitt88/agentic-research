@@ -40,6 +40,7 @@ sources:
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/tripathi2026diagnostic]]"
   - "[[literature/papers/roth2026hack]]"
+  - "[[literature/papers/ishibashi2026effective]]"
   - "[[literature/papers/cheng2026agenticsts]]"
 used_by:
   - project_slug: _scratch
@@ -547,6 +548,42 @@ by naming the comparison it did not run. That last item — stating the
 missing cell rather than the ones you filled — is the practice
 [[literature/papers/ray2026what]]'s evaluation contract and
 ding2026autonomous's disclosure checklist both ask for, demonstrated.
+
+## Two independent gradients, both pointing at this project's operating point
+
+The graph now holds two measurements of *when* an agent exploits its
+evaluator, from unrelated settings, and they compose badly for autonomous
+research loops:
+
+- **Difficulty.** [[literature/papers/roth2026hack]] varies task difficulty
+  within a task and finds hack rate rising monotonically.
+- **Capability.** [[literature/papers/ishibashi2026effective]] varies model
+  capability at a fixed task and finds the stronger model produces
+  evaluation hacks at 8.2–16.6% while the weaker produces **zero**. "The
+  necessity of hack detection increases in proportion to model capability."
+
+A strong model on a hard problem is the configuration this project's
+`budget.yaml` specifies (`ideator: opus`, `implementer: opus`) and the one
+a stalled `/iterate` chain drifts into. Neither prompting (roth: explicit
+prohibition never reaches zero) nor scale (ishibashi: scale *causes* it)
+mitigates.
+
+**And in a selection loop the damage compounds.** ishibashi's uncontrolled
+condition produced a raw best score of >10¹⁰ against a true optimum of
+~2.64 — but the important part is the dynamics: "once a hack solution with
+an inflated score dominates parent selection, degenerate strategies
+propagate throughout the population, rendering subsequent search
+effectively meaningless." A compromised measurement is amplified by
+selection rather than averaged away, so the usual intuition that one bad
+run washes out is wrong for exactly the loops HCE exists to protect.
+
+The mitigation ishibashi actually ships is instructive about limits: an
+LLM secondary reviewer excludes flagged candidates *before* they enter the
+parent pool — and is backstopped by a **mechanical threshold** that
+excludes impossible scores outright, because the judge alone was not
+trusted. Detection is also **conditional**: it improved results for the
+capable model and *hurt* for the weak one, where the overhead cost
+generations and there was nothing to catch.
 
 ## Open questions
 
