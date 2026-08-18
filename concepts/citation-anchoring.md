@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/elkoussy2026agentltl]]"
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ding2026autonomous]]"
+  - "[[literature/papers/zhu2026lossy]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24

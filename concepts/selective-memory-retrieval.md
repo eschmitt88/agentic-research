@@ -31,6 +31,7 @@ sources:
   - "[[literature/papers/li2026acm]]"
   - "[[literature/papers/wu2026remember]]"
   - "[[literature/papers/cheng2026agenticsts]]"
+  - "[[literature/papers/zhu2026lossy]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
