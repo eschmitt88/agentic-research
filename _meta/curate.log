@@ -1150,3 +1150,18 @@ Reasoned, not silent — each with the transferable idea recorded so it isn't lo
 Two things to flag. Four PDFs downloaded before the decline decisions got swept into ingest commits by `git add -A`; I removed them from HEAD, but they remain in history, including a **24 MB survey** that exceeds the 10 MB DVC threshold in `.claude/rules/data.md`. I didn't rewrite history for it. Separately, I removed a stray `SessionEnd hook … failed: Hook cancelled` line that had leaked into `_meta/digest.log` (twice) — worth checking why that hook is failing.
 
 Lint is clean: 0 orphans, 0 sourceless concepts, 0 stale candidates, and the 4 remaining dead wikilinks are all pre-existing.
+**Declined — no ripe cluster.** Committed and pushed (`055fd8b`), log-only.
+
+**What I found:** 33 concepts, 8 MoCs, and every concept already sits in at least one MoC. The graph hasn't changed since yesterday's decline — the only commit touching `concepts/` was `2b94de9`, a lint wikilink fix — so there's no new material and no orphan to anchor a new map.
+
+**The one candidate worth a real look** (not covered by the 08-18 entry): a *coordination-substrate* cluster — `hierarchical-delegation`, `file-as-bus`, `structured-world-model`, `async-worker-pool`, `shared-skill-namespace`. It's the only grouping that passes the mechanical overlap test — max 2/5 in any single MoC (`agent-architecture` holds the first two, `knowledge-organization` holds `file-as-bus` + `structured-world-model`), so nothing covers half.
+
+It fails on coherence, though:
+- `shared-skill-namespace` is cross-harness format portability, not intra-run coordination.
+- `async-worker-pool`'s coordination content is parallel-eval scheduling for the search loop.
+
+Drop those two and the honest theme is 3 concepts, all already mapped. The 5-concept version is a re-slice of `mocs/agent-architecture.md`'s substrate + orchestration sections under a different name — the duplicate framing the overlap rule exists to prevent.
+
+**No edits beyond the log**, which differs from the last two declines deliberately: 08-17 and 08-18 each had an unplaced concept (`evidence-gated-completion`, `refusal-cost-symmetry`) whose home needed deciding, so those passes added it to existing MoCs. This pass has nothing unplaced, so touching a MoC would have been gratuitous.
+
+The graph will next be ripe when an ingest burst seeds concepts on a genuinely new axis — the current 33 are well covered by the existing eight.
