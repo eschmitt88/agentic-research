@@ -1165,3 +1165,17 @@ Drop those two and the honest theme is 3 concepts, all already mapped. The 5-con
 **No edits beyond the log**, which differs from the last two declines deliberately: 08-17 and 08-18 each had an unplaced concept (`evidence-gated-completion`, `refusal-cost-symmetry`) whose home needed deciding, so those passes added it to existing MoCs. This pass has nothing unplaced, so touching a MoC would have been gratuitous.
 
 The graph will next be ripe when an ingest burst seeds concepts on a genuinely new axis — the current 33 are well covered by the existing eight.
+
+**Declined — no ripe cluster.** Log-only, third consecutive decline.
+
+**What I found:** 33 concepts, 8 MoCs, every concept mapped at least once (11 in one MoC, 17 in two, 4 in three, `budget-as-ceiling` in four). The graph is byte-identical to yesterday's decline — the three commits since `055fd8b` touched `docs/index.html`, `journal/`, and `_meta/curate.log`, none of them graph files. `raw/_candidates/` holds only `_done/`. No new material, no orphan to anchor a map.
+
+**The one candidate worth a real look** (not covered by the 08-18 or 08-19 entries): a *literature-pipeline* cluster on the research-input axis — `web-grounded-literature`, `llm-wiki-pattern`, `citation-anchoring`, `typed-claim-partition`, `information-firewall`, `selective-memory-retrieval`. Unlike the coordination-substrate candidate, this one doesn't get as far as the coherence question: `mocs/knowledge-organization-for-research-agents.md` already holds 5 of the 6 (everything but `information-firewall`), well past the >=half bar. It's a sub-slice of an existing MoC, not a new theme.
+
+The 08-19 coordination-substrate candidate is unchanged and still fails the same way — `shared-skill-namespace` and `async-worker-pool` don't belong to intra-run coordination, and the honest remainder is 3 already-mapped concepts.
+
+**No edits beyond the log.** Nothing is unplaced this pass, so the 08-17/08-18 disposition (add the orphan to existing MoCs) doesn't apply.
+
+Also dropped a stray `SessionEnd hook … failed: Hook cancelled` line that had leaked into the tail of this file — the same leak flagged against `_meta/digest.log` on 08-18. That hook is still failing; worth a look.
+
+Ripening condition unchanged: an ingest burst seeding concepts on a genuinely new axis. The current 33 are well covered by the existing eight.
