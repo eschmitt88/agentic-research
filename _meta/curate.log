@@ -1179,3 +1179,18 @@ The 08-19 coordination-substrate candidate is unchanged and still fails the same
 Also dropped a stray `SessionEnd hook … failed: Hook cancelled` line that had leaked into the tail of this file — the same leak flagged against `_meta/digest.log` on 08-18. That hook is still failing; worth a look.
 
 Ripening condition unchanged: an ingest burst seeding concepts on a genuinely new axis. The current 33 are well covered by the existing eight.
+**Declined — no ripe cluster.** Committed and pushed (`8ca938e`, log-only).
+
+**State:** 33 concepts, 8 MoCs, byte-identical to the 2026-08-19 and 2026-08-20 declines — `git diff e1f9384..HEAD -- concepts/ mocs/ literature/` is empty and the candidate backlog is closed. Every concept sits in ≥1 MoC by strict frontmatter membership, so no orphan can anchor a new map.
+
+**What's new this pass.** Instead of hand-picking another candidate theme (the prior three entries each rejected one), I swept all 237,336 5-concept subsets against both ripeness tests:
+
+- 153 subsets (0.06%) pass the overlap test — no single MoC holds ≥3 of the 5 — *and* share a tag on ≥3 members.
+- All 153 are the same trio — `file-as-bus`, `hierarchical-delegation`, `structured-world-model` — padded to five with two thematically unrelated concepts (`pass-at-k`, `spend-forecast-calibration`, and so on).
+- No passing subset shares a tag on 4+ members.
+
+That trio is the coordination-substrate candidate rejected on coherence on 08-19. The sweep now shows mechanically what that entry argued by hand: the theme is genuinely 3 concepts wide, and reaching the 5-concept bar requires padding — the exact failure the ripeness rule blocks. I noted in the log that this is settled, so future passes don't re-derive it.
+
+**Ripening condition, sharpened:** a new MoC needs an ingest burst seeding ≥2 concepts on an axis orthogonal to the existing 8 — at which point the coordination trio clears 5 legitimately. Not another re-slice of already-mapped material.
+
+No MoC or concept files were touched; unlike the 08-17 and 08-18 passes there was no unplaced concept whose home needed deciding.
