@@ -1166,3 +1166,12 @@ No MoC or concept files were touched; unlike the 08-17 and 08-18 passes there wa
 **Also dropped, for the second time, a stray `SessionEnd hook … failed: Hook cancelled` line** from the tail of this file — same leak cleaned on 08-20, same one flagged against `_meta/digest.log` on 08-18. Three flags across three files now; `~/.claude/hooks/session-end.sh` is reliably failing and writing its error into whichever tracked prose log is dirty. That is a real bug in the hook, not in this repo, and it is worth fixing before it corrupts a log that matters.
 
 No MoC or concept files touched — nothing is unplaced.
+**Declined — no ripe cluster.** Committed and pushed (`afe6af2`), log-only.
+
+**State:** 33 concepts, 8 MoCs, every concept already in ≥1 MoC. `git diff cfa4b98 -- concepts/ mocs/ literature/` is empty — byte-identical to the 08-19, 08-20, and 08-21 declines. `raw/_candidates/` holds only `_done/`.
+
+**I did not re-run the subset sweep.** The 08-21 pass tested all 237,336 5-concept subsets and found the only overlap-passing family is the coordination trio (`file-as-bus`, `hierarchical-delegation`, `structured-world-model`) padded to five with unrelated concepts. The graph hasn't changed since, so that result is unchanged by construction; re-deriving it would be paying tokens to reprint a known answer.
+
+**What's new: the decline is now schedulable, not just repeatable.** Ripening requires an ingest burst on a new axis, and bursts here arrive only via `/digest` → `/curate`, which has run on a strict 7-day cadence — 07-27, 08-03, 08-10, 08-17. `_meta/last_digest` is `2026-08-17T07:04:24Z` and the backlog closed 08-18. So no new concept can exist before the **2026-08-24 digest**, and every daily `/promote-moc` between now and then is a structurally guaranteed decline against a frozen graph rather than an open question. The next pass worth real effort is the one after the 08-24 curate burst lands.
+
+**One thing worth your attention:** I removed a stray `SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled` line from the tail of `_meta/curate.log` — the second cleanup of this exact leak here (08-20), plus one against `_meta/digest.log` on 08-18. The hook is reliably failing and writing its error into whichever tracked prose log happens to be dirty. That's a bug in `~/.claude/hooks/session-end.sh`, outside this repo, and it's worth fixing before it lands in a log where it does damage.
