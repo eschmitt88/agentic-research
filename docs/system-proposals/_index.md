@@ -23,6 +23,87 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-08-02 | [budget-ceiling-reserve](2026-08-02-budget-ceiling-reserve.md) | `templates/project/budget.yaml` | adopt | proposed |
 | 2026-08-02 | [lint-rule-consistency-pass](2026-08-02-lint-rule-consistency-pass.md) | `skills/lint/SKILL.md` | adopt | proposed |
 | 2026-08-16 | [precompact-addressable-offload](2026-08-16-precompact-addressable-offload.md) | `hooks/pre-compact.sh` | adopt | proposed |
+| 2026-08-23 | [elevate-paired-control](2026-08-23-elevate-paired-control.md) | `skills/elevate/SKILL.md` | adopt | proposed |
+
+## Considered and held (2026-08-23 run)
+
+One proposal (above). This is the first `/elevate` run since the 2026-08-17/18
+ingest burst — 14 papers, two new concepts (`spend-forecast-calibration`,
+`refusal-cost-symmetry`), and the `compute-economy` MoC — so unlike the
+`/promote-moc` declines of 08-19 through 08-23, the graph genuinely moved.
+Most of what it moved, however, landed on files that are **blocked for
+stacking**: four proposals from 08-02 and 08-16 remain `proposed`, holding
+`rules/evaluation.md`, `templates/project/budget.yaml`,
+`skills/lint/SKILL.md` and `hooks/pre-compact.sh`. The surviving proposal
+targets `skills/elevate/SKILL.md`, which is uncontested. Held this pass:
+
+- **`ishibashi2026effective` → `file-as-bus` / harness-over-model** — the
+  cleanest evidence in the burst and the closest miss on merit. Identical
+  model and identical 40M-token budget, only the harness differs: the good
+  harness passes the weak one's *final* score at ~1/8 the budget, and the
+  cheap model on the good harness (2.636) beats the strong model on the weak
+  one (2.419). **Held on two counts.** Its actionable form bears on
+  `budget.yaml`'s `models:` block (both roles pinned to `opus`), which is
+  blocked by the pending 2026-08-02 `budget-ceiling-reserve` proposal; and
+  the paper's own caveat is that Vesper differs from OpenEvolve in four ways
+  at once with only two ablated, so "the harness matters" is supported while
+  *which part* is not. No single-file simplifying edit follows. **Unlock**:
+  the budget target clearing, plus a component-level ablation naming the
+  responsible mechanism.
+- **`kim2026why` → `skill-library-lifecycle` / skill loading** — a strong
+  negative result (159 skills, model/pipeline/budget held constant: tiered
+  loading 8/8 medals at 284K tokens/medal, flat loading 5/8 at 756K, empty
+  5/8 at 371K — flat loading performs exactly as well as no library at twice
+  the cost). **Held as already enacted.** Claude Code loads skill bodies on
+  invocation rather than flat, and the two accepted proposals
+  `experiment-loop-skill-scoping` (2026-07-14) and ablation phase 5
+  (per-project rule `@import`s, 2026-08-01) already scoped both skills and
+  rules per project. This is post-hoc validation of decisions already made,
+  not a new change. Credibility 3, no `code_url`, single attestation for
+  this specific ablation.
+- **`spend-forecast-calibration` → pre-flight spend reservation** — the
+  NOTES follow-up carried since 2026-07-26 ("evaluate `khan2026token`'s
+  pre-flight spend-reservation idea against the coordinator's ceilings").
+  **Resolved, not proposed, and now on a firmer footing.** `bai2026how`
+  measures agent self-estimates at Pearson r ≤ 0.39 against actuals with
+  *every* model biased downward, worst on input tokens — the dominant cost
+  term. A self-estimated reservation therefore fails asymmetrically, by
+  admitting work that will overrun; halt-after-cycle fails safe by halting
+  late. The concept's own closing line is that it is "a constraint on what
+  *not* to build" here. The 2026-08-02 `budget-ceiling-reserve` proposal
+  already documents the one consequence worth documenting. Consider this
+  thread closed rather than pending.
+- **`refusal-cost-symmetry` → `permission-gate-as-architecture` re-check** —
+  the other standing NOTES item: the 2026-06-28 and 2026-07-19 "already
+  enacted" holds cited `hooks/pretooluse_cap.sh` and the coordinator
+  admission gate, both **deleted** by ablation phase 1 on 2026-08-01, so
+  those holds were moot and needed re-examination. Re-examined, and the new
+  evidence argues the deletion was right: the concept's false-refusal-cost
+  open question is now largely answered and the answer is "large" —
+  `ray2026what`'s gate buys .047 → .004 attack success by blocking **78% of
+  all calls** at 7.4 points of task success, and `ge2026governance` puts
+  precision at 22.7% at a 1% base rate. At a single operator's base rate the
+  gate is mostly false alarms. **No re-proposal**; the machinery should stay
+  deleted, and this closes the re-examination.
+- **`roth2026hack` → `max_consecutive_no_improvement` as a safety control**
+  (difficulty drives reward hacking, so a no-improvement ceiling is not only
+  an efficiency knob). Credibility 4 with code released, but the target is
+  `budget.yaml` — blocked for stacking behind `budget-ceiling-reserve`.
+- **`zhu2026lossy` / `cheng2026agenticsts` → offload and eviction** — the
+  write-before-query barrier (addressability as a safety property, UOR
+  14.7–30%) and the memory-as-contract reframe both strengthen the pending
+  2026-08-16 `precompact-addressable-offload` proposal rather than
+  supporting a separate one. Same file, already proposed; noted here as
+  corroboration for the reviewer.
+- **`ray2026what` → `typed-enforcement`** — the enforceability upper bound
+  and closed-loop non-identifiability result bear on the pending 2026-08-02
+  `lint-rule-consistency-pass`, whose target `skills/lint/SKILL.md` is
+  blocked. Corroboration, not a new proposal.
+
+**Note for the reviewer.** Four proposals have now been pending since 08-02
+and 08-16, and this cycle held five candidates at least partly because their
+targets are blocked behind them. The queue, not the evidence, is now the
+binding constraint on this skill.
 
 ## Considered and held (2026-08-16 run)
 
