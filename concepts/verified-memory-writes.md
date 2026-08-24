@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/gao2026mempoison]]"
   - "[[literature/papers/ravindran2026portable]]"
   - "[[literature/papers/zhu2026lossy]]"
+  - "[[literature/papers/li2026remember]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -318,3 +319,41 @@ contract, which moves concept files between repos with `used_by:`
 back-references and *no* integrity layer at all — trusted because git
 history is trusted. That is a defensible choice for a single-operator box
 and an obvious gap if concepts were ever imported across trust boundaries.
+
+## The decision before the write: commit, limit, verify, or ask
+
+Every source above judges a transition once a candidate update already
+exists — coverage, preservation, faithfulness, provenance. None of them
+ask the prior question: *should this become a durable write at all?*
+[[literature/papers/li2026remember]] supplies exactly that, with four
+operationally distinct actions (persist / ephemeral / verify / clarify)
+and a clean empirical result: models under-ask sharply more than they
+under-verify. Bare Qwen3.5-9B verifies 12/18 freshness items but
+clarifies 0/12 ambiguous ones, instead silently mapping ambiguity onto
+`persist`, `verify`, or `ephemeral` — "the model may recognize
+uncertainty yet consult the world rather than the user who alone can
+resolve intent. It otherwise silently commits an interpretation." Both
+tested model families under-ask; which wrong action they substitute is
+family-specific (Qwen over-persists at 8x Claude Haiku's rate).
+
+This adds a fourth axis to the coverage/preservation/faithfulness triad:
+**source-of-truth routing** — is the world or the user the authority for
+resolving this candidate update's uncertainty, and does the write policy
+route to the right one before committing anything. It also supplies a
+concrete asymmetric-cost design rule this concept can adopt directly:
+"when persist and a weaker action remain tied, prefer the weaker
+commitment... an unnecessary question is visible and recoverable, while
+a wrong durable update can remain silent" — the same silent-failure-is-
+worse logic [[concepts/refusal-cost-symmetry]] argues for a gate,
+restated as a write-time tie-break rule.
+
+A second finding compounds the write-gate's honest-limit theme this
+concept already tracks: **a model's stated commitment decision does not
+reliably survive translation into the tool call that would actually
+execute it.** Forcing the same decision into a structured `memory_write`
+/ `use_now` / `check_source` / `ask_user` call changes the outcome on
+30/70 items for Claude (57% label-to-call agreement) and on the majority
+of items for Qwen (23% agreement, accuracy collapsing 0.557 → 0.343). Any
+write-gate evaluated only on what a model *says* it will do — rather than
+on the tool call it actually emits — may be measuring a different, more
+optimistic quantity than what a deployed system commits.
