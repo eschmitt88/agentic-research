@@ -1175,3 +1175,16 @@ No MoC or concept files touched — nothing is unplaced.
 **What's new: the decline is now schedulable, not just repeatable.** Ripening requires an ingest burst on a new axis, and bursts here arrive only via `/digest` → `/curate`, which has run on a strict 7-day cadence — 07-27, 08-03, 08-10, 08-17. `_meta/last_digest` is `2026-08-17T07:04:24Z` and the backlog closed 08-18. So no new concept can exist before the **2026-08-24 digest**, and every daily `/promote-moc` between now and then is a structurally guaranteed decline against a frozen graph rather than an open question. The next pass worth real effort is the one after the 08-24 curate burst lands.
 
 **One thing worth your attention:** I removed a stray `SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled` line from the tail of `_meta/curate.log` — the second cleanup of this exact leak here (08-20), plus one against `_meta/digest.log` on 08-18. The hook is reliably failing and writing its error into whichever tracked prose log happens to be dirty. That's a bug in `~/.claude/hooks/session-end.sh`, outside this repo, and it's worth fixing before it lands in a log where it does damage.
+**Declined — no ripe cluster.** No MoC created.
+
+**Detection.** All 33 concepts already sit in ≥1 of the 8 existing MoCs (11 in one, 17 in two, 4 in three, `budget-as-ceiling` in four). With zero unmapped concepts, no theme can pass the not-already-mapped test on new material. The graph is byte-identical to the 08-19 through 08-23 declines — `git diff cfa4b98 HEAD -- concepts/ mocs/ literature/` is empty and `raw/_candidates/` holds only `_done/`.
+
+I did not re-derive the coordination-substrate or literature-pipeline rejections, or re-run 08-21's exhaustive 5-subset sweep — settled results against an unchanged graph.
+
+**One correction worth having.** The 08-23 entry called itself "the LAST guaranteed-decline pass of the frozen run," reasoning that Monday's digest would land before the next pass. This pass ran at 04:00Z Monday — three hours *before* the 07:00 digest. Per crontab (`0 7 * * 1` digest, `0 4 * * *` curate), the daily curate job and any pre-07:00 Monday pass are both structurally pre-burst, so the frozen run extends through Monday morning. `_meta/last_digest` is still `2026-08-17T07:04:24Z`. First genuinely post-burst pass is **2026-08-25**.
+
+**Housekeeping, and this one grew.** The SessionEnd hook leak recurred — this time into `_meta/elevate.log`, and worse than before: both the `Hook cancelled` line and a raw ntfy notification JSON payload. Inspecting the file showed the leak was never confined to the dirty working tree: 6 hook-failure lines and 6 ntfy blobs had accumulated in **committed** history since ~April. I removed all 10 remaining (2 uncommitted, 8 previously committed).
+
+That is a wider edit than the four prior single-line cleanups, so flagging it explicitly: it's machine noise in a curated prose log and nothing is lost (proposals are tracked under `docs/system-proposals/`), but if you'd rather keep committed history untouched, `git revert 0d8d266` restores it. The real fix is still `~/.claude/hooks/session-end.sh`, which is outside this repo and failing on every session.
+
+Committed and pushed as `0d8d266`.
