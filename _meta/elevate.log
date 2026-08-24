@@ -43,7 +43,6 @@ One side observation: `_meta/log.md` shows the 2026-07-02 SessionEnd auto-push f
 - **Permission-gate re-check** — the two new attestations are both credibility 2 and don't move the 2026-06-28 simplicity hold.
 
 To act on the proposal: read it, make the two-sentence edit in `~/claude-system/claude/rules/evaluation.md` yourself if you agree, and flip `status:` to accepted or rejected in the proposal file.
-{"id":"W1uxbNbOsU3H","time":1783832671,"expires":1783875871,"event":"message","topic":"esaiserver1337","title":"/elevate: 1 new system-proposal(s) to review","message":"• hce-spent-test-reads\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
 `/elevate` complete: **one proposal written, five candidates considered and held.** Committed and pushed (5158388). Nothing in `~/claude-system` was touched.
 
 ## The proposal — awaiting your review
@@ -63,8 +62,6 @@ The HCE rule currently defends one compromise vector — reading `test/` during 
 To act on the proposal: read it, make the edit in `~/claude-system` yourself (or authorize a session to), and set `status: accepted` — or `rejected` with a one-line reason so future runs don't re-propose it.
 
 One unrelated note: `_meta/curate.log` had uncommitted modifications from before this session; I left them out of the commit. Also, the claude.ai Google Drive MCP server needs authorization via your claude.ai connector settings before its tools are usable here — not needed for this run.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
-{"id":"ri5UN3dbHy5V","time":1784437496,"expires":1784480696,"event":"message","topic":"esaiserver1337","title":"/elevate: 1 new system-proposal(s) to review","message":"• hce-evaluator-integrity\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
 `/elevate` complete — **1 proposal, 10 candidates considered**. Pushed to `origin/main` (`e21b398`). `~/claude-system` untouched (read-only throughout; its pre-existing `M claude/settings.json` is not mine and I left it alone, as I did the pre-existing dirty `_meta/curate.log` here).
 
 ## The proposal: the token meter is wrong by ~51×
@@ -97,8 +94,6 @@ Two risks worth the reviewer's attention before landing: transcript rotation wou
 ## Notable hold
 
 `wu2026hasbench` supplies exactly the evidence class the 2026-06-28 permission-gate hold said was missing — gate placement as a swept variable, with both the safety benefit (+26.9 Safety Rate) and the over-gating cost (+50% turns) quantified. Held again on Gate 2: both directions are already enacted, including the anti-over-gating one in `/plan`'s "for cheap local operations… skip it." The memory-security pair (`louck2026securing`, `karamchandani2026your`) now clears Gate 1 comfortably — including a machine-checked impossibility result — but origin-binding auto-memory writes is net-new machinery, so the prior hold stands on better evidence. `wang2026naturebench` was deferred on process alone: the 2026-07-19 proposal against `rules/evaluation.md` is still undecided, and two undecided edits on one rule file make neither reviewable.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
-{"id":"MlYewAG9zykY","time":1785042339,"expires":1785085539,"event":"message","topic":"esaiserver1337","title":"/elevate: 1 new system-proposal(s) to review","message":"• token-metering-cumulative-double-count\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
 The `/elevate` run is complete: **3 proposals written**, 9 candidate threads considered, all committed and pushed (`677fe01`). Nothing in `~/claude-system` was touched — everything awaits your review in `docs/system-proposals/`.
 
 **The three proposals (all recommended adopt):**
@@ -112,8 +107,6 @@ The `/elevate` run is complete: **3 proposals written**, 9 candidate threads con
 **Notable holds:** the permission-gate "already enacted" holds were re-examined as NOTES.md asked — their citations (PreToolUse cap, admission gate) are gone, but the holds stand on updated grounds: the harness permission layer and agency verdict now carry the gate function, and re-adding machinery days after its accepted removal would need evidence of harm that doesn't exist. Verified-memory-writes strengthened again (now `growing`) but remains held on Gate 2 — origin-binding is still net-new machinery with no simplifying form.
 
 Unrelated housekeeping: the claude.ai Google Drive MCP server needs authorization before its tools work — this session is non-interactive, so you'd do that via your claude.ai connector settings. Also, `_meta/curate.log` has a pre-existing uncommitted modification from before this session that I deliberately left out of the commit.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
-{"id":"ipuVJyBMJRqK","time":1785647176,"expires":1785690376,"event":"message","topic":"esaiserver1337","title":"/elevate: 3 new system-proposal(s) to review","message":"• budget-ceiling-reserve\n• hce-retrieval-boundary\n• lint-rule-consistency-pass\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
 **Zero-proposal cycle** — the healthy outcome. Seven threads from the eight papers ingested 2026-08-03/04 were considered; none cleared both gates, and the reasoning is recorded in `docs/system-proposals/_index.md` (committed and pushed as `ade0ae5`).
 
 The run was shaped by a structural constraint: all three 2026-08-02 proposals are still awaiting your review, which blocks stacking further edits onto `rules/evaluation.md`, the `budget.yaml` template, and `skills/lint/SKILL.md`. Two of this cycle's strongest threads landed exactly there — `wang2026androids`' evaluator audit (also largely covered by the already-applied clause 4) and `besanson2026green`'s conformal reserve-sizing, which materially strengthens the pending budget-ceiling-reserve proposal and is worth reading before you decide it.
@@ -126,7 +119,6 @@ The most interesting outcomes:
 - The context-eviction pair (`hao2026selfgc` + `semenov2026beyond`) has no claude-system target since compaction lives inside the Claude Code harness — and their dependency-aware results actively harden the old 2026-06-23 hold against a Last-K eviction heuristic. The evolutionary-search papers (`xing2026compute`, `gurkan2026mutation`) are `/derive-experiment` fodder for downstream repos, not harness edits.
 
 One housekeeping note: the pre-existing uncommitted change to `_meta/curate.log` (from the earlier aiserver2026 session) was left alone — only the elevate files were committed. The main thing waiting on you is still the three 2026-08-02 proposals; deciding those unblocks two held threads.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 Elevate cycle complete — **1 proposal, 6 considered**. Pushed to `main` (`5027195`).
 
 ## Proposed: [`2026-08-16-precompact-addressable-offload`](docs/system-proposals/2026-08-16-precompact-addressable-offload.md)
@@ -146,8 +138,6 @@ The hook currently reads `# Swallow stdin payload; we do not currently need its 
 **context-proprioception → headroom at session start.** `xu2026llm` alone clears Gate 1 on the code-released disjunct, and its ablation is clean — removing the dashboard (37.3) hurts more than removing recovery tools (45.3) vs 50.7 full. The gap is real: `/headroom` is pull-only. Held because the concrete form buys permanent per-session token cost for a result measured on context-window keep/archive decisions this box's agent never makes — the harness compacts on its own — and it's one source. The three other holds and the unchanged `constraint-pinning` watch item are in `_index.md`.
 
 I left `~/claude-system` untouched (it has a pre-existing uncommitted `settings.json` change that isn't mine), and left `_meta/curate.log` out of the commit for the same reason.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
-{"id":"rt1uj3XDxsu9","time":1786856678,"expires":1786899878,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• precompact-addressable-offload\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
 **1 proposal from 7 candidates.** Committed and pushed to `agentic-research`; `~/claude-system` untouched (verified clean).
 
 ## Proposed: [`2026-08-23-elevate-paired-control`](docs/system-proposals/2026-08-23-elevate-paired-control.md) → `skills/elevate/SKILL.md`
