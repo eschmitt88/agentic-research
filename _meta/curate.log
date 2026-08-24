@@ -1188,3 +1188,4 @@ I did not re-derive the coordination-substrate or literature-pipeline rejections
 That is a wider edit than the four prior single-line cleanups, so flagging it explicitly: it's machine noise in a curated prose log and nothing is lost (proposals are tracked under `docs/system-proposals/`), but if you'd rather keep committed history untouched, `git revert 0d8d266` restores it. The real fix is still `~/.claude/hooks/session-end.sh`, which is outside this repo and failing on every session.
 
 Committed and pushed as `0d8d266`.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
