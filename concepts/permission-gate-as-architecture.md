@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/bhardwaj2026agent]]"
   - "[[literature/papers/ray2026what]]"
+  - "[[literature/papers/kang2026policyguide]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -418,3 +419,34 @@ the gate that cut attack success from .047 to .004 did it by blocking
 over-asking finding and ge2026governance's PPV-collapse-at-low-base-rate
 result now have a third, formal companion — over-blocking is not a tuning
 failure, it is where the frontier sits when the judge is this good.
+
+## A second, orthogonal bound: when the gate fires, not just what it can express
+
+ray2026what bounds the gate by policy class — which properties a *given*
+firing schedule can enforce at all. [[literature/papers/kang2026policyguide]]
+bounds it along the other axis: *when* the schedule fires, holding the
+policy class fixed. Its Theorem 1 says a firing schedule preserves
+procedural validity throughout an execution iff it covers every reachable
+first deviation, and its Corollary 1 makes the gap explicit: an
+action-triggered schedule (the dominant pattern this concept documents —
+PolicyGuard, ToolGuard, most of the sources above) covers that set only
+when *every* policy failure mode happens to be a guarded-action failure.
+Skipped identification, misordered eligibility checks, and other
+procedural deviations that occur *between* guarded actions are invisible
+to an action-triggered gate by construction, not by tuning.
+
+Its own deployed configuration (fire at user-turn boundaries, plus a
+one-shot correction on an unauthorized mutating call) is not the ideal
+case either — Corollary 2 states plainly that a deviation occurring after
+an intervening agent event and before the next scheduled firing escapes
+the guarantee. The concrete payoff is empirical, not just theoretical: a
+matched comparison holding the policy representation fixed across an
+action-local checker (PolicyGuard, 0.325 Pass⁴), a workflow-execution-
+integrated controller (FlowAgent, 0.350), and an external persisted-state
+verifier (POLICYGUIDE, 0.675) isolates *firing schedule and state
+ownership* as the variable that moves the number — not policy expressiveness,
+which is held constant across all three. This is the schedule-side
+complement to the "external, persisted" claim this concept's "Why it
+matters here" section makes from jia2026finharness's risk cumulant: state
+that survives across turns is what a point-in-time or action-triggered
+gate cannot have by definition.

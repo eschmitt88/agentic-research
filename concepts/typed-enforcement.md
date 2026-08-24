@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/roth2026hack]]"
+  - "[[literature/papers/kang2026policyguide]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -225,6 +226,21 @@ about itself and the pattern is only visible across the set:
 - mondl2026autoformalization concedes some enforceable constraints (FHIR
   rules) are not derivable from the policy text at all and had to be
   transcribed from the implementation.
+- [[literature/papers/kang2026policyguide]] is the cleanest instance yet,
+  because it names the hatch about itself rather than being caught in it
+  by this project's reading: "each node judgment is probabilistic, so
+  compliance is empirical rather than guaranteed... deployments requiring
+  hard guarantees need an additional deterministic monitor for the
+  formally expressible policy subset." It is not attempting to be a
+  member of this cluster — an LLM-authored, LLM-judged workflow verifier,
+  positioned one rung below Datalog/Rust-type enforcement — and it says so
+  in its own limitations section. Useful as the concept's calibration
+  point for what an honest non-member looks like, and its Corollary 2
+  adds a schedule-side escape hatch this list didn't have yet: even an
+  ideal workflow-level checker leaves a gap between "fires at turn
+  boundaries" and "fires before every policy-relevant event." See
+  [[concepts/permission-gate-as-architecture]]'s new section on the same
+  paper for the firing-schedule argument in full.
 
 So the guarantee typed enforcement provides covers the **formal skeleton**,
 and the semantic predicates hanging off it are as reliable as the model

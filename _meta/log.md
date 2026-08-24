@@ -410,3 +410,4 @@ skills; read by `/lint`.
 2026-08-24 07:05 fetch-paper https://arxiv.org/abs/2608.19861 → raw/papers/kang2026policyguide.pdf
 2026-08-24 07:05 fetch-paper https://arxiv.org/abs/2608.19802 → raw/papers/zhu2026stopping.pdf
 2026-08-24 07:05 fetch-paper https://arxiv.org/abs/2608.19564 → raw/papers/li2026remember.pdf
+2026-08-24 ingest raw/papers/kang2026policyguide.pdf → literature/papers/kang2026policyguide.md (+permission-gate-as-architecture [12th attestation; firing-schedule/state-ownership isolated by matched-controller comparison, new section pairing kang2026policyguide's Theorem 1/Corollary 2 with ray2026what's policy-class bound], typed-enforcement [5th escape-hatch instance, and the first that names the deterministic-monitor gap about itself rather than being caught in it by this project's reading])
