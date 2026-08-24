@@ -9,6 +9,7 @@ sources:
   - "[[literature/papers/ge2026governance]]"
   - "[[literature/papers/wu2026hasbench]]"
   - "[[literature/papers/ho2026soundnessbench]]"
+  - "[[literature/papers/zhu2026stopping]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -184,6 +185,22 @@ alongside each cycle's candidates, so that "zero proposals this week" is
 distinguishable from "the gate is now rejecting everything." Without that
 control, a correctly-quiet cycle and a broken gate produce identical
 output.
+
+**A second, structurally different lever on the same problem.**
+[[literature/papers/zhu2026stopping]] attacks the false-approval/
+false-rejection tradeoff from **panel composition** rather than
+threshold strictness — which of several available judges to call, drop,
+or route, holding each judge's own strictness fixed. Its redundant-copy
+stress test (adding four exact-copy judges leaves a well-designed
+policy's risk and cost unchanged, while a naive full-call jury gets both
+more expensive and *less* accurate) is the composition-side analogue of
+this concept's core claim: an evaluation mechanism should be judged by
+what it does under conditions designed to break it cheaply, not by its
+headline number on the easy case. Worth weighing against the
+paired-control fix above before `/elevate`'s proposal is implemented —
+they are not mutually exclusive, but a panel-routing policy is a
+different (and in principle cheaper, since it needs no dedicated control
+set) way to buy the same robustness the paired control targets.
 
 ## Connections
 

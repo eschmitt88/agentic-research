@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/roth2026hack]]"
   - "[[literature/papers/ishibashi2026effective]]"
   - "[[literature/papers/ho2026soundnessbench]]"
+  - "[[literature/papers/zhu2026stopping]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
