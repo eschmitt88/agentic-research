@@ -328,3 +328,15 @@ Also **declined** in the same pass: a standalone verification MoC for `evidence-
 **12 of 18 candidates are uncurated,** so the file stayed in `raw/_candidates/` rather than moving to `_done/`, per the skill's rule. Recommended next three are recorded in it: item 10 (enforceability upper bound), 12 (IntegrityBench pressure protocol), 14 (Hack-Verifiable Environments).
 
 Lint is clean — 0 orphans, 0 sourceless concepts, no new dead wikilinks (the 4 shown are pre-existing illustrative `[[wikilink]]` text). One incidental note: my `git add -A` picked up the `_meta/curate.log` edit left dirty by the 08-16 session; it's a tracked prose log, so committing it was the right call, but it wasn't my content.
+The scheduled `/digest` run is complete. Summary:
+
+**Digest** — Window since 2026-08-17 (first genuinely post-burst run per the multi-day cadence analysis in `_meta/log.md`). 5 scenario queries across active fronts (typed-enforcement, information-firewall, refusal-cost-symmetry/judge calibration, runtime-memory-policy, budget-as-ceiling), narrowed to verified in-window arXiv submissions. Found 4 candidates; wrote `raw/_candidates/2026-08-24-digest.md`.
+
+**Auto-advance** (agency: max, verdict GO/high, re-checked before each unit) — ingested 3 of 4, declined 1:
+- **kang2026policyguide** (PolicyGuide, KAIST) — 12th attestation for `permission-gate-as-architecture`, 5th for `typed-enforcement`; added a new section formalizing *when* a gate fires as an axis orthogonal to *what* it can express (ray2026what).
+- **zhu2026stopping** (judge-panel routing, Sun Yat-sen) — added to `programmable-evaluator-oracle` and `refusal-cost-symmetry` as a composition-side alternative to the pending `/elevate` paired-control proposal.
+- **li2026remember** (MCB memory-commitment benchmark) — new 4th axis for `verified-memory-writes`: the pre-write persist/ephemeral/verify/clarify decision, plus a measured say-do gap between stated decisions and tool calls.
+- Declined: the Netflix LLM-judge-lifecycle paper — industrial case study, no transferable mechanism, redundant with zhu2026stopping.
+
+**Housekeeping**: candidate file closed to `_done/`; `/promote-moc` run and declined (ingest strengthened 5 existing concepts but seeded none, so no cluster crosses the ripeness bar — same settled conclusion, now for a sharper reason); `/lint` clean (no new orphans, no HCE issues, pre-existing dead-wikilink noise untouched). Everything committed and pushed (`d7b0d78..6128886`).
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
