@@ -1189,3 +1189,28 @@ That is a wider edit than the four prior single-line cleanups, so flagging it ex
 
 Committed and pushed as `0d8d266`.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Declined — no ripe cluster.**
+
+The concept graph is byte-identical to yesterday's decline (`git diff 6128886 HEAD -- concepts/ mocs/` is empty; the only commit since is a journal entry). I recomputed coverage from scratch rather than trusting that:
+
+| | |
+|---|---|
+| Concepts | 33 |
+| Mapped into an existing MoC | 33 (0 orphans) |
+| Existing MoCs | 8 |
+
+Every tag cluster of size ≥4 is already **100% contained** in one MoC:
+
+| Cluster | N | Covered by |
+|---|---|---|
+| evaluation | 8 | `evaluation-integrity` |
+| memory | 7 | `runtime-memory-policy` |
+| knowledge-organization | 6 | `knowledge-organization-for-research-agents` |
+| agent-architecture | 5 | `agent-architecture` |
+| safety / governance / context-window | 4 each | `governance-by-architecture`, `runtime-memory-policy` |
+
+So the three ≥5 clusters fail ripeness test 2 (not-already-mapped), and the size-4 clusters fail test 1 independently. The nearest semantic candidate — a coordination MoC over `hierarchical-delegation` / `file-as-bus` / `structured-world-model` / `async-worker-pool` — is 4 wide and already split across `agent-architecture` and `knowledge-organization`; the 08-21 exhaustive subset sweep reached the same conclusion and its inputs haven't changed.
+
+The uncurated backlog is empty, so nothing pending can shift this before the next `/digest`. The watch condition from 08-24 stands: promotion needs an ingest burst that **seeds a new concept file** on an axis orthogonal to the existing 8 MoCs — bursts that only add sources to already-mapped concepts can't tip anything.
+
+Logged the decline to `_meta/log.md`, committed and pushed (`6562ea7`). That commit also picks up the 08-24 `_meta/digest.log` session report, which the previous session left uncommitted when its SessionEnd hook failed — tracked prose, not my content.
