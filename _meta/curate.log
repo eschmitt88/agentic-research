@@ -1214,3 +1214,4 @@ So the three ≥5 clusters fail ripeness test 2 (not-already-mapped), and the si
 The uncurated backlog is empty, so nothing pending can shift this before the next `/digest`. The watch condition from 08-24 stands: promotion needs an ingest burst that **seeds a new concept file** on an axis orthogonal to the existing 8 MoCs — bursts that only add sources to already-mapped concepts can't tip anything.
 
 Logged the decline to `_meta/log.md`, committed and pushed (`6562ea7`). That commit also picks up the 08-24 `_meta/digest.log` session report, which the previous session left uncommitted when its SessionEnd hook failed — tracked prose, not my content.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
