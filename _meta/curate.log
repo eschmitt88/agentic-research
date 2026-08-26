@@ -1215,3 +1215,22 @@ The uncurated backlog is empty, so nothing pending can shift this before the nex
 
 Logged the decline to `_meta/log.md`, committed and pushed (`6562ea7`). That commit also picks up the 08-24 `_meta/digest.log` session report, which the previous session left uncommitted when its SessionEnd hook failed — tracked prose, not my content.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**Declined — no ripe cluster.** Committed and pushed as `6e841e8`.
+
+**What I found.** 33 concepts (`concepts/*.md` minus `_README.md`), 8 MoCs. The union of the MoCs' `concepts:` lists is all 33 — zero orphans, so ripeness test 2 (*not already mapped*) cannot be passed by anything currently in the graph.
+
+Clusters considered and declined:
+
+| Cluster | Size | Why declined |
+|---|---|---|
+| evaluation | 8 | 100% in `evaluation-integrity` |
+| memory | 7 | split across `runtime-memory-policy` + `knowledge-organization…`, both fully covering |
+| knowledge-organization | 6 | 100% in `knowledge-organization-for-research-agents` |
+| agent-architecture | 5 | 100% in `agent-architecture` |
+| safety / governance / context-window | 4 each | fail test 1 (<5) *and* fully mapped |
+| benchmark-design (cross-MoC) | 3 | thin; all in `evaluation-integrity` |
+| grounding/hallucination (cross-MoC) | 4 | thin; majority in `evaluation-integrity` |
+
+**This is the third consecutive no-op pass.** `git diff 6562ea7 HEAD -- concepts/ mocs/` is empty, and the 08-25 decline itself touched no concept or MoC file — the graph is byte-identical to the 08-24 state. Everything since is journal prose. I recomputed coverage from the files rather than trusting the prior verdict, but the result is structurally forced.
+
+**Watch condition** (unchanged since 08-24, and now worth acting on): promotion needs an ingest burst that *seeds a new concept file* on an axis orthogonal to the existing 8 MoCs. Bursts that only add sources to already-mapped concepts — which is what the last several did — cannot tip anything regardless of size. The uncurated backlog is empty, so nothing pending will change this before the next `/digest`. Running `/promote-moc` daily against a static graph is currently pure overhead; consider gating it on "concept count changed since last run".
