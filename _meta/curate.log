@@ -1188,7 +1188,6 @@ I did not re-derive the coordination-substrate or literature-pipeline rejections
 That is a wider edit than the four prior single-line cleanups, so flagging it explicitly: it's machine noise in a curated prose log and nothing is lost (proposals are tracked under `docs/system-proposals/`), but if you'd rather keep committed history untouched, `git revert 0d8d266` restores it. The real fix is still `~/.claude/hooks/session-end.sh`, which is outside this repo and failing on every session.
 
 Committed and pushed as `0d8d266`.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 **Declined — no ripe cluster.**
 
 The concept graph is byte-identical to yesterday's decline (`git diff 6128886 HEAD -- concepts/ mocs/` is empty; the only commit since is a journal entry). I recomputed coverage from scratch rather than trusting that:
@@ -1214,7 +1213,6 @@ So the three ≥5 clusters fail ripeness test 2 (not-already-mapped), and the si
 The uncurated backlog is empty, so nothing pending can shift this before the next `/digest`. The watch condition from 08-24 stands: promotion needs an ingest burst that **seeds a new concept file** on an axis orthogonal to the existing 8 MoCs — bursts that only add sources to already-mapped concepts can't tip anything.
 
 Logged the decline to `_meta/log.md`, committed and pushed (`6562ea7`). That commit also picks up the 08-24 `_meta/digest.log` session report, which the previous session left uncommitted when its SessionEnd hook failed — tracked prose, not my content.
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
 **Declined — no ripe cluster.** Committed and pushed as `6e841e8`.
 
 **What I found.** 33 concepts (`concepts/*.md` minus `_README.md`), 8 MoCs. The union of the MoCs' `concepts:` lists is all 33 — zero orphans, so ripeness test 2 (*not already mapped*) cannot be passed by anything currently in the graph.
@@ -1234,3 +1232,21 @@ Clusters considered and declined:
 **This is the third consecutive no-op pass.** `git diff 6562ea7 HEAD -- concepts/ mocs/` is empty, and the 08-25 decline itself touched no concept or MoC file — the graph is byte-identical to the 08-24 state. Everything since is journal prose. I recomputed coverage from the files rather than trusting the prior verdict, but the result is structurally forced.
 
 **Watch condition** (unchanged since 08-24, and now worth acting on): promotion needs an ingest burst that *seeds a new concept file* on an axis orthogonal to the existing 8 MoCs. Bursts that only add sources to already-mapped concepts — which is what the last several did — cannot tip anything regardless of size. The uncurated backlog is empty, so nothing pending will change this before the next `/digest`. Running `/promote-moc` daily against a static graph is currently pure overhead; consider gating it on "concept count changed since last run".
+
+## 2026-08-27 — /promote-moc
+
+**Verdict: DECLINED (auto-detect) — no ripe cluster. Fourth consecutive strict no-op.**
+
+`git diff 6e841e8 HEAD -- concepts/ mocs/ literature/` is empty and the 08-26 decline itself touched no concept or MoC file, so the graph is byte-identical to the 08-24, 08-25 and 08-26 states. The only commits since are `0f3ce06` and `b10f614` (journal/session prose).
+
+**Coverage, recomputed from the files.** 33 concepts (`concepts/*.md` minus `_README.md`), 8 MoCs. The union of the MoCs' `concepts:` lists is all 33 — zero orphans, so ripeness test 2 (*not already mapped*) cannot be passed by anything currently in the graph. Every tag cluster of size >=5 is fully contained in one existing MoC; the size-4 clusters fail test 1 independently. The 08-19 (coordination-substrate), 08-20 (literature-pipeline) and 08-26 (benchmark-design, grounding/hallucination, retrieval) cross-MoC candidates are unchanged and not re-derived — settled results against an unchanged concept set, unchanged by construction. Likewise the 08-21 exhaustive 5-subset sweep.
+
+**New this pass — a correction to the 08-26 entry's closing suggestion.** That entry proposed gating the daily run on "concept count changed since last run", on the assumption that a scheduled job was firing it. It is not: `crontab -l` holds `0 7 * * 1` digest, `0 4 * * *` curate, `0 5 * * 0` elevate, `0 3 * * *` research-curate-sweep — **no promote-moc job**. The daily passes are session/user-invoked, so there is nothing to gate; the cheap precondition is one the *invoker* applies, and it is now stated exactly: skip the pass unless `ls concepts/*.md | wc -l` differs from 34, or `git diff <last-decline-commit> HEAD -- concepts/` is non-empty.
+
+**Next opportunity, dated.** `_meta/last_digest` = `2026-08-24T07:04:15Z` (a Monday firing of the `0 7 * * 1` job); `raw/_candidates/` holds only `_done/`. The next digest is **Monday 2026-08-31 07:00**, with the auto-ingest burst landing the same morning in this `agency: max` repo. Every pass from today (Thursday) through 2026-08-31 pre-07:00 is therefore a structurally guaranteed decline against a frozen graph — four calendar days of known-empty work.
+
+**Watch condition** (unchanged since 08-24): promotion needs a burst that *seeds a new concept file* on an axis orthogonal to the existing 8 MoCs. Bursts that only add sources to already-mapped concepts cannot tip anything regardless of size.
+
+**Housekeeping.** Removed the `SessionEnd hook ... failed: Hook cancelled` line that leaked into this file again — fifth cleanup of this leak (`_meta/curate.log` 08-20/08-22/08-23/today, `_meta/digest.log` 08-18, `_meta/elevate.log` 08-24). Once per session, reliably. Fixing `~/.claude/hooks/session-end.sh` (outside this repo) remains the actual fix.
+
+No concept or MoC files touched — nothing is unplaced.
