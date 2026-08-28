@@ -339,4 +339,3 @@ The scheduled `/digest` run is complete. Summary:
 - Declined: the Netflix LLM-judge-lifecycle paper — industrial case study, no transferable mechanism, redundant with zhu2026stopping.
 
 **Housekeeping**: candidate file closed to `_done/`; `/promote-moc` run and declined (ingest strengthened 5 existing concepts but seeded none, so no cluster crosses the ripeness bar — same settled conclusion, now for a sharper reason); `/lint` clean (no new orphans, no HCE issues, pre-existing dead-wikilink noise untouched). Everything committed and pushed (`d7b0d78..6128886`).
-SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
