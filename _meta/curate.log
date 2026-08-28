@@ -1250,3 +1250,16 @@ Clusters considered and declined:
 **Housekeeping.** Removed the `SessionEnd hook ... failed: Hook cancelled` line that leaked into this file again — fifth cleanup of this leak (`_meta/curate.log` 08-20/08-22/08-23/today, `_meta/digest.log` 08-18, `_meta/elevate.log` 08-24). Once per session, reliably. Fixing `~/.claude/hooks/session-end.sh` (outside this repo) remains the actual fix.
 
 No concept or MoC files touched — nothing is unplaced.
+**Declined — no ripe cluster.** Fifth consecutive no-op, and the first run where yesterday's skip precondition was applied up front and held.
+
+**The check:**
+- `concepts/*.md` = 34 files (unchanged), and `git diff 4ad482e HEAD -- concepts/ mocs/ literature/` is empty. The only commit since yesterday's decline is `447efde` (journal prose).
+- Coverage recomputed from the files anyway: **33 concepts, all 33 mapped** across the 8 existing MoCs — 0 orphans. Ripeness test 2 (not-already-mapped) is therefore unpassable by anything currently in the graph, regardless of how you cluster the tags.
+
+I did *not* re-derive the previously settled candidates (coordination-substrate, literature-pipeline, benchmark-design/grounding/retrieval, the 08-21 exhaustive 5-subset sweep). They're all functions of the concept set, which is byte-identical — their results are unchanged by construction, and re-deriving them is exactly the redundancy the 08-27 precondition exists to prevent.
+
+**Next opportunity is dated:** `_meta/last_digest` = 2026-08-24T07:04:15Z with an empty candidate backlog, so nothing can change until the Monday **2026-08-31 07:00** digest + auto-ingest. Runs on 08-29 and 08-30 would be guaranteed declines against a frozen graph — worth skipping rather than running. The tipping condition still requires a burst that seeds a *new* concept file on an axis orthogonal to the existing 8 MoCs; a burst that only adds sources to existing concepts can't do it.
+
+Housekeeping: removed the stray `SessionEnd hook … failed` line from the tail of `_meta/digest.log` — sixth cleanup of this leak, now across four tracked logs. It keeps recurring; the hook itself is worth a look if you want it to stop.
+
+Logged and pushed as `85692c0`. No concept or MoC files touched.
