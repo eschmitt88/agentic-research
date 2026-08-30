@@ -1263,3 +1263,23 @@ I did *not* re-derive the previously settled candidates (coordination-substrate,
 Housekeeping: removed the stray `SessionEnd hook … failed` line from the tail of `_meta/digest.log` — sixth cleanup of this leak, now across four tracked logs. It keeps recurring; the hook itself is worth a look if you want it to stop.
 
 Logged and pushed as `85692c0`. No concept or MoC files touched.
+**Declined — no ripe cluster.** Seventh consecutive no-op, and this one was predicted by name in the 08-27/08-28/08-29 log entries.
+
+**Precondition (checked first, per the 08-27 rule):** concept count 34 files (unchanged); `git diff 79b8ba2 HEAD -- concepts/ mocs/ literature/` empty; only commit since yesterday's decline is journal prose; working tree clean. The graph is byte-identical to the 08-24 state.
+
+**Coverage, recomputed from the files rather than inherited:** 33 concepts (34 minus `_README.md`), and the union of the 8 MoCs' `concepts:` lists is all 33 — **0 orphans**. Ripeness test 2 (not-already-mapped) is therefore unpassable by anything in the graph, independent of any tag-clustering judgment. Every tag cluster of size ≥5 sits fully inside one existing MoC:
+
+| cluster | size | containing MoC |
+|---|---|---|
+| evaluation | 8 | evaluation-integrity |
+| memory | 7 | runtime-memory-policy |
+| knowledge-organization | 6 | knowledge-organization-for-research-agents |
+| agent-architecture | 5 | agent-architecture |
+
+The size-4 clusters (safety, governance, context-window, retrieval) fail test 1 independently. I did not re-derive the settled candidate rejections — coordination-substrate, literature-pipeline, the 08-21 exhaustive 5-subset sweep, benchmark-design/grounding/retrieval — since all are functions of an unchanged concept set.
+
+**The frozen run ends tomorrow.** `_meta/last_digest` = 2026-08-24T07:04:15Z, backlog empty, crontab has the digest at `0 7 * * 1`. Monday **2026-08-31 07:00** digest + same-morning auto-ingest is the first material change in twelve days; a post-07:00 pass then (or the 09-01 04:00 curate) is the first one worth real effort. The tipping condition stays what 08-24 established: only a burst that seeds a *new concept file* on an axis orthogonal to the existing 8 MoCs.
+
+One thing worth noting: **no SessionEnd hook leak to clean this run** — first break after seven straight cleanups. But the working tree was clean at session start, and the leak only lands in whichever tracked log is dirty, so this isn't evidence the hook is fixed. `~/.claude/hooks/session-end.sh` is still the place to fix it.
+
+Logged to `_meta/log.md`, committed and pushed (`a77e745`). No concept or MoC files touched.
