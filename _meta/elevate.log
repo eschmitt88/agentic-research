@@ -277,3 +277,16 @@ blocking `rules/evaluation.md`, `templates/project/budget.yaml`,
 partly stacking-blocked. This is the second consecutive cycle to report it
 and the finding is unchanged: evidence supply is not what limits this
 skill.
+**`/elevate` 2026-08-30 — 0 proposals, 6 considered.** Committed and pushed as `5da40cf`. Nothing in `~/claude-system` was touched.
+
+The only graph movement since the last cycle was the 08-24 ingest of three papers, which added sources to five existing concepts and seeded none — so every candidate was a re-weighting of a thread already walked.
+
+**Closest miss — `context-proprioception` → session-start headroom.** This is the cycle's one real status change, and it was missed on 08-23. The 08-16 hold rested on "single attestation"; `mason2026missing` was ingested 08-17, one day later, and is an independent *production* attestation (graduated pressure zones over 857 Claude Code sessions). Both sources are code-released at credibility 4 and 3, so **Gate 1 now passes on two disjuncts**.
+
+It fails Gate 2 on the new evidence's own terms, which is the interesting part: mason's Normal zone (<60K tokens) deliberately tells the agent nothing, firing only at 60K with ~40K of runway. So printing `/headroom` from `session-start.sh` — the one cheap form — is exactly the form that source argues against, and the graduated form it does argue for needs a context-fill signal no Claude Code hook payload carries. `agency.md` already requires reading the coordinator verdict before an autonomous burst, which is perception at the actual decision point. Recorded blocker changed from "not enough evidence" to "no viable form without added surface area" — if a future harness exposes context fill to a hook, this is immediately proposable.
+
+**Held (5):** `li2026remember`'s prefer-the-weaker-commitment tie-break mapped cleanly onto `/ingest` step 4 but fails Gate 1 (single preprint, no code) *and* fails on merit — with 33 concepts, 0 orphans and nothing seeded since 08-11, the graph's problem is under-seeding; its say-do gap result (label–tool agreement 0.571 for both Claude models) is already enacted in kind by ablation phase 3; `kang2026policyguide` would re-add a gate the 08-23 cycle concluded was correctly deleted; the "guidance not hard-block" pair has no target that isn't HCE; `zhu2026stopping` is review-queue input on the pending elevate proposal, not a second proposal on the same file.
+
+**Process:** all five proposals from 08-02/08-16/08-23 are still `proposed`, blocking `evaluation.md`, `budget.yaml`, `lint`, `pre-compact.sh` and `elevate`. Three of six holds this cycle are at least partly stacking-blocked — second consecutive cycle where the review queue, not evidence supply, is the constraint.
+
+Housekeeping: removed the SessionEnd hook leak line that reappeared in `_meta/curate.log` (sixth cleanup). The 08-29/08-30 "streak break" was an artifact of a clean working tree, as that entry itself predicted; `~/.claude/hooks/session-end.sh` still needs the actual fix.
