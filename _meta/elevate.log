@@ -290,3 +290,4 @@ It fails Gate 2 on the new evidence's own terms, which is the interesting part: 
 **Process:** all five proposals from 08-02/08-16/08-23 are still `proposed`, blocking `evaluation.md`, `budget.yaml`, `lint`, `pre-compact.sh` and `elevate`. Three of six holds this cycle are at least partly stacking-blocked — second consecutive cycle where the review queue, not evidence supply, is the constraint.
 
 Housekeeping: removed the SessionEnd hook leak line that reappeared in `_meta/curate.log` (sixth cleanup). The 08-29/08-30 "streak break" was an artifact of a clean working tree, as that entry itself predicted; `~/.claude/hooks/session-end.sh` still needs the actual fix.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
