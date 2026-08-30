@@ -158,3 +158,122 @@ The fix is `tripathi2026diagnostic`'s paired legitimate case in its cheapest for
 Four proposals have been pending since 08-02/08-16, blocking `evaluation.md`, `budget.yaml`, `lint`, and `pre-compact.sh`. Five of this cycle's seven holds were at least partly stacking-blocked — including the strongest candidate on merit, `ishibashi2026effective` (same model, same 40M budget: the good harness beats the weak one's *final* score at ~1/8 the cost, and cheap-model-good-harness beats strong-model-weak-harness). That one also fails on its own caveat — four differences, two ablated — so no single-file edit follows even once `budget.yaml` clears.
 
 `kim2026why`'s flat-vs-tiered skill-loading result held as **already enacted** — it validates the accepted 07-14 skill-scoping and 08-01 phase-5 rule-scoping decisions rather than proposing anything new.
+
+---
+
+# 2026-08-30 — proposals=0, considered=6
+
+First run since the 08-24 ingest of `li2026remember`, `zhu2026stopping` and
+`kang2026policyguide`. That burst is the *only* graph movement since the
+08-23 cycle, and it added sources to five existing concepts
+(`verified-memory-writes`, `programmable-evaluator-oracle`,
+`refusal-cost-symmetry`, `permission-gate-as-architecture`,
+`typed-enforcement`) while seeding none. Every candidate below is therefore
+a re-weighting of a thread this skill has already walked.
+
+## Closest miss: context-proprioception → session-start headroom
+
+This is the cycle's one genuine Gate-1 status change, and it was missed on
+08-23. The 08-16 hold rested on two blockers: single attestation, and the
+per-session token cost of an always-on injection. The first is now
+resolved — `mason2026missing` was ingested 08-17, one day after that hold,
+and is an independent *production* attestation (graduated pressure zones
+measured over 857 Claude Code sessions) rather than a second benchmark.
+Both sources are code-released (`binyxu/VISTA`, `fsgeek/pichay`) at
+credibility 4 and 3, so **Gate 1 passes on two disjuncts**, not just the
+3-attestation one.
+
+It fails **Gate 2**, and the interesting part is that it fails on the new
+evidence's own terms rather than on a generic complexity objection:
+
+- `mason2026missing`'s **Normal zone (<60K tokens) deliberately tells the
+  agent nothing**. The advisory fires at 60K specifically to leave ~40K of
+  runway — "proprioception with no time to act on it is just a
+  notification." So the one cheap form available here, printing `/headroom`
+  from `hooks/session-start.sh` every session, is precisely the form this
+  source argues against: it pays a fixed per-session cost to report a state
+  that is almost always Normal.
+- The graduated form it *does* argue for needs a live context-fill signal.
+  Claude Code hook payloads do not carry one, so it would mean a new hook
+  plus a new state channel — net-new surface area of the kind Gate 2
+  defaults to rejecting.
+- The unmet need is also narrower than the concept's framing suggests.
+  `agency.md` already requires reading the coordinator verdict *before* an
+  autonomous burst and re-checking inside long ones. That is perception
+  delivered at the decision point, which is what VISTA's Theorem 1 actually
+  asks for; the session-start banner would add perception where no decision
+  is pending.
+
+Recorded blocker changed from "not enough evidence" to **"no viable form
+that does not add surface area."** If a future harness exposes context fill
+to a hook, this becomes proposable immediately — the evidence side is done.
+
+## Held
+
+- **`li2026remember` → `/ingest` step 4 seeding tie-break.** The mapping is
+  unusually clean: the paper's gold-label rule is "when persist and a
+  weaker action remain tied, prefer the weaker commitment... an unnecessary
+  question is visible and recoverable, while a wrong durable update can
+  remain silent," and `/ingest` step 4's seed-a-new-concept vs.
+  add-a-source-to-an-existing-one is exactly that tie. Both 08-24 notes
+  already resolve it the paper's way by judgment (`zhu2026stopping`: "Not
+  proposed as a concept seed"; `li2026remember`: "Not proposed as a
+  `related_concepts` edit"). It still fails **Gate 1** — one preprint,
+  credibility 4, no `code_url`, and the concept's other nine sources judge
+  the write *after* a candidate exists, not the decision to create one.
+  It also fails **on merit**, which matters more: the graph has 33 concepts,
+  all of them mapped into 8 MoCs, zero orphans, and nothing newly seeded
+  since 2026-08-11 — seven consecutive `/promote-moc` declines. The binding
+  problem here is *under*-seeding, so codifying a bias against the durable
+  write would push a saturated graph further in the direction it is already
+  stuck.
+- **`li2026remember` → the say-do gap.** Label-vs-tool-call agreement is
+  0.571 for *both* Claude models (30/70 decisions change) and Sonnet's
+  accuracy drops 0.814 → 0.529 under the identical policy once the choice
+  must become a concrete call; well-formedness checks rule out malformed
+  arguments, so the bottleneck is tool choice. That is a real, Claude-
+  specific result about prose policy vs. executed action, and it bears on
+  `/curate` step 2's `ingest | decline` label vocabulary. Held as
+  **already enacted in kind** — ablation phase 3 moved the arithmetic to
+  scripts for this reason — and the paper's strongest remedy (four-shot
+  examples, +0.214 accuracy) would add prose to a skill the same ablation
+  just trimmed.
+- **`kang2026policyguide` → `permission-gate-as-architecture`.** Credibility
+  4, and the matched-controller result is the cleanest evidence in that
+  concept's 20-source set that *external, persisted* state-tracking is what
+  the architecture buys. But every form of the change re-adds a gate that
+  the 08-23 cycle concluded was correctly deleted by ablation phase 1
+  (`ray2026what`: 78% of calls blocked; `ge2026governance`: 22.7% precision
+  at a 1% base rate). New evidence for a mechanism is not evidence for
+  re-adding it to a system that measured its cost.
+- **`kang2026policyguide` + `elkoussy2026agentltl` → "remediate with
+  guidance, not hard-block."** Now at two attestations on distinct axes
+  (workflow coverage; response-to-violation). No target: claude-system's
+  only hard block is `/lint`'s HCE failure, and this skill forbids any
+  proposal that loosens the holdout.
+- **`zhu2026stopping` → the pending `elevate-paired-control`.** Its
+  follow-up names the connection directly — panel composition as a lever on
+  the same false-approval/false-rejection tradeoff that proposal attacks
+  with a stricter re-test — and says to read it "before that proposal is
+  implemented, not after." That is input to the review queue on an
+  already-pending proposal, not a second proposal on `skills/elevate/`.
+  Credibility 3, no code, single preprint; it would not clear Gate 1 on its
+  own anyway.
+
+## Watch items
+
+- `constraint-pinning` — still 2 rated attestations (`chen2026governance`,
+  `semenov2026beyond`), unchanged since 08-09. Fails Gate 1's third
+  disjunct by one.
+- `information-firewall` — 3 sources, but all of them resolved into the
+  pending `hce-retrieval-boundary` proposal on 08-09. Nothing new to raise.
+
+## The queue is still the binding constraint
+
+All five proposals from 08-02, 08-16 and 08-23 remain `status: proposed`,
+blocking `rules/evaluation.md`, `templates/project/budget.yaml`,
+`skills/lint/SKILL.md`, `hooks/pre-compact.sh` and
+`skills/elevate/SKILL.md`. Three of this cycle's six holds are at least
+partly stacking-blocked. This is the second consecutive cycle to report it
+and the finding is unchanged: evidence supply is not what limits this
+skill.
