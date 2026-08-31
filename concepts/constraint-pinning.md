@@ -6,6 +6,7 @@ added: "2026-08-03"
 sources:
   - "[[literature/papers/chen2026governance]]"
   - "[[literature/papers/semenov2026beyond]]"
+  - "[[literature/papers/nakayashiki2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"

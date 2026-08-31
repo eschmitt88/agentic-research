@@ -33,6 +33,7 @@ sources:
   - "[[literature/papers/cheng2026agenticsts]]"
   - "[[literature/papers/zhu2026lossy]]"
   - "[[literature/papers/kim2026why]]"
+  - "[[literature/papers/nakayashiki2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

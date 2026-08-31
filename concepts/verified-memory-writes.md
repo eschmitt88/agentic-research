@@ -15,6 +15,8 @@ sources:
   - "[[literature/papers/zhu2026lossy]]"
   - "[[literature/papers/li2026remember]]"
   - "[[literature/papers/leong2026recognition]]"
+  - "[[literature/papers/nakayashiki2026when]]"
+  - "[[literature/papers/wu2026evomal]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"

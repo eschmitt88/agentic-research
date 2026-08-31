@@ -136,6 +136,13 @@ spawning a fourth framing of the same material.
 - [[literature/papers/qu2026coral]] — CORAL: Autonomous Multi-Agent Evolution
 - [[literature/papers/starace2025paperbench]] — PaperBench (OpenAI)
 
+- [[literature/papers/leong2026recognition]] — Recognition Without Enforcement (recognition-enforcement gap: source channel is linearly decodable yet action is not conditioned on it; external reference monitor; rel 5 / cred 2)
+- [[literature/papers/rahman2026framing]] — The Framing Gap (overt injections refused 0%, reframed 100%; only payload-blind checks close it — destination allow-list, planner/reader split; rel 5 / cred 3)
+- [[literature/papers/nakayashiki2026when]] — Stale Constraints (inherited memory: provenance reachable but verification budget misallocated; budget-neutral reallocation recovers ~75% stale decisions; rel 5 / cred 3)
+- [[literature/papers/wu2026evomal]] — EvoMal (self-poisoning: agent-authored malicious skills re-enter the shared library and persist after planted skills are removed; rel 5 / cred 4)
+- [[literature/papers/guo2026when]] — SARA (separates action induction from execution authorization; No-History-Promotion; ASR <=0.63%; rel 4 / cred 3)
+- [[literature/papers/zhan2026auto]] — Auto-Policy, not Auto-Skill (Borrowed Authority; typed authority layer compiled into the Skill artifact; rel 4 / cred 3)
+
 ## Active experiments
 
 (list of `experiments/YYYY-MM-DD-<slug>/` folders currently in flight)

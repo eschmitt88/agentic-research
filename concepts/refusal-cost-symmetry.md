@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/wu2026hasbench]]"
   - "[[literature/papers/ho2026soundnessbench]]"
   - "[[literature/papers/zhu2026stopping]]"
+  - "[[literature/papers/rahman2026framing]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"

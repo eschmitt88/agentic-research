@@ -8,6 +8,8 @@ sources:
   - "[[literature/papers/wang2026search]]"
   - "[[literature/papers/wang2026evobrowsecomp]]"
   - "[[literature/papers/leong2026recognition]]"
+  - "[[literature/papers/guo2026when]]"
+  - "[[literature/papers/rahman2026framing]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"

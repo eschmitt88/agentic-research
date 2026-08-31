@@ -22,6 +22,9 @@ sources:
   - "[[literature/papers/roth2026hack]]"
   - "[[literature/papers/kang2026policyguide]]"
   - "[[literature/papers/leong2026recognition]]"
+  - "[[literature/papers/zhan2026auto]]"
+  - "[[literature/papers/guo2026when]]"
+  - "[[literature/papers/rahman2026framing]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
