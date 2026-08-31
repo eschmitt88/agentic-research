@@ -1299,3 +1299,4 @@ Logged to `_meta/log.md`, committed and pushed (`a77e745`). No concept or MoC fi
 2. The membership distribution repeated across six prior log entries ("11/17/4, budget-as-ceiling in four") is wrong. Parsed strictly from frontmatter it's **13 in one MoC, 15 in two, 5 in three, none in four** (58 memberships, reconciling against per-MoC sizes). The inflated figure came from grepping MoC bodies, where cross-references count as membership.
 
 The first genuinely material pass is after today's 07:00 digest and its auto-ingest — and only if that burst seeds a *new* concept file; a burst that only adds sources to existing concepts can't tip anything at any size.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
