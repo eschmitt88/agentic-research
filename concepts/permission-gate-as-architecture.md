@@ -30,6 +30,7 @@ sources:
   - "[[literature/papers/bhardwaj2026agent]]"
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/kang2026policyguide]]"
+  - "[[literature/papers/leong2026recognition]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"

@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/roth2026hack]]"
   - "[[literature/papers/kang2026policyguide]]"
+  - "[[literature/papers/leong2026recognition]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"

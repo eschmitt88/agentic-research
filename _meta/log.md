@@ -431,3 +431,4 @@ skills; read by `/lint`.
 2026-08-31 07:10 fetch-paper 2608.27092 → raw/papers/rahman2026framing.pdf
 2026-08-31 07:10 fetch-paper 2608.25553 → raw/papers/nakayashiki2026when.pdf
 2026-08-31 07:10 fetch-paper 2608.25776 → raw/papers/wu2026evomal.pdf
+2026-08-31 07:09 ingest raw/papers/leong2026recognition.pdf
