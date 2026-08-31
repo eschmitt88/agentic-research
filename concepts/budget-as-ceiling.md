@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/bhardwaj2026agent]]"
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/roth2026hack]]"
+  - "[[literature/papers/nakayashiki2026when]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24

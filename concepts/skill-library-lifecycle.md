@@ -29,6 +29,8 @@ sources:
   - "[[literature/papers/tang2026memory]]"
   - "[[literature/papers/cheng2026agenticsts]]"
   - "[[literature/papers/kim2026why]]"
+  - "[[literature/papers/zhan2026auto]]"
+  - "[[literature/papers/wu2026evomal]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

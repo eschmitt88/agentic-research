@@ -31,6 +31,9 @@ sources:
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/kang2026policyguide]]"
   - "[[literature/papers/leong2026recognition]]"
+  - "[[literature/papers/zhan2026auto]]"
+  - "[[literature/papers/guo2026when]]"
+  - "[[literature/papers/rahman2026framing]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
