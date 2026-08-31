@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/ravindran2026portable]]"
   - "[[literature/papers/zhu2026lossy]]"
   - "[[literature/papers/li2026remember]]"
+  - "[[literature/papers/leong2026recognition]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
