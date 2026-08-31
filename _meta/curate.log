@@ -1283,3 +1283,19 @@ The size-4 clusters (safety, governance, context-window, retrieval) fail test 1 
 One thing worth noting: **no SessionEnd hook leak to clean this run** — first break after seven straight cleanups. But the working tree was clean at session start, and the leak only lands in whichever tracked log is dirty, so this isn't evidence the hook is fixed. `~/.claude/hooks/session-end.sh` is still the place to fix it.
 
 Logged to `_meta/log.md`, committed and pushed (`a77e745`). No concept or MoC files touched.
+**Declined — no ripe cluster.** No MoC created; `_meta/log.md` updated, committed and pushed (8902dfb).
+
+**What I found**
+
+- 33 concepts, 8 MoCs, and the union of the MoCs' frontmatter `concepts:` lists covers **all 33 — zero orphans**. Ripeness test 2 (not already mapped) is therefore unpassable by anything currently in the graph, regardless of how you cluster.
+- Tag clusters ≥5 — evaluation (8), memory (7), knowledge-organization (6), agent-architecture (5) — are each 100% contained in a single existing MoC. Size-4 clusters (safety, governance, context-window, retrieval) fail the ≥5 bar independently.
+- The graph is byte-identical to the 08-30 state: `git diff 8446dc0 HEAD -- concepts/ mocs/ literature/` is empty; only journal/session prose and the 08-30 elevate record have landed. Candidate backlog holds only `_done/`.
+
+**Clusters declined** (settled in earlier passes, not re-derived against an unchanged concept set): coordination-substrate — the real theme is 3 concepts wide and only reaches 5 by padding; literature-pipeline — knowledge-organization already holds 5 of its 6.
+
+**Two corrections worth flagging**
+
+1. The 08-30 entry called today "the frozen run ends tomorrow." This pass ran at 04:00 UTC Monday, three hours *before* the `0 7 * * 1` digest, so the graph is still frozen and `last_digest` is still 2026-08-24. That's the same slip the 08-24 entry already corrected once — I've restated it in the log as a rule: the skip precondition needs to be time-of-day aware, since both the daily 04:00 curate and any pre-07:00 Monday pass land ahead of the digest.
+2. The membership distribution repeated across six prior log entries ("11/17/4, budget-as-ceiling in four") is wrong. Parsed strictly from frontmatter it's **13 in one MoC, 15 in two, 5 in three, none in four** (58 memberships, reconciling against per-MoC sizes). The inflated figure came from grepping MoC bodies, where cross-references count as membership.
+
+The first genuinely material pass is after today's 07:00 digest and its auto-ingest — and only if that burst seeds a *new* concept file; a burst that only adds sources to existing concepts can't tip anything at any size.
