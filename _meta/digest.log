@@ -339,3 +339,27 @@ The scheduled `/digest` run is complete. Summary:
 - Declined: the Netflix LLM-judge-lifecycle paper — industrial case study, no transferable mechanism, redundant with zhu2026stopping.
 
 **Housekeeping**: candidate file closed to `_done/`; `/promote-moc` run and declined (ingest strengthened 5 existing concepts but seeded none, so no cluster crosses the ripeness bar — same settled conclusion, now for a sharper reason); `/lint` clean (no new orphans, no HCE issues, pre-existing dead-wikilink noise untouched). Everything committed and pushed (`d7b0d78..6128886`).
+Digest complete and pushed. Summary:
+
+## `/digest` — 2026-08-31
+
+**Window:** since `2026-08-24T07:04:15Z` (7 days). Backlog was clean at start.
+
+**Retrieval — one method change worth keeping.** Scenario-form WebSearch surfaced almost entirely June–July results, and the previous digest's arXiv-ID-narrowing trick wasn't enough either: sub-week-old papers have essentially no indexed web presence. I switched to the arXiv API with an explicit `submittedDate:[202608240000 TO 202608312359]` range, which is authoritative on date and needs no per-item verification. I recorded this in the candidates file as the recommended default going forward.
+
+**Written:** `raw/_candidates/2026-08-31-digest.md`, 20 ranked items, all ≥ `2608.24xxx` (highest already in the graph was `2608.19861`, so no duplicates).
+
+**Auto-advance** (verdict `go`/`high`, `agency: max`): fetched + ingested 6 — the canonical cap on `high`. Two threads NOTES was explicitly watching moved:
+
+- **`information-firewall` 3 → 6 sources.** `rahman2026framing` is the second *independent* attestation watched for since 08-01. The seedling came from the evaluation side (agent must not reach the oracle); this reaches the same structural boundary from the security side (agent must not reach the destination), by disjoint methods — overt injections refused at 0%, the identical leak reframed as an "integrity signature" at 100%, and only payload-blind checks close it.
+- **`constraint-pinning` 2 → 3 sources.** `nakayashiki2026when` is the third attestation the 08-30 `/elevate` log recorded as missing, and it relocates the failure from provenance *reachability* to verification-budget *allocation*, with a budget-neutral remedy.
+
+**`/promote-moc`: declined** — ninth consecutive. 33 concepts, 8 MoCs, 0 orphans, every cluster ≥5 already 100% mapped. The burst added sources to 10 concepts but seeded no new concept file, which is exactly the case prior log entries identified as structurally unable to tip a MoC.
+
+**One thing I flagged rather than acted on:** four of the six papers independently propose a *different placement* for the same enforcement boundary — external reference monitor, typed policy compiled into the skill artifact, runtime induction/authorization split, destination/capability isolation. All four agree enforcement can't live in the model; they disagree on where it goes. `typed-enforcement` (21 sources) covers *that* it's typed; `permission-gate-as-architecture` (24) covers *that* it's architectural; neither covers placement. Four attestations in one week on an uncovered axis is the strongest new-concept signal in a while, but seeding is `/ingest` step 4's job and those ingests are closed — it belongs to the next pass.
+
+**Two corrections made along the way:** the digest note initially said `typed-enforcement` had 6 sources (it had 17 — I'd read a truncated frontmatter); and I found three Aug-20 papers the 08-24 digest should have caught but missed, still un-ingested. `DeltaML-Bench` was strong enough to take a slot (specification gaming 47.9% under modular scaffolding vs 0% under search-based); the other two are flagged so they aren't lost twice.
+
+**Left deliberately open:** 14 of 20 candidates are un-curated, so the file stays in `raw/_candidates/` rather than moving to `_done/` — they fell below the count cap, not the relevance bar. The ML-research-agent front is entirely un-ingested; I noted items 9, 11, 16 as the priority for the next `/curate`.
+
+Six commits, pushed to `main`.
