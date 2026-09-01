@@ -10,6 +10,7 @@ concepts:
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/typed-enforcement]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 tags: [moc, capability-layer, skills, tool-use, harness-ecosystem, governance]
 ---
 
@@ -23,13 +24,14 @@ runs it ([[mocs/agent-architecture]]), how it searches
 ([[mocs/evaluation-integrity]]). This one maps the agent's **action
 surface**: procedural capability packaged as skills and tool access, plus
 the harness machinery that curates it, ports it across executors,
-executes it cheaply, and gates it safely. The six concepts belong
+executes it cheaply, and gates it safely. The seven concepts belong
 together because a capability is only real when all four clauses hold —
 well-curated, loadable where the agent runs, affordable in context, and
 safe to fire. The first three clauses take one concept each; the fourth
-takes two, because gating splits into *where the check sits*
-(`permission-gate-as-architecture`) and *what the policy is written in*
-(`typed-enforcement`). The cluster is anchored
+takes three, because gating splits into *what the policy is written in*
+(`typed-enforcement`), *what the gate does in the control loop*
+(`permission-gate-as-architecture`), and *which component actually holds
+the boundary* (`enforcement-boundary-placement`). The cluster is anchored
 by the 2026 skill-ecosystem wave
 ([[literature/papers/ouyang2026skillos]],
 [[literature/papers/zhang2026skillcomposer]],
@@ -106,6 +108,17 @@ The layer that decides whether a capability fires at all.
   pipelines raise the stakes here: one script can fire many tools behind
   a single approval, so the gate and the script surface must be designed
   together.
+- [[concepts/enforcement-boundary-placement]] — the gate's *placement*,
+  now factored out in its own right: which component holds the boundary,
+  and specifically whether the constrained thing can reach the
+  constraining thing. Load-bearing for this MoC because the skill
+  artifact is one of the attested placements — co-packaging a typed
+  invocation policy inside the Skill itself
+  ([[literature/papers/zhan2026auto]]) — and because a shared skill
+  namespace with imitation-based authoring is a self-propagating medium
+  ([[literature/papers/wu2026evomal]]), which makes "where is the check
+  relative to the authored artifact" a question this cluster cannot
+  leave to `skill-library-lifecycle`.
 - [[concepts/typed-enforcement]] — the gate's *policy*, factored out from
   the gate's placement. Constraints written as a machine-checkable
   artifact in a language with decidable static analyses, held outside the
@@ -115,10 +128,10 @@ The layer that decides whether a capability fires at all.
   ([[literature/papers/khan2026token]]), a conservation law over delegated
   budgets ([[literature/papers/ye2026agent]]), and a compiler from prose
   policy documents into Cedar
-  ([[literature/papers/mondl2026autoformalization]]). The pairing with the
-  gate concept is the useful frame: one asks *where the check happens*, the
-  other *what the check is written in and whether it can be checked before
-  it runs*.
+  ([[literature/papers/mondl2026autoformalization]]). The three-way split is
+  the useful frame: the gate concept asks *what the check does in the loop*,
+  placement asks *which component holds it*, and this one asks *what the
+  check is written in and whether it can be checked before it runs*.
 
   Two results from this concept bear directly on the rest of the layer.
   First, fewer than 1% of 6,145 real agent-config files declare any
