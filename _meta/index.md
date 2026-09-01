@@ -76,6 +76,25 @@ overlap rule the concept was added to the two existing MoCs it belongs to
 [[mocs/governance-by-architecture]] as the backward-looking gate) rather than
 spawning a fourth framing of the same material.
 
+**New concept 2026-09-01 — `enforcement-boundary-placement`** (`seedling`,
+7 sources). The first new concept file since 2026-08-11, seeded by the
+`/curate` pass over the 08-31 digest backlog and predicted by the 08-31
+`/promote-moc` entry. It is the third dimension of the enforcement cluster:
+`typed-enforcement` covers the constraint's *form* (machine-checkable
+artifact, not prose), `permission-gate-as-architecture` covers its *role*
+(stateful regulator in the control loop), and this covers *where the
+boundary physically sits*. Seven sources agree enforcement cannot live in
+the model and disagree on placement — external reference monitor
+(leong2026recognition), inside the invoked artifact (zhan2026auto), the
+induction/authorization split (guo2026when), the data's destination
+(rahman2026framing), the provenance origin (song2026string), outside the
+workspace (chi2026ai4ai), the change's scope check
+(esakkiraja2026starharness). `information-firewall` is recorded as the
+evaluation-side special case. Orthogonal to all 8 existing MoCs, so
+`/promote-moc`'s ripeness test 2 is passable again for the first time since
+2026-08-11 — a single seedling is not a cluster, but the axis is now the
+one to watch.
+
 ## Literature / posts (recent)
 
 - [[literature/posts/gist-github-com-karpathy-llm-wiki]] — Karpathy's LLM Wiki gist (primary source for [[concepts/llm-wiki-pattern]]: compile-time curation, raw/wiki/schema layers)
