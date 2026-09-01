@@ -6,6 +6,7 @@ added: "2026-08-17"
 sources:
   - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/panigrahy2026energy]]"
+  - "[[literature/papers/ge2026coverage]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"

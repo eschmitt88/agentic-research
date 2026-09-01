@@ -20,6 +20,10 @@ sources:
   - "[[literature/papers/zou2026fmlbench]]"
   - "[[literature/papers/gurkan2026mutation]]"
   - "[[literature/papers/ishibashi2026effective]]"
+  - "[[literature/papers/moukpe2026deltaml]]"
+  - "[[literature/papers/chi2026ai4ai]]"
+  - "[[literature/papers/esakkiraja2026starharness]]"
+  - "[[literature/papers/ge2026coverage]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"

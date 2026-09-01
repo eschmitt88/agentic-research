@@ -14,6 +14,8 @@ sources:
   - "[[literature/papers/wang2026reframing]]"
   - "[[literature/repos/vila-lab-dive-into-claude-code]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
+  - "[[literature/papers/lu2026credo]]"
+  - "[[literature/papers/song2026string]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

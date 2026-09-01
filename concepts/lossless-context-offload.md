@@ -12,6 +12,8 @@ sources:
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/cheng2026agenticsts]]"
   - "[[literature/papers/zhu2026lossy]]"
+  - "[[literature/papers/badhe2026skill]]"
+  - "[[literature/papers/song2026string]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"

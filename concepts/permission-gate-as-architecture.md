@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/zhan2026auto]]"
   - "[[literature/papers/guo2026when]]"
   - "[[literature/papers/rahman2026framing]]"
+  - "[[literature/papers/song2026string]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -42,6 +43,7 @@ related_concepts:
   - "[[concepts/scripted-tool-pipelines]]"
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/refusal-cost-symmetry]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 related_experiments: []
 tags: [safety, permission-gate, runtime-approval, regulator, tool-use, governance]
 ---

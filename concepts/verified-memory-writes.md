@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/leong2026recognition]]"
   - "[[literature/papers/nakayashiki2026when]]"
   - "[[literature/papers/wu2026evomal]]"
+  - "[[literature/papers/yu2026recursive]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"

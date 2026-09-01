@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/kim2026why]]"
   - "[[literature/papers/zhan2026auto]]"
   - "[[literature/papers/wu2026evomal]]"
+  - "[[literature/papers/tang2026wikiskill]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"

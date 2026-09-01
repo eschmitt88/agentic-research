@@ -31,6 +31,11 @@ sources:
   - "[[literature/papers/kim2026why]]"
   - "[[literature/papers/zhan2026auto]]"
   - "[[literature/papers/wu2026evomal]]"
+  - "[[literature/papers/esakkiraja2026starharness]]"
+  - "[[literature/papers/yu2026recursive]]"
+  - "[[literature/papers/badhe2026skill]]"
+  - "[[literature/papers/tang2026wikiskill]]"
+  - "[[literature/papers/lu2026credo]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

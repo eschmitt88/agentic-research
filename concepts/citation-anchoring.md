@@ -16,6 +16,9 @@ sources:
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ding2026autonomous]]"
   - "[[literature/papers/zhu2026lossy]]"
+  - "[[literature/papers/chen2026evigraph]]"
+  - "[[literature/papers/li2026praxist]]"
+  - "[[literature/papers/lu2026credo]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24

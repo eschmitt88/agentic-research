@@ -14,12 +14,14 @@ sources:
   - "[[literature/papers/ravindran2026portable]]"
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/ishibashi2026effective]]"
+  - "[[literature/papers/song2026string]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/citation-anchoring]]"
   - "[[concepts/agent-native-memory]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 related_experiments: []
 tags: [agent-architecture, durable-state, coordination, workspace, long-horizon]
 ---

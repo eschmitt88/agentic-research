@@ -6,6 +6,8 @@ added: "2026-08-17"
 sources:
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ding2026autonomous]]"
+  - "[[literature/papers/chen2026evigraph]]"
+  - "[[literature/papers/apodex2026frontierchallenge]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"

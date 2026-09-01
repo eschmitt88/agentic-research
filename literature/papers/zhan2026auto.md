@@ -20,6 +20,7 @@ related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/permission-gate-as-architecture]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 tags: ["agent-security", "skills", "safety", "agent-architecture", "governance"]
 ---
 

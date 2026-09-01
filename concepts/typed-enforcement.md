@@ -31,6 +31,7 @@ related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/scripted-tool-pipelines]]"
   - "[[concepts/verified-memory-writes]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 related_experiments: []
 tags: [policy, enforcement, formal-methods, types, determinism, governance]
 ---

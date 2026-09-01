@@ -20,6 +20,7 @@ sources:
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/bai2026how]]"
+  - "[[literature/papers/esakkiraja2026starharness]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"

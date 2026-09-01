@@ -39,6 +39,8 @@ sources:
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
   - "[[literature/papers/alzahrani2026persistent]]"
   - "[[literature/papers/tang2026memory]]"
+  - "[[literature/papers/yu2026recursive]]"
+  - "[[literature/papers/tang2026wikiskill]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"

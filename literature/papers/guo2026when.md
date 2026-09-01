@@ -19,6 +19,7 @@ related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/information-firewall]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 tags: ["agent-security", "prompt-injection", "provenance", "safety", "agent-architecture"]
 ---
 
