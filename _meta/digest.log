@@ -363,3 +363,4 @@ Digest complete and pushed. Summary:
 **Left deliberately open:** 14 of 20 candidates are un-curated, so the file stays in `raw/_candidates/` rather than moving to `_done/` — they fell below the count cap, not the relevance bar. The ML-research-agent front is entirely un-ingested; I noted items 9, 11, 16 as the priority for the next `/curate`.
 
 Six commits, pushed to `main`.
+SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
