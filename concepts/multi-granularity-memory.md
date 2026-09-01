@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/lee2026minteval]]"
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/zhu2026lossy]]"
+  - "[[literature/papers/yu2026recursive]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

@@ -41,6 +41,7 @@ sources:
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/cheng2026agenticsts]]"
   - "[[literature/papers/kim2026why]]"
+  - "[[literature/papers/badhe2026skill]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

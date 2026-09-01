@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/mitchener2025kosmos]]"
   - "[[literature/papers/xiong2026autoresearchbench]]"
   - "[[literature/papers/wang2026search]]"
+  - "[[literature/papers/chen2026evigraph]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"

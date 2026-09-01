@@ -26,6 +26,10 @@ sources:
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/roth2026hack]]"
   - "[[literature/papers/nakayashiki2026when]]"
+  - "[[literature/papers/moukpe2026deltaml]]"
+  - "[[literature/papers/chi2026ai4ai]]"
+  - "[[literature/papers/li2026praxist]]"
+  - "[[literature/papers/ge2026coverage]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24

@@ -13,6 +13,9 @@ sources:
   - "[[literature/papers/yu2026knows]]"
   - "[[literature/papers/sharma2026smsr]]"
   - "[[literature/papers/ng2026agent]]"
+  - "[[literature/papers/chen2026evigraph]]"
+  - "[[literature/papers/apodex2026frontierchallenge]]"
+  - "[[literature/papers/li2026praxist]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"

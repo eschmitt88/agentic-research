@@ -20,6 +20,7 @@ related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/information-firewall]]"
   - "[[concepts/verified-memory-writes]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 tags: ["agent-security", "prompt-injection", "provenance", "safety", "governance", "agent-architecture"]
 ---
 

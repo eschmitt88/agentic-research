@@ -20,6 +20,7 @@ related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/refusal-cost-symmetry]]"
   - "[[concepts/typed-enforcement]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 tags: ["agent-security", "prompt-injection", "safety", "evaluation", "agent-architecture"]
 ---
 

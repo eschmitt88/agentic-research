@@ -10,6 +10,7 @@ sources:
   - "[[literature/repos/eugeniughelbur-obsidian-second-brain]]"
   - "[[literature/repos/agricidaniel-claude-obsidian]]"
   - "[[literature/papers/cao2026agentsk1]]"
+  - "[[literature/papers/tang2026wikiskill]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

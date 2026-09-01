@@ -12,6 +12,8 @@ sources:
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xu2026evoarena]]"
   - "[[literature/papers/cao2026agentsk1]]"
+  - "[[literature/papers/yu2026recursive]]"
+  - "[[literature/papers/badhe2026skill]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"

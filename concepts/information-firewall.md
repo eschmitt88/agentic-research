@@ -10,10 +10,13 @@ sources:
   - "[[literature/papers/leong2026recognition]]"
   - "[[literature/papers/guo2026when]]"
   - "[[literature/papers/rahman2026framing]]"
+  - "[[literature/papers/chi2026ai4ai]]"
+  - "[[literature/papers/song2026string]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
   - "[[concepts/web-grounded-literature]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 related_experiments: []
 tags: [evaluation, benchmark-design, discovery, reproduction, contamination]
 ---

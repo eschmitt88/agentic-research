@@ -43,6 +43,13 @@ sources:
   - "[[literature/papers/ishibashi2026effective]]"
   - "[[literature/papers/ho2026soundnessbench]]"
   - "[[literature/papers/cheng2026agenticsts]]"
+  - "[[literature/papers/moukpe2026deltaml]]"
+  - "[[literature/papers/chi2026ai4ai]]"
+  - "[[literature/papers/chen2026evigraph]]"
+  - "[[literature/papers/esakkiraja2026starharness]]"
+  - "[[literature/papers/apodex2026frontierchallenge]]"
+  - "[[literature/papers/li2026praxist]]"
+  - "[[literature/papers/ge2026coverage]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -54,6 +61,7 @@ related_concepts:
   - "[[concepts/typed-claim-partition]]"
   - "[[concepts/compression-as-generalization-test]]"
   - "[[concepts/refusal-cost-symmetry]]"
+  - "[[concepts/enforcement-boundary-placement]]"
 related_experiments: []
 tags: [evaluation, discipline, overfitting, hce]
 ---

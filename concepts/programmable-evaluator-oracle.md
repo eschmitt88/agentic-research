@@ -36,6 +36,9 @@ sources:
   - "[[literature/papers/ishibashi2026effective]]"
   - "[[literature/papers/ho2026soundnessbench]]"
   - "[[literature/papers/zhu2026stopping]]"
+  - "[[literature/papers/moukpe2026deltaml]]"
+  - "[[literature/papers/chi2026ai4ai]]"
+  - "[[literature/papers/apodex2026frontierchallenge]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
