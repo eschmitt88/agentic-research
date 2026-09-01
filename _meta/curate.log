@@ -1300,3 +1300,27 @@ Logged to `_meta/log.md`, committed and pushed (`a77e745`). No concept or MoC fi
 
 The first genuinely material pass is after today's 07:00 digest and its auto-ingest — and only if that burst seeds a *new* concept file; a burst that only adds sources to existing concepts can't tip anything at any size.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Backlog closed. `raw/_candidates/` now holds only `_done/` — the uncurated count is 0 for the first time since the 08-31 digest opened it.
+
+## What happened
+
+**Dispositions (ingested=12, declined=15, dup=6).** Items 1–6 were already curated by the digest's own partial pass. I verified every remaining arXiv ID against the live abs page or the fetched PDF's first page before deciding — no item was dispositioned on the digest's summary alone, which turned out to matter.
+
+**Ingested 12:** WikiSkill, DeltaML-Bench, SKILL.state, StarHarness, Recuris, Credo, Praxist, EviGraph, FrontierChallenge, Coverage-not-Credit, String, plus the pre-window AI4AI-Bench that the digest flagged as missed by the 08-24 window.
+
+**Declined 4 + 11 near-misses**, on the bar "hits a watched thread, or supplies a mechanism adoptable on a Markdown+git+skills substrate": PolyMemDB (DB infrastructure), ContextPilot (RL recipe this project can't train), JIT-Agent (needs a trained harness model — StarHarness is the frozen-weights version and was ingested instead), and the Terminal Agents survey.
+
+## Two corrections to the digest, caught by reading the papers
+
+- DeltaML-Bench's "2×12h beats 4×6h" is **GPT-5-only**. Claude Sonnet 4 *regresses* under the longer allocation (30.2 → 19.8), so the compute-allocation claim doesn't generalize.
+- Credo is a **position paper with preliminary results**, not the built system the digest implied. Scored 3/2 rather than the 4-ish the summary suggested.
+
+## The graph moved for the first time in three weeks
+
+I seeded **`enforcement-boundary-placement`** — the first new concept file since 2026-08-11. The 08-31 `/promote-moc` entry had flagged this axis and explicitly deferred seeding to this pass; three of today's ingests land on it, taking it to seven attestations that agree enforcement cannot live in the model and disagree on where it goes. Both `typed-enforcement` (form) and `permission-gate-as-architecture` (role) already described themselves as "factored out from the gate's placement" without that placement existing as a concept.
+
+`/promote-moc` then **declined** a new MoC — correctly. The n=5 signal on the safety and governance clusters was just this one seedling, and promoting on it would have been the thin MoC the skill forbids. I mapped it into the two existing MoCs where its siblings live instead, which also required fixing a `capability-layer` sentence that assigned "where the check sits" to the wrong concept and would now have contradicted the new one.
+
+`kg_lint` after: 0 orphans, 0 sourceless concepts, 0 stale candidates. The 4 dead wikilinks are pre-existing prose examples, not from this pass.
+
+Four commits, all pushed. One thing worth your call: `song2026string.pdf` is 11 MB, over the 10 MB DVC threshold in `.claude/rules/data.md` — I git-tracked it to match the established pattern (four existing tracked PDFs already exceed it, up to 13.8 MB), rather than deviating for one file. If you'd rather that rule bind, the fix is a batch migration, not a one-off.
