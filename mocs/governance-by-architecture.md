@@ -6,6 +6,7 @@ added: "2026-08-03"
 concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
+  - "[[concepts/enforcement-boundary-placement]]"
   - "[[concepts/budget-as-ceiling]]"
   - "[[concepts/constraint-pinning]]"
   - "[[concepts/verified-memory-writes]]"
@@ -18,7 +19,7 @@ tags: [moc, governance, enforcement, policy, determinism, safety, architecture]
 
 When an autonomous agent must obey a constraint — a permission, a
 budget, a standing policy, a memory-integrity rule — what actually
-guarantees compliance? The seven concepts here converge on one answer
+guarantees compliance? The eight concepts here converge on one answer
 from several directions: **the constraint is enforced by deterministic
 code at a structural site in the harness, never by prose the model is
 asked to honor.** Prose policy admits no enforcement semantics and
@@ -59,6 +60,27 @@ enforcement logic rather than their home subsystem.
   a stateful regulator inside the control loop (risk cumulants,
   typed tool registries, escalation cascades), not a yes/no wrapper
   in front of it.
+- [[concepts/enforcement-boundary-placement]] — the third dimension,
+  and the one `typed-enforcement`'s entry above defers to when it says
+  "factored out from the gate's placement": **which component actually
+  holds the boundary**. Seven sources agree enforcement cannot live in
+  the model and disagree on where it goes — an external reference
+  monitor ([[literature/papers/leong2026recognition]]), inside the
+  invoked artifact ([[literature/papers/zhan2026auto]]), the
+  induction/authorization split ([[literature/papers/guo2026when]]),
+  the data's destination ([[literature/papers/rahman2026framing]]),
+  the provenance origin ([[literature/papers/song2026string]]),
+  outside the workspace entirely ([[literature/papers/chi2026ai4ai]]),
+  or the scope check on a proposed change
+  ([[literature/papers/esakkiraja2026starharness]]). This is the
+  constructive counterpart to
+  [[literature/papers/louck2026securing]]'s negative theorem already
+  cited above: if only non-malleable origin binding is sound, then
+  placement is what decides whether a policy binds to a malleable
+  signal or a fixed one. The recurring design rule is that the check
+  must be **payload-blind** — reframing an identical exfiltration
+  defeats every content-reading defense while two structural ones hold
+  at 0% ([[literature/papers/rahman2026framing]]).
 - [[concepts/budget-as-ceiling]] — resource constraints as hard
   ceilings checked between actions, with the achievable pre-flight
   remainder now mapped: exact reservation is impossible

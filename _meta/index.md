@@ -53,18 +53,21 @@ and `/new-experiment`.
   evolutionary-search-grain, programmable-evaluator-oracle, async-worker-pool,
   budget-as-ceiling.
 - [[mocs/capability-layer]] — the agent's action surface: how procedural
-  capability is authored, ported, executed, and gated; 6 concepts:
+  capability is authored, ported, executed, and gated; 7 concepts:
   skill-library-lifecycle, shared-skill-namespace, scripted-tool-pipelines,
   hybrid-model-backends, permission-gate-as-architecture, typed-enforcement
   (new 2026-07-28 — the gate's policy as a statically checkable artifact,
-  factored out from the gate's placement).
+  factored out from the gate's placement), enforcement-boundary-placement
+  (new 2026-09-01 — that placement, now factored out in its own right).
 - [[mocs/governance-by-architecture]] — what makes a stated constraint
   *binding*: enforcement by deterministic code at structural sites, never
-  prose; 7 concepts: typed-enforcement, permission-gate-as-architecture,
+  prose; 8 concepts: typed-enforcement, permission-gate-as-architecture,
   budget-as-ceiling, constraint-pinning, verified-memory-writes,
   evidence-gated-completion, refusal-cost-symmetry (new 2026-08-03 — tipped
   ripe by constraint-pinning; 2026-08-18 adds the counterweight to every
-  one-directional enforcement number in it).
+  one-directional enforcement number in it), enforcement-boundary-placement
+  (new 2026-09-01 — the constructive counterpart to louck2026securing's
+  negative theorem on what a policy may bind to).
 
 **MoC candidate — verification / completion.** `evidence-gated-completion`
 (new 2026-08-17, `growing`) was tested as a possible standalone theme with
@@ -91,9 +94,15 @@ induction/authorization split (guo2026when), the data's destination
 workspace (chi2026ai4ai), the change's scope check
 (esakkiraja2026starharness). `information-firewall` is recorded as the
 evaluation-side special case. Orthogonal to all 8 existing MoCs, so
-`/promote-moc`'s ripeness test 2 is passable again for the first time since
-2026-08-11 — a single seedling is not a cluster, but the axis is now the
-one to watch.
+`/promote-moc`'s ripeness test 2 became passable again for the first time
+since 2026-08-11. The 2026-09-01 `/promote-moc` run **declined** a new MoC
+and mapped the concept into [[mocs/governance-by-architecture]] and
+[[mocs/capability-layer]] instead — the same overlap rule applied to
+`evidence-gated-completion` above. Both MoCs already anticipated it:
+governance-by-architecture has a section titled "the gates — where the
+constraint meets the action", and `typed-enforcement`'s entry in both MoCs
+described itself as "factored out from the gate's placement" without that
+placement existing as a concept. Orphan count back to 0.
 
 ## Literature / posts (recent)
 
