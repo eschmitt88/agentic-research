@@ -1324,3 +1324,15 @@ I seeded **`enforcement-boundary-placement`** — the first new concept file sin
 `kg_lint` after: 0 orphans, 0 sourceless concepts, 0 stale candidates. The 4 dead wikilinks are pre-existing prose examples, not from this pass.
 
 Four commits, all pushed. One thing worth your call: `song2026string.pdf` is 11 MB, over the 10 MB DVC threshold in `.claude/rules/data.md` — I git-tracked it to match the established pattern (four existing tracked PDFs already exceed it, up to 13.8 MB), rather than deviating for one file. If you'd rather that rule bind, the fix is a batch migration, not a one-off.
+**Declined — nothing is ripe.** No MoC created.
+
+**What I found** (recomputed from the files, not inherited from the prior run):
+
+- 34 concepts, 8 MoCs, **0 orphans** — every concept appears in at least one MoC's `concepts:` list.
+- The graph is byte-identical to the 2026-09-01 04:18 pass: `git diff 64f9b5d HEAD -- concepts/ mocs/ literature/` is empty, working tree clean, `raw/_candidates/` holds only `_done/`.
+
+Since coverage is total, ripeness test 2 (*not already mapped*) is unpassable by construction — no clustering judgment could change the outcome, so I didn't re-litigate the previously surveyed candidate themes. The largest clusters are all fully contained: evaluation (9 → `evaluation-integrity`), memory (8 → `runtime-memory-policy`), knowledge-organization (6), agent-architecture (6), governance/safety (5 each → `governance-by-architecture` / `capability-layer`).
+
+**Watch condition carried forward unchanged:** the only plausible 9th MoC is an enforcement-*placement* axis. `enforcement-boundary-placement` (seeded 09-01) is a single seedling; it needs ~4 siblings on that specific axis before a cluster exists. The declined near-misses 2608.24368 (OODA-Tool) and 2608.24777 (StepGuard) sit there and are the cheapest place to look. Next material change is a `/curate` pass or the 09-07 07:00 digest.
+
+Logged the decline in `_meta/log.md` and pushed (`agency: max`).
