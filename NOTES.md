@@ -500,3 +500,37 @@ SessionEnd hook backstops this if you forget.
 - The elevate 2026-06-28/07-19 "already enacted" holds cited the now-
   deleted PreToolUse cap + admission gate; re-examine those holds on
   the next /elevate run.
+
+## 2026-09-04
+
+Catch-up rollup for 2026-08-02 → 09-04 (autonomous-period activity lived
+only in journal/ + _meta/log.md; a weekly rollup now runs from the Monday
+digest cron so NOTES.md doesn't go stale again).
+
+### Did
+- Five weekly digest→auto-ingest→curate cycles (08-03..08-31): papers
+  103 → 151. Highlight: tang2026wikiskill (Google Research, arXiv 08-27)
+  caught by the 08-31 digest and ingested 09-01 at rel 5 / cred 4 —
+  5-day paper-to-graph lag, no intervention.
+- Concepts 33 → 34: `enforcement-boundary-placement` seeded 09-01,
+  mapped into two existing MoCs (no new MoC ripened; 8 MoCs, 0 orphans).
+- /elevate raised two proposals (08-16 precompact-addressable-offload,
+  08-23 elevate-paired-control); 08-30 run correctly produced zero.
+- Ops hardening (09-04, this session + claude-system@0fa249e): nightly
+  /promote-moc now gated on a concept-set change (13 consecutive paid
+  no-op declines 08-22..09-03); claude_chain filters the SessionEnd
+  "Hook cancelled" leak from tracked logs; decline-logging capped to one
+  line; elevate ntfy fails silent without NTFY_TOPIC; sweep heartbeat.
+
+### Findings
+- The 08-01 watch items resolved themselves: information-firewall got its
+  second attestation (wang2026search, seedling → growing), and the
+  06-28/07-19 "already enacted" elevate holds were re-examined post-
+  ablation by the 08-23 run — closed with "the machinery should stay
+  deleted" (docs/system-proposals/_index.md). Nothing left to do there.
+
+### Next
+- Five proposals sit `proposed`/undecided (3× 08-02, 08-16, 08-23) —
+  human review queue; one later hold is explicitly blocked behind it.
+- Still watching /propose's agency-branch first autonomous write.
+- Deeper ingest/digest prose cuts remain available; still deferred.
