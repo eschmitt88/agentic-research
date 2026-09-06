@@ -24,6 +24,87 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-08-02 | [lint-rule-consistency-pass](2026-08-02-lint-rule-consistency-pass.md) | `skills/lint/SKILL.md` | adopt | proposed |
 | 2026-08-16 | [precompact-addressable-offload](2026-08-16-precompact-addressable-offload.md) | `hooks/pre-compact.sh` | adopt | proposed |
 | 2026-08-23 | [elevate-paired-control](2026-08-23-elevate-paired-control.md) | `skills/elevate/SKILL.md` | adopt | proposed |
+| 2026-09-06 | [session-start-limit-first-reading](2026-09-06-session-start-limit-first-reading.md) | `hooks/session-start.sh` | adopt | proposed |
+
+## Considered and held (2026-09-06 run)
+
+One proposal (above). Twenty-two papers entered the graph 2026-08-24 through
+09-01 — the largest single-cycle addition on record here — plus the
+`enforcement-boundary-placement` concept. Six of the twenty-two are
+credibility 4 and five carry live code links, so unlike several recent runs
+the constraint was not evidence quality. It was **targets**: five proposals
+now pend, holding `rules/evaluation.md`, `templates/project/budget.yaml`,
+`skills/lint/SKILL.md`, `hooks/pre-compact.sh` and `skills/elevate/SKILL.md`.
+The proposal above targets `hooks/session-start.sh`, uncontested. Held:
+
+- **`esakkiraja2026starharness` (cred 4, code released, ServiceNow) → this
+  skill's own throughput** — the strongest miss, and it is about `/elevate`
+  itself. Weights frozen, harness evolved: 20–35 points on three stateful
+  benchmarks from **4–12 accepted changes**, transferring frozen to other
+  model families. That is a measured claim that harness improvement is cheap
+  in *accepted edits* and that a small number of them captures the gain —
+  directly relevant to a review queue holding at five. **Held on target**:
+  `skills/elevate/SKILL.md` is blocked behind the 08-23 `elevate-paired-control`
+  proposal, and the actionable reading ("accept or reject the queue; the
+  binding resource is accepted changes, not generated ones") is a message to
+  the reviewer, not a file edit. Its three-way partition
+  (proposer-visible / proposer-hidden / held-out) is independent
+  corroboration for `hce-evaluation` and is recorded there.
+- **`wu2026evomal` (cred 4, rel 5) → `shared-skill-namespace`** — the first
+  source naming the failure mode of a design this box runs: a shared skill
+  library plus imitation-based authoring is a **self-propagating** medium, and
+  removing the planted skills does not terminate the infection. **Fails
+  Gate 1**: credibility 4 but unreviewed, code withheld (it is an attack
+  paper), and self-poisoning-as-distinct-from-skill-poisoning has one
+  attestation. **Also largely inapplicable as stated**: the threat model is an
+  agent that *authors* skills into the library by imitation, which this box
+  does not do — `~/.claude/skills/` is human-authored and `/elevate` is
+  explicitly forbidden from writing to `claude-system`. The finding is
+  better read as validation of that prohibition than as a change to it.
+  **Unlock**: a second rated attestation, *or* any move toward
+  agent-authored skills here, at which point provenance-of-authorship in
+  `skill-library-lifecycle` becomes urgent rather than theoretical.
+- **`tang2026wikiskill` (cred 4, rel 5) → rollback asymmetry** — third
+  independent construction of `llm-wiki-pattern` and the first with a
+  controlled ablation showing the wiki layer, not the skill loop, carries the
+  gain. Its importable rule is "revert the artifact, keep the knowledge."
+  **Held as substantially already enacted**: `docs/system-proposals/` *is*
+  that layer for harness edits, and these "considered and held" sections are
+  its durable-knowledge half — rejected and held ideas keep their reasoning
+  and their unlock conditions. The residual gap is the accepted-then-reverted
+  case, which has not occurred. Its three-layer mapping onto `raw/` /
+  `literature/`+`concepts/` / `~/.claude/skills/` is the closest external
+  validation of this project's layout yet ingested and is worth citing in the
+  concept, not in a proposal.
+- **`chi2026ai4ai` (cred 4, code) → "reasoning effort buys willingness, not
+  skill"** — bears directly on `budget.yaml` pinning both `ideator` and
+  `implementer` to Opus and treating spend as a capability dial. **Blocked on
+  target** (`templates/project/budget.yaml`, pending since 08-02) and, on
+  merit, the finding is about *attempt rate on algorithmic change* in an RSI
+  benchmark, which is not obviously this box's regime. Its fixed-before-the-run
+  evaluator is recorded as a third independent `information-firewall`
+  construction alongside `rahman2026framing` and `esakkiraja2026starharness`.
+- **`li2026remember` (cred 4) → commit-vs-clarify** — adds a fourth axis
+  (persist / ephemeral / verify / clarify) to `verified-memory-writes`, with a
+  measured say-do gap: label–tool agreement only 57% for both Claude models.
+  Genuinely useful, but it is **concept prose, not a harness edit** — a
+  `/curate` action on `verified-memory-writes`, logged here so the thread
+  is not lost.
+- **`guo2026when`, `leong2026recognition`, `zhan2026auto` →
+  `enforcement-boundary-placement`** — three placements of the same
+  enforcement boundary in one week, which is why the concept was seeded on
+  09-01. No proposal follows: the 08-23 run closed the
+  `permission-gate-as-architecture` re-examination with "the machinery should
+  stay deleted," and none of the three overturns that. `guo2026when`'s
+  No-History-Promotion is instead cited *in* the proposal above as independent
+  attestation of the inheritance-confers-standing mechanism.
+
+**Note for the reviewer, repeated and now sharper.** Five proposals pend, the
+oldest since 08-02. Two of this cycle's six holds were blocked wholly or
+partly on target rather than on merit, and one of those — `starharness` — is
+itself measured evidence that *accepted* harness changes are the scarce
+resource and that four to twelve of them is the whole gain. The queue is the
+binding constraint, and the literature now says so directly.
 
 ## Considered and held (2026-08-23 run)
 
