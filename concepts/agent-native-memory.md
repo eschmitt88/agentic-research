@@ -41,6 +41,7 @@ sources:
   - "[[literature/papers/tang2026memory]]"
   - "[[literature/papers/yu2026recursive]]"
   - "[[literature/papers/tang2026wikiskill]]"
+  - "[[literature/papers/he2026stored]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"

@@ -11,12 +11,15 @@ sources:
   - "[[literature/repos/agricidaniel-claude-obsidian]]"
   - "[[literature/papers/cao2026agentsk1]]"
   - "[[literature/papers/tang2026wikiskill]]"
+  - "[[literature/papers/paglieri2026case]]"
+  - "[[literature/papers/kassis2026scientific]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
   - "[[concepts/web-grounded-literature]]"
+  - "[[concepts/shared-substrate-contagion]]"
 related_experiments: []
 tags: [second-brain, pkm, knowledge-organization, compile-time-curation, markdown, zettelkasten]
 ---

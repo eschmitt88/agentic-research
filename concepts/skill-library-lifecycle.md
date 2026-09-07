@@ -36,12 +36,15 @@ sources:
   - "[[literature/papers/badhe2026skill]]"
   - "[[literature/papers/tang2026wikiskill]]"
   - "[[literature/papers/lu2026credo]]"
+  - "[[literature/papers/paglieri2026case]]"
+  - "[[literature/papers/kassis2026scientific]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
   - "[[concepts/hybrid-model-backends]]"
   - "[[concepts/selective-memory-retrieval]]"
   - "[[concepts/evolutionary-expansion]]"
+  - "[[concepts/shared-substrate-contagion]]"
 related_experiments: []
 tags: [skill-library, curation, knowledge-organization, write-policy, procedural-memory, lifecycle]
 ---

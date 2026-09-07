@@ -42,6 +42,7 @@ sources:
   - "[[literature/papers/cheng2026agenticsts]]"
   - "[[literature/papers/kim2026why]]"
   - "[[literature/papers/badhe2026skill]]"
+  - "[[literature/papers/kassis2026scientific]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

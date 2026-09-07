@@ -12,11 +12,15 @@ sources:
   - "[[literature/papers/rahman2026framing]]"
   - "[[literature/papers/chi2026ai4ai]]"
   - "[[literature/papers/song2026string]]"
+  - "[[literature/papers/zheng2026continuity]]"
+  - "[[literature/papers/paglieri2026case]]"
+  - "[[literature/papers/he2026stored]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
   - "[[concepts/web-grounded-literature]]"
   - "[[concepts/enforcement-boundary-placement]]"
+  - "[[concepts/shared-substrate-contagion]]"
 related_experiments: []
 tags: [evaluation, benchmark-design, discovery, reproduction, contamination]
 ---

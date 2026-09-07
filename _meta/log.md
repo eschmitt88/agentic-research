@@ -457,3 +457,10 @@ skills; read by `/lint`.
 2026-09-07 07:05 fetch-paper 2609.04170 → raw/papers/paglieri2026case.pdf
 2026-09-07 07:05 fetch-paper 2609.02127 → raw/papers/he2026stored.pdf
 2026-09-07 07:05 fetch-paper 2609.00065 → raw/papers/kassis2026scientific.pdf
+2026-09-07 07:20 ingest raw/papers/marsden2026where.pdf
+2026-09-07 07:20 ingest raw/papers/zheng2026continuity.pdf
+2026-09-07 07:20 ingest raw/papers/ding2026acle.pdf
+2026-09-07 07:20 ingest raw/papers/paglieri2026case.pdf
+2026-09-07 07:20 ingest raw/papers/he2026stored.pdf
+2026-09-07 07:20 ingest raw/papers/kassis2026scientific.pdf
+2026-09-07 07:20 digest-autoingest n=6 verdict=go/high

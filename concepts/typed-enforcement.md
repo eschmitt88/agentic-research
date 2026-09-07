@@ -25,6 +25,9 @@ sources:
   - "[[literature/papers/zhan2026auto]]"
   - "[[literature/papers/guo2026when]]"
   - "[[literature/papers/rahman2026framing]]"
+  - "[[literature/papers/marsden2026where]]"
+  - "[[literature/papers/zheng2026continuity]]"
+  - "[[literature/papers/ding2026acle]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"

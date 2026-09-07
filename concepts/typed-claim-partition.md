@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/chen2026evigraph]]"
   - "[[literature/papers/apodex2026frontierchallenge]]"
   - "[[literature/papers/li2026praxist]]"
+  - "[[literature/papers/he2026stored]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"

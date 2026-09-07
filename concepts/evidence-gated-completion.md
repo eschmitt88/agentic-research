@@ -8,6 +8,7 @@ sources:
   - "[[literature/papers/ding2026autonomous]]"
   - "[[literature/papers/chen2026evigraph]]"
   - "[[literature/papers/apodex2026frontierchallenge]]"
+  - "[[literature/papers/marsden2026where]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"

@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/nakayashiki2026when]]"
   - "[[literature/papers/wu2026evomal]]"
   - "[[literature/papers/yu2026recursive]]"
+  - "[[literature/papers/he2026stored]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -25,6 +26,7 @@ related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/typed-enforcement]]"
+  - "[[concepts/shared-substrate-contagion]]"
 related_experiments: []
 tags: [memory, consolidation, write-policy, verification, trustworthiness, knowledge-organization]
 ---

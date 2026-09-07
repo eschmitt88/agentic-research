@@ -50,6 +50,8 @@ sources:
   - "[[literature/papers/apodex2026frontierchallenge]]"
   - "[[literature/papers/li2026praxist]]"
   - "[[literature/papers/ge2026coverage]]"
+  - "[[literature/papers/marsden2026where]]"
+  - "[[literature/papers/paglieri2026case]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -62,6 +64,7 @@ related_concepts:
   - "[[concepts/compression-as-generalization-test]]"
   - "[[concepts/refusal-cost-symmetry]]"
   - "[[concepts/enforcement-boundary-placement]]"
+  - "[[concepts/shared-substrate-contagion]]"
 related_experiments: []
 tags: [evaluation, discipline, overfitting, hce]
 ---
