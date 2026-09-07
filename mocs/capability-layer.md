@@ -11,6 +11,7 @@ concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/enforcement-boundary-placement]]"
+  - "[[concepts/shared-substrate-contagion]]"
 tags: [moc, capability-layer, skills, tool-use, harness-ecosystem, governance]
 ---
 
@@ -27,7 +28,9 @@ the harness machinery that curates it, ports it across executors,
 executes it cheaply, and gates it safely. The seven concepts belong
 together because a capability is only real when all four clauses hold —
 well-curated, loadable where the agent runs, affordable in context, and
-safe to fire. The first three clauses take one concept each; the fourth
+safe to fire. A fifth concept, `shared-substrate-contagion`, is the
+standing cost of the second clause: the portability that makes a skill
+loadable everywhere makes a defect in it reach everywhere. The first three clauses take one concept each; the fourth
 takes three, because gating splits into *what the policy is written in*
 (`typed-enforcement`), *what the gate does in the control loop*
 (`permission-gate-as-architecture`), and *which component actually holds
@@ -119,6 +122,18 @@ The layer that decides whether a capability fires at all.
   ([[literature/papers/wu2026evomal]]), which makes "where is the check
   relative to the authored artifact" a question this cluster cannot
   leave to `skill-library-lifecycle`.
+- [[concepts/shared-substrate-contagion]] — what happens *after* a
+  boundary is misplaced, in a layer whose whole value proposition is
+  reuse. [[literature/papers/paglieri2026case]] is the field observation:
+  100 agents, a shared knowledge library that auto-commits every accepted
+  submission, and an autograder exploit that consumed the remaining 34 of
+  71 conjectures in 27 minutes. The discovering agent wrote the technique
+  to a persistent `wiki/*.md` "to preserve it for future iterations" —
+  this layer's own artifact form, used to persist a defect. The symmetric
+  half is what makes it belong here rather than in
+  [[mocs/evaluation-integrity]]: the same channels carried the
+  whistleblowers, so the mitigation is governance of the substrate
+  (auditable channels, graduated sanctioning), not removal of it.
 - [[concepts/typed-enforcement]] — the gate's *policy*, factored out from
   the gate's placement. Constraints written as a machine-checkable
   artifact in a language with decidable static analyses, held outside the
@@ -154,7 +169,10 @@ threat model. Working hypothesis: the capability layer is standardizing
 the way package ecosystems did (npm, PyPI), and will inherit their
 failure modes — supply-chain trust, version conflict, abandoned
 artifacts — with the permission gate playing the role package signing and
-sandboxing play there. Notably, this project sits *inside* the namespace
+sandboxing play there. `shared-substrate-contagion` is the first member to
+carry direct evidence for that hypothesis rather than analogy: a shared
+store propagating a defect at machine speed is the npm failure mode
+arriving early, without the decade of tooling. Notably, this project sits *inside* the namespace
 it studies: the `/digest`, `/ingest`, `/lint` skills under
 `~/.claude/skills/` are themselves artifacts of this layer, so lifecycle
 findings (evidence-based retirement, curate-against-the-reader) are

@@ -16,6 +16,7 @@ concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/verified-memory-writes]]"
   - "[[concepts/web-grounded-literature]]"
+  - "[[concepts/shared-substrate-contagion]]"
 tags: [moc, knowledge-organization, agent-memory, architecture]
 ---
 
@@ -23,11 +24,13 @@ tags: [moc, knowledge-organization, agent-memory, architecture]
 
 How autonomous research agents store, structure, curate, and consult
 the knowledge they work with — in practice, not in principle. This
-MoC ties together the twelve concepts that span this question across
+MoC ties together the thirteen concepts that span this question across
 three layers: the *substrate* (where memory lives), the *write-side*
 (how the library evolves and how outputs are organized), and the
 *read-side* (when and how stored knowledge is consulted during
-decision-making).
+decision-making). The thirteenth, `shared-substrate-contagion`, cuts
+across all three — it is the failure mode the layers share once the store
+is read and written by more than one agent.
 
 The thread emerged from the 2026-05-11 digest batch, which
 delivered four papers (GSAR, ExpWeaver, SkillOS, SkillRet, plus
@@ -95,7 +98,7 @@ state.
 ### Write-side: how the library evolves, how outputs are organized
 
 How knowledge gets *into* the substrate and how it gets *shaped*
-over time. Four sub-concepts cover different write-time concerns.
+over time. Five sub-concepts cover different write-time concerns.
 
 - **[[concepts/skill-library-lifecycle]]** — `insert/update/delete`
   as a learned curation policy over the library's life. Empirical
@@ -137,6 +140,23 @@ over time. Four sub-concepts cover different write-time concerns.
   skill-library-lifecycle's `sources:` frontmatter, GSAR's
   evidence-typed weighting, AutoResearchBench's full-text
   constraint verification all rest on this discipline.
+
+- **[[concepts/shared-substrate-contagion]]** — the write path's
+  systemic risk once more than one agent writes to the store: the
+  mechanism that makes any agent's output every agent's input makes
+  one bad entry systemic. [[literature/papers/paglieri2026case]]
+  observed it directly — an exploit propagating through a shared
+  knowledge library across 100 agents in 27 minutes — and
+  [[literature/papers/he2026stored]] gives the quieter epistemic
+  version: records tracing to a single upstream root "manufactur[e]
+  an illusion of consensus," and re-summarisation lets an unsupported
+  claim self-corroborate across sessions. That is the sharpest
+  correction available to the three concepts above it: `sources:`
+  count is not source *independence*, so
+  [[concepts/citation-anchoring]] as currently practised here would
+  not catch it. The symmetric result — removing the shared channel
+  removes detection along with propagation — is why the answer is
+  auditability rather than isolation.
 
 ### Read-side: when and how stored knowledge is consulted
 
