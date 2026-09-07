@@ -35,6 +35,9 @@ sources:
   - "[[literature/papers/guo2026when]]"
   - "[[literature/papers/rahman2026framing]]"
   - "[[literature/papers/song2026string]]"
+  - "[[literature/papers/marsden2026where]]"
+  - "[[literature/papers/zheng2026continuity]]"
+  - "[[literature/papers/ding2026acle]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"

@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/kim2026why]]"
   - "[[literature/papers/nakayashiki2026when]]"
   - "[[literature/papers/li2026praxist]]"
+  - "[[literature/papers/kassis2026scientific]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

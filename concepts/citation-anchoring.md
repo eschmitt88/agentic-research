@@ -19,12 +19,14 @@ sources:
   - "[[literature/papers/chen2026evigraph]]"
   - "[[literature/papers/li2026praxist]]"
   - "[[literature/papers/lu2026credo]]"
+  - "[[literature/papers/he2026stored]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
 related_concepts:
   - "[[concepts/structured-world-model]]"
   - "[[concepts/typed-claim-partition]]"
+  - "[[concepts/shared-substrate-contagion]]"
 related_experiments: []
 tags: [evaluation, provenance, diagnostics, hallucination]
 ---

@@ -18,11 +18,14 @@ sources:
   - "[[literature/papers/zhan2026auto]]"
   - "[[literature/papers/wu2026evomal]]"
   - "[[literature/papers/tang2026wikiskill]]"
+  - "[[literature/papers/paglieri2026case]]"
+  - "[[literature/papers/kassis2026scientific]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
   - "[[concepts/agent-native-memory]]"
   - "[[concepts/file-as-bus]]"
+  - "[[concepts/shared-substrate-contagion]]"
 related_experiments: []
 tags: [skills, interop, format-portability, harness-ecosystem, standardization]
 ---
