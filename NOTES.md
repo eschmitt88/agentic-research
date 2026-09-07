@@ -534,3 +534,43 @@ digest cron so NOTES.md doesn't go stale again).
   human review queue; one later hold is explicitly blocked behind it.
 - Still watching /propose's agency-branch first autonomous write.
 - Deeper ingest/digest prose cuts remain available; still deferred.
+
+## 2026-09-07
+
+Weekly rollup for 2026-09-05 → 09-07 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 09-06 /elevate: 1 proposal from 7 considered — `session-start-limit-first-
+  reading` (four echo lines in `hooks/session-start.sh`, on nakayashiki2026when
+  + 3 in-graph attestations, Zenodo artifact). Held starharness and ai4ai on
+  blocked targets, evomal on Gate 1 + inapplicable threat model, wikiskill as
+  already enacted, the enforcement-boundary trio as closed 08-23.
+- 09-07 digest → auto-ingest (verdict go/high): 20 candidates, top 6 fetched
+  and ingested unattended. Papers 151 → 157, concepts 34 → 36 (15 existing
+  concepts updated). 14 candidates left uncurated, file kept in `_candidates/`.
+- Seeded `shared-substrate-contagion` (paglieri2026case, wu2026evomal,
+  he2026stored, kassis2026scientific). 09-07 /promote-moc declined a 9th MoC —
+  one seedling is not a cluster — and mapped it into `capability-layer` and
+  `knowledge-organization-for-research-agents`, with prose corrections rather
+  than list appends. Still 8 MoCs, 0 orphans.
+
+### Findings
+- The 09-01..09-03 watch condition resolved: `enforcement-boundary-placement`
+  went 7 → 11 sources with marsden/zheng/ding all on the placement axis, and
+  moved seedling → growing. It gained a temporal dimension (a check valid at
+  authorization is stale at consumption) and a cost column.
+- paglieri2026case lands on this repo directly: `concepts/` is agent-written,
+  `/ingest` commits without a gate, and the `@import` contract is also a
+  contagion channel. With he2026stored's point that source *count* isn't source
+  *independence*, a concept with 11 sources tracing to one misread paper passes
+  every check `/lint` runs. Recorded as open questions on the concept, not acted on.
+
+### Next
+- Six proposals now sit undecided (3× 08-02, 08-16, 08-23, 09-06) — human
+  review queue; two later holds are blocked behind it. Candidate item 20
+  (instruction duplication: placement-sensitive, neutral on final accuracy)
+  should reach the 09-06 proposal's reviewer before they decide.
+- New watch axis: does `shared-substrate-contagion` accumulate ~4 siblings?
+  The 09-07 near-misses sit on the lifecycle axis, not the contagion one.
+- Still open from 09-04: /propose's agency-branch first autonomous write;
+  deeper ingest/digest prose cuts (still deferred).
