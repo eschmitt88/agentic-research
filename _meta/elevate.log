@@ -291,3 +291,21 @@ It fails Gate 2 on the new evidence's own terms, which is the interesting part: 
 
 Housekeeping: removed the SessionEnd hook leak line that reappeared in `_meta/curate.log` (sixth cleanup). The 08-29/08-30 "streak break" was an artifact of a clean working tree, as that entry itself predicted; `~/.claude/hooks/session-end.sh` still needs the actual fix.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+**1 proposal, 7 considered.** `claude-system` untouched (verified clean).
+
+## Proposed: [`2026-09-06-session-start-limit-first-reading`](docs/system-proposals/2026-09-06-session-start-limit-first-reading.md)
+
+Four `echo` lines added to `claude/hooks/session-start.sh`, above the injected `NOTES.md` tail — a target-blind reading rule directing re-verification toward entries that *state a limit* on the direction the session is about to take.
+
+**Gate 1.** `nakayashiki2026when` clears on the released-artifacts disjunct (Zenodo deposit, prospectively frozen replication, held-out domain, fresh 10-model panel — which is why credibility is 3 rather than 2). It is also the third `constraint-pinning` attestation, closing the unlock the 2026-08-09 run recorded. Findings: provenance inspected in ~1 episode in 5, stale-consistent decisions 77.3/74.7/74.7%, and a one-sentence limit-preference rule recovering +89.3 points where a content-free freshness cue recovers nothing. `guo2026when`'s No-History-Promotion attests the same mechanism independently from the security side.
+
+**Gate 2.** It *adds* surface area (~45 tokens/session), so it sits at the higher bar. What carries it: the intervention is irreducible — the paper measured the prose itself, not a system the prose approximates — and there's an in-repo instance. This session's own injected tail contains an 08-01 `Next` item ("re-examine those elevate holds") alongside the 09-04 entry that withdrew it, unmarked.
+
+I flagged the 2026-08-16 precedent explicitly: that run held a different `session-start.sh` change on this same cost ground. That hold should stand; the proposal argues the distinction rather than eliding it.
+
+## Held
+
+`esakkiraja2026starharness` was the closest miss and is about this skill — 20–35 points from **4–12 accepted harness changes**, weights frozen. Blocked: `skills/elevate/SKILL.md` pends behind the 08-23 proposal. `chi2026ai4ai` blocked on `budget.yaml`. `wu2026evomal` fails Gate 1 and its threat model (agent-authored skills) doesn't apply here — it reads as validation of the no-write prohibition. `tang2026wikiskill` is already enacted: `docs/system-proposals/` *is* its wiki layer. `li2026remember` is concept prose. The `enforcement-boundary-placement` trio was closed by the 08-23 re-examination.
+
+**The queue is now the binding constraint, and the literature says so.** Five proposals pend, oldest since 08-02. Two of six holds this cycle were blocked on target rather than merit — and one of those is measured evidence that *accepted* changes, not generated ones, are the scarce resource.
+{"id":"siSDN9cGjMjP","time":1788671025,"expires":1788714225,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• session-start-limit-first-reading\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
