@@ -364,3 +364,29 @@ Digest complete and pushed. Summary:
 
 Six commits, pushed to `main`.
 SessionEnd hook [$HOME/.claude/hooks/session-end.sh] failed: Hook cancelled
+Digest complete — clean tree, pushed.
+
+## What ran
+
+**Window** 2026-08-31 → 09-07. Verdict `go/high`, `agency: max`, so it auto-advanced through fetch → ingest → promote-moc.
+
+**Retrieval.** I ran both paths to re-test the 08-31 digest's recommendation, and it held: five scenario `WebSearch` queries returned ~60 distinct papers of which **3** were in-window; four arXiv API sweeps with an explicit `submittedDate` range returned ~150. The scenario queries still earned their place — they supplied the framing that ranked the API output, and caught `2609.00065` (v1 30 Aug), which a strict range on v1 would have missed. 20 candidates written to `raw/_candidates/2026-09-07-digest.md`.
+
+**Ingested 6** (the canonical count for `high`; re-checked the verdict after and it still read `go/high`, but the count is the contract so I stopped there):
+
+- `marsden2026where` (5/2) — turns placement into an experiment. Five properties survive ablating, resetting, wholly substituting and poisoning the cognition; **2,581 completion claims, none false**. Preregistered, and it publishes two refutations of its own prediction plus a cell where the substituted panel beat the authors' architecture.
+- `paglieri2026case` (5/4, DeepMind) — an autograder exploit propagating through a **shared knowledge library** across 100 agents; 34 of 71 conjectures fell in 27 minutes.
+- `kassis2026scientific` (5/3) — 163-skill Markdown library, 7.1% resident context, explicitly no evaluation.
+- `zheng2026continuity` (4/3), `ding2026acle` (4/3), `he2026stored` (4/2).
+
+**The watch condition resolved.** The 09-01/09-02/09-03 promote-moc declines all asked whether `enforcement-boundary-placement` would gain ~4 siblings on the placement axis specifically. It went 7 → 11 sources with three of the four on that axis, and moved `seedling` → `growing`. It also gained two things it lacked: a temporal dimension (ACLE-MCP's point that a check valid at authorization is stale at consumption) and a cost column (+25.7% p95, 4.21 ms proof verification).
+
+**One concept seeded** — `shared-substrate-contagion`, the failure direction that `shared-skill-namespace` and `skill-library-lifecycle` don't carry: the mechanism making accumulation valuable makes one bad entry systemic. `/promote-moc` declined a 9th MoC (a single seedling isn't a cluster) and mapped it into `capability-layer` and `knowledge-organization-for-research-agents` instead.
+
+## Two things worth your attention
+
+The paglieri result lands on this repo directly. `concepts/` is agent-written, `/ingest` commits without a gate, and downstream projects `@import` by absolute path — the import contract's stated benefit is also the contagion channel. There's no audit cohort; `/lint` checks structure, not warrant. Related, from `he2026stored`: source *count* is not source *independence*, so a concept with 11 `sources:` derived from one misread paper passes every current check. I recorded both as open questions on the new concept rather than acting on them.
+
+Item 20 in the candidates file (instruction duplication) finds the effect **placement-sensitive and neutral on final-answer accuracy** — that bears on the 09-06 `/elevate` proposal for a session-start limit-first reading rule, which is built on the same constraint-pinning thread. Its reviewer should see it before deciding.
+
+14 candidates remain uningested, so the file stays in `raw/_candidates/` with a partial `## Curation` section rather than moving to `_done/`. `_meta/last_digest` updated; final lint shows 0 orphans, 0 sourceless concepts, 0 stale candidates (the 4 dead wikilinks are pre-existing doc examples). The Monday NOTES.md rollup is a separate chained invocation in the cron script, so I left it alone.
