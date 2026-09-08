@@ -15,6 +15,8 @@ sources:
   - "[[literature/papers/zheng2026continuity]]"
   - "[[literature/papers/ding2026acle]]"
   - "[[literature/papers/paglieri2026case]]"
+  - "[[literature/papers/yang2026sok]]"
+  - "[[literature/papers/chen2026fresh]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"

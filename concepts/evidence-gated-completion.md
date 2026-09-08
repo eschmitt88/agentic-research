@@ -9,6 +9,9 @@ sources:
   - "[[literature/papers/chen2026evigraph]]"
   - "[[literature/papers/apodex2026frontierchallenge]]"
   - "[[literature/papers/marsden2026where]]"
+  - "[[literature/papers/yang2026truthinsightbench]]"
+  - "[[literature/papers/brueckner2026kbench]]"
+  - "[[literature/papers/zhu2026claimreceipt]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -160,6 +163,39 @@ For this repo the actionable gap is result selection. A
 `max_consecutive_no_improvement` chain is a best-of-n procedure, and nothing
 in `/derive-experiment` or the experiment template requires recording n and
 the selection rule — the disclosure that targets exactly that failure mode.
+
+## The principle now has benchmarks (2026-09-08)
+
+Until this cycle every source under this concept described a *harness*
+that gates completion. Three additions supply the missing half —
+instruments that measure whether completion was warranted:
+
+- [[literature/papers/yang2026truthinsightbench]] scores the **evidentiary
+  maturity of an agent's own claims** across six dimensions and 29
+  artifact-grounded items, with no reference answer to match. It names the
+  acts that establish warrant and finds them largely absent: **controls,
+  robustness, falsifiability, cross-dataset generalization**. That list is
+  directly usable as a completion contract's evidence requirements.
+- [[literature/papers/brueckner2026kbench]] puts a rate on the failure this
+  concept exists to prevent: **overclaiming is the leading failure tag, on
+  31.4% of assessments**, measured on real scientific requests with no
+  ground truth. It also finds scientific accuracy (6.22) trails
+  communication (7.33) in *every one* of nine models — agents clear the
+  presentation bar well before the substantive one, which is the exact
+  shape of an ungated completion claim.
+- [[literature/papers/zhu2026claimreceipt]] makes the gate checkable and
+  cheap: **sufficiency** (is the claim recomputable from retained
+  evidence?) and **coverage** (do the records span the committed set?) as
+  separate verdicts, returning **PASS / INVALID / INCONCLUSIVE** at 0.021%
+  of inference time. The three-way verdict is the load-bearing part — a
+  gate that can only pass or fail must resolve missing evidence as one of
+  the two, and resolving it as *pass* is how unmet requirements get scored
+  as met.
+
+The coverage half is new to this concept. Gating asks "is *this* claim
+supported"; coverage asks "is the set of claims complete against what was
+committed to." Both are needed, and only the second catches a silent
+omission.
 
 ## Implementation guidance
 

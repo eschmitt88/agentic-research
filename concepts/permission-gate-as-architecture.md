@@ -38,6 +38,7 @@ sources:
   - "[[literature/papers/marsden2026where]]"
   - "[[literature/papers/zheng2026continuity]]"
   - "[[literature/papers/ding2026acle]]"
+  - "[[literature/papers/chen2026fresh]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"

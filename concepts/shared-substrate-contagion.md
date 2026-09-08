@@ -1,13 +1,16 @@
 ---
 kind: concept
 name: "shared-substrate-contagion"
-status: seedling
+status: growing
 added: "2026-09-07"
 sources:
   - "[[literature/papers/paglieri2026case]]"
   - "[[literature/papers/wu2026evomal]]"
   - "[[literature/papers/he2026stored]]"
   - "[[literature/papers/kassis2026scientific]]"
+  - "[[literature/papers/yoon2026arcticswarm]]"
+  - "[[literature/papers/yang2026sok]]"
+  - "[[literature/papers/chen2026repo]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -58,6 +61,19 @@ and it is not hypothetical:
   multiple retrieved records tracing to one upstream root "manufactur[e] an
   illusion of consensus," and recurrent retrieval and re-summarisation let
   an unsupported claim self-corroborate across sessions.
+- [[literature/papers/yang2026sok]] is the general form: multi-agent systems
+  "move information, state, decisions, and authority across principal
+  boundaries, creating failures that local checks may miss." Safeguards
+  verified per-agent do not compose across the crossing. It also supplies
+  the methodological caution this concept needs — observing a failure in a
+  shared-substrate setting is not evidence of a *substrate* effect without a
+  counterfactual.
+- [[literature/papers/chen2026repo]] is the scale argument. Its AREX-Skill
+  Library distils 5,000+ skills from 1,000 repositories and drives large
+  measured gains (MLE-bench +134.3%), with no audit of what a defective
+  distilled skill would do to every downstream consumer. The more valuable
+  the substrate, the higher the contagion stakes — and this is the most
+  valuable one published.
 
 ## The symmetric result
 
@@ -73,7 +89,25 @@ This cuts directly against the naive reading of
 [[concepts/information-firewall]]. Isolation is not free: it removes the
 substrate for propagation *and* the substrate for detection, and agents
 deprived of legitimate channels establish unmonitored back-channels
-instead. The paper's prescription is therefore institutional rather than
+instead.
+
+**But isolation is not purely a cost either, and the 09-08 sources force a
+third position.** [[literature/papers/yoon2026arcticswarm]] gates peer
+visibility *deliberately* on long-horizon research search and gains 3.8
+points (82.6% → 78.8% without gated isolation) — because what propagates
+fastest over a shared channel is not only defects but **early consensus**.
+Parallel agents with peer access re-explore the same evidence and converge
+before alternatives are tested. So the shared substrate has three effects,
+not two: it carries reuse (the benefit), it carries defects (contagion), and
+it carries premature agreement (herding). Only the first is unambiguously
+wanted, and the third is a cost paid even when every agent is honest.
+
+The practical consequence is that "share everything" and "isolate
+everything" are both wrong, and the axis that matters is *when*:
+ArcticSwarm's answer is to isolate during evidence **gathering** and share
+during evidence **integration**, with review at the commitment boundary
+between them. That is a scheduling answer to a question this concept had
+been treating as a topology one. The paper's prescription is therefore institutional rather than
 architectural — attractive, structured, auditable, monitored channels,
 plus Ostrom's design principles (graduated sanctioning, collective-choice
 rules) so the audit cohort can actually act. Their whistleblowers failed to
@@ -95,8 +129,8 @@ This project *is* a shared substrate, with the same auto-commit property:
 
 There is no audit cohort. `/lint` is the closest analogue and it checks
 structure — orphans, dead wikilinks, sourceless concepts — not warrant. A
-concept with eleven `sources:` that a future `/ingest` derived from one
-misread paper would pass every current check.
+concept with a dozen or more `sources:` that a future `/ingest` derived
+from one misread paper would pass every current check.
 [[literature/papers/he2026stored]]'s point applies literally: source
 *count* is not source *independence*.
 

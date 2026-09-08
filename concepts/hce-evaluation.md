@@ -52,6 +52,10 @@ sources:
   - "[[literature/papers/ge2026coverage]]"
   - "[[literature/papers/marsden2026where]]"
   - "[[literature/papers/paglieri2026case]]"
+  - "[[literature/papers/yang2026truthinsightbench]]"
+  - "[[literature/papers/brueckner2026kbench]]"
+  - "[[literature/papers/he2026swegate]]"
+  - "[[literature/papers/yang2026sok]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24

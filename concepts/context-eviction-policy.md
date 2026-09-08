@@ -43,6 +43,7 @@ sources:
   - "[[literature/papers/kim2026why]]"
   - "[[literature/papers/badhe2026skill]]"
   - "[[literature/papers/kassis2026scientific]]"
+  - "[[literature/papers/lavrenko2026instruction]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

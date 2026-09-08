@@ -19,6 +19,9 @@ sources:
   - "[[literature/papers/wu2026evomal]]"
   - "[[literature/papers/yu2026recursive]]"
   - "[[literature/papers/he2026stored]]"
+  - "[[literature/papers/goyal2026does]]"
+  - "[[literature/papers/hu2026memory]]"
+  - "[[literature/papers/chen2026fresh]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -104,6 +107,36 @@ re-introduces lossiness at one remove: the consolidated unit is a new
 summary chosen under a *past* query's notion of salience, so the tier
 drifts even while each unit stays traceable. Recoverability is the
 mitigation, not a cure.
+
+### Trusted too much, and stale by dependency
+
+Traceability makes a recall *checkable*; it does not make the agent
+*check*. [[literature/papers/hu2026memory]] measures what happens absent
+the check: agents answer with a stale stored value **0.92–1.00 of the time
+at every model scale**, even when an authoritative tool holds the correct
+one — over-trust rather than confusion. Worse, the harm is
+**capability-gated**: larger models collapse hardest once a stale note is
+dressed to look current, and a **recency cue (stale note dated newer)
+fools the larger models harder**. So a write gate plus a traceable recall
+still leaves the decisive failure open, because the read path prefers the
+store over live evidence by default.
+
+One finding is directly actionable here: **removing a label amplifies
+over-trust at every model size.** The frontmatter discipline this project
+already runs is doing safety work, not just bookkeeping. The corollary is
+uncomfortable — a concept whose `added:` date was refreshed by an unrelated
+edit is exactly hu's "stale dated newer" trap, and touching a file is not
+revalidating it.
+
+[[literature/papers/chen2026fresh]] supplies the missing validity notion:
+freshness of *state* does not establish validity of the *plan* derived from
+it, and a freshness-only executor acted on an obsolete plan in **30 of 30**
+workflows. Its dependency-scoped alternative — cite the exact records used,
+revalidate only those before an external effect, block when validation is
+incomplete — is the principled form of a staleness check, and it is
+implementable in this repo today because concept notes already cite their
+sources. `/lint` currently approximates staleness by file age, which
+detects neither of these failures.
 
 ## Connections
 

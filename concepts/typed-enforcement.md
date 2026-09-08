@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/marsden2026where]]"
   - "[[literature/papers/zheng2026continuity]]"
   - "[[literature/papers/ding2026acle]]"
+  - "[[literature/papers/lavrenko2026instruction]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"

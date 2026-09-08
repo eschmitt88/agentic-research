@@ -39,6 +39,9 @@ sources:
   - "[[literature/papers/moukpe2026deltaml]]"
   - "[[literature/papers/chi2026ai4ai]]"
   - "[[literature/papers/apodex2026frontierchallenge]]"
+  - "[[literature/papers/yang2026truthinsightbench]]"
+  - "[[literature/papers/he2026swegate]]"
+  - "[[literature/papers/brueckner2026kbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"

@@ -42,6 +42,8 @@ sources:
   - "[[literature/papers/yu2026recursive]]"
   - "[[literature/papers/tang2026wikiskill]]"
   - "[[literature/papers/he2026stored]]"
+  - "[[literature/papers/goyal2026does]]"
+  - "[[literature/papers/hu2026memory]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"
@@ -87,6 +89,43 @@ ingest agent reads and writes; cross-references are explicit
 wikilinks rather than embedding similarity. Naming the pattern
 makes the design choice visible to downstream projects that may
 otherwise default to bolting on a vector store.
+
+### The portability assumption, now measured
+
+The pattern has always carried an untested premise: that a
+plain-Markdown store **outlives the model that wrote it**.
+[[literature/papers/goyal2026does]] is the first source to measure it,
+and the result splits this concept's own artifact in two. Under a
+writer swap:
+
+- **fixed-schema structure transfers essentially perfectly** —
+  KG-fixed accuracy moved by +0.0004 ± 0.0020;
+- **model-compressed natural-language notes are strongly
+  model-coupled** — NOTES shifted by **+9.91 or −13.28 points**, and
+  *asymmetrically by migration direction*, so one upgrade test does
+  not generalise to the reverse.
+
+A note in this repository is both at once: the **YAML frontmatter is
+KG-fixed** and the **Markdown prose body is NOTES**. The durable layer
+is therefore the frontmatter, and the prose is the part that degrades
+when the writing model changes. That is a reason to push load-bearing
+facts *into* structured fields rather than leaving them in prose — an
+argument this concept had no evidence for before.
+
+The second finding is more consequential than the first: **80% of the
+NOTES deficit is information destroyed at write time**, and store-only
+repair failed to reach 90% recovery in all 48 cases, whereas retaining
+the raw source history succeeded in 34 of 48. A compressed store is
+not self-sufficient. This is an independent performance argument for
+the `raw/` is immutable rule, which was adopted on provenance grounds:
+`raw/` *is* the retained source history that makes a degraded note
+repairable at all.
+
+Caveat on strength: goyal's histories are synthetic with randomized
+answer codes, which is maximally compression-hostile and likely
+overstates the prose penalty for real notes carrying semantic
+redundancy. The direction is credible; the magnitude is an upper
+bound.
 
 ## Implementation guidance
 

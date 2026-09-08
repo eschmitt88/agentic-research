@@ -38,6 +38,8 @@ sources:
   - "[[literature/papers/lu2026credo]]"
   - "[[literature/papers/paglieri2026case]]"
   - "[[literature/papers/kassis2026scientific]]"
+  - "[[literature/papers/chen2026repo]]"
+  - "[[literature/papers/brueckner2026kbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

@@ -15,6 +15,8 @@ sources:
   - "[[literature/papers/zheng2026continuity]]"
   - "[[literature/papers/paglieri2026case]]"
   - "[[literature/papers/he2026stored]]"
+  - "[[literature/papers/yoon2026arcticswarm]]"
+  - "[[literature/papers/yang2026sok]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"

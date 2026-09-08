@@ -1,12 +1,15 @@
 ---
 kind: concept
 name: "constraint-pinning"
-status: seedling
+status: growing
 added: "2026-08-03"
 sources:
   - "[[literature/papers/chen2026governance]]"
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/nakayashiki2026when]]"
+  - "[[literature/papers/lavrenko2026instruction]]"
+  - "[[literature/papers/hu2026memory]]"
+  - "[[literature/papers/chen2026fresh]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -73,6 +76,44 @@ eviction-side half: its prologue-protection rule (pre-annotation
 content — system prompt, initial instructions — never eligible for
 eviction) is constraint pinning built into the eviction policy's
 structure.
+
+## Presence is not sufficiency — three limits added 2026-09-08
+
+The concept's evidence base tripled this cycle (3 → 6 sources), and all
+three additions constrain rather than confirm it.
+
+**Placement matters, and re-presentation is not adherence.**
+[[literature/papers/lavrenko2026instruction]] is the first controlled
+measurement of what repeating an instruction actually buys: across 7
+models, 8 placement conditions and 16,800 generations, a second copy of
+the procedural instruction raises a deterministic 8-test diagnostic from
+90.22% to 93.17% — while leaving **final-answer accuracy exactly
+unchanged at 60.21%**, and **increasing premature commitment** from
+1.52% to 2.30%. Its own blinded audit **failed** its prespecified 28/30
+criterion (10/30 confirmations). Two consequences for this concept:
+re-injection is **placement-sensitive**, so "re-inject verbatim" is
+under-specified until position is fixed; and the benefit is
+*trajectory legibility for a downstream consumer*, not correctness.
+That is still worth having — [[concepts/typed-enforcement]] needs a
+legible trajectory to act on — but it is a narrower claim than the
+chen2026governance violation numbers suggest on their own.
+
+**A pinned constraint is a stored fact, and stored facts go stale.**
+[[literature/papers/hu2026memory]] finds agents answer with a stale
+stored value 0.92–1.00 of the time even when an authoritative tool holds
+the correct one, and that this over-trust is **capability-gated** — the
+larger models collapse hardest once a stale note is made to look
+current. Pinning something exempts it from eviction; it does not
+revalidate it. A pinned budget ceiling that was raised an hour ago is
+now a pinned *wrong* answer with privileged position.
+
+**Validity is a dependency property, not an age property.**
+[[literature/papers/chen2026fresh]] separates state freshness from plan
+validity: a freshness-only executor acted on an obsolete plan in **30 of
+30** workflows. Its PlanFence protocol has plans cite the exact records
+they used and validates only those before an external effect. Applied
+here, the missing check is not "is the pinned constraint present" but
+"has anything the constraint depends on changed since it was pinned."
 
 ## The known limit
 
