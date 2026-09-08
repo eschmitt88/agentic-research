@@ -16,6 +16,7 @@ sources:
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/papers/lu2026credo]]"
   - "[[literature/papers/song2026string]]"
+  - "[[literature/papers/chen2026repo]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

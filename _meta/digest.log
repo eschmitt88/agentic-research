@@ -390,3 +390,12 @@ The paglieri result lands on this repo directly. `concepts/` is agent-written, `
 Item 20 in the candidates file (instruction duplication) finds the effect **placement-sensitive and neutral on final-answer accuracy** — that bears on the 09-06 `/elevate` proposal for a session-start limit-first reading rule, which is built on the same constraint-pinning thread. Its reviewer should see it before deciding.
 
 14 candidates remain uningested, so the file stays in `raw/_candidates/` with a partial `## Curation` section rather than moving to `_done/`. `_meta/last_digest` updated; final lint shows 0 orphans, 0 sourceless concepts, 0 stale candidates (the 4 dead wikilinks are pre-existing doc examples). The Monday NOTES.md rollup is a separate chained invocation in the cron script, so I left it alone.
+Appended and pushed as `ff45835` (working tree clean).
+
+The rollup covers 2026-09-05 → 09-07, sourced from `journal/` and `_meta/log.md`:
+
+- **Did** — 09-06 `/elevate` (1 proposal from 7 considered, with the five holds and why); 09-07 digest → auto-ingest at `go/high` (papers 151→157, concepts 34→36, 14 candidates left uncurated); `shared-substrate-contagion` seeded and `/promote-moc` declining a 9th MoC in favor of mapping it into two existing ones.
+- **Findings** — the 09-01..09-03 watch condition resolved (`enforcement-boundary-placement` 7→11 sources, seedling→growing); and the paglieri/he pair pointing at this repo's own unaudited write path.
+- **Next** — six undecided proposals (was five) plus the candidate-20 note their reviewer should see; the new contagion-siblings watch axis; and the two 09-04 items still genuinely open (`/propose`'s agency-branch write, deferred prose cuts).
+
+The uncommitted `_meta/digest.log` entry from the 09-07 run went in with the same commit.

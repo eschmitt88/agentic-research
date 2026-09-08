@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/liu2026evolvemem]]"
   - "[[literature/papers/gurkan2026mutation]]"
   - "[[literature/papers/xing2026compute]]"
+  - "[[literature/papers/yoon2026arcticswarm]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"

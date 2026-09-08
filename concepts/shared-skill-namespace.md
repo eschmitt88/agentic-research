@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/tang2026wikiskill]]"
   - "[[literature/papers/paglieri2026case]]"
   - "[[literature/papers/kassis2026scientific]]"
+  - "[[literature/papers/chen2026repo]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"

@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/kim2026why]]"
+  - "[[literature/papers/yoon2026arcticswarm]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"

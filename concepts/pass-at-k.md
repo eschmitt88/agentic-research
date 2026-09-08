@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/xing2026compute]]"
   - "[[literature/papers/li2026acm]]"
   - "[[literature/papers/panigrahy2026energy]]"
+  - "[[literature/papers/yoon2026arcticswarm]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24

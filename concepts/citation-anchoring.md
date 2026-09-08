@@ -20,6 +20,8 @@ sources:
   - "[[literature/papers/li2026praxist]]"
   - "[[literature/papers/lu2026credo]]"
   - "[[literature/papers/he2026stored]]"
+  - "[[literature/papers/zhu2026claimreceipt]]"
+  - "[[literature/papers/brueckner2026kbench]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24

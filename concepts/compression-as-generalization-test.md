@@ -6,6 +6,8 @@ added: "2026-07-07"
 sources:
   - "[[literature/papers/bertran2026fits]]"
   - "[[literature/papers/zhao2026specbench]]"
+  - "[[literature/papers/goyal2026does]]"
+  - "[[literature/papers/chen2026repo]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/pass-at-k]]"
@@ -53,6 +55,36 @@ These are the two remedy families
 [[literature/papers/ning2026closedloop]] identifies, here with formal
 bounds and an agent-native enforcement story (harness-level access
 control, not prompt instructions).
+
+## The skill-library case: a matched null and positive
+
+The 09-08 sources extend the principle beyond validation-set exploitation
+to **curated knowledge artifacts**, and for the first time the concept has
+the same question answered both ways:
+
+- [[literature/papers/kassis2026scientific]] shipped a 163-skill library
+  for scientific research agents and explicitly reported **no task-level
+  evaluation and no host selection rate**. A large curated artifact with no
+  evidence it changes agent behaviour is precisely what this concept says
+  must not be assumed — the honest null.
+- [[literature/papers/chen2026repo]] answers it: 5,000+ skills distilled
+  from 1,000 ML repositories, evaluated with **backbone, harness and
+  execution budget held fixed**, giving MLE-bench +134.3% and PaperBench
+  +34.4%. The compression (repo → skill) survives the channel, and the
+  fixed-budget ablation is what licenses the causal reading.
+
+The pair is the concept's cleanest demonstration: two libraries, same
+premise, and only the one that ran the ablation can claim the gain.
+Curation effort is not evidence of curation value.
+
+[[literature/papers/goyal2026does]] adds the failure direction. Compressing
+a history into model-written notes is *also* a compression channel, and
+there it **destroys** rather than distills: 80% of the resulting deficit is
+information lost at write time, unrecoverable by store-only repair. So
+compression tests generalization only when the compressed form is
+independently verifiable — a skill that runs, or a strategy that
+reproduces. A prose summary is compression without a check, and it couples
+the artifact to whichever model wrote it.
 
 ## Connections
 

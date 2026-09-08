@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/apodex2026frontierchallenge]]"
   - "[[literature/papers/li2026praxist]]"
   - "[[literature/papers/he2026stored]]"
+  - "[[literature/papers/zhu2026claimreceipt]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
