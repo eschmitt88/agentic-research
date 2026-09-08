@@ -479,3 +479,5 @@ Papers 157 → 168, concepts unchanged at 35 (excluding `_README`) — no concep
 Two items carried forward. `lavrenko2026instruction` cuts against the pending 09-06 `/elevate` proposal harder than the digest entry implied — placement-sensitive, final-answer accuracy exactly unchanged, premature commitment up, and its own blinded audit failed a prespecified 28/30 criterion; the benefit is trajectory legibility, not adherence. And `chen2026fresh`'s dependency-scoped validation is implementable here now: concept notes cite their sources, so staleness could be computed from source change rather than the file age `/lint` uses.
 
 The `shared-substrate-contagion` watch axis is NOT resolved — it gained sources, but sources are not sibling concepts and nothing was seeded. Condition stands.
+
+2026-09-08 04:22 promote-moc declined (graph unchanged since 67d5f3f, 35/35 concepts mapped)
