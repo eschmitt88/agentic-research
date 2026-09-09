@@ -1336,3 +1336,26 @@ Since coverage is total, ripeness test 2 (*not already mapped*) is unpassable by
 **Watch condition carried forward unchanged:** the only plausible 9th MoC is an enforcement-*placement* axis. `enforcement-boundary-placement` (seeded 09-01) is a single seedling; it needs ~4 siblings on that specific axis before a cluster exists. The declined near-misses 2608.24368 (OODA-Tool) and 2608.24777 (StepGuard) sit there and are the cheapest place to look. Next material change is a `/curate` pass or the 09-07 07:00 digest.
 
 Logged the decline in `_meta/log.md` and pushed (`agency: max`).
+Backlog closed — the uncurated count is now 0.
+
+## What I did
+
+Dispositioned all 16 open items (the 14 left by the 09-07 partial auto-advance, plus the 2 pre-window items that file explicitly deferred to `/curate`), archived the file to `_done/`, and pushed. Verdict was `go/high` at start and close; dedup found 0 of 16 already in the graph.
+
+**I didn't trust the digest's own ranking.** Six items had one-line entries with no authors or numbers, so I pulled their abstracts before deciding. Those entries reflected the digest's summarizing budget running out at the tail, not the papers — **item 17 (Repo-To-Skill / DisCo) was badly undersold**: 5,000+ skills from 1,000 ML repos, MLE-bench **+134.3%** with backbone/harness/budget held fixed. It went in at relevance 5 as the most on-mission item in the file.
+
+**Bar applied:** does the item change a concept, or just increment a source list? I used that rather than ingesting the ranked tail wholesale, following the 09-07 `/promote-moc` precedent (prose over list appends) and `he2026stored`'s point that source count isn't source independence.
+
+**11 ingested, 5 declined** (SafeEvolve, ToolGate, Beyond Context Windows, TROVE, ExTS — each with a recorded reason). Papers 157 → 168. **No concept seeded, deliberately**; 25 gained sources and 6 got real prose edits.
+
+## Two things worth your attention
+
+**`goyal2026does` lands on this repo's own design, and not flatteringly.** It's the first measurement of the assumption `agent-native-memory` rested on, and the split runs straight through our note format: under a writer swap, **fixed-schema structure moved +0.0004** while **model-written prose moved ±13 points**, asymmetrically by direction. A note here is both — YAML frontmatter is the durable layer, the Markdown body is not. Separately, 80% of the prose deficit is write-time loss that store-only repair can't recover, which is an independent performance argument for the immutable `raw/` rule that was adopted on provenance grounds.
+
+**`lavrenko2026instruction` cuts against your pending 09-06 `/elevate` proposal harder than the digest implied.** The 09-07 file flagged it for that reviewer; having read it, the effect is placement-sensitive, leaves final-answer accuracy *exactly* unchanged, **increases premature commitment**, and its own blinded audit **failed** its prespecified 28/30 criterion. The benefit is trajectory legibility, not adherence — a narrower case than the proposal rests on. That's now recorded on the concept and in the index entry.
+
+## Notes
+
+- `/lint` couldn't run: it calls `scripts/kg_lint.py`, which doesn't exist in this repo. Pre-existing, not from this pass — flagging it since the housekeeping rule says to run `/lint` weekly. I validated wikilinks and frontmatter directly instead: 0 dead links in touched files (the one hit is a pre-existing prose example).
+- `/promote-moc` declined — concept set unchanged since `67d5f3f`, 35/35 mapped, 0 orphans. One log line per the skill's decline cap, not another coverage essay.
+- **The `shared-substrate-contagion` watch axis is not resolved.** It went 4 → 7 sources and seedling → growing, but sources aren't sibling concepts and nothing was seeded. The condition stands as written — worth saying plainly since the source jump could look like it closed.
