@@ -26,6 +26,74 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-08-23 | [elevate-paired-control](2026-08-23-elevate-paired-control.md) | `skills/elevate/SKILL.md` | adopt | proposed |
 | 2026-09-06 | [session-start-limit-first-reading](2026-09-06-session-start-limit-first-reading.md) | `hooks/session-start.sh` | adopt | proposed |
 
+## Considered and held (2026-09-13 run)
+
+Zero-proposal cycle. Seventeen papers entered the graph since the 09-06 run
+(6 auto-ingested 09-07, 11 curated 09-08) plus the `shared-substrate-contagion`
+concept; `constraint-pinning` and `shared-substrate-contagion` both went
+seedling → growing. Four of the seventeen are credibility 4, but none of those
+four aims at a file this box runs, and the ones that do aim at this box are
+credibility 2–3 without artifacts. Six proposals still pend, holding
+`rules/evaluation.md`, `templates/project/budget.yaml`, `skills/lint/SKILL.md`,
+`hooks/pre-compact.sh`, `skills/elevate/SKILL.md` and `hooks/session-start.sh`.
+Held:
+
+- **`evidence-gated-completion` → `kg_lint.py` as an acceptance condition on
+  graph-writing skills** — the closest miss. The concept's own guidance names
+  it (`/ingest` is done when the note exists, its wikilinks resolve and the
+  linter passes), and it was checked against the files: no graph-writing
+  skill (`/ingest`, `/curate`, `/promote-moc`) runs `kg_lint.py` today, so
+  every one does end on the agent's own sentence. Gate 1 passes the
+  attestation count (8 sources, distinct groups) but **fails credibility on
+  balance** (3,3,3,3,2,2,3,2 ≈ 2.6), and the concept self-gates: "what is still
+  missing before elevation is an *implementation* attestation rather than a
+  third argument." The 09-08 additions (`brueckner2026kbench` overclaiming on
+  31.4% of assessments, `yang2026truthinsightbench`, `zhu2026claimreceipt`) are
+  *instruments* that measure unwarranted completion, not deployed gates with a
+  before/after effect, so they do not meet that gate. Gate 2 is also worse
+  than it looks: `kg_lint.py` reports standing graph debt, so a usable gate
+  must diff new-vs-existing findings, and its false-rejection cost is unpriced
+  (`refusal-cost-symmetry`). **Unlock**: a deployed completion gate with a
+  measured effect, rated ≥3.
+- **`shared-substrate-contagion` (paglieri2026case cred 4, yang2026sok cred 4,
+  yoon2026arcticswarm cred 4) → a warrant audit over high-fan-in concepts.**
+  The exposure is real and now concrete: 4 concepts carry `used_by:`
+  back-references (`budget-as-ceiling`, `citation-anchoring`,
+  `hce-evaluation` ×2, `pass-at-k`), so the `@import` channel is live, not
+  theoretical. **Held on Gate 2**: any audit or source-independence check is
+  net-new machinery, the concept itself names an untried *trial* (an
+  adversarial re-read of those four concepts' `sources:`) as the cheapest
+  first step, and the natural host (`/lint`) is blocked. The cred-4 papers
+  are multi-agent-swarm results; this box runs sequential single-agent
+  sessions, where the transfer is the concept's argument, not their
+  measurement. **Unlock**: run the trial; a found defect is the evidence a
+  proposal would need.
+- **`chen2026fresh` (+`hu2026memory`) → dependency-scoped staleness in
+  `/lint`.** Fails Gate 1 (two cred-3 preprints, no code) and adds a check.
+  **Factual correction to the `chen2026fresh` note**, which says `/lint`
+  "approximates staleness by file age": `kg_lint.py` has **no concept-staleness
+  check at all** — its age thresholds cover candidates (14d), high-relevance
+  literature without follow-up (30d), experiment proposals (14d) and
+  expansions (7d). This would be a new check, not a replacement of a crude one.
+- **`constraint-pinning` 3 → 6 sources → the pending 09-06
+  `session-start-limit-first-reading`.** Not a new proposal (same idea, blocked
+  target); the three additions are weighed in a reviewer addendum on that
+  proposal instead.
+- **`goyal2026does` (cred 3) → push load-bearing facts into structured
+  frontmatter.** Held as **already enacted** in kind: flat YAML frontmatter is
+  the framework's memory principle, and its "80% of the deficit is write-time
+  loss" result is an independent performance argument for the existing
+  immutable-`raw/` rule, not a change to it. Single attestation, no code.
+- **`he2026swegate` (cred 3, code) → "nothing verifies `/lint`'s checks would
+  fail on a bad input."** Held as **already enacted**, and the note's claim is
+  wrong: `scripts/tests/smoke.sh` seeds an orphan, a dead wikilink, a
+  sourceless concept, a stale candidate, an unanchored claim and an HCE
+  violation, and asserts `kg_lint.py` catches each.
+- **`chen2026repo` (cred 4) / `kassis2026scientific` (cred 3, code) → skill
+  library.** No target: `~/.claude/skills/` is 13 human-authored skills, and
+  the distillation-at-scale result bears on `compression-as-generalization-test`
+  (still seedling) rather than on any file here.
+
 ## Considered and held (2026-09-06 run)
 
 One proposal (above). Twenty-two papers entered the graph 2026-08-24 through
