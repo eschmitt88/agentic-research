@@ -198,3 +198,26 @@ preserve the limit-preference wording verbatim; the freshness-cue paraphrase is
 a distinct arm that the source measured and found inert. Worth revisiting in
 three months against whether any session visibly re-checked a `Next` item it
 would otherwise have acted on.
+
+## Reviewer addendum (2026-09-13 `/elevate` run)
+
+`constraint-pinning` went from 3 to 6 sources after this proposal was written.
+Status and recommendation are unchanged; the three additions, weighed:
+
+- **`lavrenko2026instruction` (cred 2) cuts against it less than its note
+  says.** It measures *duplicating a procedural instruction*: +2.95 points on
+  a procedure diagnostic, final-answer accuracy exactly unchanged, premature
+  commitment up, and its own blinded audit failed its prespecified criterion.
+  This proposal is not duplication. It is a new allocation cue, and
+  `nakayashiki2026when` measured it on *decisions* (+89.3). The part that does
+  transfer is **placement sensitivity**: the four lines are sited directly
+  above the tail they govern, and should stay there. Moving them to
+  `CLAUDE.md` would change the measured condition, not just the wording.
+- **`hu2026memory` (cred 3) supports it.** Agents answered with a stale stored
+  value 0.92–1.00 of the time even with an authoritative tool available, and
+  that over-trust gets worse with model capability. That is the failure this
+  rule redirects attention against.
+- **`chen2026fresh` (cred 3) sharpens it.** Validity depends on what a plan
+  relies on, not on how old it is: a freshness-only executor acted on an
+  obsolete plan in 30/30 workflows. That backs the proposal's deliberate
+  choice of "limit on a direction you are about to take" over a freshness cue.
