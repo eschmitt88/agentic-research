@@ -21,6 +21,8 @@ sources:
   - "[[literature/papers/paglieri2026case]]"
   - "[[literature/papers/kassis2026scientific]]"
   - "[[literature/papers/chen2026repo]]"
+  - "[[literature/papers/kapner2026scanning]]"
+  - "[[literature/papers/piriyakulkij2026subagents]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
@@ -148,6 +150,18 @@ following the SKILL.md convention.
   `WebSearch` tool only works in harnesses that expose that tool.
   The empirical portability rate (fraction of skills that "just
   work" across harnesses) is not documented in either source.
+- **Execution semantics are not part of the format.** The same
+  `SKILL.md` can be run inline (body loaded into the main context) or as
+  a fresh-context subagent (body seeds a new context and only the final
+  message returns). [[literature/papers/piriyakulkij2026subagents]] shows
+  the choice changes results: on SkillsBench the ranking of the two modes
+  flips depending on whether the skill's description states an expected
+  input and output, with gaps up to ~0.28 accuracy for smaller models
+  (read from bar charts). Nothing in the name/description schema tells a
+  harness which mode a skill was written for, so two harnesses can load
+  the identical file and behave differently — a portability gap below the
+  layout and format layers this concept names. A contract field (input /
+  output) in the description is the cheapest candidate for closing it.
 - **Versioning.** The SKILL.md schema may evolve (Anthropic has
   already shipped a multi-file variant — `SKILL.md` plus auxiliary
   files in the same directory). How harnesses negotiate version
@@ -173,11 +187,37 @@ following the SKILL.md convention.
   independent runtime verification (G2). A skill that is *portable
   across harnesses* is also an attack that is portable across harnesses;
   a future namespace spec needs declared-permission enforcement at the
-  protocol level, not just judge-based screening.
+  protocol level, not just judge-based screening. **Now measured:**
+  [[literature/papers/kapner2026scanning]] puts numbers on the gap.
+  Across 511 published skill collections, **3.7%** ship a skill whose
+  `allowed-tools` pre-approves an unrestricted shell (121/121 pairs
+  confirmed at pinned commits). That is the one field through which a
+  portable skill carries *execution authority* into every repository
+  that installs it. The paper's fix belongs at the namespace level:
+  require a scoped form in the spec, or display the field at install
+  time.
+- **The shared format is not enforced by its reference client.** The
+  Agent Skills spec requires `name` and `description`. Claude Code makes
+  both optional: it defaults the name to the directory and improvises the
+  description from the body's first paragraph. kapner2026scanning finds
+  **3.5% of collections** ship a skill the spec's own validator rejects
+  and Claude Code loads without comment. Layer 2 of the definition ("a
+  shared file format") therefore holds only as loosely as the most
+  permissive loader, and a skill that works in Claude Code is not
+  evidence it conforms. This strengthens implementation guidance 1:
+  declare `description:` explicitly, because a missing one is not an
+  error — it is silently replaced by whatever the body opens with.
 - **Conflict resolution.** If `~/.claude/skills/wrap/SKILL.md` and
   `~/.openharness/skills/wrap/SKILL.md` both exist with different
   bodies, which wins? OpenHarness's docs don't make the precedence
-  rule explicit. A future shared-namespace spec needs one.
+  rule explicit. A future shared-namespace spec needs one. But
+  divergence is usually deliberate: 17.5% of setups in
+  kapner2026scanning configure more than one assistant, and where two
+  assistants' context files or MCP declarations differ, an adjudicator
+  judged the difference a real defect in only 29/71 and 8/22 pairs; the
+  rest were intentional per-assistant variants. A spec therefore cannot
+  flag divergence as an error. It first needs a way to *declare* a
+  variant (the paper recommends one source of truth plus imports).
 - **Status is `seedling`** because the concept is named here from
   two sources that *implement* it but no source that *specifies*
   it. The agentskills.io spec, if read closely, is likely the

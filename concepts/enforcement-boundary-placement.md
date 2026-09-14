@@ -17,6 +17,9 @@ sources:
   - "[[literature/papers/paglieri2026case]]"
   - "[[literature/papers/yang2026sok]]"
   - "[[literature/papers/chen2026fresh]]"
+  - "[[literature/papers/zheng2026engineering]]"
+  - "[[literature/papers/shen2026revoked]]"
+  - "[[literature/papers/kapner2026scanning]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -129,7 +132,20 @@ candidate design rules:
    [[literature/papers/zheng2026continuity]]'s replayed-permit and
    widened-delegation fault classes, are the same observation from two
    directions. A placement that is spatially correct and temporally early
-   is still bypassable.
+   is still bypassable. [[literature/papers/zheng2026engineering]]
+   sharpens "at the moment authority is used" into **"inside the
+   transaction that applies the effect"** and backs it with a controlled
+   live measurement. In a forced after-check race (36 episodes, HTTP
+   service over SQLite, separate writer process), every verifier-only
+   policy commits the same 12 unsafe effects. The same partial guard run
+   as a non-atomic preflight just before the write commits 16; moved
+   inside the write transaction it commits 9 — exactly the clauses it
+   does not express. The full-predicate atomic guard commits 0 across 216
+   episodes (95% upper bound 1.4%) at 81.0% safe completion. A check
+   immediately before the effect is still early, and a guard in the right
+   place still covers only the clauses it can express. This is a
+   long-established database principle; the new part is head-to-head
+   evidence that verification portfolios do not substitute for it.
 
 ## Why this repository has the question and not the answer
 
@@ -156,9 +172,45 @@ has a shared skill namespace.
 - **Is there a placement that dominates, or is the right answer always
   several?** [[literature/papers/rahman2026framing]] reports two
   independent placements both reaching 0%, which suggests redundancy is
-  cheap here. Still no source compares placements *head to head* — every
-  paper argues for its own — but the question is now partly answered from
-  the other side: [[literature/papers/zheng2026continuity]] argues that
+  cheap here. **Two head-to-head comparisons now exist (2026-09-14)**,
+  each for one threat, from independent groups:
+  - [[literature/papers/zheng2026engineering]] compares pre-action model
+    verification, a non-atomic preflight guard, an in-transaction partial
+    guard, a full atomic guard and deferral, all on identical proposals
+    with preregistered comparisons. When the whole predicate is checkable
+    at commit, the full atomic guard dominates and extra model checks add
+    no observed safety. When the guard is partial, a cost-aware portfolio
+    buys availability (+0.27 safe completion) but not lower risk (Holm
+    p=0.51). Most live-arm differences miss significance with only 12
+    contracts, so the dominance result rests on the zero, not on a
+    ranking.
+  - [[literature/papers/shen2026revoked]] runs the same scenarios, models
+    and trials under placements along one memory pipeline, against a
+    benign stale-memory threat (a soft-revoked policy still returned by
+    retrieval). *Before the read*, a store-level status filter scores
+    0/1,620 unsafe actions, and the authors' guard matches it (not
+    independent evidence: both read the same status field). *After the
+    read, in context*, prompt hardening scores 37.2%, against 43.1% with
+    no defense. *At output*, a filter scores 18.1% even when given the
+    revoked texts. *At the tool*, a shell guardrail leaves dangerous-tool
+    invocation at 17.2%, the same as no defense, because the revoked
+    policy licenses actions the guardrail does not classify as dangerous.
+
+  The two agree on direction, and it is design rule 3: the check that sits
+  where the record or authority is *consumed* — the read filter for
+  memory, the write transaction for effects — wins. Both also bound it the
+  same way. The winning placement holds only if it is applied at *every*
+  use: an unfiltered reviewer role reintroduces shen's failure, and a
+  preflight one step before the write lets zheng's race through. And
+  anything that moves state past the check defeats it: agent write-back
+  takes shen's filtered unsafe rate to 71.6-83.1% at later hops (direct
+  write-back mode) — zheng2026continuity's dropped-label class in a memory
+  store — just as the after-check race defeats every earlier placement in
+  zheng2026engineering.
+
+  Before these, every paper argued for its own placement, and the question
+  was partly answered from the other side:
+  [[literature/papers/zheng2026continuity]] argues that
   single-site placement is what *produces* the failure class, since a
   composed stack of individually-correct controls fails when any one
   boundary drops a label (65.6% harmful-effect rate for the strongest
@@ -182,7 +234,16 @@ has a shared skill namespace.
   [[literature/papers/zhan2026auto]] puts the policy inside the Skill; if
   the Skill is written by the agent, the policy is too. This is the
   unresolved tension between placement-in-the-artifact and
-  [[concepts/verified-memory-writes]].
+  [[concepts/verified-memory-writes]]. The same tension has a measured,
+  non-agent form: [[literature/papers/kapner2026scanning]] finds that a
+  placement inside the artifact carries *grants* as easily as
+  *constraints*. 3.7% of published skill collections ship a skill whose
+  `allowed-tools` pre-approves the shell, and that pre-approval moves with
+  the artifact into every repository that installs it. So the question is
+  not only whether the artifact is agent-authored, but whether a boundary
+  co-packaged with a third-party artifact can ever widen authority.
+  zhan2026auto's placement is safe only if the packaged policy can
+  restrict and never grant.
 
 ## Connections
 

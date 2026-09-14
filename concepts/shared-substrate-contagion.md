@@ -11,6 +11,9 @@ sources:
   - "[[literature/papers/yoon2026arcticswarm]]"
   - "[[literature/papers/yang2026sok]]"
   - "[[literature/papers/chen2026repo]]"
+  - "[[literature/papers/zheng2026engineering]]"
+  - "[[literature/papers/shen2026revoked]]"
+  - "[[literature/papers/kapner2026scanning]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -114,6 +117,24 @@ rules) so the audit cohort can actually act. Their whistleblowers failed to
 stop the exploit, and the authors attribute that to missing institutional
 affordances, "not of normative capacity."
 
+**A second read of the same store is not a detection channel.**
+[[literature/papers/shen2026revoked]] measures propagation over a shared
+memory store with no attacker and no defect in any agent — only a
+soft-revoked policy that retrieval still returns. An executor, a reviewer
+and a planner each ask their own question, and all three retrieve the
+revoked record in 810/810 runs. Given an unsafe executor, the reviewer
+agrees **96.3%** of the time, and some later role goes unsafe in 99.4% of
+runs. With the executor's journal removed, reviewer agreement is still
+81.7%, so the journal compounds propagation but does not cause it. "A
+second opinion drawn from the same store is not independent, and the
+store's contents, not how the roles are arranged, are what carries the
+effect." This bounds the paglieri2026case result: correction ran over the
+shared wires there because the auditors checked *outputs*, not because
+they read the same library. Review contains contagion only if the
+reviewer's evidence path is independent of the substrate that carried the
+defect. Filtering every role's read brings every column to 0/810, but only
+at every read. One system (Graphiti), nine authored scenarios.
+
 ## Why this repository is exposed
 
 This project *is* a shared substrate, with the same auto-commit property:
@@ -133,6 +154,62 @@ concept with a dozen or more `sources:` that a future `/ingest` derived
 from one misread paper would pass every current check.
 [[literature/papers/he2026stored]]'s point applies literally: source
 *count* is not source *independence*.
+
+That point was an argument until
+[[literature/papers/zheng2026engineering]] measured it — from a separate
+group, so it is not he2026stored's claim repeated. The design is a
+fixed-call 2x2 on frozen agent proposals: a second verifier either switches
+model family or reads an independently replicated source. Changing the
+source cuts false approval of unsafe proposals by **40.9pp**; changing the
+model cuts it by **11.3pp** (74.2% same/same → 22.9% cross-model plus
+independent source). A rule-based arm whose verifier errors are independent
+by construction shows the same ordering, so the cause is evidence lineage,
+not correlated LLM errors. shen2026revoked (above) is the same result on a
+shared memory store. Two qualifiers limit how far this carries. An
+independent read helps only if it has an **independent failure path**:
+when every source degrades, the best cell is still 41.4% false approval.
+And it helps only if the verifier **can interpret** that evidence: on the
+paper's external FinQA check the source effect reverses (17% vs 20%).
+
+Mapped onto this repo: a check of a concept update that reads the
+literature note written by the same ingest pass is a same-lineage re-read.
+Swapping the reviewing model buys about a quarter of what going back to
+`raw/` buys. Independence in that paper is supplied by the benchmark, not
+discovered, so the "Does provenance depth help?" question below is still
+open.
+
+## The human-distributed substrate, measured
+
+Every source above describes a substrate that *agents* write to at
+runtime. [[literature/papers/kapner2026scanning]] measures the adjacent
+substrate this repository actually runs on: harness components (skills,
+hooks, settings, MCP declarations) that *humans* publish and other humans
+install. Its sample is 3,171 public repositories, with every finding
+re-checked at a pinned commit. Three results constrain this concept.
+
+1. **Not every defect spreads from a bad shared entry.** Unpinned MCP
+   servers (9.8% of setups) and arbitrary-execution grants (3.1%) appear
+   in **0.0% of published collections**; they arise only when components
+   are assembled. Only shell pre-approval inside a skill's `allowed-tools`
+   (3.7% of collections) spreads from the shared store. Auditing the
+   substrate catches only part of the risk, and a second check is needed
+   at assembly time.
+2. **The composition channel showed no traffic.** A rule for a
+   credential-reading component delegating to a network-capable one fired
+   on 6 repositories. Every one was read, and none was exfiltration. In
+   static public configurations the harm is ordinary drift, not propagated
+   exploits — weaker evidence of contagion than paglieri2026case's live
+   observation, and it should be cited as such.
+3. **Curation is not an audit cohort.** Setups found through
+   community-maintained recommendation lists carry confirmed defects at
+   18.9%, against 18.4% overall. Endorsement by a shared list adds no
+   review — the same point as `/lint` checking structure, not warrant.
+
+On independence: [[literature/papers/madatha2026deterministic]] made the
+same unmanaged-supply-chain argument from 6,145 config files. The two use
+independent teams and instruments, but both sample public GitHub agent
+configs, so the samples likely overlap. Count them as a stronger method
+corroborating the same population, not as two independent sightings.
 
 ## Open questions
 

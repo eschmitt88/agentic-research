@@ -37,6 +37,7 @@ sources:
   - "[[literature/papers/li2026praxist]]"
   - "[[literature/papers/kassis2026scientific]]"
   - "[[literature/papers/hu2026memory]]"
+  - "[[literature/papers/shen2026revoked]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"

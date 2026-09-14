@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/hu2026flashevolve]]"
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/ishibashi2026effective]]"
+  - "[[literature/papers/li2026autorecsys]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -132,6 +133,35 @@ The cheapness matters too. A worktree is a filesystem-level construct with
 no coordination protocol, no lock manager, and no shared-state reasoning —
 the isolation is total and the merge story is `git`. For a worker pool whose
 members write code, that is a much simpler answer than arbitrating access.
+
+## At days-long evaluation, the worker is a state record, not a process
+
+The open question below asks how this pattern changes when evaluation is
+GPU training rather than LLM inference. [[literature/papers/li2026autorecsys]]
+runs it where a single evaluation takes **days**, and the unit of the pool
+changes. No agent session or server is assumed to survive until a job
+finishes, so the pool member is a **persisted per-idea state file**
+(ideating → implementing → validating → training → analyzing, plus
+debugging), advanced by whichever session picks it up. A global registry
+maps sessions to ideas. On start, a recovery protocol reads the registry,
+replays the previous session's trajectory log if the session ID changed,
+and polls any job in `training`.
+
+Isolation works the way worktree isolation does, one level up. Per-idea
+state files mean a failed multi-hour job corrupts only its own record.
+Code changes are published as **draft diffs in shared code review** rather
+than kept in a local checkout, so a session on another server can pull and
+continue them — exactly the property local worktrees lack across machines.
+All ideas on one model share a single baseline with aligned training date
+ranges, so parallel results stay comparable.
+
+Staleness shows up at this grain as *baseline* staleness rather than
+pool-version drift. After a baseline change, six ideas that had tested
+positive failed. The agent diagnosed the cause unprompted (the new baseline
+already captured those signals) and pivoted — the same repair-by-reflection
+move FlashEvolve makes at seconds-scale evaluation. Caveat: the paper
+reports no throughput number beyond "multiple experiments per week" and
+describes a single researcher's portfolio.
 
 ## Open questions
 

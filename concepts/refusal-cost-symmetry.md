@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/ho2026soundnessbench]]"
   - "[[literature/papers/zhu2026stopping]]"
   - "[[literature/papers/rahman2026framing]]"
+  - "[[literature/papers/ning2026scores]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"

@@ -22,6 +22,8 @@ sources:
   - "[[literature/papers/goyal2026does]]"
   - "[[literature/papers/hu2026memory]]"
   - "[[literature/papers/chen2026fresh]]"
+  - "[[literature/papers/shen2026revoked]]"
+  - "[[literature/papers/li2026autorecsys]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -319,6 +321,51 @@ Two smaller findings worth carrying:
   [[concepts/multi-granularity-memory]]. Though note the tension:
   decomposition dilutes L1 payloads while fragmentation is exactly the
   L2 attack.
+
+## Revocation is a read-side property, and write-back launders it
+
+The definition above puts trust at consolidation time, "not left to
+retrieval-time filtering." [[literature/papers/shen2026revoked]] is a
+clean case where that framing has nothing to act on. Every write is
+correct and authorized: an organization's policy is superseded, and the
+store soft-revokes the old record. Every provenance check passes the old
+record by construction, because its origin is the defender. The harm is
+entirely on the read side. Where the revoked record is returned (Graphiti
+by default, mem0 with its shipped expiry filter disabled), it ranks
+**first in every scenario** and leads agents to the unsafe action in
+**43.1%** of trials. A store-level status filter takes that to
+**0/1,620**. Prompt hardening only reaches 37.2%, because the agent
+receives fact text without validity metadata. The paper sharpens this
+concept's origin-binding layer: "origin binding does not constrain what an
+authorized record does once its authorization is revoked."
+louck2026securing and sharma2026smsr certify *who wrote* a record, not
+*whether it is still current*.
+
+The read filter is not sufficient either, which is why the two sides have
+to be designed as one loop. Once an agent acts on the revoked record and
+journals its decision, the journal is an ordinary current record that
+nothing marks superseded. Filtered unsafe rates at later hops rise to
+**71.6 / 79.5 / 83.1%** when journals are written directly; under the
+system's own ingestion they are **7.5 / 7.8 / 12.8%**, with only 22 of 358
+journals surviving as active (both measured on Graphiti only). So the
+write gate has a job no source above assigns it: **a write derived from a
+record must not outlive that record's revocation.** That is
+chen2026fresh's cite-the-records-you-used rule applied to the agent's own
+memory writes. The composition is untested.
+
+Two caveats. The headline "no system enforces revocation by default"
+overreaches: shipped mem0 does withhold expired records. The broad
+failure is that under ordinary prose ingestion, cognee, langmem and mem0
+record the revocation in **0/9** scenarios, so no mark exists to enforce.
+And the tested agent is never shown the label, which leaves the cheapest
+mitigation — validity metadata in context, which hu2026memory suggests
+matters — unmeasured.
+
+This also qualifies the Mem0 attestation under Connections.
+chhikara2025mem0 documents that contradicted memories are deleted via its
+UPDATE/DELETE decisions; measured behavior was retention with an expiry
+marker (direct insertion) and no revocation at all under indirect
+insertion. A documented write gate is not a measured one.
 
 ## Portability: the same gate, one trust boundary further out
 
