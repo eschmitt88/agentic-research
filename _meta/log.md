@@ -484,3 +484,9 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-09-09 04:16 auto_push attempted but failed (see /home/eschmitt/.claude/hooks/auto-push.err)
 2026-09-13 05:02 elevate proposals=0 considered=7 — first run over the 09-07/09-08 burst (17 papers, +shared-substrate-contagion; constraint-pinning and shared-substrate-contagion both seedling→growing). Closest miss: evidence-gated-completion → kg_lint.py as an acceptance condition on /ingest,/curate,/promote-moc (verified none runs it today); held on credibility balance ~2.6 across 8 sources plus the concept's own implementation-attestation gate, since the 09-08 additions are instruments rather than deployed gates. Held: shared-substrate-contagion warrant audit (net-new; concept's own trial untried, and the @import channel is live, with 4 concepts carrying used_by), chen2026fresh dependency-scoped staleness (Gate 1; note's claim that /lint ages concepts by file age is wrong, since kg_lint has no concept-staleness check), goyal2026does and he2026swegate as already enacted (flat frontmatter; smoke.sh seeds bad inputs for every kg_lint check), chen2026repo/kassis no target. constraint-pinning 3→6 weighed as a reviewer addendum on the pending 09-06 proposal rather than a new one. Six proposals still pending.
 2026-09-14 07:15 digest n=20 window_since=2026-09-07T07:00:06Z
+2026-09-14 07:25 fetch-paper 2609.09219 → raw/papers/ning2026scores.pdf
+2026-09-14 07:25 fetch-paper 2609.10969 → raw/papers/zheng2026engineering.pdf
+2026-09-14 07:25 fetch-paper 2609.08258 → raw/papers/shen2026revoked.pdf
+2026-09-14 07:25 fetch-paper 2609.07360 → raw/papers/kapner2026scanning.pdf
+2026-09-14 07:25 fetch-paper 2609.09233 → raw/papers/piriyakulkij2026subagents.pdf
+2026-09-14 07:25 fetch-paper 2609.10922 → raw/papers/li2026autorecsys.pdf
