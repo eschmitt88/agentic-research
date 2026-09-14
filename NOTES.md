@@ -574,3 +574,41 @@ Weekly rollup for 2026-09-05 → 09-07 (sourced from journal/ + _meta/log.md).
   The 09-07 near-misses sit on the lifecycle axis, not the contagion one.
 - Still open from 09-04: /propose's agency-branch first autonomous write;
   deeper ingest/digest prose cuts (still deferred).
+
+## 2026-09-14
+
+Weekly rollup for 2026-09-08 → 09-14 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 09-08 /curate closed the 09-07 backlog: 16 items → 11 ingested, 5 declined
+  with reasons. Papers 157 → 168, concepts held at 35 on purpose (bar: change a
+  concept or decline). Repo-To-Skill (MLE-bench +134.3%) went in at relevance 5.
+  `shared-substrate-contagion` and `constraint-pinning` both seedling → growing.
+- 09-13 /elevate: 0 proposals from 7 considered. Closest miss was running
+  kg_lint as a done-gate on /ingest, /curate and /promote-moc (credibility ≈2.6,
+  and the concept's own gate is unmet). Added a reviewer note to the 09-06 proposal.
+- 09-14 digest → auto-ingest (go/high): arXiv API returned 429, so it fell back
+  to OAI-PMH (a complete list, now the default). Top 6 of 20 ingested, papers
+  168 → 174, 22 concepts updated, no new concept (declined `harness-supply-chain`).
+- /promote-moc declined 09-08 and 09-14: graph unchanged, 35/35 concepts mapped.
+
+### Findings
+- goyal2026does applies to this repo: under a writer swap, frontmatter moved
+  +0.0004 but prose bodies moved ±13pp. lavrenko2026instruction weakens the
+  09-06 proposal: accuracy unchanged, earlier commitment, failed its own audit.
+- zheng2026engineering is the first measurement that source independence beats
+  model diversity (−40.9 vs −11.3 pts). shen2026revoked: revoked memories
+  still drive the unsafe action 43.1% of the time.
+- Process slips on 09-14: the digest put the user's email in an arXiv
+  User-Agent and ran Workflow without authorization. The 09-08 "kg_lint.py
+  missing" flag was wrong: the script lives in `~/claude-system/scripts/`.
+
+### Next
+- Six proposals still undecided (3× 08-02, 08-16, 08-23, 09-06), human review queue.
+- Check whether downstream `@import ~/...` lines load at all (Claude Code syntax
+  is `@<path>`). If not, `used_by:` overstates reach. Run `/memory` in mle-bench.
+- Auto-push failed on 09-09 and again on 09-14 ("access rights"). Check the remote auth.
+- Curate the 14 leftover candidates in `raw/_candidates/2026-09-14-digest.md`.
+  Fix the chen2026fresh and he2026swegate notes, which describe /lint wrongly.
+- Still open: `shared-substrate-contagion` sibling watch; /propose's first
+  autonomous agency-branch write; deferred ingest/digest prose cuts.
