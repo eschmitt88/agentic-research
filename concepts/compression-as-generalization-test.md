@@ -8,6 +8,7 @@ sources:
   - "[[literature/papers/zhao2026specbench]]"
   - "[[literature/papers/goyal2026does]]"
   - "[[literature/papers/chen2026repo]]"
+  - "[[literature/papers/ning2026scores]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/pass-at-k]]"
@@ -104,6 +105,15 @@ the artifact to whichever model wrote it.
   against: the validation–holdout gap grows ~27pp per 10× code size, so
   the ">10% gap" trigger in mechanism 1 should be horizon-relative, not
   absolute.
+- **Mirror image: [[literature/papers/ning2026scores]].** This concept
+  hands a fresh agent a *narrow* channel and requires it **to reproduce**
+  the gain (is it real?). DCP's Gate 2 hands a fresh matched agent *no*
+  run history and requires it **to fail to** reach the score (was the run
+  necessary?), certifying non-recovery at `p_upper = 0.0468` over 96
+  episodes. Same instrument — a fresh agent under a registered information
+  boundary — with opposite success criteria. A claim that survives both is
+  real *and* not reachable from priors, and DCP's knapsack case shows the
+  second test biting on a gain the first kind would pass.
 - Still effectively single-source for the *mechanism* (bertran2026fits);
   zhao2026specbench attests the underlying description-length intuition
   and supplies measurement, but implements no compression audit of its

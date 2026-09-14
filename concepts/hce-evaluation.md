@@ -56,6 +56,7 @@ sources:
   - "[[literature/papers/brueckner2026kbench]]"
   - "[[literature/papers/he2026swegate]]"
   - "[[literature/papers/yang2026sok]]"
+  - "[[literature/papers/ning2026scores]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -258,7 +259,11 @@ Any project that imports this concept should:
    a result came from reasoning or from a retrieved answer. Audit for
    *answer-level* leakage, not corpus overlap. A held-out score from a
    search-enabled run on a public benchmark is not an unbiased estimate
-   and should be reported with that caveat attached.
+   and should be reported with that caveat attached. Where retrieval
+   cannot be disabled, capture and replay is the alternative: per
+   ning2026scores, record the exact model-visible bytes through a gateway
+   and state the claim conditional on them, so a reviewer can re-run a
+   no-history challenger against the same Web packet.
 
 7. **Compose the holdout where the task allows, and don't read a
    validation plateau as convergence.** Per zhao2026specbench: prefer a
@@ -600,6 +605,29 @@ excludes impossible scores outright, because the judge alone was not
 trusted. Detection is also **conditional**: it improved results for the
 capable model and *hurt* for the weak one, where the overhead cost
 generations and there was nothing to catch.
+
+## A held-out score certifies utility, not that the loop was needed
+
+Everything above protects the held-out number.
+[[literature/papers/ning2026scores]] asks what that number still fails to
+establish. Its Discovery Certification Protocol treats a sealed-test gain
+as **Gate 1 only**. Gate 2 hands fresh matched agents the same model,
+budget, starting data and the exact Web bytes the run saw, withholds the
+run's research history, and counts any valid method reaching
+`score ≥ x − ε` as a recovery. On multidimensional knapsack the target
+passed with a registered, sealed, real gain (0.0209 over baseline, above
+δ_min = 0.01) — and **one** no-history challenger episode still produced
+0.9363, beating the target's 0.9349. The HCE-style result was genuine; the
+search loop was unnecessary.
+
+This is a different axis from leakage, tampering and overfitting. Nothing
+was compromised; the claim simply overstates what the loop contributed.
+Two cautions before importing it. First, the bound is narrow: `p_upper`
+covers one fresh episode from one model at one budget, so twenty episodes
+at p ≈ 0.047 recover with probability ~62%. Second, the paper comes from
+the same research line as ning2026closedloop (three shared authors), so the
+certify-after-search thread in this concept rests on one group, not two
+independent ones.
 
 ## Open questions
 

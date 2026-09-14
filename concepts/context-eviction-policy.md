@@ -44,6 +44,8 @@ sources:
   - "[[literature/papers/badhe2026skill]]"
   - "[[literature/papers/kassis2026scientific]]"
   - "[[literature/papers/lavrenko2026instruction]]"
+  - "[[literature/papers/li2026autorecsys]]"
+  - "[[literature/papers/piriyakulkij2026subagents]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -447,6 +449,20 @@ differences are directional at p ≈ 0.37. And its typed layers lean on an
 enumerable action space (`L2` ships legal action formats for each state
 type), which a closed-rule game has and an open-ended research loop does
 not.
+
+A field instance of the failure the no-overflow contract avoids comes from
+an industrial research harness. In [[literature/papers/li2026autorecsys]],
+background agents monitoring multi-day training jobs "were dying silently
+after roughly three to five hours because each polling cycle appended tool
+results until the LLM context window overflowed." The replacement, designed
+by the agent itself, was **cron-based ticks, each a fresh prompt with no
+context accumulation**, reading job and idea state from files. Two points
+transfer. For a polling loop, append-by-default fails by *silent death*,
+not degraded output, so it goes unnoticed until someone checks. And the fix
+is AgenticSTS's contract in its simplest form: nothing crosses a tick
+boundary unless a store holds it. The evidence is a single anecdote, but it
+bears directly on any practice of monitoring long jobs from one persistent
+session.
 
 ## Open questions
 

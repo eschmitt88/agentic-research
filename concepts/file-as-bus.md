@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/ishibashi2026effective]]"
   - "[[literature/papers/song2026string]]"
+  - "[[literature/papers/li2026autorecsys]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"

@@ -40,6 +40,9 @@ sources:
   - "[[literature/papers/kassis2026scientific]]"
   - "[[literature/papers/chen2026repo]]"
   - "[[literature/papers/brueckner2026kbench]]"
+  - "[[literature/papers/piriyakulkij2026subagents]]"
+  - "[[literature/papers/li2026autorecsys]]"
+  - "[[literature/papers/kapner2026scanning]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -381,6 +384,31 @@ size**, which is what most systems would actually build. The finding
 supports *scope your loading*; it does not yet establish that a hand-built
 tier hierarchy beats good retrieval.
 
+**Second attestation, from a different group and benchmark.**
+[[literature/papers/piriyakulkij2026subagents]] reproduces the shape on
+SkillsBench with Qwen3.5-9B (accuracies read from its bar charts, ≈±0.01).
+With every synthesized skill exposed flat, inline accuracy is ≈0.22. Lazy
+loading through a two-level task hierarchy (pick the task node, then see
+only its skills) raises it to ≈0.50, matching the zero-distractor condition
+(≈0.48). In a separate sweep, inline accuracy drops monotonically as
+unrelated skills are added — gpt-5.4-mini ≈0.80 → ≈0.55 at 263 distractors.
+This is independent of kim2026why (Alberta/Amii, MLE-Bench), but it shares
+both of that source's limits: the flat baseline is again dump-everything
+rather than retrieval at matched context size, and the best hierarchy
+groups skills by their source task, which is close to oracle scoping that a
+novel task would not have. LLM-built trees did worse, and depth 3 was worse
+than depth 2.
+
+The same paper adds a write-side property this concept has not named: **a
+skill's interface decides how it can be executed.** The descriptions that
+let a skill run as an isolated subagent state an "Expected input" and an
+"Output"; curated skills without them did no better as subagents than
+inline, and worse for strong models (see
+[[concepts/hierarchical-delegation]]). So the skill format is not neutral
+about execution. Its synthesized skills were also distilled from successful
+trajectories on the very tasks they are scored on — the holdout gap flagged
+below.
+
 ## Open questions
 
 - **Joint read/write training.** SkillOS trains write-side
@@ -551,3 +579,47 @@ distribution presupposes a known, stable query distribution. For a research
 agent the distribution is what shifts, so a bank optimized for yesterday's
 coverage is a different failure mode from an append-only log, not
 necessarily a smaller one.
+
+## What staleness looks like in production: loud regression, fast recovery
+
+The sources above test accumulation and gating over bounded runs; none
+shows what happens when a mature library's *world* changes under it —
+the question the tang2026memory caveat left open.
+[[literature/papers/li2026autorecsys]] (Meta, Auto-RecSys) is the first
+naturalistic data point. Per-model playbooks of dead ends, pipeline recipes
+and a crystallized submission config were evolved over 31 iterations on
+one production recommendation model:
+
+| Phase | Iterations | Operational fixes / iter | Zero-fix rate |
+|---|---|---|---|
+| Bootstrap | 1-4 | 4.0 | ~25% |
+| Stabilized | 5-20 | 1.3 | ~50% |
+| New baseline | 21-25 | ~4.2 | 0% |
+| Post-shift | 26-31 | 0.5 | 83% |
+
+The baseline change at iteration 21 made correct entries **wrong** —
+hardware choice, package versions, entitlements — and turned six
+previously positive ideas into failures. Two things are worth carrying.
+First, the regression was *loud*, not silent: five iterations in a row
+needed recovery, and the playbook reached better than its pre-shift level
+within about five iterations. Second, the authors skip a validation gate
+because dead ends are "correct by construction", since they record real
+failures. Their own shift refutes that: **write-time truth does not
+guarantee read-time validity** once a dependency moves. See
+[[concepts/verified-memory-writes]].
+
+A second transferable point: **structure transfers where contents do
+not**. The first model's mature playbook (six fixed categories) becomes a
+template whose slots are filled interactively for the next model. This is
+a different axis from cheng2026agenticsts's backbone-sensitivity worry
+above: here the target system changes, not the LLM. The three tiers (a
+model-agnostic orchestrator skill, per-model playbook, per-iteration state
+file) are a second instance of kim2026why's applicability-scope hierarchy,
+but without its loading ablation.
+
+Limits before citing: one model, n=31, an author-defined metric that
+excludes implementation debugging, no no-playbook or frozen-playbook
+control (so maturation and infrastructure settling are confounded), and
+inconsistent dead-end counts (19 vs 49). Treat it as the shape of
+staleness in the wild, not as evidence that the playbook caused the
+recovery.

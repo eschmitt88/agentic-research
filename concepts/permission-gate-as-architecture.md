@@ -39,6 +39,8 @@ sources:
   - "[[literature/papers/zheng2026continuity]]"
   - "[[literature/papers/ding2026acle]]"
   - "[[literature/papers/chen2026fresh]]"
+  - "[[literature/papers/zheng2026engineering]]"
+  - "[[literature/papers/kapner2026scanning]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -270,6 +272,40 @@ comparable expense. Where a boundary can be drawn structurally,
 inspection is the more expensive and weaker option — the same lesson
 [[concepts/verified-memory-writes]] draws from the security/quality
 layer split.
+
+## The grant language is part of the gate
+
+Every source above studies the gate's *logic*: what it decides, when it
+fires, what state it keeps. [[literature/papers/kapner2026scanning]]
+measures two other things that decide whether the gate means anything:
+the **vocabulary the grants are written in**, and **who is allowed to
+write them**. Its sample is 2,660 public Claude Code / Cursor / Copilot /
+Codex setups, with every finding re-checked at a pinned commit.
+
+- **Grants that look scoped but are not.** 3.1% of setups carry a
+  `permissions.allow` entry such as `Bash(python:*)`, `Bash(awk:*)`,
+  `Bash(find:*)` or `Bash(sed:*)`. Each is `Bash(*)` in effect:
+  `python -c`, awk's `system()`, `find -exec`, GNU sed's `e` flag. That is
+  83 setups and 161 findings, with no false positives when re-derived. A
+  gate is only as strict as a human reader's model of its grant language,
+  and here the language misleads. The paper's fix is at the approval UI:
+  show `Bash(python:*)` as "any command".
+- **Pre-approvals travel inside third-party artifacts.** 3.7% of published
+  skill collections ship a skill whose `allowed-tools` includes an
+  unrestricted shell; installing the skill installs the pre-approval. This
+  is the exclusivity argument above from the other side: the gate's
+  coverage is intact, but a path *around* it arrives in a dependency.
+- **The person who writes a grant is not the person who bears it.** 0.4%
+  of setups commit `defaultMode: bypassPermissions` in project settings,
+  which Claude Code honoured from project scope until v2.1.257. "A project
+  setting is written by one person and executed by everyone who clones."
+  So grant *provenance* is a gate property, just as grant *lifetime* is
+  (santosgrueiro2026lingering).
+
+Two cautions. The 3.1% measures exposure, not intent: of 65 re-cloned
+setups, 22 actually invoke the granted interpreter, and many authors
+wanted it run. And the bypass rate is tied to a client version, so these
+rates decay as clients change.
 
 ## Authority with a lifecycle: the credential that does not exist yet
 

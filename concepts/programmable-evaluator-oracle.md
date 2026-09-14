@@ -42,6 +42,7 @@ sources:
   - "[[literature/papers/yang2026truthinsightbench]]"
   - "[[literature/papers/he2026swegate]]"
   - "[[literature/papers/brueckner2026kbench]]"
+  - "[[literature/papers/ning2026scores]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"

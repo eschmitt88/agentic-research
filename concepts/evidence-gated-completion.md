@@ -12,6 +12,8 @@ sources:
   - "[[literature/papers/yang2026truthinsightbench]]"
   - "[[literature/papers/brueckner2026kbench]]"
   - "[[literature/papers/zhu2026claimreceipt]]"
+  - "[[literature/papers/ning2026scores]]"
+  - "[[literature/papers/zheng2026engineering]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -197,6 +199,41 @@ supported"; coverage asks "is the set of claims complete against what was
 committed to." Both are needed, and only the second catches a silent
 omission.
 
+## A released gate that refuses, aimed at a different target (2026-09-14)
+
+[[literature/papers/ning2026scores]] is the first source under this
+concept with a released, executable, LLM-free verifier (`dcp-audit`) shown
+**refusing**. It returns `recovered` when a no-history challenger beats the
+target on knapsack (0.9363 vs 0.9349), and `audit incomplete` on an
+underpowered case even though the observed feedback effect was a perfect
+1.0, because positive-control recall LCB was 0.07 against a required 0.8.
+Across five cases with declared roles, the verifier matched 5/5.
+
+Three parts carry over:
+
+- **Split INCONCLUSIVE in two.** zhu2026claimreceipt has a single
+  INCONCLUSIVE verdict. DCP separates *audit incomplete* (the evidence
+  apparatus failed: weak controls, broken interface, a contract violation)
+  from *statistical uncertainty* (a complete audit whose interval crosses a
+  threshold). They call for different actions: fix the harness vs collect
+  more episodes.
+- **The attempt ledger is part of the evidence.** "Every started attempt
+  remains in the ledger, including timeouts, invalid outputs, and
+  infrastructure failures," and a best-of-k procedure counts as *one*
+  k-candidate episode. This is the mechanical form of the result-selection
+  disclosure named above as this repo's actionable gap.
+- **A null verdict needs a positive control.** A challenger's failure to
+  recover counts only if the same setup solves known instances when given
+  the needed information (45/45, recall LCB 0.889 ≥ 0.8). Otherwise the
+  verdict is incomplete, not pass.
+
+The limit matters for elevation. DCP gates *discovery claims after the
+fact* at ~500 sessions and ~$60 per audit, not task completion inside a
+working harness. Its five cases are designed calibrations with no
+false-rejection rate, and it reports no before/after effect on agent
+behavior. It attests an implementation of the *verifier and verdict
+vocabulary*, not a deployed completion gate with a measured effect.
+
 ## Implementation guidance
 
 1. **Declare the schema per skill, and keep it one or two elements.** The
@@ -214,7 +251,14 @@ omission.
    it becomes a gate.
 3. **Verify against external state, never against the agent's account.**
    A verifier that reads the agent's summary of the diff has admitted soft
-   evidence through the front door. Read the diff.
+   evidence through the front door. Read the diff. Reading external state
+   is necessary but not sufficient, though:
+   [[literature/papers/zheng2026engineering]] shows a verifier reading a
+   second interface backed by the **same upstream lineage** as the agent's
+   read approves 62.9-74.2% of unsafe proposals, against 22.9-33.3% for a
+   verifier reading an independently replicated source. The external state
+   must be reached through an independent failure path, or the verifier is
+   re-confirming the agent's stale view.
 4. **Degrade gracefully where no schema exists.** Open-ended work
    (synthesis, framing, a MoC's prose) has no checkable acceptance
    standard, and the honest response is to route non-idempotent actions
@@ -251,12 +295,22 @@ omission.
   survey coding other people's reporting. The convergence is real — two
   independent literatures (safety incidents, AI-scientist audits) derived the
   same failure-mode → minimum-evidence structure — but neither supplies a
-  deployed gate with a measured effect, so what is still missing before
-  elevation is an *implementation* attestation rather than a third argument.
+  deployed gate with a measured effect. ning2026scores now supplies a
+  released verifier that demonstrably refuses, but for post-hoc discovery
+  certification at ~$60/audit, not per-task completion. What is still
+  missing before elevation is a completion gate inside a harness with a
+  measured false-rejection rate.
 - What is the false-*rejection* rate of a real gate? Every check that can
   refuse valid work has a cost the paper does not measure, and a gate
   that blocks a correct submission on a flaky verifier is a new failure
-  mode, not a removed one.
+  mode, not a removed one. Partly priced in one controlled setting by
+  zheng2026engineering: single small verifiers reject 12.1-62.8% of safe
+  proposals, and the lowest-risk fixed policy (exact guard, then an
+  independent read) reaches 0.8% unsafe only by deferring 56.2% of
+  scenarios. Risk targets of 1% and 2% could not be calibrated at all and
+  deferred on 99.9%. There, over-refusal is where the frontier sits, not a
+  tuning failure. The verifiers were 4B quantized models, so the magnitudes
+  may not transfer.
 - Where does the schema live? Per-skill frontmatter, a project-level
   contract file, or the harness's own config are all plausible, and the
   choice determines whether the gate survives a skill rewrite.

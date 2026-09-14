@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/xin2026eurekagent]]"
   - "[[literature/papers/kim2026why]]"
   - "[[literature/papers/yoon2026arcticswarm]]"
+  - "[[literature/papers/piriyakulkij2026subagents]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -179,3 +180,45 @@ contracts worth writing.
 
 See [[concepts/budget-as-ceiling]] for the enforcement limits that bound
 all of this (a ceiling is really ceiling-plus-one-call).
+
+## Isolation pays only across an interface, and mostly under pressure
+
+The rationale above — the split's value "is context isolation" — has so
+far rested on system-level wins where role structure, prompts and tooling
+all changed together. [[literature/papers/piriyakulkij2026subagents]] is
+the first controlled test. It keeps the skill package and base model fixed
+and varies only whether the skill runs **inline** (its `SKILL.md` loaded
+into the main context) or as a **subagent** (fresh context seeded with the
+skill body, returning only its final message). On SkillsBench across 7
+models the answer is conditional in three ways. (The paper reports
+accuracies only as bar charts; values below are read from its Figs. 2, 5
+and 6 and are approximate, ≈±0.01.)
+
+- **It needs a contract.** With curated skills that lack stated inputs and
+  outputs, the two modes are within a few points of each other, and inline
+  clearly wins for the stronger models (gpt-5.3-codex ≈0.71 vs ≈0.61).
+  With skills whose descriptions carry "Expected input:" and "Output:"
+  sections, subagents roughly double accuracy for weaker models
+  (Qwen3.5-9B ≈0.22 → ≈0.46, Mistral-Large ≈0.26 → ≈0.54). This is
+  ye2026agent's "the contract is the specification" argument with a
+  measurement attached. Caveat: the contract sets also differ in content,
+  and no ablation separates the two.
+- **It needs context pressure.** Those gains appear to come from the
+  condition where all 263 unrelated skills are exposed. With only the
+  task's own skills, the subagent edge is ≈+0.02 to +0.03 for gpt-5.4-mini
+  and Mistral-Large, and ≈−0.02 for gpt-5.3-codex. Frontier models get no
+  accuracy benefit at all (codex ≈0.85 vs ≈0.85), yet still pay roughly
+  **1.3-1.7× total tokens** (also read from a chart). What they do get is
+  a lower peak context, on 95.3% of codex tasks.
+- **Routers must not be delegated.** In a hierarchical library (Qwen3.5-9B
+  only), running every node as a subagent collapses accuracy to ≈3-7%.
+  Running routing nodes inline and leaf skills as subagents is best
+  (≈0.64). A node with no procedure and no contract has nothing to
+  delegate.
+
+This sharpens guidance 2 and the Agent-as-Tool open question: delegation
+should be selective, and the selection criterion is whether the unit has a
+stated input/output interface, not whether it is a distinct role. It also
+bounds the manager-context claim in guidance 4: isolation lowers *peak*
+context but raises *total* spend, because each child must be re-supplied
+context the parent already holds.
