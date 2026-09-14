@@ -309,3 +309,25 @@ I flagged the 2026-08-16 precedent explicitly: that run held a different `sessio
 
 **The queue is now the binding constraint, and the literature says so.** Five proposals pend, oldest since 08-02. Two of six holds this cycle were blocked on target rather than merit — and one of those is measured evidence that *accepted* changes, not generated ones, are the scarce resource.
 {"id":"siSDN9cGjMjP","time":1788671025,"expires":1788714225,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• session-start-limit-first-reading\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
+I wrote no new proposals this cycle. I looked at seven ideas from the 17 papers added since the 09-06 run, and none cleared both the evidence bar and the simplicity bar. Nothing in `~/claude-system` was touched.
+
+**Closest miss: make the graph-writing skills run the linter before calling a task done.** The concept note on evidence-gated completion suggests treating `/ingest`, `/curate` and `/promote-moc` as unfinished until `kg_lint.py` passes. I checked, and none of those skills runs the linter today, so each one ends on the agent's own word. I held it for three reasons:
+- **Weak evidence:** the eight supporting papers average about 2.6 credibility, below the bar of 3.
+- **The concept blocks it itself:** its note says it needs a real, deployed gate with a measured effect first. The new papers only measure how often agents overclaim they're done.
+- **Harder than it looks:** the linter also reports problems that were already in the graph, so a gate would have to separate new problems from old ones. Nobody has measured how often it would wrongly block good work.
+
+**Other ideas held:**
+- **Checking concepts against their sources** (the shared-substrate contagion idea): the risk is real, because four concepts are already imported by other projects. But any check would be new machinery. The concept's own suggested first step, a hostile re-read of those four concepts' sources, hasn't been tried yet.
+- **Flagging a concept as stale when one of its sources changes:** the evidence is two credibility-3 papers with no code. Also, the `chen2026fresh` note says `/lint` judges concepts stale by file age. That's wrong: `kg_lint.py` has no concept-staleness check at all, so this would be a brand-new check.
+- **Already in place:**
+  - `goyal2026does` argues for keeping important facts in frontmatter, which is already the framework's rule.
+  - The `he2026swegate` note says nothing tests whether `/lint`'s checks catch bad input. That's also wrong: `scripts/tests/smoke.sh` feeds in a bad example for every check.
+- **`chen2026repo` / `kassis2026scientific`:** there's no file on this box for them to change.
+
+**Other changes:**
+- The constraint-pinning concept doubled to six sources. Rather than write a second proposal on the same idea, I added a note for the reviewer to the pending `2026-09-06-session-start-limit-first-reading` proposal. The new papers don't change its recommendation.
+  - `lavrenko2026instruction` tested repeating an instruction, which is a different thing from this proposal. The relevant point is that placement matters, so the four lines should stay right above the notes they refer to.
+  - `hu2026memory` and `chen2026fresh` support the proposal.
+- The full reasoning is in `docs/system-proposals/_index.md` and a new line in `_meta/log.md`. All of it is committed and pushed. The push also sent two commits from 09-09 that hadn't gone out after that day's push failed, and a leftover log line about that failure.
+
+Six proposals are still waiting for your review, the oldest from 08-02.
