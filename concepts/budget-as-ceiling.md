@@ -30,6 +30,8 @@ sources:
   - "[[literature/papers/chi2026ai4ai]]"
   - "[[literature/papers/li2026praxist]]"
   - "[[literature/papers/ge2026coverage]]"
+  - "[[literature/papers/hickey2026saltbench]]"
+  - "[[literature/papers/min2026autonomous]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -70,6 +72,20 @@ budget without the user knowing (the costly one). The ceiling makes
 both failure modes structural — if the budget is wrong, the user
 edits one file; the skill does not need to learn a new halting
 heuristic.
+
+There is a third failure, in the opposite direction: the agent halts
+itself too early. [[literature/papers/min2026autonomous]] reports that every
+research agent it ran (Sonnet 5, Composer 2.5, GPT-OSS 120B) "often went
+idle or stopped prematurely despite explicit guidelines to 'never stop'".
+Python heartbeat controllers were no more reliable. What worked was a
+deterministic outer bash `while` loop that resumes the agent session each
+iteration. So the definition's rule extends to *continuation*: whether the
+chain keeps going is not the agent's call either, in either direction.
+Their loop had continuation but no ceiling; a human ended every campaign.
+The longest campaign (132 experiments) finished below three campaigns of
+9–17 experiments, which is the unbounded shape a
+`max_consecutive_no_improvement` ceiling exists to cut. It is confounded
+with team structure, and no per-experiment trajectory is reported.
 
 AgenticOS ([[literature/papers/zhao2026agenticos]]) generalizes the
 enforcement locus: budgets there are not loop-halting conditions read by
@@ -139,6 +155,13 @@ dollar-cost face of [[concepts/context-eviction-policy]].
    broader phase is true exhaustion. A chain-runner that can afford it
    should escalate strategy at the stagnation counter before killing
    the chain.
+   That reading holds for the no-improvement counter, not for a token or
+   call cap. [[literature/papers/hickey2026saltbench]] shows a cap reading
+   under a verifier carries no distance information: a Sonnet 5 episode
+   reported 0 obligations verified at a 40-call cap and held a complete
+   verified proof at call 79 once the cap was raised. A chain halted at
+   `max_tokens` has produced an *unresolved* result, not a negative one,
+   and the NOTES.md halt reason should say so.
 
 4. **Raising ceilings is explicit.** A proposal that requires
    raising `max_wall_hours` beyond the current ceiling must say so
@@ -213,6 +236,12 @@ Fully enforceable this way: multi-call budgets, iteration limits,
 API-call limits, duration limits. Only *approximable*: cost ceilings in
 currency, which is why our token-denominated ceilings are the more
 defensible unit.
+
+Defensible, but not tier-neutral. hickey2026saltbench found the
+subscription quota cost per token roughly double at the higher model tier
+while the token count fell, so "a campaign that priced the tier on tokens
+alone would have called it free." A ceiling has to name its unit, and a
+token ceiling spanning a model switch is a different budget per tier.
 
 **The counter-lever to State-Snowball has its own price.** Reducing the
 active view is the direct way to fight Θ(n²) context growth, but
@@ -431,6 +460,45 @@ Note the tension with the shape argument above: this is the ceiling that is
 analyzable. It earns its place on behavioral grounds while remaining the
 weakest link formally, which is the case for pairing it with a monotone
 hard cycle cap rather than trusting it alone.
+
+## Inside a measurement, a ceiling is a censoring instrument
+
+Everything above treats the ceiling as spend control.
+[[literature/papers/hickey2026saltbench]] runs ceilings inside a
+pre-registered benchmark and finds three ways the same cap corrupts the
+number it sits beside.
+
+- **A halt is unresolved, not a failure, and the rule has to live where the
+  verdict is written.** SaltBench stops an episode at 4× its regime's
+  token p90 (no passing episode among 177 exceeded 2.40×; the one runaway
+  reached 7.79× and failed) and scores it unresolved, because counting it
+  as a failure "would let the budget instrument move the result."
+  Registering that was not enough: the first halted Verus episode was
+  scored as a cheating-screen failure on a snapshot of an unfinished edit.
+  The checker now writes `HALT` from the episode's termination and keeps
+  the would-be class as a diagnostic. The rule is measured, not assumed:
+  all three cost-capped cells in its systems matrix pass their withheld
+  suites completely when run afterwards.
+- **A cap correlated with the condition biases every later sample.** Every
+  capped cell was a treatment cell (control 18 landed, 0 capped; treatment
+  12 landed, 3 capped), because the arm that spends more reaches a spend
+  cap, on its hardest problems. A correctness pass over the survivors
+  scores an easier treatment sample, "biased upward by construction," and
+  the pass rate cannot show it. Any analysis over capped runs owes a
+  statement of which condition lost runs.
+- **A budget sized from capped runs returns the cap.** A p90 computed from
+  censored data is the cap itself. Under a verifier, progress is
+  all-or-nothing, so "0 verified" at the cap is an absent measurement, not
+  a distance (the call-40 / call-79 episode above, at 8.7× the tokens of
+  the Opus 5 pass on the same task). Size a ceiling from an uncensored run,
+  or raise it until the censored fraction is near zero, and price that
+  first: one uncensored episode priced SaltBench's planned 26-episode
+  read at roughly 218M tokens.
+
+For this project, comparing two configurations whose chains halt at
+different rates inherits the second bullet. It is the concrete case of
+[[concepts/hce-evaluation]]'s point (via ray2026what) that a ceiling
+visible to the agent is an intervention on the measured system.
 
 ## Open questions
 

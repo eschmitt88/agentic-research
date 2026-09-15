@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/badhe2026skill]]"
   - "[[literature/papers/song2026string]]"
   - "[[literature/papers/goyal2026does]]"
+  - "[[literature/papers/shen2026what]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -227,6 +228,30 @@ verified finding back with its provenance links intact**. Across three
 replay epochs that moves queries onto the cheap path without losing
 accuracy, which is what amortization of an offload looks like when it
 works.
+
+## The price of pruning without an address, measured per question
+
+[[literature/papers/shen2026what]] measures what this invariant protects. Its
+eviction is a true prune: whole session units are deleted from a capped
+LongMemEval-S store (histories ≈102k tokens), no address is left, and a frozen
+top-k ranker reads what remains. A *restore counterfactual* reinstates each
+question's gold evidence and reruns the same reader; an error the restore fixes
+is **irreversible** if any gold unit was evicted and **recoverable** if all of
+it survived. Among such errors the irreversible share is 0.67–0.73 for FIFO,
+random and redundancy-aware eviction at an 80k budget and ≈1.00 for every
+policy at 30k and 8k. The loss is not latent elsewhere: handing the reader the
+*entire* retained store recovers only 2% of irreversible cases.
+
+Two consequences. The same FIFO rule that mason2026missing runs at a 0.0254%
+fault rate *with* a fault path here loses 16% of answerable questions
+irreversibly at 80k and 78% at 8k — different workloads, so not a controlled
+comparison, but the rule is the same and what differs is whether the evicted
+content stayed addressable. And at matched accuracy the tested policies are
+indistinguishable on irreversible loss, which supports treating the invariant,
+not the eviction rule, as the thing to import first. The instrument is also a
+test for this concept: under a genuinely lossless offload the irreversible bin
+is empty by construction, so a non-zero count means the "offload" is deleting.
+It needs gold evidence labels, so it audits on benchmarks, not in deployment.
 
 ## Open questions
 

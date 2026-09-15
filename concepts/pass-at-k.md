@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/panigrahy2026energy]]"
   - "[[literature/papers/yoon2026arcticswarm]]"
   - "[[literature/papers/ning2026scores]]"
+  - "[[literature/papers/zhang2026double]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -94,6 +95,25 @@ tightening consistency, or both, and those imply different follow-ups
 statistics are free — `metrics.json` distributions should let a reader
 compute each.
 
+**Report the tail, and check the variance is the model's.**
+[[literature/papers/zhang2026double]] adds three refinements. First, the
+mean can tie what the tail separates. GPT-5 and Claude-Haiku-4.5 differ by
+0.006 in mean ground-truth F1 but by 0.079 in CVaR@0.2, and GPT-4o ranks
+fifth by mean with a worst case of 0.00. Worst case, CVaR@α (mean of the
+worst α fraction), and Reliability@τ (fraction of runs clearing τ, the
+continuous-score analogue of passᵏ) belong beside the mean. Second, **a
+tight distribution is not evidence of reliability.** Under a scaffold that
+owned every execution decision, unrelated models produced byte-identical
+per-seed vectors. The variance was zero because the model was not being
+measured, and k seeds at matched lists cannot reveal that. Third, **"seed"
+needs a referent.** Seeding the environment's adversary makes the worst
+case reproducible, but it is a different axis from sampler seeds. GPT-4o's
+solve-or-fail split occurred at T = 0 on byte-identical prompts, so the
+seed alone does not explain it. A related caution from the same paper: a
+power study "certifies the statistical test and says nothing about whether
+the instrument could have picked up a behavioral effect". Their
+well-powered B1 null came from a channel that never fired (0/120).
+
 ## Implementation guidance
 
 1. **Metrics files report distributions.** Instead of
@@ -114,6 +134,9 @@ compute each.
 4. **Comparison requires overlap in seed distribution.** A vs B is
    comparable only if they ran at matched seed lists. If not, the
    comparison is "A at seeds S1 vs B at seeds S2" and must say so.
+   Matched seeds are necessary but not sufficient: runs under different
+   scaffolds (who retries, selects, and submits) are not comparable at any
+   k, and a result should carry its scaffold level alongside its seed list.
 
 5. **Report time-to-threshold, not only final metric.**
    [[literature/papers/xing2026compute]] reports, for each method, the

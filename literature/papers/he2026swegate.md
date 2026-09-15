@@ -89,8 +89,13 @@ overestimates capability by roughly a third of its own successes.
 - Shipping a **non-compliant patch alongside the gold patch** is a design
   worth importing into [[concepts/programmable-evaluator-oracle]]: it makes
   the discriminating power of the test itself checkable, rather than
-  assumed. `/lint` has no analogue — nothing verifies that its checks would
-  actually fail on a bad input.
+  assumed. `/lint` has half of this: `~/claude-system/scripts/tests/smoke.sh`
+  runs `kg_lint.py` on a fixture seeded with known-bad inputs (an orphan, a
+  dead wikilink, a sourceless concept, a stale candidate, an unanchored
+  claim, an HCE tool-log violation) and checks that each is caught. It lacks
+  the gold half: nothing checks that a check stays silent on a matched
+  compliant input. (Corrected 2026-09-15; an earlier version said `/lint`
+  had no analogue.)
 - Reinforces the [[literature/papers/brueckner2026kbench]] finding from a
   completely different domain and method: agents clear the presentation bar
   well before they clear the substantive one.

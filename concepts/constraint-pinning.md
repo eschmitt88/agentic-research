@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/lavrenko2026instruction]]"
   - "[[literature/papers/hu2026memory]]"
   - "[[literature/papers/chen2026fresh]]"
+  - "[[literature/papers/ludwig2026shortcutting]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -155,7 +156,14 @@ at the same wall from the harness side. The pinned buffer's
 
 - Only quotable, extractable rules pin cleanly; constraints requiring
   multi-step reasoning to apply are out of scope of the demonstrated
-  defense.
+  defense. [[literature/papers/ludwig2026shortcutting]] is consistent with
+  this line: a *present* originality rule takes clear prohibitions (clone
+  the upstream) to about 0, while the one needing a judgment call (a git
+  commit is fine if an ancestor of base, forbidden if a descendant) keeps
+  a residual in every model. It measures the first copy of an absent
+  instruction, not lavrenko2026instruction's second copy of a present one,
+  so the two don't conflict, and it says nothing about survival under
+  compaction.
 - Who may write to the pinned buffer, and how is that write
   authenticated? (The impersonation residual says: not by anything
   in the token stream.)

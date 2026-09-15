@@ -14,6 +14,8 @@ sources:
   - "[[literature/papers/paglieri2026case]]"
   - "[[literature/papers/kassis2026scientific]]"
   - "[[literature/papers/chen2026repo]]"
+  - "[[literature/papers/singh2026churnbench]]"
+  - "[[literature/papers/suresh2026grounding]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -176,4 +178,27 @@ form is provenance-per-field and typed links, not human readability.
 - **Where compile-time curation breaks down** — for corpora that
   change under you (live codebases, prices), compiled pages go stale;
   the pattern implicitly assumes slowly-accreting sources like
-  literature.
+  literature. Two first data points (2026-09-15), both outside research
+  corpora. [[literature/papers/singh2026churnbench]] measures the mechanism
+  on the structured-data analog of this pattern: views staged once from
+  live sources, with a scheduled refresh tier per entity class. Staleness
+  was governed by **refresh-tier width × source mutation rate**, not by how
+  long ago the compiled layer was built. Errors stayed flat at 7 / 4 / 4
+  across 1 / 14 / 28-day builds and rose to 45 at 28 days only when refresh
+  was disabled. Its tiers line up with the OKM taxonomy above: *live*
+  entities are never staged (a pointer), and a 30-day *cold* tier behaved as
+  timeless and was harmless because contracts barely change. It adds the
+  rule the taxonomy lacks: assign a fact's class from its **measured**
+  change rate, not from how important it feels. So compile-time curation
+  breaks down where a compiled page's refresh interval overlaps its
+  source's change rate, not merely where sources change. Every error that
+  survived refresh was an aggregate over a faster-changing entity; the
+  analogous pages here are MoCs and index lines, which summarize concepts
+  that change on every ingest (an inference, not measured).
+  [[literature/papers/suresh2026grounding]] adds the compile side from a
+  drifting environment: a post-task compiled record index beats
+  full-trajectory replay on pass rate at under a third of the input tokens
+  (1.69M vs 5.42M on CLBench with a schema migration), and its staleness
+  fix is a compiler with read-only access to the live source. The repair
+  itself isn't isolated, since the compiler's lead predates the migration,
+  so treat it as the mechanism to try, not evidence that it works.

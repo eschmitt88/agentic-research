@@ -275,6 +275,6 @@ check passes it by construction.
   itself to the in-context buffer, while this paper is about retrieval from
   the long-term store. The guard's "withhold with reason, delete nothing"
   resembles a fold more than a prune, but that is an analogy, not evidence.
-- Companion paper from the same first author, same week: arXiv:2609.08279,
-  "What Eviction Destroys" (in the 09-14 digest). It is the actual
-  eviction-side source.
+- Same-week, same-surname paper, **different author and group**:
+  arXiv:2609.08279, "What Eviction Destroys" (Chen Shen, Megagon Labs) —
+  [[literature/papers/shen2026what]]. It is the actual eviction-side source.

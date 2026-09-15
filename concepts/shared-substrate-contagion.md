@@ -14,6 +14,8 @@ sources:
   - "[[literature/papers/zheng2026engineering]]"
   - "[[literature/papers/shen2026revoked]]"
   - "[[literature/papers/kapner2026scanning]]"
+  - "[[literature/papers/gao2026agentic]]"
+  - "[[literature/papers/taneja2026scan]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -204,6 +206,19 @@ re-checked at a pinned commit. Three results constrain this concept.
    community-maintained recommendation lists carry confirmed defects at
    18.9%, against 18.4% overall. Endorsement by a shared list adds no
    review — the same point as `/lint` checking structure, not warrant.
+
+**An artifact count is not a publisher count.**
+[[literature/papers/taneja2026scan]], on OpenClaw's ClawHub registry (a
+population largely independent of kapner's), finds 705 cleared skills
+instructing a prohibited action. 506 of them are one vendor repeating one
+installer line across its own catalogue, and 117 of the 135 publishers
+contribute a single skill. Without that vendor, 152 remote-exec skills from 93
+publishers carry 102 distinct command strings: the practice is widespread, but
+not copied. Counted in artifacts, registry prevalence overstates propagation by
+whatever one publisher's template contributes. This is
+[[literature/papers/he2026stored]]'s point that source count is not source
+independence, now at registry scale. De-duplicate by publisher before reading a
+rate as spread.
 
 On independence: [[literature/papers/madatha2026deterministic]] made the
 same unmanaged-supply-chain argument from 6,145 config files. The two use

@@ -46,6 +46,7 @@ sources:
   - "[[literature/papers/lavrenko2026instruction]]"
   - "[[literature/papers/li2026autorecsys]]"
   - "[[literature/papers/piriyakulkij2026subagents]]"
+  - "[[literature/papers/shen2026what]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -476,6 +477,23 @@ session.
   reasoning on summarized history; specific facts may need to be
   pulled back). The interaction between eviction and retrieval
   policies is underexplored — they likely co-design.
+  **Partly measured (2026-09-15), on a capped store rather than the prompt
+  buffer.** [[literature/papers/shen2026what]] splits errors under budgeted
+  eviction into *irreversible* (evidence evicted) and *recoverable* (evidence
+  survived, retriever missed it), and the split depends on pressure: on
+  LongMemEval-S retrieval misses are ~27–40% of restore-fixable errors at an
+  80k budget but ≤2% at 30k and 8k — a better retriever buys nothing until
+  more is retained. Two rules follow for evaluating any policy here. A
+  budget–accuracy curve is not comparable across papers unless the read-time
+  retrieval regime is reported (forced-gold reading empties the recoverable
+  bin by construction). And question-blind importance scoring is not a lever
+  under pressure: an LLM rater that never sees the question is
+  indistinguishable from FIFO and random on irreversible loss at matched
+  accuracy at 30k and 8k (resolution 1.2–6 pp), though it leads at 80k where
+  accuracies are not matched. That is the write-before-query barrier
+  ([[literature/papers/zhu2026lossy]]) appearing in a policy comparison;
+  dependency-aware policies ([[literature/papers/hao2026selfgc]]) were not
+  tested.
 - **Recovery from bad compaction.** If a compaction summary drops
   task-critical state, can the agent recover by re-reading the
   pre-compaction transcript from session storage? Hermes's
