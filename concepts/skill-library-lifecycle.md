@@ -43,6 +43,8 @@ sources:
   - "[[literature/papers/piriyakulkij2026subagents]]"
   - "[[literature/papers/li2026autorecsys]]"
   - "[[literature/papers/kapner2026scanning]]"
+  - "[[literature/papers/gao2026agentic]]"
+  - "[[literature/papers/suresh2026grounding]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -567,6 +569,21 @@ sources, and they compose rather than compete:
 |---|---|---|
 | admission ([[literature/papers/shang2026hypothesis]]) | should this candidate enter? | falsifiable hypothesis + paired control/treatment |
 | retention ([[literature/papers/hu2026skillbrew]]) | given a bank, who stays? | leave-one-out credit + Pareto selection under a utility floor |
+| admission, world-grounded ([[literature/papers/suresh2026grounding]]) | is this candidate still true of the environment? | curator re-queries the world with read-only tools before create/update |
+
+The third row is a different kind of check. HDSO and SkillBrew test a
+candidate's *utility* against task rollouts. Environment probing tests its
+*claim* against the world: does this join, file location, or table name
+hold on slices the source trajectory never touched, and is it still
+current? That is far cheaper (no rollouts) but certifies correctness and
+currency, not usefulness, so it complements the other two rather than
+replacing them. It is also a second answer to tang2026memory's "don't
+distill from raw trajectories": re-observe the environment instead of
+governing a memory hierarchy. Its increment over trajectory-only curation
+is modest (CLBench 70 → 73% pass with overlapping CIs; better than
+trajectory-only in 5/6 APEX worlds), and the curator's own cost goes
+unreported. See [[concepts/verified-memory-writes]] for the same mechanism
+as a memory-write gate.
 
 Worth noting that only SkillBrew separates the split it optimizes on from
 the split it verifies on. A library whose gates are tuned on the tasks it

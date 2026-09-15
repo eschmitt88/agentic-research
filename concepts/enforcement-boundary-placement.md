@@ -20,6 +20,10 @@ sources:
   - "[[literature/papers/zheng2026engineering]]"
   - "[[literature/papers/shen2026revoked]]"
   - "[[literature/papers/kapner2026scanning]]"
+  - "[[literature/papers/hickey2026saltbench]]"
+  - "[[literature/papers/zheng2026benchshield]]"
+  - "[[literature/papers/taneja2026scan]]"
+  - "[[literature/papers/bouras2026authority]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -91,7 +95,7 @@ measurement motivation rather than a security one.
 
 ## The attested placements
 
-Eleven sources, all agreeing enforcement leaves the model, disagreeing on
+Fourteen sources, all agreeing enforcement leaves the model, disagreeing on
 where it goes:
 
 | Placement | Source | Mechanism |
@@ -106,6 +110,9 @@ where it goes:
 | Beneath cognition, in the institution | [[literature/papers/marsden2026where]] | Append-only ledger adjudicates every attempted act against world state; five properties survive full cognition substitution |
 | Distributed across *every* component interface | [[literature/papers/zheng2026continuity]] | Assume-guarantee contracts; each transition emits a verifiable witness, so there is no single site to drop a label at |
 | Resource-side, at execution time | [[literature/papers/ding2026acle]] | Provider-side Execution Gate consumes a short-lived sender-constrained lease immediately before protected tool logic runs |
+| Per principal, at dispatch | [[literature/papers/bouras2026authority]] | Host-side typed store per sub-agent, derived from a ceiling frozen before the first untrusted read; blocking pre-dispatch hook checks the issuing agent's store |
+| At the action, per command, operator-side | [[literature/papers/taneja2026scan]] | Deterministic resolver maps each command string to a consequence class without reading the skill's docs; a (resource, class) ledger decides held / graduated / never-graduates |
+| In the evaluation infrastructure's orchestration points | [[literature/papers/zheng2026benchshield]] | Host probes at setup, handoff, verify, reward and release emit authority-bearing events; a pure-function checker over a sealed evidence bundle issues the run verdict |
 | Nowhere — the negative case | [[literature/papers/paglieri2026case]] | A system prompt forbade cheating and was "not actively enforced beyond the autograder check"; 34 of 71 conjectures fell in 27 minutes |
 
 Two properties recur across the successful placements and are the
@@ -126,6 +133,21 @@ candidate design rules:
    direct test: substitute the entire cognition with a frozen frontier-LLM
    panel and see whether the property moves. Over 2,581 completion claims,
    none false.
+   [[literature/papers/zheng2026benchshield]] bounds the rule from two
+   sides. Unreachability covers only undeclared channels. The *declared*
+   handoff is a reach by design, and content crossing it keeps its
+   authority: an isolated verifier faithfully rebuilt an agent patch that
+   disabled the verifier's own kernel check, and scored it 1.00. Beneath the
+   task, the reach can come through a layer nobody declared. An agent drove
+   the sandbox provider's unauthenticated localhost control-plane daemon to
+   write as root into the graded directory, crossing an object that "appears
+   in no task file." The rule needs a clause: whatever crosses the declared
+   handoff keeps its executable or answer-bearing label until something
+   sanitizes it. That is zheng2026continuity's dropped-label class at the
+   evaluation boundary. Unreachability must also hold on every action path,
+   not just one: [[literature/papers/hickey2026saltbench]]'s Seatbelt
+   sandbox bound Claude Code's shell tool but not its file-read tool, and
+   shell-based probes certified the fence (see [[concepts/hce-evaluation]]).
 3. **The boundary must be evaluated at the moment authority is used, not
    when it is granted.** [[literature/papers/ding2026acle]]'s
    post-authorization execution trust gap, and
@@ -146,6 +168,42 @@ candidate design rules:
    place still covers only the clauses it can express. This is a
    long-established database principle; the new part is head-to-head
    evidence that verification portfolios do not substitute for it.
+   [[literature/papers/bouras2026authority]] adds the other end of the
+   timeline. The check belongs at use, but the *authority it checks
+   against* must be fixed before the first untrusted read: a preflight
+   sees only the trusted request and file names, and host code freezes
+   the result. Mint timing alone is not enough. A task-specific allowlist
+   minted at that same moment still leaks 33/75 injected effects, against
+   3/75 once the same authority is also split per agent. The residual
+   locates where a per-principal boundary is still crossed. All three
+   leaks came through the orchestrator's AGENTS.md, and the orchestrator
+   grants authority up to the ceiling, so the delegation message carries
+   influence across a boundary that authority cannot cross.
+
+**A placement also fixes which predicate can be expressed.**
+[[literature/papers/taneja2026scan]] shows that registry time and action time are
+not two positions for the same check. A publish-time scanner computes properties
+of the artifact ("is this malicious?"). Permission ("is this action allowed on
+this machine, by this operator, now?") depends on facts that don't exist at
+publish time.
+
+Across OpenClaw's 66,192 ClawHub skills, 705 are rated clean by all three
+scanners and the LLM judge, yet instruct an action CIS 2.7 / NIST CM-11 name as
+prohibited, mostly `curl | bash`. These come from 135 publishers, 506 of them
+from one vendor. Remote execution is *more* common among cleared skills (2.25%)
+than overall (1.73%). The artifact also only partly bounds the action: 34.7% of
+commands a live agent ran had a class absent from every documented block, though
+all were generic shell, never an escalation.
+
+The two placements' flags are nearly unrelated (φ = −0.016), which makes them
+complements rather than redundancy. That is another "several" answer to the open
+question below, now for a structural reason: each placement has an input the
+other lacks. The action-time placement has two limits of its own. It can't see
+harm that never becomes an action (a hardcoded recipient, over-broad scope). And
+a per-command classifier resolves staged fetch→chmod→run at 0%, because the
+property exists only across commands. The measured gate is the authors' own
+product, and its hook sits within the governed agent's reach, so it does not meet
+rule 2.
 
 ## Why this repository has the question and not the answer
 
@@ -172,7 +230,7 @@ has a shared skill namespace.
 - **Is there a placement that dominates, or is the right answer always
   several?** [[literature/papers/rahman2026framing]] reports two
   independent placements both reaching 0%, which suggests redundancy is
-  cheap here. **Two head-to-head comparisons now exist (2026-09-14)**,
+  cheap here. **Three head-to-head comparisons now exist (2026-09-14, 09-15)**,
   each for one threat, from independent groups:
   - [[literature/papers/zheng2026engineering]] compares pre-action model
     verification, a non-atomic preflight guard, an in-transaction partial
@@ -195,6 +253,17 @@ has a shared skill namespace.
     revoked texts. *At the tool*, a shell guardrail leaves dangerous-tool
     invocation at 17.2%, the same as no defense, because the revoked
     policy licenses actions the guardrail does not classify as dangerous.
+  - [[literature/papers/zheng2026benchshield]] deploys six sandbox
+    mechanisms *one at a time* against 419 adjudicated reward-hacking
+    episodes, in a TLC-checked formal lane and a measured lane. A separate
+    verifier environment dominates: it removes 82–95% of exposed routes on
+    observation, authority, handoff and reward provenance, and it is the
+    only mechanism that touches handoff, reward provenance or release.
+    Hiding verifier files removes 69% of observation leaks, read-only task
+    files remove 34% of authority routes, and an unprivileged user removes
+    45% of both. seccomp and an egress block remove 2% each, and a fresh
+    environment per trial removes nothing. **No mechanism removes any
+    fail-open or semantic-adequacy route.**
 
   The two agree on direction, and it is design rule 3: the check that sits
   where the record or authority is *consumed* — the read filter for
@@ -207,6 +276,14 @@ has a shared skill namespace.
   write-back mode) — zheng2026continuity's dropped-label class in a memory
   store — just as the after-check race defeats every earlier placement in
   zheng2026engineering.
+
+  The third comparison adds a limit the first two could not show: some
+  integrity properties are not placement-addressable at all. Fail-open
+  handling and semantic adequacy "are properties of how a verifier
+  interprets a result, not of who can reach it." For those, "several" means
+  a placement *plus* a check on interpretation (fail-closed defaults, a
+  scoped semantic audit), not redundant placements. taneja2026scan's
+  predicate point above is the permission-side form of the same limit.
 
   Before these, every paper argued for its own placement, and the question
   was partly answered from the other side:

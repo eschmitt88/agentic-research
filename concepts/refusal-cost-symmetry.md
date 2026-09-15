@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/zhu2026stopping]]"
   - "[[literature/papers/rahman2026framing]]"
   - "[[literature/papers/ning2026scores]]"
+  - "[[literature/papers/taneja2026scan]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -238,12 +239,20 @@ set) way to buy the same robustness the paired control targets.
   research-agent loop the two errors have genuinely different costs (a
   wrongly-permitted fabricated result may be unrecoverable; a wrongly-blocked
   experiment costs a retry), and nobody has proposed a principled ratio.
+  [[literature/papers/taneja2026scan]] proposes a form, not a ratio: a
+  per-class tolerable failure rate ε_k set by the operator, with ε = 0 for
+  unrecoverable classes. It refuses to report a single false-positive rate,
+  because whether a hold is an error depends on that policy.
 - **Does the surface-cue inversion have a deterministic analogue?** The
   effect is documented for model judgment. Whether a deterministic checker
   exhibits the same "the cue that catches the violation over-flags the
   legitimate twin" pathology — or whether it merely has a fixed, knowable
   over-strictness — is untested and matters for whether determinism is a
-  real mitigation.
+  real mitigation. Partial evidence from taneja2026scan says both: the
+  cue over-flags, but in a fixed, knowable shape. Its deterministic resolver's residual false
+  positives are dangerous verbs appearing in *content* (a heredoc being
+  written, a comment, a fetch piped into a JSON formatter), not in a
+  command being run.
 - **No source measures the conservative failure in a *research* agent
   loop.** The evidence is from benchmarks, guardrails, and human-approval
   scheduling. The case this project depends on — an autonomous curation or

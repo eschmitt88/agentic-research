@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/xing2026compute]]"
   - "[[literature/papers/yoon2026arcticswarm]]"
   - "[[literature/papers/li2026autorecsys]]"
+  - "[[literature/papers/min2026autonomous]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"

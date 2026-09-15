@@ -92,11 +92,12 @@ external action — closing a failure that a freshness check cannot see.
   placement has a *when* as well as a *where*. This is the same shape as
   [[literature/papers/ding2026acle]]'s execution-time leases, arrived at
   from the memory side rather than the capability side.
-- Directly relevant to this project's `/lint` staleness check, which
-  approximates staleness by file age. Dependency-scoped validation is the
-  principled version: a concept is stale when **a source it cites has
-  changed**, not when it is merely old. That is implementable here —
-  concept notes already cite their sources.
+- This project has no concept-staleness check (`kg_lint`'s age checks are
+  backlog timers). Dependency-scoped validation is the principled design if
+  one is added: a concept is stale when **a source it cites has changed**,
+  not when it is merely old. That is implementable here, since concept
+  notes already cite their sources. (Corrected 2026-09-15; an earlier
+  version said `/lint` approximates staleness by file age.)
 - "Validate only what can affect the pending action" is the affordability
   argument [[concepts/permission-gate-as-architecture]] needs; blanket
   revalidation is what makes gates get skipped.

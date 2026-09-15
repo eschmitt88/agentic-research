@@ -14,6 +14,8 @@ sources:
   - "[[literature/papers/zhu2026claimreceipt]]"
   - "[[literature/papers/ning2026scores]]"
   - "[[literature/papers/zheng2026engineering]]"
+  - "[[literature/papers/hickey2026saltbench]]"
+  - "[[literature/papers/zheng2026benchshield]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -234,6 +236,65 @@ false-rejection rate, and it reports no before/after effect on agent
 behavior. It attests an implementation of the *verifier and verdict
 vocabulary*, not a deployed completion gate with a measured effect.
 
+## A run-acceptance gate inside a harness, with an error rate (2026-09-15)
+
+[[literature/papers/zheng2026benchshield]] gates whether a benchmark run's
+score may be accepted, inside a working evaluation harness (BenchFlow). Its
+checker is a pure function of a sealed, host-recorded evidence bundle. Two
+parts carry over:
+
+- **Report on the environment separately from the run.** The verdicts are
+  `Checked`, `VectorExposed`, `AgentViolation` and `Inconclusive`.
+  `VectorExposed` means the task admits a forbidden path and this run shows
+  no use of it. Neither zhu2026claimreceipt's three-way verdict nor
+  ning2026scores's split can say "the gate's own environment is unsound,
+  and this submission is still clean." An honest run and an exploit run on
+  the same vulnerable task receive the same reward, so collapsing the two
+  either convicts the honest run or clears the environment.
+- **Read the host's record, not the transcript.** A detector given the task,
+  the agent-facing trajectory and the outcome, but no host-side events,
+  scored 36.4% on 40 trajectories. That is below chance, so it signals a
+  label mismatch as much as missing signal. Host-side evidence plus scoped
+  auditors scored 96.0% on the cells they judged. Guidance 3's "read the
+  diff" extends to *read the host's record of the diff*.
+
+It also partly prices false rejection. Among 50 honest runs on exploitable
+tasks, 3 were falsely convicted and 10 abstained. No replayed exploit was
+marked `Checked`; 2 were missed as `VectorExposed` and 8 abstained. A checker
+revision re-labels every archived run without rerunning the agent, which
+bears on whether a gate survives its own rewrite. The limits are real. The
+honest-safe cells are the package's reference solutions. The exploit cells
+replay recorded tool streams rather than live agents. And attribution for
+the largest hack class comes from an LLM auditor. So this is not yet the
+LLM-free completion gate with a measured effect that elevation needs.
+
+## The gate's own instruments fail quietly (2026-09-15)
+
+[[literature/papers/hickey2026saltbench]] is a referee-gated benchmark: a
+withheld suite or verifier, run outside the agent's toolchain, decides the
+outcome. It is hard evidence in ng2026agent's sense. Its record prices how
+the gate's own instruments fail:
+
+- **Unasked is not failed.** Its runner returns non-zero for a cell that
+  never booted, so a first correctness tally read five failures. Frozen
+  classes (pass / fail / cap-cost / failed-boot / no-build /
+  interface-miss, every class printed at zero) cut that to one. That is a
+  measured case for zhu2026claimreceipt's three-way verdict: 4 of 5 raw
+  "failures" were never asked the question.
+- **A guard whose predicate cannot hold looks like a guard in every
+  review.** A provenance guard took its fallback on 78 of 78 rows, and the
+  fallback read the same bytes, so no number moved. A token watchdog
+  crashed on the first path-carrying tool call and the shell turned the
+  crash into zero. The remedy is a self-test that makes the caller's exact
+  call, plus driving a detector down every branch, "because a quiet failure
+  reads as good news."
+- **A positive control only covers the population it can see.** This
+  extends ning2026scores' "a null needs a positive control." An absence
+  sweep with a correctly firing control reported a document missing that
+  existed on a remote the working copy had not fetched. The control came
+  from the same truncated population. An absence verdict has to name the
+  population it enumerated.
+
 ## Implementation guidance
 
 1. **Declare the schema per skill, and keep it one or two elements.** The
@@ -299,7 +360,10 @@ vocabulary*, not a deployed completion gate with a measured effect.
   released verifier that demonstrably refuses, but for post-hoc discovery
   certification at ~$60/audit, not per-task completion. What is still
   missing before elevation is a completion gate inside a harness with a
-  measured false-rejection rate.
+  measured false-rejection rate. zheng2026benchshield supplies one for
+  benchmark-run acceptance (3/50 false convictions, 10/50 abstentions on
+  honest runs), but on reference-solution and replayed cells and with an LLM
+  auditor in the attribution path.
 - What is the false-*rejection* rate of a real gate? Every check that can
   refuse valid work has a cost the paper does not measure, and a gate
   that blocks a correct submission on a flaky verifier is a new failure
@@ -310,7 +374,12 @@ vocabulary*, not a deployed completion gate with a measured effect.
   scenarios. Risk targets of 1% and 2% could not be calibrated at all and
   deferred on 99.9%. There, over-refusal is where the frontier sits, not a
   tuning failure. The verifiers were 4B quantized models, so the magnitudes
-  may not transfer.
+  may not transfer. hickey2026saltbench adds one small data point from a
+  deployed referee (benchmark scoring, not task completion): of 201 scored
+  Lean episodes the integrity screen refused exactly one, and that one was a
+  complete proof. Three further grader gates were found refusing valid
+  treatment work. There, false rejections were invisible until someone read
+  the refusals.
 - Where does the schema live? Per-skill frontmatter, a project-level
   contract file, or the harness's own config are all plausible, and the
   choice determines whether the gate survives a skill rewrite.

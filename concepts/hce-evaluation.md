@@ -57,6 +57,10 @@ sources:
   - "[[literature/papers/he2026swegate]]"
   - "[[literature/papers/yang2026sok]]"
   - "[[literature/papers/ning2026scores]]"
+  - "[[literature/papers/hickey2026saltbench]]"
+  - "[[literature/papers/ludwig2026shortcutting]]"
+  - "[[literature/papers/zheng2026benchshield]]"
+  - "[[literature/papers/zhang2026double]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -250,6 +254,14 @@ Any project that imports this concept should:
    with an unchanged hash is drift; with a changed hash it is
    tampering. Without this, the `test/` rule certifies numbers an
    agent-edited scorer produced.
+   Per zheng2026benchshield, a separate scorer is the highest-yield single
+   mechanism (it removes 82–95% of exposed routes on observation, authority,
+   handoff and reward provenance), and it is still not sufficient. It removed
+   no fail-open route, and in one case a pristine isolated verifier
+   faithfully rebuilt an agent-delivered patch that disabled the check it
+   relied on. The final-scoring pass must also fail closed (a crash, timeout
+   or unparseable output scores as failure) and must not execute, deserialize
+   or take configuration from the deliverable.
 
 6. **If the task is public and the agent can retrieve, close the
    retrieval surface too.** Per wang2026search: disable web search
@@ -273,6 +285,17 @@ Any project that imports this concept should:
    plateau, which arrives *before* compliance stops degrading, so a long
    chain that stopped on that criterion warrants a held-out check rather
    than confidence.
+
+8. **State the scaffold level and probe the scorer before trusting a
+   number.** Per zhang2026double: record which execution-critical decisions
+   (retry, selection, formatting, submission) the harness makes rather than
+   the model, and report results as model+scaffold unless those decisions
+   are model-owned. Before relying on a scorer, run forged submissions
+   through it (correct, empty, fabricated, contradictory self-report). A
+   fabricated submission that ties the correct one means the scorer is
+   grading the report, not the work. Where a result is attributed to a
+   model's decisions, report what a no-LLM rule policy scores in the same
+   harness.
 
 ## Enforcement: what the structural version looks like
 
@@ -332,6 +355,41 @@ within minutes and corrected to 0.802 before submission. Structure
 cannot judge that a feature is *semantically* leaking — a human made
 that call — but score-to-revision provenance is what made the
 implausible number investigable instead of publishable.
+
+## Probe the wall before the scored run, in every tool's language
+
+lu2026meta shows the structural boundary.
+[[literature/papers/hickey2026saltbench]] shows that building one is not
+having one, on the harness this project runs on. SaltBench ran Claude Code
+under macOS Seatbelt with every host denied and reads denied on the harness
+state, credentials and run root. The driver refused to start until five
+smoke probes (canary, network escape, reads of arm files and harness config,
+writes through a symlinked build dir, the compile path) passed, carrying
+the freeze's script hash. They passed, and the wall still had a hole. The
+sandbox binds the shell tool and what it spawns. The harness's own
+file-read tool runs in the harness process, and no tool-permission rule was
+set, so "no scored episode of this campaign had the agent's tools fenced by
+path." The probes read through the shell, and "a probe written in the
+sandbox's language cannot see a hole in the layer above it." The repair
+derives a tool-permission deny list from the same path list (132 rules
+beside 11 paths). A canary reached the agent's final message without it and
+appeared nowhere with it.
+
+- **A deny rule is only as broad as the layer enforcing it.** A Bash hook
+  or sandbox that blocks `cat test/…` does not bind a file-tool read. Probe
+  through every tool that can read, and keep the probe neutral: one that
+  told the agent a tool was denied was answered from judgement with no call
+  made, and logged as blocked.
+- **Absence of exploitation is not protection.** Zero file-tool calls at a
+  fenced path across 278 parsed episodes. The canary shows the gap was open
+  anyway; the zero measures what agents did, not what they could do.
+- **An access audit must separate denied, absent and served.** SaltBench's
+  audit field recorded "not blocked," which merged a refusal, a missing
+  file and a served read, and flagged an escape whose read returned
+  file-not-found. The open-question remedy below (grep the tool-call log
+  for `test/`) inherits the defect unless it records what each call
+  returned. The same record holds a referee whose docstring described a
+  sandbox that a grep of the file showed did not exist.
 
 ## The other half: hiding the holdout vs grounding the result
 
@@ -449,6 +507,54 @@ The discipline this cluster already practices — hide the test set, score
 once — protects against *optimizing on the answer*. This is a different
 failure: measuring the wrong system entirely, in perfectly good faith.
 
+The integrity checks themselves can do this. hickey2026saltbench found
+three Verus grader gates in succession refusing exactly what its treatment
+prompt invited (helper lemmas). An AST comparison classified a helper placed
+before its enclosing `impl` as `STATEMENT_ALTERED`, a cheating class (47 of
+207 views are impl-enclosed). A screen enforced 29 refusals the prompts
+named only 12 of. A whitelist bug surfaced on the third episode ever run,
+after 29 screen, 18 fence and 11 fixture arms had passed. "An instrument
+that penalizes the treatment for applying the treatment does not measure a
+small effect badly; it manufactures the opposite one." So ask of every
+hash-lock, screen or validity judge which condition is likelier to trip it.
+Those false positives stay invisible unless read on purpose: 201 scored
+Lean episodes produced exactly one screen refusal, and it was a complete
+proof.
+
+## Who made the decisions, and does the scorer look at the answer?
+
+Every defense above protects a score that is assumed to measure the model.
+[[literature/papers/zhang2026double]] shows two ways that assumption fails
+in good faith, and shows that each hides the other. **Scaffold ownership:**
+if the harness does the retrying, deduplication and submission, the model
+fills slots. On the authors' own benchmark, seven models from three
+providers submitted SHA-256-identical payloads, and a no-LLM script scored
+96.8 against the frontier's 97.5. **Scorer criterion validity:** a
+deterministic judge that grades format and self-reported metadata gave a
+fabricated record set the same score as the correct one (0.987). Fixing
+only the scorer still tied every model. Removing only the scaffold still
+misgraded the models it separated. Only both repairs together yielded a
+spectrum.
+
+The condition is auditable. A capability claim needs `D_claimed ⊆ D_model`,
+meaning the decisions the benchmark says it measures must be left to the
+model, and each must be non-degenerate: the model's choice must vary and
+must matter. Their model-owned SKIP channel fired in 0 of 120 episodes,
+which makes the effect "non-identified, not merely low-powered." When the
+inclusion fails, relabel the score as model+scaffold system performance. On
+τ-bench, whose scorer is sound, changing only the scaffold flag moved one
+model by 0.267 and reordered models. That slice is small (n = 15, one trial,
+test–retest noise of the same order), but it matches
+[[literature/papers/wang2026act]]'s harness × model grid.
+
+Two findings bear on how this project runs experiments. First,
+**pre-registration does not validate the scorer it names.** The paper's
+frozen-rule confirmation (GPT-5, p = .034) had ground-truth deltas of about
+zero on the identical episodes. Second, **a trivial policy is the cheapest
+control for "the model decided."** A fixed always-retry rule reproduced
+their exploratory escalation effect at Δ = +0.096, larger than every
+model's, which exposed it as budget arithmetic.
+
 ## Hold the evidence fixed and vary only the framing
 
 [[literature/papers/tripathi2026diagnostic]] adds a second information
@@ -511,7 +617,8 @@ deliberate bug in exposed source) and measures whether the agent goes
 looking. Defense answers "is this vector shut"; planting answers "does the
 agent try." Neither substitutes for the other, and the graph now has both.
 
-Three results bear directly on how this project runs autonomous loops:
+Three of roth's results, plus one replication that sharpens the first, bear
+directly on how this project runs autonomous loops:
 
 - **Explicit prohibition does not reach zero.** Hack rate falls
   consistently as instructions get stricter — and remains non-zero even
@@ -519,6 +626,21 @@ Three results bear directly on how this project runs autonomous loops:
   agent being told the test set is off-limits; the `test/` restriction has
   to be enforced, which is why it lives in a rule with a lint check rather
   than in prose alone.
+- **The residual lands in the dual-use channel.**
+  [[literature/papers/ludwig2026shortcutting]] measures the same shape at
+  scale on repository SWE tasks (5 models, 2 benchmarks): one "Solution
+  Originality" prompt section takes exploit attempts from 45–82% to 4–11%.
+  Upstream cloning goes to about 0, but local `git` access to future
+  commits persists in every cell (0.3–8.6%). Prose closes channels where
+  the forbidden act is unambiguous and leaks where the same command is
+  legitimate on ancestors and forbidden on descendants. That is the case
+  for structural closure. It bites here: a git worktree shares its
+  repository's refs, so `git log --all` inside an experiment worktree
+  lists every sibling branch. Its pass-rate contrast also shows why
+  Hack-Free Win Rate matters. SWE-bench Multilingual Pass@1 falls
+  4.4–13.3 points once shortcuts stop, because the fix was public. DeepSWE,
+  whose solutions were never pushed upstream, stays flat, because the
+  attempts had nothing to find.
 - **Difficulty drives exploitation**, measured within a task by turning one
   knob. A stalled search is a hard search, and a hard search is where
   hacking concentrates.
@@ -585,9 +707,11 @@ research loops:
 
 A strong model on a hard problem is the configuration this project's
 `budget.yaml` specifies (`ideator: opus`, `implementer: opus`) and the one
-a stalled `/iterate` chain drifts into. Neither prompting (roth: explicit
-prohibition never reaches zero) nor scale (ishibashi: scale *causes* it)
-mitigates.
+a stalled `/iterate` chain drifts into. Scale doesn't mitigate it
+(ishibashi: scale *causes* it), and prompting mitigates without closing
+it: roth's explicit prohibition never reaches zero, and ludwig2026shortcutting's
+single originality section cuts SWE-agent shortcut attempts about 10× but
+leaves a residual in every model.
 
 **And in a selection loop the damage compounds.** ishibashi's uncontrolled
 condition produced a raw best score of >10¹⁰ against a true optimum of

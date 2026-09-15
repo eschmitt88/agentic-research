@@ -21,6 +21,7 @@ sources:
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/esakkiraja2026starharness]]"
+  - "[[literature/papers/gao2026agentic]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -119,6 +120,31 @@ divergence is worst on failure: the success→failure cost increase runs
 whether they can recognize an unsolvable task and stop. A backend that
 overspends specifically when it is losing is a bad fit for any
 unsupervised chain, however good its ceiling-free benchmark score.
+
+## A prompt is not a constant across backends
+
+[[literature/papers/gao2026agentic]] (Meta, A-MLE) holds the agent loop,
+skills and prompts fixed on a production ads-ranking model and swaps only the
+LLM. It scores an exploration outcome (rMSE improvement ×10⁻⁴, read from the
+figure) under a basic and a "stressful, competitive" prompt. Sonnet 3.5 goes
+0 → 69, Sonnet 3.7 33.57 → 34.7, Sonnet 4.0 33.57 → **255.87**, Gemini 2.5
+116.04 → 156.08, and GPT-5 116.04 → **68.05**. The same change in framing
+multiplies one backend's result by ~7.6 and cuts another's by 41%. That
+extends bai2026how's point from cost to disposition: how aggressively a
+backend explores is a model property, and it interacts with the prompt. A
+prompt tuned on one backend is not neutral after a swap, and a backend
+comparison run under one prompt ranks prompt–model pairs, not models.
+Reliability behaves differently. Workflow-execution completeness is
+93.3–100 for four of six models, and the loop fails outright only for GPT-4
+(13.3). GPT-5 sits between them at 66.7, although the paper's text puts it in
+the high-90s cluster.
+
+Read the magnitudes as a direction only. The cross-model numbers look like
+single runs: different backends share basic-prompt values exact to two
+decimals (33.57 for Sonnet 3.7 and 4.0, 116.04 for Gemini 2.5 and GPT-5),
+which is what a few discrete outcomes from one run per cell would produce,
+and no variance is reported. It is also one production model, and the
+system is a single agent, so it says nothing about the role split itself.
 
 ## Open questions
 

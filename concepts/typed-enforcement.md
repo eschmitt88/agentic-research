@@ -30,6 +30,8 @@ sources:
   - "[[literature/papers/ding2026acle]]"
   - "[[literature/papers/lavrenko2026instruction]]"
   - "[[literature/papers/kapner2026scanning]]"
+  - "[[literature/papers/ludwig2026shortcutting]]"
+  - "[[literature/papers/bouras2026authority]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"

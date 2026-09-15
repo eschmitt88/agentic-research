@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/chi2026ai4ai]]"
   - "[[literature/papers/esakkiraja2026starharness]]"
   - "[[literature/papers/ge2026coverage]]"
+  - "[[literature/papers/min2026autonomous]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -149,6 +150,40 @@ observation) and only the latter two are ablated, so *depth* is the
 plausible explanation rather than the isolated one. And it is 2 runs per
 condition on a single problem with a known optimum. Treat the direction as
 a strong prior for setting per-candidate budgets, not as a tuned parameter.
+
+## In a research loop, the grain is the declared search space
+
+[[literature/papers/min2026autonomous]] observes where agentic search stops
+being narrow, on an industrial retrieval task whose search space covers
+document representation, training-pair generation and architecture, not
+just hyperparameters. The single-agent autoresearch loop could edit the
+whole repository, yet without declared axes agents "default to optimizing
+standard hyperparameters such as learning rate and number of training
+epochs." Declaring the axes as pre-set variables got them off lr/epochs, at
+the cost the FunSearch skeleton predicts: "agents primarily toggle
+pre-defined candidate options rather than implementing novel code
+modifications." Real wins landed *inside* the declared axes (2× oversampling
+of ticket-to-ticket pairs, which the human systems lacked). Nothing crossed
+to the system-composition level. Across 8 campaigns and 3 agents, no agent
+attempted re-ranking, data augmentation or ensembling, the components that
+separate its R@1 of 0.343 from the human SoTA's 0.380, **even when the
+documentation named them**.
+
+Two consequences for this concept. First, the edit span is not the
+effective grain; the declared space is. Guidance 1's pairing of pipeline
+problems with whole-file grain needs a qualifier: a larger grain *permits*
+structural change but does not *produce* it. Second, the skeleton ceiling
+isn't lifted by telling the agent what lies beyond it. Only putting the
+component into the declared space might lift it, and the authors
+deliberately didn't test that. A greedy keep/revert loop adds a second
+barrier: a system-level change that first lowers the metric is reverted
+before it can be tuned. Caveats: one task, one campaign per cell, no seeds;
+the informed/uninformed gap on one agent (0.07) is larger than the
+cross-model spread, so the paper's "model and informedness don't matter"
+nulls are unresolved. Compare [[literature/papers/chi2026ai4ai]], where
+more reasoning effort raised structural attempts from 8% to 64% on a
+benchmark that scores only structural change. The two fit together if the
+declared space dominates willingness.
 
 ## Open questions
 

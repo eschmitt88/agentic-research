@@ -24,6 +24,8 @@ sources:
   - "[[literature/papers/chen2026fresh]]"
   - "[[literature/papers/shen2026revoked]]"
   - "[[literature/papers/li2026autorecsys]]"
+  - "[[literature/papers/singh2026churnbench]]"
+  - "[[literature/papers/suresh2026grounding]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -137,8 +139,31 @@ workflows. Its dependency-scoped alternative — cite the exact records used,
 revalidate only those before an external effect, block when validation is
 incomplete — is the principled form of a staleness check, and it is
 implementable in this repo today because concept notes already cite their
-sources. `/lint` currently approximates staleness by file age, which
-detects neither of these failures.
+sources. This repo has no staleness check on concepts at all: `kg_lint`'s
+age checks are backlog timers (uncurated candidates, unengaged high-relevance
+literature), not validity checks.
+
+[[literature/papers/singh2026churnbench]] closes off the obvious alternative
+proxy, age. With scheduled refresh on, freshness errors were **7 / 4 / 4** at
+cache ages of 1 / 14 / 28 days, because any entity whose TTL is shorter than
+the window is refreshed repeatedly and reaches evaluation within one TTL.
+Switching the scheduler off raised the 28-day count to **45** and left the
+1-day count at 7. Where errors landed followed **tier width × mutation
+rate**. The 30-day tier was stale by construction but produced one error in
+all runs, because contracts barely change. The 1-day tier produced none until
+refresh was removed, then 25 of the 45. Time since a record was built is
+therefore the wrong staleness variable for any maintained store. What
+matters is time since last revalidation, relative to how fast what it
+depends on changes. Two details carry over. The residual errors under
+tiering were all **aggregates** (cost-center spend totals and rankings over
+a warm-tier price). The paper argues per-fact supersession cannot reach such
+objects, which have "no fact-level identity to supersede". That is the
+derived-artifact gap again, after chen's stale plan and shen2026revoked's
+journal. And a TTL-lapse counter read zero in both configurations for
+opposite reasons, so the instrument is a per-entity last-refresh timestamp,
+not an expiry count. This graph has only `added:`, a build time. Thin
+evidence: one model, synthetic data, single-digit counts under tiering, and
+no mutation-rate sweep.
 
 ## Connections
 
@@ -443,3 +468,37 @@ of items for Qwen (23% agreement, accuracy collapsing 0.557 → 0.343). Any
 write-gate evaluated only on what a model *says* it will do — rather than
 on the tool call it actually emits — may be measuring a different, more
 optimistic quantity than what a deployed system commits.
+
+## Faithful to the evidence is not true: re-observe the world before writing
+
+Every gate above judges a candidate against something already in hand:
+the incoming evidence (TrustMem's faithfulness, "adds nothing
+unsupported"), the writer's origin, or the entry's form.
+[[literature/papers/suresh2026grounding]] targets the case where the
+evidence in hand is the defect. A post-task curator that sees only one
+trajectory writes records that are faithful to a partial, often mistaken
+observation. They memorize an answer instead of the procedure, assert a
+scope nothing tested, or keep a table name that a schema migration has
+since removed. Each would pass a faithfulness check. The fix is an
+**independent re-observation at write time**: the asynchronous curator,
+the only agent allowed to write, gets a least-privilege *read-only*
+subset of the task's environment tools and is told to probe
+counterexamples, untouched slices, stale mappings and preconditions
+before it creates or updates a record. This is li2026remember's *verify*
+action turned into a curator tool, and it adds no write authority.
+
+The measured effect is real but smaller than its headline. On CLBench
+with an unannounced schema migration (GPT-5.4), no memory passes 39%,
+trajectory-only curation **70 ± 16%**, and probing **73 ± 5%**, at
+task-agent cost $3.38 / $1.99 / **$1.68**. Probing's clearest gain over
+trajectory-only curation is variance, not the mean. The qualitative
+difference is sharper: probed records are executable positive procedures
+(join key, filter, grain, current table), and they cut matched-task
+queries from 4/9/8 to 1/2/1. Three limits before leaning on it. Curator
+cost is excluded from every cost figure, so "cheaper" means the task
+agent's bill. Terminal feedback includes the correct answer, so probing
+here is partly label-guided search, and the no-oracle case is untested.
+The stale-repair mechanism isn't isolated either: probing's lead is
+mostly in place before the migration, and existing records are only
+re-checked when a new task's curation retrieves them. The same check
+appears as a skill-admission gate in [[concepts/skill-library-lifecycle]].

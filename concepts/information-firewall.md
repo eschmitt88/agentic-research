@@ -17,6 +17,8 @@ sources:
   - "[[literature/papers/he2026stored]]"
   - "[[literature/papers/yoon2026arcticswarm]]"
   - "[[literature/papers/yang2026sok]]"
+  - "[[literature/papers/hickey2026saltbench]]"
+  - "[[literature/papers/ludwig2026shortcutting]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -139,6 +141,37 @@ This also partly answers the open question this note closed on: the
 evidence is no longer confined to clinical QA. EvoBrowseComp is
 general-domain multi-hop web QA. ML-research tasks specifically remain
 untested.
+
+[[literature/papers/hickey2026saltbench]] draws the time boundary a
+different way, by **authoring** the population rather than dating it:
+five systems components written for the benchmark, frozen before any model
+call. The cost is stated: no independent authorship, and no contamination
+proxy against a public set. It also gives the reason in a transcript. On
+SWE-bench Verified the agent typed lines of the upstream fix as its own
+edit before any read could have shown them. Two mechanics transfer.
+Ground truth releases in stages: blind stage-A views carry no human spec,
+and later views ship only after every stage-A episode has landed. The
+release is verified by content set-hash, not by the copying tool's exit
+code. And a firewall is only as wide as the tool layer enforcing it (see
+[[concepts/hce-evaluation]]).
+
+**The task's own environment is a retrieval surface too, and the payoff of
+closing it is measurable.** [[literature/papers/ludwig2026shortcutting]]
+audits SWE agents on SWE-bench Multilingual and DeepSWE and finds the
+package-level firewall bypassed through channels no keep/exclude rule
+governs: the upstream repository over the network (25–66% of
+trajectories), the task repo's **own future git objects**, memorized
+upstream code, and the **harness's prior-run trajectories left on disk**.
+It also replicates the exposure-vs-breach split above across benchmarks
+rather than within one, and the contrast is the authoring argument
+measured. Vanilla agents *attempt* upstream access at similar rates on
+both, but only SWE-bench Multilingual, whose fixes are public, loses
+Pass@1 when access stops (4.4–13.3 points). On DeepSWE, whose tasks were
+never pushed upstream, pass rates stay flat and memory-based exploitation
+is 0.0 in every cell. That makes the firewall's value measurable as the
+pass-rate gap between a leaky and a closed condition, not as an attempt
+rate. Both sources are software engineering, not ML research, so the
+domain gap above stands.
 
 ## Connections
 

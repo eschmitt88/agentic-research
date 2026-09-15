@@ -26,6 +26,8 @@ sources:
   - "[[literature/papers/kim2026why]]"
   - "[[literature/papers/yoon2026arcticswarm]]"
   - "[[literature/papers/piriyakulkij2026subagents]]"
+  - "[[literature/papers/gao2026agentic]]"
+  - "[[literature/papers/bouras2026authority]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -180,6 +182,20 @@ contracts worth writing.
 
 See [[concepts/budget-as-ceiling]] for the enforcement limits that bound
 all of this (a ceiling is really ceiling-plus-one-call).
+
+The same invariant has an authority form, with one difference.
+[[literature/papers/bouras2026authority]] derives each sub-agent's
+capability store as a subset of a task ceiling frozen before any untrusted
+input is read. Authority is **attenuated but not conserved**: siblings may
+hold overlapping capabilities, and nothing is spent. This gives delegation
+a second payoff besides context isolation. With the topology fixed, giving
+the runner that reads poisoned test output no write capability takes
+injected effects from 33/75 (one shared task allowlist) to 3/75, at no
+repair cost. It also gives delegation a new failure mode. In 2 of 75 runs
+the runner saw the correct fix, was refused the write, and the workflow
+never rerouted the edit to the write-authorized patcher. Once the role
+boundary is an authority boundary, handoff routing becomes load-bearing
+for completion. See [[concepts/permission-gate-as-architecture]].
 
 ## Isolation pays only across an interface, and mostly under pressure
 

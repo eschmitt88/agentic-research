@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/chen2026repo]]"
   - "[[literature/papers/kapner2026scanning]]"
   - "[[literature/papers/piriyakulkij2026subagents]]"
+  - "[[literature/papers/taneja2026scan]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
@@ -196,6 +197,20 @@ following the SKILL.md convention.
   that installs it. The paper's fix belongs at the namespace level:
   require a scoped form in the spec, or display the field at install
   time.
+  [[literature/papers/taneja2026scan]] bounds what any namespace-level fix
+  can do, on a largely independent population (OpenClaw's 66,192 ClawHub
+  skills, not kapner's GitHub harnesses), reading the skill *body* rather
+  than its grants. A skill's documentation doesn't bound what an agent runs
+  from it: 34.7% of executed commands had a consequence class in no
+  documented block. All were generic shell in this non-adversarial sample.
+  So "declared-permission enforcement" checks a proxy. Whether an action is
+  *permitted* is also a property of the operator, not the artifact. 705
+  skills that every scanner and the registry's judge cleared still instruct
+  actions CIS/NIST controls prohibit, mostly `curl | bash` installers. A
+  namespace spec can carry declarations and verdicts as inputs, but the
+  permission decision has to be made operator-side, at the action. The
+  stronger reading of "enforcement at the protocol level" above doesn't
+  hold.
 - **The shared format is not enforced by its reference client.** The
   Agent Skills spec requires `name` and `description`. Claude Code makes
   both optional: it defaults the name to the directory and improvises the

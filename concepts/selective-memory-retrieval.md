@@ -38,6 +38,8 @@ sources:
   - "[[literature/papers/kassis2026scientific]]"
   - "[[literature/papers/hu2026memory]]"
   - "[[literature/papers/shen2026revoked]]"
+  - "[[literature/papers/shen2026what]]"
+  - "[[literature/papers/singh2026churnbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -272,3 +274,32 @@ the state-evolution framing this implies, and
 Caveat worth carrying: none of the seven systems was designed for
 revision-heavy input, so this measures a gap nobody has targeted yet rather
 than an established hard limit.
+
+[[literature/papers/shen2026what]] qualifies this section's heading: whether
+access or retention is the bottleneck depends on how much was kept. Under
+budgeted eviction on LongMemEval-S, errors fixed by restoring the gold evidence
+are retrieval misses in ~27–40% of cases at an 80k-token budget but ≤2% at 30k
+and 8k, where the evidence is simply gone — gating and ranking improvements pay
+only once retention is adequate, and a retrieval evaluation that does not
+report the retention budget is uninterpretable. Its *residual* bin also bears
+on this concept's always-on failure mode. By construction a residual error is a
+question the reader answers correctly from the gold evidence alone but gets
+wrong when the same gold arrives packed with top-k filler; these are 38–44% of
+answerable errors at 80k and 57 of 95 errors with nothing evicted, concentrate
+in cross-session aggregation, and halve with a stronger reader. The paper
+calls them utilization failures; read against its setup (the distractor
+reading is this graph's, not the paper's) they are also a measured cost of
+injecting context the question did not need.
+
+The temporal point above also needs an evaluation design that can see it.
+[[literature/papers/singh2026churnbench]] supplies a judge-free way to tell
+a stale retrieval from a reasoning fault on an evolving store. Gold is
+re-resolved from an append-only ledger at the answer's effective retrieval
+time (the oldest last-refresh among entities read). An answer correct then
+but wrong now is a freshness error, and one matching no world state is a
+reasoning error. Because T_eff takes a single timestamp, mixed-vintage
+answers fall into the reasoning bucket, so the count is a lower bound. Its
+design warning applies to any drift evaluation of a maintained store.
+Sweeping the build-to-query gap measured nothing (7 / 4 / 4 errors at
+1 / 14 / 28 days), because scheduled refresh kept the swept variable from
+reaching retrieval. Only disabling refresh (4 → 45) recovered the signal.

@@ -41,6 +41,8 @@ sources:
   - "[[literature/papers/chen2026fresh]]"
   - "[[literature/papers/zheng2026engineering]]"
   - "[[literature/papers/kapner2026scanning]]"
+  - "[[literature/papers/taneja2026scan]]"
+  - "[[literature/papers/bouras2026authority]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -164,13 +166,16 @@ deserves to be designed as architecture:
   implementation or eval), but the strongest statement yet of the gate as
   the *entire* action surface rather than a checkpoint on it.
 
-For this project the gate is already load-bearing: the Claude Code
-PreToolUse hooks, the coordinator's admission policy, and the HCE rule
+For this project the gate is already load-bearing: Claude Code's built-in
+permission prompts, the coordinator's admission policy, and the HCE rule
 that keeps `test/` off-limits during search are all *permission gates as
 architecture* — they intercept actions, carry state (token pacing, queue
-depth, search-phase flag), and escalate or refuse. Naming the pattern lets
+depth, search-phase flag), and escalate or refuse. No custom PreToolUse
+hook is configured: as of 2026-09-15 `~/.claude/settings.json` sets hooks
+only for SessionStart, PreCompact, SessionEnd, Stop and PostToolUse, none
+of which can refuse a tool call before it runs. Naming the pattern lets
 downstream projects import the discipline rather than re-deriving it per
-hook.
+gate.
 
 ## Implementation guidance
 
@@ -306,6 +311,34 @@ Two cautions. The 3.1% measures exposure, not intent: of 65 re-cloned
 setups, 22 actually invoke the granted interpreter, and many authors
 wanted it run. And the bypass rate is tied to a client version, so these
 rates decay as clients change.
+
+## Whose authority: the gate keyed to the issuing agent
+
+Every gate above decides on the call plus accumulated state. In a
+delegated pipeline that is not enough, because one task-wide policy has to
+grant the *union* of what the task needs, so the sub-agent that reads the
+poisoned input also holds the write another sub-agent needed.
+[[literature/papers/bouras2026authority]] isolates this variable. Both of
+its strongest conditions mint the policy from trusted input before any
+untrusted read, and both use the same orchestrator → runner / patcher /
+verifier topology. One shares a single task-specific allowlist across
+agents: **33/75** injected effects land. The other derives a per-agent
+store as a subset of a frozen ceiling and checks each call against the
+*issuing* agent's store: **3/75**. Repairs are 68/75 in both. A
+named-hazard denylist equals no policy (46 vs 47/75), because the payloads
+are ordinary in-repo writes that no deny rule names, which is the grant-
+language point above measured from the attack side. Two bounds carry
+forward. All three residuals arrived through the orchestrator's
+auto-loaded AGENTS.md, and the orchestrator is the principal whose
+*grants* are bounded only by the ceiling. Per-agent stores stop authority
+crossing agents, but influence still crosses through the delegation
+message. Fail-closed without a human also turns refusals into retry loops
+(27 of 34 attack-proposing runs retried; mean latency 316 s vs 145 s with
+no policy).
+This is orthogonal to santosgrueiro2026lingering: that paper scopes
+authority in time within one principal, this one across principals within
+one task, and no source does both. See [[concepts/hierarchical-delegation]]
+for what the per-agent split does to role handoffs.
 
 ## Authority with a lifecycle: the credential that does not exist yet
 
@@ -496,3 +529,32 @@ complement to the "external, persisted" claim this concept's "Why it
 matters here" section makes from jia2026finharness's risk cumulant: state
 that survives across turns is what a point-in-time or action-triggered
 gate cannot have by definition.
+
+## Relaxing the gate has a price, and it can be derived
+
+Every source above decides whether a gate fires. None says when a track record
+may let it stop asking, yet that is how a gate avoids being switched off from
+prompt fatigue. [[literature/papers/taneja2026scan]] derives it. With zero
+failures in N clean runs, the true failure rate is bounded at confidence 1−δ
+only when N ≥ ln δ / ln(1−ε). At δ = 0.05 the common flat "ten clean approvals"
+cannot exclude a **25.9%** failure rate. Against per-class tolerances of
+10% / 5% / 2% it demands 3–15× too little evidence (N = 29 / 59 / 149).
+Because a rejection resets the counter, the human pays 6–7× N approvals
+(202 / 392 / 965). Classes whose effects can't be undone (remote exec,
+credentials, deploy, IAM, destructive) get no finite N, which is ray2026what's
+irreversibility bound turned into policy.
+
+Three design points transfer:
+
+1. **Trust is keyed on (resource, class), not on the skill or the session.**
+2. **Classification stays stateless** (a pure function of the command string,
+   replayable), while the state lives in a separate counting ledger.
+3. **ε_k is the operator's parameter.** The paper declines to report one
+   false-positive rate, because whether a hold is an error depends on that
+   policy.
+
+The limit is sharper than the table. Every counted run was one a human approved,
+and graduation removes the human, so "a clean run is evidence about the
+reviewer, not about the agent". The bound also ignores correlated trials,
+multiplicity across lanes (100 lanes at δ = 0.05 → ~5 wrongly graduated) and
+cumulative risk. The authors' own shipped default is still the flat 10.
