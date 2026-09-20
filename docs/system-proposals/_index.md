@@ -25,6 +25,129 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-08-16 | [precompact-addressable-offload](2026-08-16-precompact-addressable-offload.md) | `hooks/pre-compact.sh` | adopt | proposed |
 | 2026-08-23 | [elevate-paired-control](2026-08-23-elevate-paired-control.md) | `skills/elevate/SKILL.md` | adopt | proposed |
 | 2026-09-06 | [session-start-limit-first-reading](2026-09-06-session-start-limit-first-reading.md) | `hooks/session-start.sh` | adopt | proposed |
+| 2026-09-20 | [framework-rule-imports-dead](2026-09-20-framework-rule-imports-dead.md) | `templates/project/CLAUDE.md` (+ `install.sh`, 8 skills, 19 repos) | adopt | proposed |
+| 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | proposed |
+
+## Considered and held (2026-09-20 run)
+
+Two proposals (above), both from the same root cause and both grounded
+in a **direct measurement** rather than only in literature: against
+Claude Code 2.1.275, a `CLAUDE.md` `@` import resolves **only inside the
+project tree**. Tested eight ways — relative in-tree (loads), absolute
+in-tree (loads), `@~/...`, `@import ~/...`, absolute out-of-tree,
+in-tree symlink pointing out, a path under `~/.claude/`, and
+absolute-out-of-tree re-run with `--add-dir` (none load). This closes
+the open `NOTES.md` item from 09-14 and corrects the guess in the
+`kapner2026scanning` note, which blamed the `@import` token: the token
+and the tilde are both wrong, and neither matters, because the
+confinement is unfixable by re-spelling. Consequences: `evaluation.md`
+and `agency.md` have not loaded in any project session since phase 5
+(`claude-system@683b2a6`, 2026-08-01), and the concept-import contract
+has never propagated anything.
+
+Nineteen papers entered the graph since the 09-13 run (6 auto-ingested
+on 09-14, 11 curated, plus the 09-15 pass) and 28 concepts were touched.
+One of the nineteen is **peer-reviewed** (`bouras2026authority`, LMPL '26
+ACM SIGPLAN workshop) — the first in several cycles — and nine carry
+live code links. The binding constraint this cycle was again **targets**,
+not evidence: six proposals were already pending, holding
+`rules/evaluation.md`, `templates/project/budget.yaml`,
+`skills/lint/SKILL.md`, `hooks/pre-compact.sh`, `skills/elevate/SKILL.md`
+and `hooks/session-start.sh`. Both proposals above land on files no
+pending proposal touches. Held:
+
+- **`ning2026scores` (cred 3, code released) → `evidence-gated-completion`
+  as a `kg_lint.py` done-gate.** The closest miss, and the same idea the
+  09-13 run held. Its own note says why it still fails: this is a
+  released, executable, LLM-free verifier that genuinely *refuses*
+  (returning `audit incomplete` for affine despite a perfect observed
+  effect), which is the implementation attestation the concept demanded
+  — but it gates **discovery claims after the fact at ~$60 per audit**,
+  not task completion inside a working harness, and reports no
+  before/after effect on agent behaviour and no false-rejection rate.
+  The concept's bar is a deployed gate with a measured effect; this is
+  an audit protocol with neither. **Unlock unchanged**, and now more
+  precisely stated: a completion gate with a before/after behavioural
+  delta and a priced false-reject rate. `zheng2026engineering` supplies
+  half of the second half (62.8% false reject for V2 on B), for a
+  different setting.
+- **`ludwig2026shortcutting` (cred 3) → `rules/evaluation.md`.** Would be
+  a proposal on merit: a single prohibition section cuts exploit attempts
+  ~10× across five models, and it is the **second independent group**
+  after `roth2026hack` to find prohibition reduces but does not eliminate
+  exploitation — different domain (repository SWE), different detection
+  (LLM judge vs deterministic predicate), different channels. It also
+  names a leak surface this box actually has: **the harness's own
+  prior-run trajectories on disk**. **Held on target**:
+  `rules/evaluation.md` has been blocked since the 08-02
+  `hce-retrieval-boundary` proposal. Fourth cycle running that this file
+  has absorbed a hold.
+- **`zhang2026double` (cred 3, code) → `hce-evaluation` / `pass-at-k`.**
+  The cleanest negative result in the graph that a pre-registered,
+  frozen-rule confirmation can be a **scorer artifact**, plus two
+  auditable conditions (`D_claimed ⊆ D_model` with non-degeneracy; a
+  forged-submission probe) that no existing HCE defence asks for. Same
+  blocked target. Recorded as the strongest queued input for whoever
+  rules on `hce-retrieval-boundary`.
+- **`hickey2026saltbench` (cred 3, code) → `budget-as-ceiling`.**
+  Measured on the exact harness this box runs: halt ≠ failure, and a p90
+  computed from capped runs just returns the cap. Directly contradicts
+  `budget-as-ceiling` guidance 3 for token and call caps (though not for
+  the no-improvement counter). **Held on target** —
+  `templates/project/budget.yaml` pending since 08-02.
+- **`bouras2026authority` (cred 3, peer-reviewed, artifacts) →
+  `permission-gate-as-architecture`.** The cycle's only peer-reviewed
+  source, and a real result: per-agent derived capability stores take
+  injected effects from 33/75 to 3/75 at no repair cost, with a clean
+  negative (a denylist equals no policy for in-repo attacks). **Held**
+  because any form re-adds machinery the 08-23 and 08-30 cycles
+  concluded was correctly deleted, and because the threat model is an
+  orchestrator minting scopes for concurrent sub-agents — this box runs
+  sequential sessions. Its principal axis (the gate's key is
+  (call, *issuing agent*), not just (call, state)) is recorded on the
+  concept. `taneja2026scan` held for the same reason.
+- **`piriyakulkij2026subagents` (cred 3, no code) → I/O contracts in leaf
+  skill descriptions.** Tempting and cheap — "Expected input / Output"
+  lines on `/fetch-paper`, `/ingest`, `/discover`, leaving routing skills
+  like `/curate` and `/digest` inline, which matches the paper's
+  routing-inline/leaves-delegated result. **Fails Gate 1**: single
+  attestation, no code or skill set released, results only as bar charts
+  with the run count unstated, and the central causal claim (contracts,
+  not content, are what make subagents work) is **not ablated** — on
+  frontier models the synthesized content lifts both modes equally. The
+  note's own read is that the benefit for an Opus executor is lower peak
+  context at 1.3–1.7× the tokens, not accuracy. **Unlock**: an ablation
+  that strips contracts from the synthesized skills.
+- **`kapner2026scanning` → run `harness-eval` over `claude-system` as a
+  standing check.** Same paper as the two proposals, different idea, and
+  held: a manual pass on 2026-09-14 found `claude-system` clean on all
+  six gating rules (`settings.json` allows only `WebSearch`/`WebFetch`,
+  no skill declares `allowed-tools`, no MCP servers, every `SKILL.md`
+  has a `description:`). A standing scanner for a surface with zero
+  found defects is net-new machinery bought with nothing. **Unlock**: the
+  first time a skill here declares `allowed-tools` or an MCP server is
+  configured.
+- **`zheng2026engineering` (cred 3, figshare) → `shared-substrate-contagion`
+  warrant audit.** First controlled measurement that source independence
+  beats model diversity (−40.9 vs −11.3 points), which is the point the
+  concept previously carried only as an argument. Its repo implication is
+  sharp and true: a concept update that reads the literature note written
+  by the same ingest pass is an A′ read, so an independent check must go
+  back to `raw/`. **Held on Gate 2, unchanged from 09-13**: any audit is
+  net-new machinery, the concept's own cheapest first step (an
+  adversarial re-read of the four `used_by:`-carrying concepts' sources)
+  is still untried, and `/lint` is blocked. Note that the two proposals
+  above sharply *reduce* the contagion exposure estimate — those four
+  `@import` channels turn out to carry nothing.
+- **`suresh2026grounding`, `shen2026revoked`, `chen2026fresh`,
+  `li2026autorecsys` → `verified-memory-writes` / staleness.** Three
+  independent groups now find superseded authority wins at read time, at
+  three different layers (store retrieval, model trust, plan dependency),
+  and `shen2026revoked` runs the head-to-head placement comparison
+  `enforcement-boundary-placement` asked for. Genuinely strong, and there
+  is no claude-system target: this box's memory is git-tracked files a
+  human reads, with no retrieval layer to filter and no revocation to
+  enforce. Concept prose, not a harness edit.
 
 ## Considered and held (2026-09-13 run)
 
