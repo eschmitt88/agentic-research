@@ -4,6 +4,8 @@ name: "shared-substrate-contagion"
 status: growing
 added: "2026-09-07"
 sources:
+  - "[[literature/papers/shao2026language]]"
+  - "[[literature/papers/zhang2026agora]]"
   - "[[literature/papers/paglieri2026case]]"
   - "[[literature/papers/wu2026evomal]]"
   - "[[literature/papers/he2026stored]]"
@@ -137,6 +139,97 @@ reviewer's evidence path is independent of the substrate that carried the
 defect. Filtering every role's read brings every column to 0/810, but only
 at every read. One system (Graphiti), nine authored scenarios.
 
+## Run the no-channel arm before calling it contagion
+
+The third effect above — the substrate carries premature agreement — has
+rested on outcome-level evidence: a gain from gating peer visibility, with
+the convergence itself never measured and no independent baseline for what
+the right amount of agreement would be. [[literature/papers/shao2026language]]
+supplies both, and in doing so splits the effect in two.
+
+It replays 100 held-out human Wason-task groups with one belief-anchored LLM
+agent per real participant, seeded from that participant's pre-discussion
+answer, and scores humans and agents with the same code. Against the
+participation-matched lurker-free groups (n = 45, every human spoke), chat
+agents exceeded human full consensus by "+34.1 percentage-point difference
+(95% CI [19.3, 48.9])" and reasoner agents by +44.4 points. An independent
+submit-based route (n = 98) lands within 0.5 points of each.
+
+**The important result is the peer-hidden control.** Same fixed horizon, same
+settings, every message from other agents withheld, so each agent re-solves
+alone:
+
+- **Chat: "full consensus was 31.0% without peer messages ... against 87.0%
+  with peers, where wrong consensus rose from 4.7% to 32.0%."** The channel
+  does not just add agreement, it adds agreement on errors. Note 31.0% is
+  *below* the human lurker-free rate of 51.1%, so the seeded diversity
+  survives when the channel is closed.
+- **Reasoner: "it was already 91.0% without peer messages, all correct,
+  against 100.0% with peers."** Almost none of that agreement is propagated;
+  it is correlated priors — independent agents drawing the same answer from
+  the same weights.
+- Mode-by-visibility "difference-in-differences of +47.0 percentage points".
+
+So "the agents all agreed" has two causes with the same signature, and the
+substrate is responsible for only one of them. **Measuring convergence
+without a no-channel arm cannot tell contagion from correlated priors**, and
+the two want opposite fixes: gating visibility is useless against the second,
+which needs source or model independence. Cheap instrument: hide the channel,
+hold everything else fixed, rerun.
+
+**And the agreement is not competence.** Under a preregistered isomorphic
+reparameterization that removes the memorizable answer, reasoner consensus
+stays at 98.7% while "correct consensus fell from 84.0% of groups on the
+classic task to 24.7% while wrong consensus rose from 12.0% to 74.0%."
+
+Two limits. The substrate here is a live transcript, not a written store:
+nothing is persisted, so this is a sighting on the premature-agreement axis
+and **not** another defect-propagation sighting. And the belief anchor leaks
+— "only 17.1% of reasoner agents held their assigned belief" — so the
+reasoner half cannot be cleanly separated from the model simply solving the
+task. The chat half is protected from that objection by the 31.0% peer-hidden
+floor; the reasoner half is not.
+
+## Herding, measured at community scale — and a remedy that was never tested
+
+[[literature/papers/zhang2026agora]] is the unmitigated case, at a scale none
+of the other sources reach, from a group that built the substrate on purpose.
+Thirteen LM worker sessions with no planner and no assigned tasks shared an
+append-only Git DAG for 11 days 19 hours and 1,703 contributions. What the
+shared channel produced:
+
+- **Convergence, not coverage.** "A shared leaderboard did not stop duplicate
+  work, and the graph is heavily exploitation-biased." One component holds
+  98.9% of all nodes.
+- **Parallel rediscovery on the clock.** "Of 696 pairs of different accounts
+  posting identical scores, 63% are within an hour of each other and 80%
+  within six."
+- **A five-day monoculture.** At the intervention point "more than a third of
+  all activity sat in a single semantic cluster and the leaderboard had
+  stalled."
+
+Agora also supplies the only *specified* countermeasure in this concept: a
+diversity-aware UCB that penalises near-duplicate descriptions and splits
+candidates into *exploit*, *explore known* and *explore novel* slots over
+semantic clusters of contribution descriptions.
+
+**It was not evaluated, and this concept must not record it as a remedy.** It
+was deployed mid-run by humans as the single intervention, at the moment the
+leaderboard stalled, together with the landscape views; the reported effect
+is one worker publishing one better result the next morning. The authors
+withhold the causal claim themselves: "we did not run the same models and
+compute without Agora or with a plain leaderboard, and the community left its
+first basin only after we showed it a map." Their Appendix C *proposes* the
+matched four-arm comparison that would settle it; it was not run. And they
+disclose a reporting artifact that undercuts even the anecdote: "Explicit
+negative-result and explore-novel tags appear only after the May 2 deployment
+of the landscape and diversity views" — so the apparent post-intervention
+rise in exploration is partly a change in the *tag vocabulary*.
+
+The honest reading: **the five-day monoculture happened while the shared
+substrate was running as designed.** Cite Agora for the measurement; cite it
+as an *untested candidate* for the cure.
+
 ## Why this repository is exposed
 
 This project *is* a shared substrate, with the same auto-commit property:
@@ -241,6 +334,13 @@ corroborating the same population, not as two independent sightings.
   typed provenance graph separates dependency lineage from origin, which
   would in principle detect the single-upstream-root case. Nothing in this
   repo records lineage between concepts, only between paper and concept.
+
+- **Does this repo's review path have a no-channel arm?** The instrument is
+  cheap: hide the channel, hold everything else fixed, rerun. The repo
+  analogue is an adversarial re-read of a concept edit performed *without*
+  access to the literature note the ingest pass wrote — not merely by a
+  different model. A second pass that reads the first pass's output is a
+  same-channel read in shao2026language's sense.
 
 ## Connections
 

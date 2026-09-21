@@ -4,6 +4,8 @@ name: "evidence-gated-completion"
 status: growing
 added: "2026-08-17"
 sources:
+  - "[[literature/papers/zhang2026how]]"
+  - "[[literature/papers/nepal2026faithful]]"
   - "[[literature/papers/ng2026agent]]"
   - "[[literature/papers/ding2026autonomous]]"
   - "[[literature/papers/chen2026evigraph]]"
@@ -295,6 +297,49 @@ the gate's own instruments fail:
   from the same truncated population. An absence verdict has to name the
   population it enumerated.
 
+## A soft-evidence gate, live in-loop, with a false-reject rate
+
+[[literature/papers/zhang2026how]] runs a terminal verifier inside a working
+tau-squared-bench harness on 229 Retail and 58 Airline episodes and reports the
+full cross-tabulation. It is the closest thing this concept has to what its
+open question asks for, and it is instructive precisely where it falls short.
+
+**What it is.** "The terminal verifier uses the same model identifier as the
+executor and reviews the last at most eight user/assistant messages, truncated
+to 300 characters each. It receives dialogue text, with no database access,
+and has an output limit of 200 tokens." Cost: $0.0079 per episode.
+
+**What it buys.** It rejects 83 of 137 oracle-invalid Retail episodes (61%)
+and withholds 16 of 92 oracle-correct ones (17%), cutting the false-pass rate
+from a counterfactual 57.21% to an actual 20.96%.
+
+**This is soft evidence by construction, and it still worked.** Under the
+hard/soft criterion above, a verifier reading the *dialogue* — the agent's own
+account, truncated to 300 characters per message, judged by the executor's own
+model — is exactly the front door implementation guidance #3 warns about. It
+admitted no external state at all, and it still removed two thirds of the
+erroneous acceptances for under a cent. The partition survives (54 of 137
+invalid episodes pass it), but "soft evidence is not gradable" now has a
+counterexample. The right reading is a cheap soft prefilter *in front of* a
+hard check, never in place of one.
+
+**The false-reject rate is a property of the domain, not of the checker.**
+Same verifier, same prompt, same truncation budget: 61% catch / 17%
+false-reject in Retail, and in Airline "the verifier rejects 25 of 41
+oracle-invalid episodes (61%) and seven of 17 oracle-correct episodes (41%)."
+Identical catch rate, 2.4x the collateral cost, purely from the domain. Any
+false-positive rate imported from a paper is a number about that paper's
+domain.
+
+**The stateful cost of a late rejection is named and not measured.** "A
+terminal rejection occurs after execution and may leave earlier refunds,
+cancellations, or other state changes in place." That is the asymmetry in this
+concept's preventive/evidential pairing, stated from inside a stateful
+benchmark and still uninstrumented.
+
+Credibility caveat: every Holm-adjusted p in that paper exceeds 0.05, its own
+power simulation puts rejection at 0.14, and no code or data is released.
+
 ## Implementation guidance
 
 1. **Declare the schema per skill, and keep it one or two elements.** The
@@ -364,6 +409,19 @@ the gate's own instruments fail:
   benchmark-run acceptance (3/50 false convictions, 10/50 abstentions on
   honest runs), but on reference-solution and replayed cells and with an LLM
   auditor in the attribution path.
+  [[literature/papers/zhang2026how]] supplies the closest match yet — a
+  terminal completion gate live in-loop on 287 real episodes at $0.0079 per
+  episode, with a clean false-reject rate (16/92 Retail, 7/17 Airline) — but
+  "the verifier has no repair loop", so its rejections drive nothing
+  downstream and the before/after is recomputed on the *same* executions. It
+  prices an acceptance margin, not an effect. **What remains unmet is a gate
+  whose refusal changes what happens next, measured.** The false-rejection
+  rate itself is no longer the blocker.
+  [[literature/papers/nepal2026faithful]] does **not** discharge this hold
+  either: it is an observational audit with no gate, no intervention arm and
+  no before/after behavioural delta, and its one outcome association
+  (β = .25) is a single survivor of 32 tests on n = 107 with non-randomized
+  exposure. Its contribution is on the hiding-proxy and instrument side.
 - What is the false-*rejection* rate of a real gate? Every check that can
   refuse valid work has a cost the paper does not measure, and a gate
   that blocks a correct submission on a flaky verifier is a new failure

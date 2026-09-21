@@ -67,6 +67,15 @@ is acting under partial observability of the one state it most needs.
   earlier actions, never hidden task evidence. That boundary is what
   keeps proprioception from becoming a side-channel.
 
+- **Does per-item cost metadata alone change behavior?**
+  [[literature/papers/fan2026empirical]] is not a test of this concept — it
+  never ablates visibility, and its manager is the harness rather than the
+  model — but it is an adjacent data point. Its elision stubs report line and
+  character counts plus a recoverable event id, which is per-item cost
+  proprioception in miniature, and it produced almost no recovery behaviour:
+  "36 (56.3%) never call recall_event". Consistent with the boundary that
+  access to state is not the same as acting well on it.
+
 ## Connections
 
 - [[concepts/lossless-context-offload]] — VISTA's Prop. 1 / Thm. 1

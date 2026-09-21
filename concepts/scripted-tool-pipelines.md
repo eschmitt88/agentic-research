@@ -5,6 +5,7 @@ status: seedling
 added: "2026-05-15"
 source_papers: []
 sources:
+  - "[[literature/papers/fan2026empirical]]"
   - "[[literature/papers/banu2026harness]]"
   - "[[literature/papers/li2026complexmcp]]"
   - "[[literature/papers/liu2026dive]]"
@@ -99,6 +100,35 @@ the conversation.
    agent sees one input, one summary output, regardless of how
    much work the subagent did. This is where scripted-tool-pipelines
    composes with [[concepts/hierarchical-delegation]].
+
+## Quantified support, with a capability precondition
+
+Bash-only *is* this pattern in un-scripted form, and
+[[literature/papers/fan2026empirical]] prices both sides under a matched
+ablation. For a shell-capable model it wins on both axes at once:
+"bash-only improves success rate by 3.6% on SWE-Bench and 5.6% on
+Terminal-Bench while reducing cost by 53% and 30%, respectively." The
+mechanism is the granularity claim — fewer re-patches of already-edited
+files, larger single edits. The paper states this concept's thesis as a
+finding: "predefined tools lower the complexity of each individual action,
+but they often do so by increasing the number of interactions and incremental
+repair cycles needed to express the same operation."
+
+**The precondition is that the model can express intent in shell at all.**
+For a 30B model the same interface is catastrophic (SWE-Bench 25.20 → 10.20):
+not a reasoning failure but an interface failure, where "the harness cannot
+resolve emitted calls into executable actions" and 66% of bash-only
+trajectories terminate after such out-of-interface emissions.
+
+The crossover also moves with **task type**, not only capability: one model
+gains 23.2% from the full tool set on SWE-Bench while gaining 6.7% from
+bash-only on Terminal-Bench.
+
+For this box — Opus-class model, Claude Code harness — the capable regime is
+the relevant one: prefer the composed shell call, and keep structured tools
+for operations carrying harness-side validation. The paper's action-space arm
+removes those *together* with the tools, so it cannot tell you which half of
+the structured interface you are giving up.
 
 ## Connections
 

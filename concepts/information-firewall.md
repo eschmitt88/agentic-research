@@ -4,6 +4,8 @@ name: "information-firewall"
 status: growing
 added: "2026-07-20"
 sources:
+  - "[[literature/papers/zhu2026bad]]"
+  - "[[literature/papers/shao2026language]]"
   - "[[literature/papers/wang2026naturebench]]"
   - "[[literature/papers/wang2026search]]"
   - "[[literature/papers/wang2026evobrowsecomp]]"
@@ -173,6 +175,54 @@ pass-rate gap between a leaky and a closed condition, not as an attempt
 rate. Both sources are software engineering, not ML research, so the
 domain gap above stands.
 
+**A candidate boundary that fails: surface reparameterization.**
+[[literature/papers/shao2026language]] needed the memorizable answer gone from
+a classic reasoning task, so it ran a preregistered isomorphic replay
+remapping each Wason card role-for-role onto neutral tokens
+(maple/birch/lantern/candle) with the logical structure held fixed. The
+canonical letter-and-number answer is genuinely unavailable afterwards, and
+the competence is not: its pre-study contamination probe found models solve
+the task far above the human individual baseline even under isomorphic
+surface reparameterization, which is why the study had to seed agents with
+humans' pre-discussion beliefs rather than let them free-solve. The author
+states the limit plainly — the replay "establishes robustness to surface
+reparameterization, not memorization in isolation."
+
+This belongs beside the recency boundary rather than beside the file-space
+one. Renaming the entities moves a task out of *literal* overlap with the
+training corpus while leaving its solution structure intact, so it defeats
+string-level contamination checks and nothing else. Treat a reparameterized
+task as contaminated until something independent of surface form says
+otherwise — and note the asymmetry it does buy: because the canonical answer
+was removed, the replay could show that near-total agreement landed on
+*wrong* answers 74.0% of the time. Reparameterization is a useful probe of
+what agreement was tracking, even when it is a poor firewall.
+
+## A fourth boundary: protocol, where nothing is withheld
+
+The three boundaries above all withhold something: an artifact, a corpus, a
+fact that did not exist yet. [[literature/papers/zhu2026bad]] adds an axis
+where **nothing is withheld and the leak is still real**. What a harness
+optimizer exploits is the released benchmark's *layout* — "file names,
+directory layout, metadata, tool aliases, demonstration order, feedback
+format" — and curation cannot remove it, because the regularity is the
+benchmark's shape rather than its content. A refresh loop does not renew it
+either. The only repair is to **transform the protocol under executable
+validity checks** and measure how much of the system's advantage over its own
+baseline survives.
+
+The second lesson is about the defender's own machinery. Once an adversarial
+subagent searches for a violation, that search is itself an overfitting
+surface: it needs its own disjoint split, and its finding needs a *second*,
+frozen split before it is believed. CHASE runs evolution, adversary
+discovery, fresh confirmation and a sealed certification set as four mutually
+disjoint splits, with the confirmation threshold strictly above the
+constraint tolerance. The measured inflation: one transformation scored
+10.20% gain destruction on the discovery set, and on the frozen confirmation
+set "the recorded gain destruction is 4.08%, which is below the 7.5%
+confirmation threshold." It was correctly rejected. **A red-team result
+measured on the set the red team searched is not a result.**
+
 ## Connections
 
 - Complements [[concepts/hce-evaluation]]: HCE hides the *answers*
@@ -190,10 +240,13 @@ domain gap above stands.
   because literature curation has no score to inflate — a project that
   both web-searches *and* evaluates on a public benchmark has to choose,
   or sandbox the retrieval.
-- Three attestations along three boundaries — file space
-  (wang2026naturebench), retrieval space (wang2026search), and time
-  (wang2026evobrowsecomp) — the first two from opposite directions
-  (construction vs measurement). `growing`. The remaining gap is
+- Four attestations along four boundaries — file space
+  (wang2026naturebench), retrieval space (wang2026search), time
+  (wang2026evobrowsecomp) and protocol space (zhu2026bad) — the first two
+  from opposite directions (construction vs measurement), the fourth from
+  the case where nothing is withheld at all. A fifth candidate boundary,
+  surface reparameterization (shao2026language), is recorded as one that
+  *fails*. `growing`. The remaining gap is
   domain: leakage rates are established for clinical QA and
   general-web multi-hop QA, but whether **ML-research tasks** leak
   comparably is still untested, and that is the case this project

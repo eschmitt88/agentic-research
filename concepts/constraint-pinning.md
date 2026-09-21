@@ -4,6 +4,8 @@ name: "constraint-pinning"
 status: growing
 added: "2026-08-03"
 sources:
+  - "[[literature/papers/nepal2026faithful]]"
+  - "[[literature/papers/zhang2026how]]"
   - "[[literature/papers/chen2026governance]]"
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/nakayashiki2026when]]"
@@ -115,6 +117,39 @@ validity: a freshness-only executor acted on an obsolete plan in **30 of
 they used and validates only those before an external effect. Applied
 here, the missing check is not "is the pinned constraint present" but
 "has anything the constraint depends on changed since it was pinned."
+
+**The other half of that 2x2 (2026-09-21).** lavrenko2026instruction holds
+content fixed and varies *repetition*. [[literature/papers/zhang2026how]]
+holds presence fixed and varies *content*: its Sham arm "shuffles words from
+the domain policy using seed 2701, then repeats or truncates the sequence to
+the Fixed plan's whitespace-word count", delivered in the same wrapper at the
+same point. Against no injection at all that inert text scores +1.89 pp
+([−3.45, +7.09]) — approximately free. Against it, the real plan scores
++7.17 pp ([1.15, 13.36]). Both halves now say the same thing from opposite
+directions: **occupying the slot is not the mechanism.**
+
+Two caveats before importing it. The control is a word salad, not a
+coherent-but-irrelevant plan — the authors are explicit: "This is a shuffled
+word sequence, not a coherent but unhelpful plan." So it rules out "context
+length did it", not "any well-formed text did it". And the primary interval
+nearly touches zero, with every Holm-adjusted p above 0.05.
+
+The corollary for this repo's own pinned buffer: a rule that is present but
+unresolvable — a dead `@import`, a directive naming a path that does not load
+— costs roughly its token count and buys nothing, and no presence check will
+distinguish it from a live one.
+
+[[literature/papers/nepal2026faithful]] supplies the field version of the
+same split on a rule that is neither absent nor repeated but simply
+*present*, with no compaction anywhere in the picture: rules gradable from
+the output were largely met, and rules describing manner were not, with the
+controlled datum a null (1.1% vs 1.2%). This is the **prior** failure to the
+one this concept guards — pinning protects a rule's *survival*, and these
+rules never bound while fully present. Read "only quotable, extractable rules
+pin cleanly" as the weaker "only rules whose predicate is computable from the
+output bind at all, and even those not reliably": nepal's own counterexample
+is a countable rule that failed anyway. Checkability buys detectability, not
+adherence.
 
 ## The known limit
 

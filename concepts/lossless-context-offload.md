@@ -4,6 +4,7 @@ name: "lossless-context-offload"
 status: seedling
 added: "2026-08-10"
 sources:
+  - "[[literature/papers/fan2026empirical]]"
   - "[[literature/papers/li2026acm]]"
   - "[[literature/papers/semenov2026beyond]]"
   - "[[literature/papers/hao2026selfgc]]"
@@ -252,6 +253,31 @@ not the eviction rule, as the thing to import first. The instrument is also a
 test for this concept: under a genuinely lossless offload the irreversible bin
 is empty by construction, so a non-zero count means the "offload" is deleting.
 It needs gold evidence labels, so it audits on benchmarks, not in deployment.
+
+## The first matched test of the address — and it comes back null
+
+Twelve sources argue this invariant from theory, from serving cost, and from
+deployment scale. None ran the one ablation that isolates the address: **the
+same eviction, with and without recoverability, everything else fixed.**
+[[literature/papers/fan2026empirical]] runs it as a designed arm — T1 elides
+and discards, T2 elides and stores the original behind a `recall_event(id)`
+handle — and finds nothing. "T2 outperforms T1 in 15 settings, underperforms
+in 14, and ties in three; the equal-weight mean difference is −0.36
+percentage points." The tool is barely touched: of 64 recall-enabled
+settings, "36 (56.3%) never call recall_event", and use concentrates in the
+weakest model under the tightest budget — a cell that *loses*.
+
+**Read this as a scope condition, not a refutation.** In a coding workspace
+the environment is *itself* a lossless addressable store: a file can be
+re-read, a command re-run. The harness says so and steers away from its own
+tool — the T1 stub reads "Re-read or re-run to get it again."
+
+Revised claim: **an explicit addressable store earns its keep only where the
+evicted content is not re-derivable from the environment.** Where the
+workspace can regenerate it, the address is redundant machinery. Where it
+cannot — a completed experiment's stdout, a web capture, a non-deterministic
+log, this project's own immutable `raw/` corpus — the invariant stands
+untested by fan2026empirical. Ask the re-derivability question first.
 
 ## Open questions
 
