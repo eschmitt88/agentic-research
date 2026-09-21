@@ -331,3 +331,36 @@ I wrote no new proposals this cycle. I looked at seven ideas from the 17 papers 
 - The full reasoning is in `docs/system-proposals/_index.md` and a new line in `_meta/log.md`. All of it is committed and pushed. The push also sent two commits from 09-09 that hadn't gone out after that day's push failed, and a leftover log line about that failure.
 
 Six proposals are still waiting for your review, the oldest from 08-02.
+Done. Two proposals, both grounded in a measurement rather than a reading.
+
+## The finding
+
+The `kapner2026scanning` note (09-14) *flagged* a possible broken `@import` in this repo. I tested it against Claude Code 2.1.275 in a scratch project with marker files:
+
+| Import line | Loads? |
+|---|---|
+| `@rel.md` (relative, in-tree) | **yes** |
+| `@/tmp/imptest/abs.md` (absolute, in-tree) | **yes** |
+| `@~/file.md` | no |
+| `@import ~/file.md` | no |
+| `@/home/eschmitt/file.md` (absolute, out-of-tree) | no |
+| in-tree symlink → outside | no |
+| `@/home/eschmitt/.claude/file.md` | no |
+| absolute out-of-tree + `--add-dir /home/eschmitt` | no |
+
+**A `CLAUDE.md` `@` import resolves only inside the project tree.** The note's guess (the `@import` token) was wrong — the token *and* the tilde are both wrong, and neither matters, because the confinement can't be fixed by re-spelling. Fixtures removed.
+
+## Two proposals (`docs/system-proposals/`, pushed as `c4c1fa2`)
+
+**`framework-rule-imports-dead`** → `templates/project/CLAUDE.md` + `install.sh`. Phase 5 (`claude-system@683b2a6`, 2026-08-01) moved `evaluation.md` (HCE discipline) and `agency.md` (autonomous-spend levels) out of global scope into per-project `@~/claude-system/...` imports, and `install.sh` stopped linking `rules/` on that basis. **Neither rule has been in any project session's context for seven weeks.** This session is an instance: `agency: max` governs it, `CLAUDE.md:79` imports `agency.md`, the rule text is absent. Nineteen project `CLAUDE.md` files carry the dead lines. The reliable half of the fix is a `Read` first step in the eight skills that already declare `respects:` — a frontmatter field Claude Code does nothing with. Recommendation: **adopt**.
+
+**`concept-import-contract-inert`** → `skills/sync-imports/SKILL.md` + `README.md`. The contract's promise ("evolution propagates downstream at next session start — no copy-paste") is false for the same reason, so `used_by:` records a declaration, not a read. Live scope is exactly four concepts and `mle-bench`. Recommendation: **adopt-with-changes** — I kept the ledger and left retiring the skill open, and said plainly in the proposal that the retire case is strong.
+
+Gate 1 for both rests on `kapner2026scanning` (cred 4, `harness-eval` released, broken-`@import` class at 11/23 real defects, `cannot-work` family defined by silence). The literature supplied the class; the experiment supplied the finding. Gate 2: both remove a false affordance — no new file, skill, hook or knob.
+
+## Held (10, in the index)
+
+Closest miss was `ning2026scores` → `evidence-gated-completion` — it *is* the released refusing verifier the 09-13 run asked for, but it gates discovery claims post hoc at ~$60/audit with no behavioural delta and no false-reject rate. `ludwig2026shortcutting` and `zhang2026double` are both proposal-grade on merit and blocked on `rules/evaluation.md` (fourth cycle); `hickey2026saltbench` blocked on `budget.yaml`. `bouras2026authority` — the cycle's only peer-reviewed source — held because any form re-adds machinery the 08-23/08-30 cycles concluded was correctly deleted.
+
+Two notes. The queue is still the binding constraint: six proposals were already pending, now eight. And I left the uncommitted `_meta/curate.log` changes from the 09-15 session alone rather than sweeping them into my commit — auto-push worked this time, unlike 09-09 and 09-14.
+{"id":"XnWTNjDGHNiU","time":1789880923,"expires":1789924123,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 2 new system-proposal(s) to review","message":"• concept-import-contract-inert\n• framework-rule-imports-dead\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
