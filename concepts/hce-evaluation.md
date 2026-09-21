@@ -9,6 +9,9 @@ source_papers:
   - kamelhar2026gsar
   - starace2025paperbench
 sources:
+  - "[[literature/papers/zhu2026bad]]"
+  - "[[literature/papers/shao2026language]]"
+  - "[[literature/papers/zhang2026how]]"
   - "[[literature/papers/calboreanu2026iterative]]"
   - "[[literature/papers/edwards2025rexbench]]"
   - "[[literature/papers/li2026apex]]"
@@ -555,6 +558,47 @@ control for "the model decided."** A fixed always-retry rule reproduced
 their exploratory escalation effect at Δ = +0.096, larger than every
 model's, which exposed it as budget arithmetic.
 
+## Task holdout is not protocol holdout
+
+Every defense above varies **tasks**. [[literature/papers/zhu2026bad]] names
+the surface that no task split touches: the benchmark **protocol** — "file
+names, directory layout, metadata, tool aliases, demonstration order,
+feedback format" — which the search set and the test set share by
+construction. A harness optimizer that reads a released benchmark's scores
+and traces can therefore encode a correlation that holds across *every* task,
+and a held-out-task check will confirm it. The separation is formal: with
+∆_TS the excess search-set gain that task holdout detects and ∆_BS the gain
+that disappears under exact shortcut neutralization, "∆TS (H; H0 ) ≈ 0 does
+not imply ∆BS (H; H0 ) ≈ 0."
+
+Their instance is concrete. "58.1% of questions in the benchmark OfficeQA
+Full mention numerical scales such as millions or billions," and in its
+697-document corpus "the next nonblank line after 95.2% of unit statements
+begins a table" — so *read just above the table* is a rule that pays on every
+task, not a per-task cheat. A first-round evolved harness gained +8.16% over
+the initial harness on the released protocol and **−5.10%** once the
+retrieved text was re-nested as table context, with questions, answers,
+documents, tool budgets and scorer all held fixed.
+
+The repair is constructed rather than hidden, and it changes the estimand.
+What is measured is not the score under the variant but the **gain
+destruction**, because a protocol change moves the evolved and the initial
+system together.
+
+Two cautions before importing it. The mechanism is hypothesized, not
+demonstrated: the experiment shows the gain is *fragile* to a protocol
+change, which is weaker than showing the harness used the cue. And the real
+benchmark yields exactly one confirmed counterfactual over three rounds, with
+a certification score of 68.86% against 67.98% for changing nothing; the
+clean result is on a synthetic benchmark where the shortcut was planted by
+the authors. Task holdout's inability to catch it is argued formally and
+shown synthetically — never measured on a released benchmark.
+
+For this project the protocol surface has never been enumerated. For an
+MLE-bench-style loop it would be the competition directory layout, the
+submission filename, the ordering of a data listing, the format of the
+grader's feedback string — none of which a task split varies.
+
 ## Hold the evidence fixed and vary only the framing
 
 [[literature/papers/tripathi2026diagnostic]] adds a second information
@@ -604,6 +648,70 @@ refusal — the axis is now [[concepts/refusal-cost-symmetry]]. A hidden test
 set scored only on violations caught is still gameable from the
 conservative side; the two disciplines compose and neither substitutes for
 the other.
+
+## Identical code is not identical measurement
+
+[[literature/papers/zhang2026double]] gives two ways a score fails to mean
+what it says: the harness owned the decisions, or the scorer never looked at
+the answer. [[literature/papers/shao2026language]] adds a third that both
+audits pass. Run **the same scorer over two populations whose states are
+generated differently** and it measures two different things.
+
+Its case is a human-versus-agent comparison, but the structure is general. In
+DeliData the human final state is a carry-forward tracker holding a
+disengaged participant's last selection, while every agent is force-elicited
+for a final answer. Same code, same 100 groups, and human full consensus is
+"24.0% under corpus carryforward scoring (n = 100), 52.0% under submit-based
+scoring (n = 98), 57.0% under active-only scoring (n = 100), and 51.1% among
+lurker-free groups (n = 45)." A factor of more than two on one fixed dataset,
+with no data changed and no model involved — because about a fifth of
+participants never posted, and under an all-members criterion a single silent
+member with a stale state mechanically breaks unanimity. The rule worth
+importing: the operationalization "is part of the validity argument rather
+than a reporting detail."
+
+Read against this concept's usual setting: any ablation here that compares a
+harness arm which *always* emits a result against one that may decline or
+time out is running this confound. The declining arm's missing cells are
+being scored by a default, and the default is doing the work. Report the rate
+under every reasonable treatment of the missing cells, or the number is not
+interpretable.
+
+The honest counterweight is in the same paper: its **headline** quantity
+(+34.1 / +44.4 points) was adopted after unblinding on the 45-group
+lurker-free subset, while the preregistered confirmatory test was the
+all-groups comparison (+62.0 / +72.0), which the author says mixes
+over-convergence with participation and carry-forward differences.
+Preregistration bought a clean held-out split and did not stop the estimand
+from moving. **Preregistration fixes the analysis, not the choice of what to
+headline.**
+
+**The matched-null arm, as a reusable control.**
+[[literature/papers/zhang2026how]] generalizes this into a rule worth naming:
+**match the intervention on every surface property it is not supposed to be
+working through, and report the matched-null arm against no-intervention as a
+separate number.** Its Sham arm "shuffles words from the domain policy using
+seed 2701, then repeats or truncates the sequence to the Fixed plan's
+whitespace-word count", keeping the wrapper, the injection point and the
+staticness, and changing only whether the words are in order. Two numbers
+come out, not one: the intervention-vs-null contrast (+7.17 pp, 90% interval
+[1.15, 13.36]) and the null-vs-nothing contrast (+1.89 pp, [−3.45, +7.09]).
+The second is what tells you the control is a control and not a handicap, and
+it is the one most ablations omit.
+
+Scope it honestly: Sham is a word salad, so it isolates content from word
+count and packaging, not content from *coherent text in that slot*. The
+authors say so — "This is a shuffled word sequence, not a coherent but
+unhelpful plan." The stronger control, a well-formed but task-irrelevant
+plan, is not run.
+
+The same paper supplies a companion discipline: it declines to attribute its
+verifier's success difference to the verifier ("The terminal verifier acts
+after oracle scoring, so ∆P reflects the arms' executions rather than a gain
+produced by the check"), zeroes the term, and reports that the ordering
+survives. Nothing in this repo has a matched-null arm for any of its own
+instruction artifacts — skills, rules, CLAUDE.md sections — and building one
+costs a word-count-matched scramble.
 
 ## Plant the failure so you do not have to adjudicate it
 

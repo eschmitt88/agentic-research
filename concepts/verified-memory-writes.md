@@ -4,6 +4,7 @@ name: "verified-memory-writes"
 status: growing
 added: "2026-07-07"
 sources:
+  - "[[literature/papers/zhang2026agora]]"
   - "[[literature/papers/yang2026trustmem]]"
   - "[[literature/posts/theaioperator-io-rebuilt-karpathy-llm-wiki]]"
   - "[[literature/papers/chhikara2025mem0]]"
@@ -391,6 +392,45 @@ chhikara2025mem0 documents that contradicted memories are deleted via its
 UPDATE/DELETE decisions; measured behavior was retention with an expiry
 marker (direct insertion) and no revocation at all under indirect
 insertion. A documented write gate is not a measured one.
+
+## Revocation without rewriting, and a verification tag that caught nothing
+
+The revocation section above leaves a design question open: how do you
+supersede a durable claim without either rewriting history or laundering the
+old record back in? [[literature/papers/zhang2026agora]] answers it
+structurally. Verification is a first-class typed contribution with hard
+rules — exactly one target, never one's own work — and verdicts are
+*replaceable without erasure*: "If a verifier changes its verdict on a
+target, the newest verdict replaces the old one's effect on the score, and
+both commits stay in the history." Supersession happens on the derived read
+path; the append-only write path is never edited. That needs a derived index,
+not a deletion protocol.
+
+Two further write-gate features are worth stealing. The evidence score counts
+only what *other accounts* built on a contribution, an explicit self-citation
+exclusion; and the `endorsed` tag is weighted **0** — visible, but excluded
+from fitness. Approval is deliberately readable and structurally barred from
+becoming evidence. The authors scope it themselves: "The score is not a truth
+signal."
+
+**The efficacy result is null, and it is the more important half.** Over
+1,703 contributions the community posted 165 verifications covering 95
+distinct targets, and "Each names its target, each verifier differs from the
+author, and none reports a failure." Zero negative verdicts means
+true-positive and false-negative rates are both unestimated — nothing was
+caught. The test was easy by construction: submissions are seeded and "Two
+runs of the same code on the same hardware are bit-identical," so a
+*confirmed* verdict largely certifies that a deterministic function is
+deterministic. It does not test whether the description's claim is true,
+whether the named change caused the delta, or whether anything generalizes.
+Coverage was partial: "Forty of the winner's 144 scored ancestors were
+independently reproduced" (about 28%). The paper's own appendix concedes the
+general form: "A verdict without these artifacts is a coordination hint
+rather than strong validation evidence."
+
+The real audit in that paper was a *human* check after the fact, not the
+verification tag. Read Agora as a well-designed write-side type system with
+an unmeasured gate — evidence about shape, not efficacy.
 
 ## Portability: the same gate, one trust boundary further out
 

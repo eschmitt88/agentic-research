@@ -10,6 +10,7 @@ source_papers:
   - du2026memory
   - khan2026token
 sources:
+  - "[[literature/papers/fan2026empirical]]"
   - "[[literature/papers/li2026complexmcp]]"
   - "[[literature/papers/liu2026dive]]"
   - "[[literature/papers/pham2026memorai]]"
@@ -464,6 +465,37 @@ is AgenticSTS's contract in its simplest form: nothing crosses a tick
 boundary unless a store holds it. The evidence is a single anecdote, but it
 bears directly on any practice of monitoring long jobs from one persistent
 session.
+
+## At a generous window the policy is a liveness device, not a selector
+
+[[literature/papers/fan2026empirical]] adds a blunt fourth reading, with a
+176-setting sweep behind it: **most of what a context-management policy buys
+is not dying.** The managed-minus-unmanaged success gap collapses "from 35.7
+to 15.9, 5.5, and 2.7 percentage points on SWE-Bench" as the window grows,
+tracking overflow one-for-one — "the model-averaged T0 overflow rate falls
+from 78.7% to 8.7% on SWE-Bench and from 61.0% to 12.1% on Terminal-Bench,
+while all managed tiers have zero overflow failures throughout." The
+trajectory analysis finds no behavioural change to explain the rest:
+management "primarily extends execution trajectories without substantially
+altering agent behavior."
+
+Be precise about what this licenses. All four managed tiers share the same
+selection *target* — preamble and a recent window pinned verbatim, only the
+middle compacted — and there is no random-eviction arm, so the common
+anchor-plus-recency rule is never itself measured. The supported statement is
+narrower than "selection doesn't matter": **given a sane anchor-plus-recency
+rule, the marginal return on a cleverer middle-region policy is near zero,
+and the return on not overflowing is large.**
+
+**One concrete recommendation: order the mechanisms cheap before expensive.**
+The tier that elides at a soft threshold and invokes the LLM summarizer only
+above a hard one matches every other tier on accuracy "with the lowest cost
+in seven of eight model–benchmark panels", because early rule-based elision
+keeps the metered summarizer from firing.
+
+A caution on that cost table: the unmanaged arm's low cost at tight budgets
+is the cost of dying early. No cost-per-task figure is interpretable without
+its success rate beside it.
 
 ## Open questions
 

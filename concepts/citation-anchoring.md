@@ -7,6 +7,7 @@ source_papers:
   - mitchener2025kosmos
   - kamelhar2026gsar
 sources:
+  - "[[literature/papers/zhang2026agora]]"
   - "[[literature/papers/mitchener2025kosmos]]"
   - "[[literature/papers/kamelhar2026gsar]]"
   - "[[literature/papers/xu2026researchclawbench]]"
@@ -177,6 +178,33 @@ tiers IV–VIII precisely *because* no executable or formal oracle is available
 for their task. Anchoring is the best check available for prose claims, which
 is exactly why it should be enforced mechanically rather than requested
 politely.
+
+## The anchor that cannot rot: a content-addressed commit
+
+This concept's first open question is anchor rot — `metrics.json` anchors are
+stable, `train.py:42-58` anchors decay as code changes.
+[[literature/papers/zhang2026agora]] is the design where the question does
+not arise. Every claim is a commit and every anchor a canonical hash, so an
+anchor resolves to exactly the bytes it was written against, forever, or it
+does not resolve at all. That is strictly stronger than a wikilink, which
+`/lint` can only confirm points at *a* file, not at the file's state when the
+claim was made.
+
+Two mechanisms make it robust against a motivated author. Identity is minted
+by the *server*, not the participant, so provenance cannot be forged. And the
+whole derived index is rebuildable: "Git is the only state the system depends
+on."
+
+The paper also supplies a worked instance of resolve-every-anchor at scale:
+"We treated the agents' descriptions as claims to check against the artifacts
+they point to, not as evidence in themselves," and "no number here is taken
+from an agent's summary or from the leaderboard display."
+
+The caution that travels with it: content-addressing makes an anchor
+*resolvable*, not *relevant*. That same paper's 165 verification
+contributions all resolve and all pass, and none of them caught anything. A
+non-rotting anchor raises the ceiling on what a mechanical check can do; it
+does not raise the floor on what a lazy check does do.
 
 ## Open questions
 

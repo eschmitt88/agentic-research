@@ -4,6 +4,7 @@ name: "refusal-cost-symmetry"
 status: growing
 added: "2026-08-18"
 sources:
+  - "[[literature/papers/zhang2026how]]"
   - "[[literature/papers/tripathi2026diagnostic]]"
   - "[[literature/papers/ray2026what]]"
   - "[[literature/papers/ge2026governance]]"
@@ -204,6 +205,36 @@ paired-control fix above before `/elevate`'s proposal is implemented —
 they are not mutually exclusive, but a panel-routing policy is a
 different (and in principle cheaper, since it needs no dedicated control
 set) way to buy the same robustness the paired control targets.
+
+## The asymmetric weighting, stated as a form and shown to reorder the answer
+
+[[literature/papers/zhang2026how]] is the first source here to write the
+weighting down: an incremental net value combining the value of a verified
+success, the loss per erroneous acceptance, and the added inference cost,
+with a derivable break-even liability. That is taneja2026scan's move carried
+one step further — the ratio is shown to **reorder** the answer. In a
+high-risk stratum a standalone terminal verifier overtakes a planning
+intervention at one liability level and the full stack overtakes the verifier
+at a much higher one (both read off a log-scale figure from two frozen grid
+points, and described in the caption as "descriptive"). "Which component
+matters more depends on the loss assigned to erroneous acceptance."
+
+**The form is symmetric in name and one-sided in arithmetic.** The liability
+term prices only false *passes*. The withheld-correct episodes — 17% of
+oracle-correct Retail episodes — appear in the outcome cross-tabulation and
+nowhere in the net-value expression. The paper concedes it: "Plan authoring,
+integration, maintenance, human review, and the opportunity cost of
+withholding correct outcomes require additional accounting." So this supplies
+the *shape* of the principled ratio this concept asks for and still leaves
+unpriced the term this concept exists to demand.
+
+**The false-reject rate is a property of the domain, not of the checker.**
+The same verifier — same model, same prompt, same truncation budget — rejects
+61% of oracle-invalid Retail episodes while withholding 17% of correct ones,
+and in Airline "rejects 25 of 41 oracle-invalid episodes (61%) and seven of
+17 oracle-correct episodes (41%)." Identical catch rate to the point, 2.4x
+the collateral cost. Any false-positive rate imported from a paper is a
+number about that paper's domain.
 
 ## Connections
 

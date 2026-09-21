@@ -6,6 +6,7 @@ added: "2026-04-26"
 source_papers:
   - chen2026toward
 sources:
+  - "[[literature/papers/zhang2026agora]]"
   - "[[literature/papers/chen2026toward]]"
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xin2026eurekagent]]"
@@ -148,6 +149,35 @@ detection, Git worktree isolation, and database observation — and only the
 last two are ablated. So "the harness matters" is well supported and *which
 part* is not. Read alongside philippov2026glite, which makes the same
 argument at research-campaign scale with a different mechanism.
+
+## The bus without a filesystem: a server-mediated content-addressed DAG
+
+[[literature/papers/zhang2026agora]] drops the shared filesystem entirely.
+Thirteen workers coordinated for twelve days with no shared mount — "Git is
+the only state the system depends on," and participants "publish through a
+CLI or HTTP API and never share a filesystem, model, or conversation." The
+bus is a remote append-only commit DAG; the workspace map this concept tells
+agents to re-read is replaced by a derived index returning leaves, frontier,
+unverified results, contested verifications and open hypotheses.
+
+Three mechanisms transfer directly:
+
+1. **Server-minted provenance.** Identity and timestamp are produced by the
+   server, not the writer — a participant can publish but cannot forge when
+   or as whom.
+2. **Two write paths, one node type.** Metadata-only work takes a light path,
+   code-bearing work a heavy one, and "Both paths yield the same kind of
+   node, so lineage and queries do not care which was used." The cheap write
+   is not second-class.
+3. **The canonical view is derived, never hand-maintained.** The index and
+   every figure are rebuilt from Git. Honest residue: project metadata and
+   authentication state still need ordinary database backups.
+
+Evidential weight is low and should be stated as such: n = 1, no ablation of
+the bus, no arm that removed it. Unlike chen2026toward's File-as-Bus
+ablation, nothing here separates the substrate's contribution from the
+brief's. Cite it for the *shape* of a bus that crosses machines and trust
+boundaries, not as a second attestation of the ablation.
 
 ## Open questions
 

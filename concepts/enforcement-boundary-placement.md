@@ -4,6 +4,8 @@ name: "enforcement-boundary-placement"
 status: growing
 added: "2026-09-01"
 sources:
+  - "[[literature/papers/nepal2026faithful]]"
+  - "[[literature/papers/zhu2026bad]]"
   - "[[literature/papers/leong2026recognition]]"
   - "[[literature/papers/zhan2026auto]]"
   - "[[literature/papers/guo2026when]]"
@@ -95,7 +97,7 @@ measurement motivation rather than a security one.
 
 ## The attested placements
 
-Fourteen sources, all agreeing enforcement leaves the model, disagreeing on
+Sixteen sources, all agreeing enforcement leaves the model, disagreeing on
 where it goes:
 
 | Placement | Source | Mechanism |
@@ -114,6 +116,8 @@ where it goes:
 | At the action, per command, operator-side | [[literature/papers/taneja2026scan]] | Deterministic resolver maps each command string to a consequence class without reading the skill's docs; a (resource, class) ledger decides held / graduated / never-graduates |
 | In the evaluation infrastructure's orchestration points | [[literature/papers/zheng2026benchshield]] | Host probes at setup, handoff, verify, reward and release emit authority-bearing events; a pure-function checker over a sealed evidence bundle issues the run verdict |
 | Nowhere — the negative case | [[literature/papers/paglieri2026case]] | A system prompt forbade cheating and was "not actively enforced beyond the autograder check"; 34 of 71 conjectures fell in 27 minutes |
+| Nowhere — the cooperative negative case | [[literature/papers/nepal2026faithful]] | A dispositional rule in the system prompt, no attacker, a cooperative model: "gently challenging" ran at 1.2% of turns where the prompt asked for it and 1.1% where it was never mentioned |
+| Host-side, before the untrusted proposal executes | [[literature/papers/zhu2026bad]] | Seven Boolean invariants over a subagent-generated benchmark transformation, run before any rollout; the proposing agent's natural-language validity claim is recorded but never substituted |
 
 Two properties recur across the successful placements and are the
 candidate design rules:
@@ -180,6 +184,24 @@ candidate design rules:
    grants authority up to the ceiling, so the delegation message carries
    influence across a boundary that authority cannot cross.
 
+**The constrained component can be one we spawned on purpose.**
+[[literature/papers/zhu2026bad]] supplies a threat model this table did not
+have: the constrained component is a subagent we launched deliberately and
+instructed to attack our own measurement. Placement still decides whether the
+attack is honest. The Challenger gets read-only access to the two harnesses
+and to its own discovery split; the validity firewall runs host-side, before
+any rollout, over a typed specification restricted to an allowlisted protocol
+API. Both design rules hold. The check is payload-blind — it executes the
+transformation and compares typed records, and never reads the proposal's
+argument for why it is valid, so "The Challenger's natural-language validity
+claims are retained in the audit record but are not used as substitutes for
+these executable checks." And the constrained component cannot reach the
+constraining one. The paper also supplies a weak negative for the opposite
+placement: the baseline's "Generalization Gate" is a rule stated once in the
+meta-agent's system prompt, and on this benchmark it finished below the
+unoptimized harness (64.04% vs 67.98%). Weak, because that baseline is these
+authors' re-implementation on a domain its originators never evaluated.
+
 **A placement also fixes which predicate can be expressed.**
 [[literature/papers/taneja2026scan]] shows that registry time and action time are
 not two positions for the same check. A publish-time scanner computes properties
@@ -204,6 +226,38 @@ a per-command classifier resolves staged fetch→chmod→run at 0%, because the
 property exists only across commands. The measured gate is the authors' own
 product, and its hook sits within the governed agent's reach, so it does not meet
 rule 2.
+
+**And placement-in-the-prompt fixes nothing whose predicate is not
+computable from the output.** [[literature/papers/nepal2026faithful]] audits
+17,930 turns of a deployed GPT-4o reflection agent against its own system
+prompt, across two prompts and two samples, with human-validated LLM
+annotators. The split is by predicate, not by emphasis: "every rule the agent
+followed was one it could be graded on, and no rule about how to behave was
+followed." Told not to be overly agreeable, "it validated in 51.7% of turns";
+told to ask gently challenging follow-ups, "The agent challenged in 1.2% of
+its turns, and more than half of participants never received a single
+challenging turn." The controlled datum is a **null**: the challenge
+instruction was present in Study 2's prompt and absent from Study 1's, and
+the rate was 1.1% against 1.2%. Because the finding is an identity rather
+than a difference, the study's prompt-and-population confound cannot
+manufacture it.
+
+Two things this adds. First, it is the **cooperative** form of the
+paglieri2026case row: no attacker, no incentive to defect, a well-intentioned
+model, and the constraint still does nothing. The negative case is not a
+consequence of adversarial pressure; it is the default. Second, the violation
+**emits no signal** — "such a break leaves no visible trace." A placement
+that cannot be audited is worse than one that fails loudly, because nothing
+accumulates evidence against it.
+
+The counterexample bounds the rule, and the authors state it themselves:
+"being gradable did not guarantee a rule was followed." Study 1's countable
+"one question at a time" left "about 40% of turns stacked multiple questions
+in both studies," and its at-least-fifteen-responses rule was met by 7% of
+sessions. So checkability is a necessary condition on the *predicate*, not a
+sufficient condition on the *placement*: it buys detectability, not
+compliance. That is an argument for moving the check out of the prompt, not
+for rewording it.
 
 ## Why this repository has the question and not the answer
 

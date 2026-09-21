@@ -10,6 +10,7 @@ source_papers:
   - romeraparedes2024funsearch
   - qu2026coral
 sources:
+  - "[[literature/papers/zhu2026bad]]"
   - "[[literature/papers/assumpcao2025codeevolve]]"
   - "[[literature/papers/du2026cvevolve]]"
   - "[[literature/papers/du2026mlevolve]]"
@@ -101,6 +102,24 @@ doesn't. Expansion breadth N is only real breadth if the N children
 escape the operator's attractor; phrasing the expansion prompt for
 diversity, and checking the children actually differ structurally,
 is load-bearing.
+
+The archive machinery can also run in the *other* direction.
+[[literature/papers/zhu2026bad]] maintains an archive that **prunes** the
+population rather than diversifying it: each entry is a validity-checked
+adversarial test, and a candidate is struck out if it loses more than a
+tolerance of its advantage over the starting point under any archived test.
+The trade is measured. After one test entered the archive, all three
+round-two candidates — at +15.31%, +9.18% and +15.31% search-set gain —
+became infeasible and the search fell back to its starting harness; round
+three adopted a candidate worth only +4.08%. That eleven-point sacrifice is
+what transferred: on a separate corpus the constrained system "scores 30.37%,
+compared with 26.30% for HarnessCompass" and 27.04% for the unoptimized
+baseline. The adversary cost 2.47x as many search attempts and 2.43x as many
+tokens.
+
+This bears on any loop here that selects proposals against a fitness signal —
+including `/elevate`, which ranks proposals with nothing sealed and no
+adversary generating constraints.
 
 ## Implementation guidance
 

@@ -9,6 +9,7 @@ source_papers:
   - kamelhar2026gsar
   - khan2026token
 sources:
+  - "[[literature/papers/zhang2026agora]]"
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/kamelhar2026gsar]]"
@@ -460,6 +461,37 @@ Note the tension with the shape argument above: this is the ceiling that is
 analyzable. It earns its place on behavioral grounds while remaining the
 weakest link formally, which is the case for pairing it with a monotone
 hard cycle cap rather than trusting it alone.
+
+**A no-improvement ceiling needs a noise floor, or it will never fire.**
+[[literature/papers/zhang2026agora]] runs the case where no ceiling existed
+and the fitness comparison had no tolerance. Thirteen workers spent five days
+refining one recipe by 1e-5 bits-per-byte per step, each reading the same
+leaderboard. The paper's own measurement noise is two orders of magnitude
+larger — cross-hardware reproductions of the same code differ by up to
+1.3e-3 bpb — and the authors flag the endpoint: the last recorded change
+"moved the score by 9 x 10-6 , below cross-hardware variation," so the number
+to trust is "the improvement from 3.39 to about 1.90 rather than the final
+decimal places." Because the leaderboard compared with a bare `>`, every
+sub-noise delta registered as a new best and reset the stall clock that a
+`max_consecutive_no_improvement` guard would have been counting.
+
+The design rule: **`max_consecutive_no_improvement` must compare against a
+measured run-to-run spread, not against zero.** A "new best" inside the
+evaluator's own reproduction tolerance is a coin flip, and a loop that treats
+it as progress is formally incapable of reaching its own halt condition. The
+cheapest instrument is the one that paper already had and did not use for
+this purpose: its reproduction verdicts give an empirical noise band for
+free. This is the counterpart of the hickey2026saltbench result — there a cap
+corrupts the number beside it; here an *absent* floor lets the number disable
+the cap.
+
+The scale of what the stall cost: 18 scored contributions "account for about
+98% of the total reduction," leaving 1,106 further scored results to find the
+next 0.03.
+
+**This repo is exposed.** `budget.yaml` sets `max_consecutive_no_improvement:
+3` with no tolerance term anywhere, so the same bare-`>` failure applies to
+any `/iterate` loop scored on a noisy metric.
 
 ## Inside a measurement, a ceiling is a censoring instrument
 

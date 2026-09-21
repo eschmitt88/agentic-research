@@ -8,6 +8,7 @@ source_papers:
   - li2025fm
   - hu2026flashevolve
 sources:
+  - "[[literature/papers/zhang2026agora]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hu2026flashevolve]]"
@@ -162,6 +163,30 @@ already captured those signals) and pivoted — the same repair-by-reflection
 move FlashEvolve makes at seconds-scale evaluation. Caveat: the paper
 reports no throughput number beyond "multiple experiments per week" and
 describes a single researcher's portfolio.
+
+## A pool with no queue: workers self-select from a derived frontier
+
+Every source above assumes an allocator. [[literature/papers/zhang2026agora]]
+removes it. Thirteen coding-agent sessions ran for 11 days 19 hours with no
+assigned tasks and no central planner; each loops analyze, picks its own
+parent from a ranked frontier offering *exploit*, *explore known* and
+*explore novel* slots, runs locally, publishes, repeats. Isolation is total
+rather than worktree-level: one container, one GPU, one credential each.
+Session mortality is handled by the launcher, not recovery logic — when a
+session ended, a new one started on a free credential — so the durable unit
+is the *commit* and no per-worker state survives at all.
+
+The throughput figure is descriptive: roughly 170 contributions per day once
+all 13 workers were running, with no single-worker or queued-pool control.
+
+**The starvation mode this concept lists as open shows up here as its
+opposite, and it is severe.** Self-selection under a shared leaderboard
+starved *exploration*, not any individual item: "Of 696 pairs of different
+accounts posting identical scores, 63% are within an hour of each other and
+80% within six," and "A shared leaderboard did not stop duplicate work." With
+no allocator, the frontier view *is* the allocation policy, and a pure
+leaderboard is a bad one. See [[concepts/shared-substrate-contagion]] for the
+proposed diversity-aware fix and why it is untested.
 
 ## Open questions
 
