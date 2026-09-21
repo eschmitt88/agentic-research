@@ -440,3 +440,33 @@ I added a `## 2026-09-14` entry to NOTES.md covering 09-08 → 09-14, then commi
 - **Extra file in the commit:** it also includes the `_meta/digest.log` change that was already uncommitted (the 09-14 digest's record). Last week's rollup did the same with that file.
 - **Auto-push is failing:** GitHub rejected the automatic push on 09-09 and again on 09-14 with "check access rights", so the 09-14 session commit hadn't gone out. My push worked and sent that commit too, but the automatic push needs looking at.
 - **Sources:** the `journal/` files only list when sessions ended, so the content came from `_meta/log.md` and the curate, elevate and digest logs.
+Digest complete and pushed. Three commits, remote clean.
+
+## What ran
+
+**Sweep** (window 2026-09-14 → 09-21): eight `submittedDate`-bounded arXiv queries merged to **1,005 unique in-window records**, deduped against the graph's 368 IDs — zero overlap. 20 ranked candidates written across the five active fronts.
+
+**Auto-advance** at `go/high` in an `agency: max` repo: top 6 fetched and ingested. **Papers 185 → 191, 18 concepts touched, concept count held at 35** — no agent argued for seeding one.
+
+**`/promote-moc` declined.** Concept set is byte-identical to `67d5f3f`, 35/35 mapped. Logged as a single line per the skill's decline cap, no commit of its own.
+
+**Candidates file stays in `raw/_candidates/`.** 14 of 20 are uncurated; archiving it to `_done/` would understate the backlog.
+
+## The substance: my rankings were wrong in four places
+
+I wrote the digest entries from abstracts; the agents read full PDFs and overturned them. Worth stating plainly because the pattern is the thing to watch:
+
+- **Agora does not supply a worked countermeasure** for `shared-substrate-contagion` — false on both halves. The diversity rule was deployed mid-run by humans at a stall, never controlled, and the community herded for five days *while Agora ran as designed*. I lifted that phrasing from the paper's own abstract, which its later sections walk back. Its per-claim verification also caught nothing: 165 verifications, zero failures, on seeded runs that are bit-identical by construction.
+- **Only half of `shao2026language` is contagion.** Chat 31.0% → 87.0% when the channel opens; reasoner is already **91.0% with peers fully hidden** — correlated priors. Filed as one sighting plus one explicit non-sighting, with the no-channel arm recorded as the instrument that tells them apart. My `zheng2026engineering` mechanism link was an overclaim.
+- **`fan2026empirical` challenges `lossless-context-offload`, not `context-proprioception`** — and its recall null is confounded, since a coding workspace is itself a lossless store. Recorded as a scope condition on re-derivability, which leaves this repo's immutable `raw/` regime untested.
+- **Two papers, two overclaimed discharges** of `evidence-gated-completion`'s four-cycle hold. It narrows — the false-rejection rate is no longer the blocker — but what's still missing is a gate whose refusal *changes what happens next*.
+
+Every headline number was grep-verified against `pdftotext` before any concept edit landed. Two apparent quote failures were curly apostrophes. One paper has a font-damaged table; those numbers are confined to its literature note, flagged twice, and feed no concept edit.
+
+## Two things for you
+
+**Directly actionable:** `budget.yaml` sets `max_consecutive_no_improvement: 3` with no tolerance term. Agora shows a bare `>` comparison against a noisy metric resets the stall clock indefinitely — five days spent chasing 1e-5 bpb when cross-hardware noise is 1.3e-3. Any `/iterate` loop here scored on a noisy metric has the same defect. I recorded it in `budget-as-ceiling` but did not change the config.
+
+**Closed:** auto-push works again (it also carried up two stranded commits from 09-20), and the 09-14 backlog was genuinely cleared by the 09-15 curate pass.
+
+I left `_meta/elevate.log` uncommitted — 33 lines of in-flight work from the 09-20 session, following that session's own precedent with `curate.log`. And I have not updated `NOTES.md`; that's `/wrap`'s job.

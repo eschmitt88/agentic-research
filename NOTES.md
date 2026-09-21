@@ -612,3 +612,47 @@ Weekly rollup for 2026-09-08 → 09-14 (sourced from journal/ + _meta/log.md).
   Fix the chen2026fresh and he2026swegate notes, which describe /lint wrongly.
 - Still open: `shared-substrate-contagion` sibling watch; /propose's first
   autonomous agency-branch write; deferred ingest/digest prose cuts.
+
+## 2026-09-21
+
+Weekly rollup for 2026-09-15 → 09-21 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 09-15 /curate closed the 09-14 backlog: 14 items → 11 ingested, 3 declined.
+  Papers 174 → 185, concepts held at 35; 23 gained sources, 21 got prose
+  (largest: `hce-evaluation`, `budget-as-ceiling`, `enforcement-boundary-placement`).
+- 09-20 /elevate: 2 proposals from 12 considered — `framework-rule-imports-dead`,
+  `concept-import-contract-inert` — both resting on a direct measurement of the
+  harness rather than a reading of the literature.
+- 09-21 digest → auto-ingest (go/high): 1,005 unique in-window arXiv records, 0
+  overlap with the graph's 368 IDs, top 6 of 20 ingested. Papers 185 → 191, 18
+  concepts touched, count still 35. /curate resolved those 6; 14 stay uncurated.
+- /promote-moc declined 09-15 and 09-21 (concept set byte-identical to `67d5f3f`,
+  35/35 mapped). Auto-push works again, carrying two stranded 09-20 commits.
+
+### Findings
+- A project `CLAUDE.md` `@` import resolves **only inside the project tree** —
+  `@~/...`, absolute out-of-tree, in-tree symlink and `--add-dir` all fail. So the
+  HCE and agency rules have been in no project session's context since 08-01, this
+  one included, and `used_by:` records a declaration, not a read (4 concepts, 1
+  downstream repo). Closes the 09-14 open item; re-spelling the directive cannot
+  fix it, which corrects the `kapner2026scanning` note's diagnosis.
+- Full PDFs overturned the 09-21 digest's own abstract-based rankings four times
+  (Agora supplies no worked countermeasure; only the chat half of `shao2026language`
+  is contagion; `fan2026empirical` hits `lossless-context-offload` with a
+  domain-confounded null; `evidence-gated-completion`'s hold narrows, not clears).
+- `max_consecutive_no_improvement: 3` has no tolerance term — a bare `>` against a
+  noisy metric resets the stall clock indefinitely (Agora: 5 days chasing 1e-5 bpb
+  under 1.3e-3 noise). Recorded in `budget-as-ceiling`; config unchanged.
+- Two exposures from SaltBench/Ludwig: the file-read tool sat outside the sandbox in
+  every scored Claude Code episode, and a worktree shares its repo's branches, so
+  `git log --all` inside one lists sibling experiments.
+
+### Next
+- Eight proposals undecided (3× 08-02, 08-16, 08-23, 09-06, 2× 09-20). The queue,
+  not the evidence supply, is the binding constraint — fourth cycle running.
+- Curate the 14 leftover items in `raw/_candidates/2026-09-21-digest.md`.
+- Decide the tolerance term for `max_consecutive_no_improvement`; check downstream
+  projects for the worktree `git log --all` exposure.
+- Still open: `shared-substrate-contagion` sibling watch; /propose's first
+  autonomous agency-branch write; deferred ingest/digest prose cuts.
