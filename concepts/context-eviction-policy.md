@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/kerestecioglu2026human]]"
   - "[[literature/papers/lodha2026less]]"
   - "[[literature/papers/zhou2026ready]]"
+  - "[[literature/papers/zhang2026correct]]"
   - "[[literature/repos/nousresearch-hermes-agent]]"
   - "[[literature/repos/hkuds-openharness]]"
   - "[[literature/posts/paddo-dev-claude-code-leak-harness-exposed]]"
@@ -496,6 +497,48 @@ keeps the metered summarizer from firing.
 A caution on that cost table: the unmanaged arm's low cost at tight budgets
 is the cost of dying early. No cost-per-task figure is interpretable without
 its success rate beside it.
+
+## Sufficiency is a property of the future, not of the current query
+
+Every policy above is audited against the query in front of it.
+[[literature/papers/zhang2026correct]] holds that answer fixed and varies
+what comes *next*, and the two come apart inside the same system. Its
+paired-history audit builds pairs that share a current answer and a future
+update but require different subsequent answers, so a retained state can be
+**correct now and insufficient later**.
+
+The ablation is the contribution. On DeepSeek, frontier and latest-only both
+score 96/96 on the current branch while reveal accuracy falls 96/96 → 32/96;
+on GLM, latest-only is *better* on the current branch (84/96 vs 78/96) and
+far worse after the update (23/96 vs 82/96). So **current-answer accuracy can
+actively select the less update-capable policy** — it is not merely a weak
+proxy for sufficiency, it is sometimes an inverted one. That complements
+[[literature/papers/hao2026selfgc]]'s finding that optimizing the prune rate
+picks the wrong operating point: here the *scoring target*, not the tuning
+knob, is what misleads.
+
+Scope this tightly. The study is a pilot — 24 synthetic pairs, four per
+mechanism family, with mechanisms the author generated. Quote the ablation,
+never the ranking: the 96/96 reveal contrast bundles delivery and schema
+effects, GLM's deficit is a pure wrapper artifact (82/96 → 96/96 under a bare
+-map rule), and frontier does **not** beat raw history (DeepSeek joint 45/48
+against 46/48 for both archives).
+
+Two further cautions the paper supplies against itself. Its reported
+**identification intervals are not confidence intervals** — they are
+partial-identification bounds over unresolved outcomes inside a fixed sample,
+carrying no sampling-error information and licensing no inference to new
+histories. One of them, the GLM reveal interval, has width exactly zero; the
+widest is one ambiguous block (1/48). And its winning selector broke priority
+ties lexicographically by identifier: under consistent renaming,
+late-reference adequacy collapses 8/8 → 94/320. The label-equivariant repair
+retains only 2/8 at identity and needs 4× the pilot's byte cap to recover.
+The author's own conclusion is the one to carry — "eliminating a naming
+shortcut does not solve unknown future relevance."
+
+**What to do with it here:** treat it as an evaluation design, not a policy
+recommendation. Before crediting any eviction rule, run one paired history
+where the future update differs and the current answer does not.
 
 ## Open questions
 

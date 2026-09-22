@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/song2026string]]"
   - "[[literature/papers/goyal2026does]]"
   - "[[literature/papers/shen2026what]]"
+  - "[[literature/papers/zhang2026correct]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -278,6 +279,26 @@ workspace can regenerate it, the address is redundant machinery. Where it
 cannot — a completed experiment's stdout, a web capture, a non-deterministic
 log, this project's own immutable `raw/` corpus — the invariant stands
 untested by fan2026empirical. Ask the re-derivability question first.
+
+## A counting bound, and the archive that beats the summary
+
+[[literature/papers/zhang2026correct]] supplies this concept's argument in
+two forms. The bound: exact answers to any of N independently chosen values
+over an alphabet of size d require at least `b ≥ N·log₂d` bits (its
+Observation 3) — a summary sized below that cannot be lossless for an
+unknown future query, whatever its selection rule.
+
+The matching empirical split is the useful half. Under 40 consistent
+identifier renamings, a bounded strict memory retains the late-reference
+value in only **94/320** instances (78/320 for the label-equivariant repair),
+while the dependency-closure **archive resolves all of them** — in the
+author's words, "because it can access raw history after the new reference
+appears." That is precisely this concept's claim: the archive wins not by
+selecting better but by remaining addressable *after* the query that needed
+the address is known.
+
+Caveat: four source pairs in that family, synthetic generator, pilot scale.
+Directionally supporting, not decisive.
 
 ## Open questions
 

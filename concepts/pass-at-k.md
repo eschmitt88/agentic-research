@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/yoon2026arcticswarm]]"
   - "[[literature/papers/ning2026scores]]"
   - "[[literature/papers/zhang2026double]]"
+  - "[[literature/papers/kim2026are]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -180,6 +181,35 @@ by the specification, not by the system**: the paper pins one benchmark row
 to one goal precisely so a system cannot improve its number by
 re-decomposing the work, the same defense pass@k needs against redefining
 what counts as an attempt.
+
+## Latent complementarity is abundant; selection is the scarce resource
+
+This concept's case for k > 1 is that a single sample understates what a
+method can do. [[literature/papers/kim2026are]] measures the gap between that
+latent capacity and what a selector actually harvests, and the gap is the
+whole story. Over 31,900 subsets of 30 models on MMLU-Pro, **oracle gain is
+positive in 100% of subsets on both benchmarks** — some member is right
+essentially always — **yet unweighted majority vote beats the strongest
+member in only 9.98% of canonical size-3 subsets** (18.71% ±3.70 when the
+best member is picked on held-out items). The descriptive oracle-capture
+ratio is *negative*: −131.7% mean, −120.6% pooled.
+
+Read precisely, this bounds the **rule**, not selection in general — majority
+vote over answer labels is the weakest selector available, and the setting is
+zero-shot MCQ with frozen correctness matrices, not agent trajectories. But
+the shape generalizes: the same author's companion result finds that
+"iteration produces better candidates that a reference-free LLM judge largely
+fails to select" (arXiv:2607.13347).
+
+**The operational point for this project.** pass@k with an oracle and pass@k
+with a real selector are different quantities, and the first is close to
+uninformative about the second — here they differ by roughly an order of
+magnitude in how often the ensemble wins. A reported pass@k that is silent on
+how the winning run would have been *chosen* without the answer key is
+reporting the oracle. Where this project cares about k (medal rates,
+best-of-k experiment selection), the selector belongs in the specification
+alongside k, and [[concepts/programmable-evaluator-oracle]] is the component
+that has to carry it.
 
 ## Open questions
 

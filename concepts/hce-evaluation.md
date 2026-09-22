@@ -64,6 +64,7 @@ sources:
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/zhang2026double]]"
+  - "[[literature/papers/kim2026are]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -860,6 +861,25 @@ at p ≈ 0.047 recover with probability ~62%. Second, the paper comes from
 the same research line as ning2026closedloop (three shared authors), so the
 certify-after-search thread in this concept rests on one group, not two
 independent ones.
+
+## Check the algebra before crediting a residual
+
+A construct-validity failure distinct from every one above, because it needs
+no data to detect: **a metric family that presents as several independent
+signals can be one signal by construction.**
+[[literature/papers/kim2026are]] shows three standard ensemble-diversity
+statistics are algebraically linked — `strict = disagreement + double-fault`
+and `1 − Acc = DoubleFault + ½·Disagreement` are exact identities. So any
+raw-space linear control that includes mean accuracy forces
+`DoubleFault_res = −½·Disagreement_res` at Pearson **r = −1.000**, and a
+joint regression on all three is rank-deficient. A paper reporting those
+residuals as converging evidence would be reporting one number three times.
+
+The discipline transfers to any scorecard this project reads or writes: when
+several metrics are defined over the same confusion counts, derive the
+identities before treating agreement among them as corroboration. Verified
+identities are cheaper than an ablation and catch a failure an ablation
+cannot.
 
 ## Open questions
 

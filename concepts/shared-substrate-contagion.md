@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/kapner2026scanning]]"
   - "[[literature/papers/gao2026agentic]]"
   - "[[literature/papers/taneja2026scan]]"
+  - "[[literature/papers/kim2026are]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -189,6 +190,31 @@ and **not** another defect-propagation sighting. And the belief anchor leaks
 reasoner half cannot be cleanly separated from the model simply solving the
 task. The chat half is protected from that objection by the 31.0% peer-hidden
 floor; the reasoner half is not.
+
+### The no-channel limit: even with no channel, agreement tracks capability
+
+[[literature/papers/kim2026are]] is the limiting case of that control — 30
+models answering MCQ independently, **no channel at all** — and it shows the
+baseline shao demands is not zero agreement. Across 31,900 subsets, pairwise
+agreement statistics are 84–99% explained by ranked best-plus-mean member
+accuracy (98.9%/98.5% strict, 92.2%/88.5% disagreement, 85.7%/83.8%
+double-fault; strict against 1 − mean accuracy ρ = +0.991/+0.988).
+
+The consequence for this concept is a warning about its *instrument*, not its
+claim: **measuring pool disagreement to argue that a substrate is herding
+agents is mostly reading an accuracy gauge.** Any future attempt to quantify
+contagion here by comparing diversity statistics across gated and ungated
+arms must control for member capability first, or the capability difference
+will be reported as a contagion effect. Corollary for
+[[literature/papers/zheng2026engineering]]: swapping model family to buy
+independence buys less the stronger both models are, which is the mechanism
+behind its 11.3pp (model swap) against 40.9pp (independent source).
+
+Scope: single-author industry preprint, no released code, zero-shot MCQ with
+no agents and no trajectories; and the paper's own surviving residual is
+fragile (−0.432 at size 3, but −0.038 in a restricted 9-route pool and a
+size-4 interval crossing zero). It is a methodological caution, not evidence
+about agent collectives.
 
 ## Herding, measured at community scale — and a remedy that was never tested
 
