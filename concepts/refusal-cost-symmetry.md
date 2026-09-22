@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/rahman2026framing]]"
   - "[[literature/papers/ning2026scores]]"
   - "[[literature/papers/taneja2026scan]]"
+  - "[[literature/papers/dai2026agentguard]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -235,6 +236,40 @@ and in Airline "rejects 25 of 41 oracle-invalid episodes (61%) and seven of
 17 oracle-correct episodes (41%)." Identical catch rate to the point, 2.4x
 the collateral cost. Any false-positive rate imported from a paper is a
 number about that paper's domain.
+
+## A paired measurement of both costs on the same runs
+
+[[literature/papers/dai2026agentguard]] is the cleanest paired instance in
+this graph, because the pairing is structural rather than statistical: every
+evaluation task contains an injected adversarial step *and* an independently
+feasible benign residual, so a single run yields both the safety gain and the
+utility loss.
+
+The split that matters: of the runs where the guardrail fired, **100 gained
+safety without benign loss against 29 that lost benign work** — which
+separates "the rule worked" from "the rule scared the agent off the task."
+Most concepts in this area cannot make that separation at all.
+
+The headline cost: over-refusal **0% → 19.3% (58/300)**, +19.3 pp, CI
+[12.7, 26.7], p < 0.001; benign utility loss on 55/300 traces (18.3%). The
+baseline was *exactly zero*, so this is a cost created wholly by the
+intervention.
+
+Two disciplines to take from how the paper reports it, both cautionary:
+
+- **An underpowered null is not evidence of preservation.** Benign
+  completion moved 49.0% → 42.0% at p = 0.199, CI [−17.0, 3.0]. The
+  conclusion nonetheless claims the method "preserv[es] benign behaviors."
+  A CI spanning −17 points does not support that; it fails to resolve it.
+- **Do not let a conjunction arbitrate its own terms.** The paper's verdict
+  that "the reduction outweighs the loss" uses its Success metric as the
+  arbiter — but Success is a conjunction that already contains both terms.
+  That is a definition, not a weighing. When this repo trades a refusal cost
+  against a safety gain, the weighting has to be stated outside the metric.
+
+Scope: pairing is within-task only, every task carries an adversarial step,
+so the **benign-only over-refusal rate is unmeasured** — the 19.3% is not
+transportable to a workload without injected adversarial steps.
 
 ## Connections
 
