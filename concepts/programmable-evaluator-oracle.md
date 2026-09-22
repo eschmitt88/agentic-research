@@ -47,6 +47,7 @@ sources:
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/zhang2026double]]"
+  - "[[literature/papers/she2026efficient]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -504,3 +505,30 @@ these executable checks."
   impoverish the error channel. Worth stating explicitly in any
   evaluator this project specifies: decide what failures reveal, and
   treat that as part of the oracle's contract.
+
+
+## Cut evaluator cost by subsetting the items, not by weakening the evaluator
+
+Where evaluator latency caps how many iterations a loop can afford, the
+reflex is to use a cheaper or laxer evaluator.
+[[literature/papers/she2026efficient]] is the worked alternative: keep the
+evaluator exactly as strict and **run fewer items**. At 38.5% of a full run
+it holds 1.03 pp MAE and Spearman 0.982; even at 19.3% it holds 1.97 pp and
+0.954.
+
+Two qualifications before importing it. It needs **per-item outcome history**
+to fit difficulty, so there is no cold start — a brand-new benchmark cannot
+be subsetted this way. And the approximation error has to be small relative
+to the selection margins the loop actually acts on: a 1 pp instrument cannot
+adjudicate a 0.5 pp difference.
+
+One counter-result worth carrying, because it is the failure mode of the
+whole idea: **item selection can be worse than random.** Rasch adaptive at
+k ≤ 50 scores 10.94 against random's 10.48, and both clustering selectors
+lose from k = 200. A selector fitted on stale history is not a free win.
+
+Evidence grade: one production system, 574 runs, no code, no benchmark and
+no outcome matrix released. Treat the mechanism as attested and the numbers
+as one data point. The paper's own parent literature (tinyBenchmarks,
+metabench, Anchor Points) is peer-reviewed and absent from this graph; a
+durable anchor for benchmark-subsetting should come from there.

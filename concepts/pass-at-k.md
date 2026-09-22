@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/ning2026scores]]"
   - "[[literature/papers/zhang2026double]]"
   - "[[literature/papers/kim2026are]]"
+  - "[[literature/papers/she2026efficient]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -210,6 +211,23 @@ reporting the oracle. Where this project cares about k (medal rates,
 best-of-k experiment selection), the selector belongs in the specification
 alongside k, and [[concepts/programmable-evaluator-oracle]] is the component
 that has to carry it.
+
+## Report the repeat-run distribution before reporting an approximation error
+
+A small but clean instance of this concept's rule, in an unusual place.
+[[literature/papers/she2026efficient]]'s entire contribution *is* an error
+bar — how far a benchmark subset's estimate sits from the full-run score —
+and it never establishes the **test-retest noise floor** of the thing it is
+approximating, despite flagging the agent's non-determinism twice. Its
+headline 1.03 pp MAE is therefore uninterpretable in the one direction that
+matters: if two full runs of the same agent differ by more than 1.03 pp, the
+subset is already inside the noise and the comparison is free.
+
+The rule generalizes beyond k: **any claim of the form "this cheap measure
+approximates the expensive one to within ε" is empty until the expensive one's
+own run-to-run spread is reported.** Same argument as the noise floor
+[[concepts/budget-as-ceiling]] needs for `max_consecutive_no_improvement`,
+applied to an instrument rather than a stopping rule.
 
 ## Open questions
 

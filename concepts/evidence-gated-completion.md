@@ -18,6 +18,8 @@ sources:
   - "[[literature/papers/zheng2026engineering]]"
   - "[[literature/papers/hickey2026saltbench]]"
   - "[[literature/papers/zheng2026benchshield]]"
+  - "[[literature/papers/bai2026when]]"
+  - "[[literature/papers/golinelli2026agentlsd]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -147,6 +149,7 @@ the **minimum evidence** that would expose it.
 | Result selection | best-of-n | attempt count + selection rule |
 | Hidden labor | the word "autonomous" | per-stage human-in-the-loop points |
 | Dual use | task focus | safety review |
+| Unmet security requirement | a passing functional check | security-semantic check over *every* generated artifact |
 
 The "hiding proxy" column is the addition worth importing. An evidence gate
 is not only a missing check; it is a check that something *else* is currently
@@ -169,6 +172,56 @@ For this repo the actionable gap is result selection. A
 `max_consecutive_no_improvement` chain is a best-of-n procedure, and nothing
 in `/derive-experiment` or the experiment template requires recording n and
 the selection rule — the disclosure that targets exactly that failure mode.
+
+## Two additions, and the hold still does not lift (2026-09-22)
+
+**A partially satisfied requirement is worse at the gate than an unsatisfied
+one.** [[literature/papers/bai2026when]] supplies the mechanism behind this
+concept's `PASS`-as-default-resolution problem. Its riskiest class by
+heuristic severity is *Inadequacy* — an attempted-but-incomplete defense
+(36 cases, highest mean severity 17.7, max 100.0) — because the visible
+partial mitigation is itself a soft signal that a reviewer reads as the
+requirement being met. An absent check looks absent; a weak check looks like
+a check. That is [[literature/papers/zhu2026claimreceipt]]'s three-way-verdict
+argument with cases attached, and it is why a gate must distinguish
+*satisfied* from *attempted*, not merely *present* from *absent*.
+
+Heavy caveats, because this paper cannot carry more: "test passes but the
+vulnerability remains" is its **selection criterion restated as a finding** —
+a case enters the corpus only by passing the functional check and being
+flagged afterwards — and **no denominator is ever reported**, so no
+silent-failure *rate* exists anywhere in it. Confirmation is static analysis
+(Bandit plus a hand-weighted regex heuristic calibrated on the authors' own
+first iteration) endorsed by one reader, with κ = 0.63 on the triage verdict
+itself and no exploit ever executed. Only 118 of the 170 cases are
+unmet-requirement cases at all. Its own severity ranking is
+instrument-dependent and it declines to reconcile the two instruments.
+
+**A completion gate protects the verdict, not the cost.**
+[[literature/papers/golinelli2026agentlsd]] states the limit of this whole
+concept more cleanly than anything else in the graph: its flag-checking
+service "already prevents a fake flag from being scored as success, but
+cannot prevent the agent from wasting its budget." The measurement behind it
+is the useful part — cells where the gate holds **5/5** while the agent burns
+roughly **5× the turns** (10 → 49 turns, +5.5k reasoning tokens, on one
+fabricated-validation trap). So a correct answer under a contaminated
+environment is not evidence the environment was clean, and **an unexplained
+cost spike is itself a contamination signal even when the output is right.**
+
+That also points at a gate this concept does not currently cover: the
+proposed guard is on **goal revision**, not completion — and in that paper
+goal hijack is the largest outcome-loss family (−50 to −65% median solve
+rate). Gating only the final answer leaves the objective itself ungated.
+
+**Neither discharges the hold.** [[literature/papers/bai2026when]] is purely
+observational — no gate built, no arm withheld, no before/after, no repair
+loop — and its own future work asks someone else to test whether targeted
+verification reduces silent-failure rates. It even selected AgentCoder
+specifically to test whether agent-generated tests mask vulnerabilities, then
+ran no analysis on that question. [[literature/papers/golinelli2026agentlsd]]
+has a real deployed gate but measures its *limit*, not a behavioural delta
+from refusing. **Fifth cycle: still no gate whose refusal changes what
+happens next, measured.**
 
 ## The principle now has benchmarks (2026-09-08)
 
