@@ -6,6 +6,7 @@ added: "2026-09-01"
 sources:
   - "[[literature/papers/nepal2026faithful]]"
   - "[[literature/papers/dai2026agentguard]]"
+  - "[[literature/papers/zhu2026authorization]]"
   - "[[literature/papers/zhu2026bad]]"
   - "[[literature/papers/leong2026recognition]]"
   - "[[literature/papers/zhan2026auto]]"
@@ -120,6 +121,7 @@ where it goes:
 | Nowhere — the cooperative negative case | [[literature/papers/nepal2026faithful]] | A dispositional rule in the system prompt, no attacker, a cooperative model: "gently challenging" ran at 1.2% of turns where the prompt asked for it and 1.1% where it was never mentioned |
 | Host-side, before the untrusted proposal executes | [[literature/papers/zhu2026bad]] | Seven Boolean invariants over a subagent-generated benchmark transformation, run before any rollout; the proposing agent's natural-language validity claim is recorded but never substituted |
 | In the prompt — the *measured positive* case | [[literature/papers/dai2026agentguard]] | Mined guardrails injected as instruction text at the moment they are relevant; explicitly "no runtime enforcement mechanism", tool permissions untouched |
+| Twice on the time axis: at issuance *and* at admission | [[literature/papers/zhu2026authorization]] | Freezing new grants does not stop already-scheduled work; a separate fencing barrier must reject the late effect when it arrives |
 
 Two properties recur across the successful placements and are the
 candidate design rules:
@@ -309,6 +311,25 @@ on action-predicates. That makes rule files which are *declared but never
 load* a materially costly defect rather than a tidiness issue — while the
 19.3% over-refusal is the matching reminder that landing more rules is not
 free.
+
+## The boundary has a time axis, and one point on it is not enough
+
+Every placement in the table above answers *where*.
+[[literature/papers/zhu2026authorization]] adds *when*, and shows one moment
+does not suffice: **the issuance freeze and the admission barrier are two
+distinct enforcement points, and retirement cannot be made atomic across
+provider boundaries.**
+
+Its three-arm isolation is the evidence. Sharing one scheduled unit and one
+effect oracle: cancellation-only accepted the late effect 2/2; **cut-only —
+freezing issuance — accepted it 1/1**; cut-plus-fence rejected it 2/2.
+Stopping the granting of new authority does nothing about work already in
+flight under authority granted a moment earlier.
+
+Read it as an existence proof, not a rate: one to two cases per arm,
+self-graded, on a mock the authors built with no real provider adapter. The
+general point stands on its own logic regardless — anything that has already
+crossed the boundary is past the gate that would have stopped it.
 
 ## Why this repository has the question and not the answer
 
