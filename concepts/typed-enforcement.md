@@ -32,6 +32,7 @@ sources:
   - "[[literature/papers/kapner2026scanning]]"
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/bouras2026authority]]"
+  - "[[literature/papers/zhu2026authorization]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -316,6 +317,25 @@ Scope limits to carry: single-domain (financial advisory), the benchmark
 grades the DSL against synthetic traces with pre-computed feature fields
 rather than testing live detection, the judge model is also a subject, and
 the implementation and benchmark are patent-pending and **not released**.
+
+### A second bound, this one by observability
+
+[[literature/papers/ray2026what]] bounds the checker by what the *policy* can
+express. [[literature/papers/zhu2026authorization]]'s Theorem 2(2) bounds it
+by what the *world* reveals: against an opaque endpoint, the world in which a
+residual callback is still outstanding and the world in which none is are
+**observationally identical**, so no verifier over that interface can be both
+sound and complete, and `Indeterminate` is the only sound output.
+
+The practical consequence is the same shape as ray's: the fix is not a
+cleverer checker but a change to the interface — require the endpoint to
+expose a quiescence witness, or accept that the honest answer is "unknown."
+Any gate that resolves unknown to pass has silently chosen unsoundness.
+
+Discount appropriately. This is a hand proof over a transition system the
+authors defined, conditional on an 11-premise assumption table, with no
+machine checking and no released artifact — unlike the rest of this cluster,
+which ships a measured violation rate or a runnable checker.
 
 ## Composition: when several checkers are cheap, and when they are not
 

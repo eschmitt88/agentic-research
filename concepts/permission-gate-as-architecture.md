@@ -43,6 +43,7 @@ sources:
   - "[[literature/papers/kapner2026scanning]]"
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/bouras2026authority]]"
+  - "[[literature/papers/zhu2026authorization]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -558,3 +559,44 @@ and graduation removes the human, so "a clean run is evidence about the
 reviewer, not about the agent". The bound also ignores correlated trials,
 multiplicity across lanes (100 lanes at δ = 0.05 → ~5 wrongly graduated) and
 cumulative risk. The authors' own shipped default is still the flat 10.
+
+
+## The gate needs a third verdict, and revocation must rebind rather than delete
+
+[[literature/papers/zhu2026authorization]] adds two design rules to this
+concept. Both are design-grade — the paper's entire empirical section runs on
+a mock the authors built, with no adapter to any real provider — but each is
+a clean statement of something every gate above leaves implicit.
+
+**1. Binary verdicts are unsound under asynchrony.** Every gate in this
+concept answers allow/deny. Once work can outlive the process that authorized
+it, a third verdict is forced: **Quiescent / Not-Quiescent / Indeterminate**,
+with `Not-Quiescent` prioritized over `Indeterminate`, and an explicit rule
+that *no nonpositive verdict is ever promoted to positive* by timeout, retry
+exhaustion, majority vote, or the agent's own claim to have stopped. That
+last clause is the reusable one: "the agent says it stopped" is exactly the
+kind of self-report [[concepts/evidence-gated-completion]] refuses, and
+timeout-as-success is the default failure of every gate built on a deadline.
+
+**2. Revocation must rebind, not delete.** Deleting an authorization root
+also destroys independently-witnessed shared work that happened to hang off
+it. The paper's alternative is a minimal-sufficient-support antichain plus an
+atomic rebind receipt, which preserves work that had its own justification
+while still blocking "root laundering" through a shared principal. This is a
+third axis beside the two already here —
+[[literature/papers/santosgrueiro2026lingering]] on lifetime *within* a
+principal and [[literature/papers/bouras2026authority]] on granularity
+*across* principals — namely what survives when a root is retired.
+
+**The one result with an internal control** is worth the shelf space: three
+arms share the same scheduled unit and effect oracle, and cancellation-only
+accepted the late effect 2/2, **cut-only accepted it 1/1** — freezing
+issuance does not stop already-scheduled work — while cut-plus-fence rejected
+2/2. Tiny (n of 1–2 per arm), self-graded, and on the authors' own mock, so
+read it as an existence proof that the two enforcement points are distinct,
+not as a rate.
+
+Caveat to carry everywhere this is cited: 17/17 and 44/44 are formatted like
+measurements but are **self-graded pass counts over a self-authored
+conformance suite**, with no baseline against any real framework and no cost
+numbers ("Performance is descriptive"). No code was released.
