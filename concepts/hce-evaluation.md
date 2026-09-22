@@ -63,6 +63,7 @@ sources:
   - "[[literature/papers/hickey2026saltbench]]"
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/bergen2026monitoring]]"
+  - "[[literature/papers/she2026efficient]]"
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/zhang2026double]]"
   - "[[literature/papers/kim2026are]]"
@@ -896,6 +897,33 @@ several metrics are defined over the same confusion counts, derive the
 identities before treating agreement among them as corroboration. Verified
 identities are cheaper than an ablation and catch a failure an ablation
 cannot.
+
+## When the system evolves, hold the holdout out in *time*
+
+Every holdout discipline above hides the test set from a search loop.
+[[literature/papers/she2026efficient]] adds an orthogonal axis: when the
+system under test **changes while you measure it**, the instrument is
+calibrated on that system's own history, so a random split leaks the future
+into the past. Its 574 production runs over 52 days are split
+chronologically — calibration on days 1–28, held out on days 29–52 —
+because a random split across those runs is the evaluation analogue of
+look-ahead bias in a backtest.
+
+The more actionable half is its audit policy: **a cheap proxy obliges a
+scheduled re-run of the expensive ground truth, and the proxy-vs-truth gap is
+itself a reported number**, with event-triggered recalibration on material
+changes to models, prompts, tools or harness. That is the discipline this
+repo needs wherever a subset or a summary stands in for a full evaluation.
+
+Caveat, and it is a real one: the paper's own evidence for instrument aging
+is a **null** — one-day calibration (14 runs) gives 1.41 pp against four-week
+1.40 pp — which the authors attribute to "the relatively mature development
+stage of the agent and limited day-to-day change." So the temporal discipline
+is justified by construction here, not by observed decay. Two further gaps
+limit what can be quoted: the agent's pass rate, its spread and its
+trajectory are **never reported**, so the 1.03 pp MAE has no scale; and no
+test-retest noise floor is established despite non-determinism being flagged
+twice.
 
 ## Open questions
 
