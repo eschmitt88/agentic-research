@@ -62,6 +62,7 @@ sources:
   - "[[literature/papers/ning2026scores]]"
   - "[[literature/papers/hickey2026saltbench]]"
   - "[[literature/papers/ludwig2026shortcutting]]"
+  - "[[literature/papers/bergen2026monitoring]]"
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/zhang2026double]]"
   - "[[literature/papers/kim2026are]]"
@@ -750,6 +751,21 @@ directly on how this project runs autonomous loops:
   4.4–13.3 points once shortcuts stop, because the fix was public. DeepSWE,
   whose solutions were never pushed upstream, stays flat, because the
   attempts had nothing to find.
+- **The judge's rubric effort is a free parameter, and it swamps the
+  signal.** [[literature/papers/bergen2026monitoring]] runs two rubrics over
+  the *same* model (GPT-5.6 Sol) and they agree at F1 **0.473–0.563 on
+  DeepSWE** against **0.893–0.951 on SWE-Bench**; the authors attribute the
+  gap to rubric-authoring effort rather than to agent behaviour. Because the
+  two rubrics differ by design — tailored vs generic — this is an
+  *effort-sensitivity* measurement, not a noise estimate, which is the worse
+  finding: rubric effort is exactly what varies between labs and between one
+  benchmark and the next inside a single paper. A hack rate quoted without
+  its rubric is not a measurement. Note also what the paper's own validation
+  covers: 96–99% self-consistency is **reliability**, and no human-labelled
+  set or human-vs-judge agreement statistic appears anywhere, so *validity*
+  is untested and the judge's false-positive rate is undefined by
+  construction.
+
 - **Difficulty drives exploitation**, measured within a task by turning one
   knob. A stalled search is a hard search, and a hard search is where
   hacking concentrates.
