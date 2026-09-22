@@ -470,3 +470,12 @@ Every headline number was grep-verified against `pdftotext` before any concept e
 **Closed:** auto-push works again (it also carried up two stranded commits from 09-20), and the 09-14 backlog was genuinely cleared by the 09-15 curate pass.
 
 I left `_meta/elevate.log` uncommitted — 33 lines of in-flight work from the 09-20 session, following that session's own precedent with `curate.log`. And I have not updated `NOTES.md`; that's `/wrap`'s job.
+Appended `## 2026-09-21` to `NOTES.md` (44 lines incl. heading/blanks), committed as `564e9d7`, pushed — working tree clean, `main` level with `origin/main`.
+
+**Window covered: 2026-09-15 → 09-21**, sourced from `_meta/log.md`, `_meta/curate.log` and `_meta/digest.log` (the `journal/` files for those three dates hold only `session_end` lines, no content).
+
+- **Did** — 09-15 curate (14 items → 11 ingested / 3 declined, papers 174 → 185, backlog to 0); 09-20 elevate (2 proposals from 12 considered); 09-21 digest auto-ingest + curate (papers 185 → 191, 18 concepts touched, 14 items left uncurated); two `/promote-moc` declines; auto-push recovered.
+- **Findings** — the `@`-import project-tree confinement (HCE and agency rules absent from every project session since 08-01; `used_by:` is a declaration, not a read); the four abstract-vs-PDF ranking reversals in the 09-21 digest; the missing tolerance term on `max_consecutive_no_improvement`; the sandbox and worktree-branch exposures.
+- **Next** — carried forward only what's still open: the now eight-deep proposal queue, the 09-21 candidate backlog, the tolerance-term decision, the downstream worktree check, and the three long-standing holds. Dropped the auto-push item (fixed 09-21) and the `@import` verification item (resolved by the 09-20 elevate).
+
+Two notes: the commit also includes the `_meta/digest.log` change that was already uncommitted when this session started — it's the 09-21 digest's own session report, and the two prior rollups did the same with that file. And the entry's `budget.yaml` item is flagged, not acted on: adding a tolerance term to `max_consecutive_no_improvement` is your call, not something I changed.
