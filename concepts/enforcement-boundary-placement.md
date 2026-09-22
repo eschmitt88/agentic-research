@@ -5,6 +5,7 @@ status: growing
 added: "2026-09-01"
 sources:
   - "[[literature/papers/nepal2026faithful]]"
+  - "[[literature/papers/dai2026agentguard]]"
   - "[[literature/papers/zhu2026bad]]"
   - "[[literature/papers/leong2026recognition]]"
   - "[[literature/papers/zhan2026auto]]"
@@ -118,6 +119,7 @@ where it goes:
 | Nowhere — the negative case | [[literature/papers/paglieri2026case]] | A system prompt forbade cheating and was "not actively enforced beyond the autograder check"; 34 of 71 conjectures fell in 27 minutes |
 | Nowhere — the cooperative negative case | [[literature/papers/nepal2026faithful]] | A dispositional rule in the system prompt, no attacker, a cooperative model: "gently challenging" ran at 1.2% of turns where the prompt asked for it and 1.1% where it was never mentioned |
 | Host-side, before the untrusted proposal executes | [[literature/papers/zhu2026bad]] | Seven Boolean invariants over a subagent-generated benchmark transformation, run before any rollout; the proposing agent's natural-language validity claim is recorded but never substituted |
+| In the prompt — the *measured positive* case | [[literature/papers/dai2026agentguard]] | Mined guardrails injected as instruction text at the moment they are relevant; explicitly "no runtime enforcement mechanism", tool permissions untouched |
 
 Two properties recur across the successful placements and are the
 candidate design rules:
@@ -258,6 +260,55 @@ sessions. So checkability is a necessary condition on the *predicate*, not a
 sufficient condition on the *placement*: it buys detectability, not
 compliance. That is an argument for moving the check out of the prompt, not
 for rewording it.
+
+## The prompt-placement row is a positive, and it confirms nepal rather than contradicting it
+
+Every other prompt-placement row above is a negative. [[literature/papers/dai2026agentguard]]
+is the first measured positive in this graph, and it is worth being precise
+about what it does and does not establish.
+
+What it establishes: rules mined from anomalous trajectories and injected as
+instruction text move behaviour substantially on the run they reach. The
+paper is explicit that this is *placement in the prompt*, not a boundary —
+"This design requires no model fine-tuning, tool modification, or **runtime
+enforcement mechanism**", and "they do not change tool permissions or
+intercept actions." Tool access and permissions were identical in both arms.
+
+Why it does not contradict [[literature/papers/nepal2026faithful]]: all 15 of
+its rules are **gradable action-predicates** ("don't change the assertion",
+"edit only necessary files"), never dispositional. Nepal's silent failures
+were on the unverifiable, dispositional rule ("challenge gently" ran at 1.2%
+of turns where asked against 1.1% where never mentioned). The two results
+compose into a sharper line than either alone:
+
+> **Checkability buys detectability always, and buys partial compliance when
+> the predicate is about an imminent, gradable action.** It buys neither when
+> the rule is dispositional.
+
+Three limits to carry, all of them load-bearing:
+
+- **The refusal cost is real and was previously zero.** Over-refusal went
+  0% → **19.3% (58/300)**, +19.3 pp, CI [12.7, 26.7], p < 0.001 — the
+  authors' own "primary failure mode." Benign completion fell 49.0% → 42.0%
+  at p = 0.199, CI [−17.0, 3.0]: an *underpowered null* that the paper's
+  conclusion upgrades to "preserving benign behaviors." It does not preserve
+  them; it fails to detect a change. See [[concepts/refusal-cost-symmetry]].
+- **The ceiling is visible and low.** 33% of tasks stayed abnormal with the
+  rules present and correct.
+- **Conditional activation is unmeasured.** The paper routes rules by
+  relevance, but runs exactly two conditions (Raw vs Agent+AgentGuard) with
+  no always-on arm, no routing-off arm and no rule-subset sweep. Every
+  number is equally consistent with pasting all 15 rules in unconditionally.
+  This project's path-scoped `.claude/rules/` therefore remains **unjustified
+  by evidence**, not supported by it.
+
+**Bearing on this repo's 2026-09-20 `@import` finding.** The paper cannot
+tell us whether path-scoping is worth it, but it supplies the harder prior:
+a rule that reaches context at the right moment moves behaviour by 42 points
+on action-predicates. That makes rule files which are *declared but never
+load* a materially costly defect rather than a tidiness issue — while the
+19.3% over-refusal is the matching reminder that landing more rules is not
+free.
 
 ## Why this repository has the question and not the answer
 
