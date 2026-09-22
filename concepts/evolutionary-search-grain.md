@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/esakkiraja2026starharness]]"
   - "[[literature/papers/ge2026coverage]]"
   - "[[literature/papers/min2026autonomous]]"
+  - "[[literature/papers/yu2026primescientist]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -217,3 +218,26 @@ declared space dominates willingness.
   qualitative claim. Whether AlphaEvolve's whole-file outputs are
   still usable for human-AI collaboration — or whether they require
   a re-distillation step — is open.
+
+
+## A grain above code: the plan as the mutation unit
+
+[[literature/papers/yu2026primescientist]] sets the grain one level higher
+than any other source here. The mutation unit is **not code** — it is the
+experimental plan, written as a self-contained Markdown skill, and the
+operator is an LLM-authored `diff.py` that regenerates the *entire* child
+from the parent (the prompt insists the output "must be a FULL self-contained
+experimental plan... NOT a delta"). Code editing is delegated wholly
+downstream to the executor.
+
+That is `min2026autonomous`'s "the declared space is the effective grain"
+taken to its conclusion: if the plan is the only thing the search operator
+can touch, no amount of executor skill puts an unplanned idea in the pool.
+
+Two cautions. The evidence is n = 1 per cell. And there is an **unaddressed
+tension with [[literature/papers/zou2026fmlbench]]**: FML-Bench's controlled
+study — same LLM, same editor, same step budget, 18 tasks — ranked MCTS
+*last*, while this paper reports its MCTS beating Greedy and UCT on n=1 cells
+over 8 tasks. It cites FML-Bench and never addresses the conflict. FML-Bench's
+design is the stronger of the two, so treat the search-algorithm comparison
+here as unsupported and take only the grain point.

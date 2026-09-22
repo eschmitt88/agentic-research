@@ -7,6 +7,7 @@ sources:
   - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/panigrahy2026energy]]"
   - "[[literature/papers/ge2026coverage]]"
+  - "[[literature/papers/yu2026primescientist]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -193,3 +194,24 @@ a larger fraction of their total — biasing any agentic-vs-linear ratio toward
 - No forecaster exists in this repo yet. Until one does, this concept is
   a constraint on what *not* to build (self-estimated reservations)
   rather than a component to import.
+
+
+## Forecasting is required for admission, not for allocation
+
+A boundary this concept has not drawn. Its core claim — a budget *gate* needs
+a calibrated external forecast — is about deciding whether to *start* an
+action whose cost is not yet known. [[literature/papers/yu2026primescientist]]
+shows an *allocator* needs no forecast at all: its control signal
+`r_t = (B − U_t)/B` is realized consumption over a known constant, with no
+prediction of the next action's cost anywhere, and its Definition 1 states
+outright that costs "may be unknown before completion."
+
+So: **forecasting is a requirement for admission decisions, not allocation
+decisions.** Deciding *whether* this action fits needs an estimate of its
+cost; deciding *how widely to explore given what is left* needs only a meter.
+
+This is the one design point `bai2026how`'s r ≤ 0.39 does not undermine —
+that result says self-estimates of cost are poorly correlated with actual
+cost, which is fatal for admission and irrelevant to a controller reading a
+counter. Where this repo needs budget-sensitive behaviour, prefer the meter
+over the estimate.

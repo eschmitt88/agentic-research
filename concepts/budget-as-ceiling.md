@@ -10,6 +10,7 @@ source_papers:
   - khan2026token
 sources:
   - "[[literature/papers/zhang2026agora]]"
+  - "[[literature/papers/yu2026primescientist]]"
   - "[[literature/papers/li2025fm]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/kamelhar2026gsar]]"
@@ -323,6 +324,41 @@ are explicitly out of scope. The coordinator's suggested session
 budget is the single-phase degenerate case; ZEBRA is the shape a
 multi-phase version would take.
 
+### Allocation without telling the model, and the budget below which it loses
+
+[[literature/papers/yu2026primescientist]] extends the counter-pole above in
+three ways worth recording.
+
+**Budget-awareness need not be a prompt.** The budget enters only as
+`α_t = min(1/r_t, α_max)` with `r_t = (B − U_t)/B`, computed in the harness:
+"the executor receives the plan without instructions about the remaining
+global budget," and the reflector's system prompt contains no budget token.
+This is [[concepts/scripted-tool-pipelines]]' split in a stronger form — the
+model is not merely given the arithmetic, it is never told the budget exists
+— which sidesteps `ye2026agent`'s token-elasticity problem by construction
+rather than by instruction.
+
+**Allocation has a measured overhead and a two-sided break-even.** Planning
+is **38%** of the shared budget and one expansion costs 0.1–0.3M tokens
+against a 1–1.5M campaign. Below roughly **750k tokens the allocator loses**
+outright (0.42 against 0.52 at 250k; 0.47 against 0.51 at 500k on Concurrent
+KV WAL). That sharpens "allocation only matters when the budget binds" into a
+condition with a floor as well as a ceiling: under a small budget, the
+machinery costs more than it saves.
+
+**An independent restatement of ceiling-plus-one-call.** Its Definition 1:
+actions are charged on completion and no further action starts once the
+budget is reached, so "the final action may therefore cross the threshold."
+
+Discount the headline before reusing any of this. "+10.3% average reward with
+50.6% fewer attempts" is one search per cell on **FIRE-Bench, a benchmark six
+of the eight authors wrote**, with no conflict statement. Dropping a single
+task takes the quality gap to +3.7%; the only multi-seed head-to-head is
+reward *parity* (0.4363 vs 0.4359) with a 24% attempt reduction; and at
+matched tokens the baseline is marginally ahead on the mean. **What survives
+is sample efficiency of roughly 24–29% fewer complete attempts, not research
+quality.**
+
 ## Whose estimate the gate may use
 
 besanson2026green's predictive pre-action gate needs a cost forecast, and
@@ -492,6 +528,30 @@ next 0.03.
 **This repo is exposed.** `budget.yaml` sets `max_consecutive_no_improvement:
 3` with no tolerance term anywhere, so the same bare-`>` failure applies to
 any `/iterate` loop scored on a noisy metric.
+
+**A second system reaches for the tolerance band and also fails to calibrate
+it.** [[literature/papers/yu2026primescientist]] prunes a node when
+`ρ < Q(parent(s)) − δ` with `δ = 0.05` — the right *shape*, a band rather
+than a bare `>`. But `δ` is asserted in "Implementation details" with no
+derivation, no ablation, and no relation to its evaluator's reproduction
+spread, which matters because its reward is a noisy LLM-judged F1 and the
+pipeline stacks four max-over-noise operators (FIRE-Bench takes the max of
+two executions per node, `Q(v)` averages only *post-pruning* retained
+descendants so pruning biases the value later selections condition on, and
+the output is `argmax h(s)`). None is quantified.
+
+That system also has **no stopping rule at all**: Algorithm 1 line 3 is
+`while U < B`, and the `stop` action in its own Definition 1 is never
+implemented — no stagnation counter, no no-improvement ceiling, no
+convergence test. So it is a second instance of the `zhang2026agora` failure,
+not a fix for it.
+
+The bearing on this repo's open question is therefore sharpened but not
+answered: **two independent systems now agree the comparison needs a
+tolerance term, and neither supplies a principled way to set one.** The
+derivation still has to come from the evaluator's own reproduction spread.
+It does raise the priority — an uncalibrated band is at least analyzable,
+where a bare `>` is not.
 
 ## Inside a measurement, a ceiling is a censoring instrument
 
