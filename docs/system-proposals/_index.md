@@ -27,6 +27,59 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-09-06 | [session-start-limit-first-reading](2026-09-06-session-start-limit-first-reading.md) | `hooks/session-start.sh` | adopt | proposed |
 | 2026-09-20 | [framework-rule-imports-dead](2026-09-20-framework-rule-imports-dead.md) | `templates/project/CLAUDE.md` (+ `install.sh`, 8 skills, 19 repos) | adopt | proposed |
 | 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | proposed |
+| 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | proposed |
+
+## Considered and held (2026-09-27 run)
+
+This is the first run over the 09-21 digest and the 09-22 curate: 15 papers,
+papers 185 → 200, still 35 concepts. There is one proposal (above), and its
+target is new. Earlier cycles held the noise-band idea for `max_consecutive_no_improvement`
+because they aimed it at `budget.yaml`, which is blocked. The counter is
+actually computed, undefined, in `/iterate`, a file no pending proposal
+touches. Held:
+
+- **`nepal2026faithful` (cred 4) + `dai2026agentguard` (cred 2) → sweep
+  skills and rules for dispositional rules and delete them.** This was the
+  closest miss. Nepal is a strong null (the challenge rule ran at 1.2% of
+  turns where it was asked and 1.1% where it was never mentioned), and
+  AgentGuard is the first measured positive for gradable action-predicates.
+  Together they draw a clean line. **Held**: neither paper is peer-reviewed or
+  has released code, and there are two attestations, not three. The
+  removal also has no concrete per-rule list, and the accepted
+  `instruction-ablation-program` (phase 3, prose → scripts) is already the
+  method for this kind of cut. A sweep should come from that program's
+  ablations, not from a reading.
+- **`dai2026agentguard` → path-scoped `.claude/rules/` is unjustified.**
+  It fails Gate 1 (cred 2, and the finding is an absent arm, not a
+  measurement). What it adds is reviewer input for the two 09-20
+  `@import` proposals: rules that reach context moved behaviour by 42
+  points on action-predicates, so rules that never load are a costly
+  defect, not a tidiness issue.
+- **Worktree `git log --all` sibling exposure** (`ludwig2026shortcutting`,
+  `hickey2026saltbench`). The target is `rules/evaluation.md`, which is
+  blocked behind `hce-retrieval-boundary` for the fifth cycle. The 09-21
+  `NOTES.md` check of downstream projects is still undone.
+- **`fan2026empirical` (cred 4) → prefer composed shell over structured
+  tools.** There is no claude-system target: the tool surface is the
+  harness's, and the Opus-regime reading is already how this box works.
+- **`zhu2026bad` → adversarial constraint archive for `/elevate`.** It is
+  cred 3 with no code, and the target is blocked behind `elevate-paired-control`.
+- **`shao2026language` (cred 4, code) → a no-channel re-read of concept
+  edits.** This is net-new review machinery, and the third cycle to
+  hold a `shared-substrate-contagion` audit form.
+- **`zhang2026how` → a word-count-matched scramble control for instruction
+  ablations.** It fails Gate 1 (cred 2, no code, every Holm-adjusted
+  p > 0.05).
+- **`golinelli2026agentlsd` (cred 4, code) → log per-ingest cost to catch
+  contamination.** It would add surface, and the threat model (planted
+  adversarial artifacts) is not this repo's (honest-but-wrong papers).
+  The note itself says nothing here justifies changing `/ingest`.
+- **`yu2026primescientist` → use a meter, not an estimate, for
+  budget-sensitive control.** This is already enacted: `chain_budget.py`
+  reads the token log, and the coordinator learns footprints.
+- **`zhang2026correct` / `zhu2026authorization`**: both are cred 2. One lands
+  on the blocked pre-compact file, and the other assumes delegated
+  authority that this box does not have.
 
 ## Considered and held (2026-09-20 run)
 
