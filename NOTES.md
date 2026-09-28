@@ -656,3 +656,38 @@ Weekly rollup for 2026-09-15 → 09-21 (sourced from journal/ + _meta/log.md).
   projects for the worktree `git log --all` exposure.
 - Still open: `shared-substrate-contagion` sibling watch; /propose's first
   autonomous agency-branch write; deferred ingest/digest prose cuts.
+
+## 2026-09-28
+
+Weekly rollup for 2026-09-22 → 09-28 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 09-22 /curate closed the 09-21 backlog: 15 items (14 leftovers + 1 near-miss) →
+  9 ingested, 6 declined, file archived to `_done/`. Papers 191 → 200, 13 concepts touched.
+- 09-27 /elevate: 1 proposal from 12 considered — `iterate-no-improvement-noise-band`,
+  moving the tolerance-term idea from `budget.yaml` (blocked since 08-02) to
+  `/iterate`, where the no-improvement counter is actually computed. 11 held.
+- 09-28 digest → auto-ingest (go/high): arXiv search API returned 406, so the harvest
+  used OAI-PMH (4,982 in-window cs records, 7 already in graph). 20 candidates; top 6
+  ingested. Papers 200 → 206, 13 concepts edited, count still 35.
+- /promote-moc declined 09-22 and 09-28 (no concept added, 35/35 mapped).
+
+### Findings
+- Abstracts overstate. It is now the expected outcome: 9/9 PDFs on 09-22 and 6/6 on 09-28 read at or below
+  their digest ranking. Treat digest framing as a hypothesis. AgentGuard has no
+  conditional-vs-always-on ablation, so path-scoped `.claude/rules/` stays unsupported.
+- `qu2026propose` does not answer the tolerance question. Its safe referee can't
+  certify at `/iterate` sample sizes (1 run never passes; a 1σ gain needs ~6), but it
+  adds a rule to the proposal: don't keep adding seeds until the band clears.
+- The `@~/` import still fails on Claude Code 2.1.283 (was 2.1.275 on 09-20). This
+  is one observation, not a full rerun of the eight-way test.
+- Third different arXiv API failure in three runs. OAI-PMH gives a complete week
+  instead of top-k per keyword query.
+
+### Next
+- Nine proposals undecided (3× 08-02, 08-16, 08-23, 09-06, 2× 09-20, 09-27). The
+  09-27 noise-band proposal supersedes the open tolerance-term decision.
+- Curate items 7–20 in `raw/_candidates/2026-09-28-digest.md`.
+- Make OAI-PMH the default harvester in /digest.
+- Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
+  sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.

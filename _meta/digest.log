@@ -479,3 +479,26 @@ Appended `## 2026-09-21` to `NOTES.md` (44 lines incl. heading/blanks), committe
 - **Next** — carried forward only what's still open: the now eight-deep proposal queue, the 09-21 candidate backlog, the tolerance-term decision, the downstream worktree check, and the three long-standing holds. Dropped the auto-push item (fixed 09-21) and the `@import` verification item (resolved by the 09-20 elevate).
 
 Two notes: the commit also includes the `_meta/digest.log` change that was already uncommitted when this session started — it's the 09-21 digest's own session report, and the two prior rollups did the same with that file. And the entry's `budget.yaml` item is flagged, not acted on: adding a tolerance term to `max_consecutive_no_improvement` is your call, not something I changed.
+I ran the digest: 20 new candidates, 6 of them fetched and ingested, and everything is committed and pushed.
+
+- **Harvest:** the arXiv search API returned HTTP 406 on every request, so I used arXiv's OAI-PMH bulk-listing interface instead. That gave 4,982 computer-science papers created since 09-21, 7 of them already in the graph. It's a complete list of the week, where the 09-21 run only had the top results of eight keyword searches. That's three runs and three different API failures, so OAI-PMH should be the default.
+- **Candidates:** 20 are in `raw/_candidates/2026-09-28-digest.md`, and `_meta/last_digest` is updated.
+- **Auto-ingest:** the go/high verdict held when rechecked afterwards, so the run stopped at the usual 6 for `high`. Papers went from 200 to 206, 13 concepts were edited, and the concept count stays at 35. The 6 papers are `huang2026reward`, `kim2026divergent`, `chandran2026autoresearch`, `qu2026propose`, `li2026who` and `li2026where`.
+- **`/promote-moc`:** declined, because no concepts were added or removed and all 35 are already mapped.
+
+**Findings:**
+- **The noise-band proposal (09-27) still stands.** I'd ranked `qu2026propose` as the answer to the tolerance-term question, but it isn't. Its statistically safe referee can't certify anything at `/iterate`'s sample sizes: one run can never pass, and a one-standard-deviation gain needs about 6 fresh runs. It does add one rule to the proposal: don't keep adding seeds until the band clears.
+- **The papers' own summaries were overstated again.** All six full papers came in weaker than their abstracts suggested, and four of the six dropped from relevance 5 to 4. `kim2026divergent` is shared-input error, not contagion. `huang2026reward`'s claim that "explaining rejections teaches evasion" comes from agents that were told to evade. `li2026where` never tested Claude Code. Each correction is recorded in the candidates file.
+- **The `@` import still fails on the current Claude Code.** This session runs 2.1.283, versus 2.1.275 when the 09-20 finding was measured. `agency.md` still wasn't loaded and I had to read it from disk. That's one observation of the `@~/` form, not a rerun of the full eight-way test.
+
+**Left open:**
+- Items 7–20 are uncurated, so the candidates file stays in place for `/curate`.
+- `_meta/curate.log` and `_meta/elevate.log` were already modified before this session started (reports left by earlier sessions). I didn't commit them, as the earlier runs didn't either.
+- The Google Drive connector needs authorizing in your claude.ai connector settings before it can be used; this session couldn't do the sign-in.
+
+Sources (web searches):
+- [AutoResearch at Production Scale (arXiv 2609.30541)](https://arxiv.org/html/2609.30541)
+- [Recursive self-improvement of AI research agents (alphaXiv 2609.26457)](https://www.alphaxiv.org/abs/2609.26457)
+- [Epistemic Admission in Shared Agent Memory (arXiv 2609.30813)](https://arxiv.org/abs/2609.30813)
+- [Claude Code AGENTS.md telemetry gate (saascity.io)](https://saascity.io/blog/claude-code-agents-md-telemetry-gate-2026)
+- [Fix: Claude Code ignores AGENTS.md (startdebugging.net)](https://startdebugging.net/2026/09/fix-claude-code-ignores-agents-md/)
