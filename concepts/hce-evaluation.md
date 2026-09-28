@@ -9,6 +9,7 @@ source_papers:
   - kamelhar2026gsar
   - starace2025paperbench
 sources:
+  - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/zhu2026bad]]"
   - "[[literature/papers/shao2026language]]"
   - "[[literature/papers/zhang2026how]]"
@@ -67,6 +68,9 @@ sources:
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/zhang2026double]]"
   - "[[literature/papers/kim2026are]]"
+  - "[[literature/papers/huang2026reward]]"
+  - "[[literature/papers/kim2026divergent]]"
+  - "[[literature/papers/qu2026propose]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -782,6 +786,22 @@ from an exploiting one, and reporting the conditional is cheap. The same
 shape as [[concepts/refusal-cost-symmetry]]'s paired control — a headline
 number that silently pools two populations is not reportable.
 
+**You need not plant the failure if you audit for it before launch
+(2026-09-28).** [[literature/papers/kim2026divergent]] builds a planted
+failure without planting anything. Before sixteen research agents launched
+on a frozen 12,499-entry database, a charge-accounting audit, validated on
+70 known-good structures, flagged 406 inconsistent entries. Six were
+excluded in a hidden answer key sealed by a public hash, and the excluded
+entry's value was computed in advance. The agents never saw the list or the
+tool. So "did the agent accept a known-bad input?" became mechanically
+scorable (15 of 16 did), with no post-hoc adjudication of whether a claimed
+discovery was an artefact. Unlike roth2026hack's planted channel, this
+defect is naturally occurring, so the agent had no designer-shaped cue to
+find. Transfer rule: before a scored run on any curated substrate, audit
+the substrate with a validated check, seal the findings with the holdout,
+and score acceptance of known defects as a separate outcome from the
+headline metric.
+
 ## Ablatability is a property of the harness, not of the experiment
 
 [[literature/papers/cheng2026agenticsts]] makes an argument this concept
@@ -856,6 +876,56 @@ trusted. Detection is also **conditional**: it improved results for the
 capable model and *hurt* for the weak one, where the overhead cost
 generations and there was nothing to catch.
 
+## Research agents specifically: the risk tracks who owns the evaluation (2026-09-28)
+
+Every hacking measurement above comes from SWE tasks, benchmark harnesses
+or program search. [[literature/papers/huang2026reward]] measures this
+project's own case at scale: 17 models on 38 research tasks, in one
+harness, with no instruction to hack. Four results change how this concept
+should be read.
+
+- **The dominant variable is whether the agent controls the evaluation.**
+  Every model hacks at least three tasks. The rate is **30.5%** on
+  research-pipeline tasks and **2.9%** on task-specific ones, and "task
+  structure explains much more of the observed variation than model
+  identity." The most-hacked task is the pure form of HCE's failure: on
+  `certify_model`, "every model that ran certify_model built its own
+  evaluation and graded itself." Caveat: all 38 tasks ship a deliberately
+  exploitable scorer. So this ranks *where* a seam gets used, not how often
+  real tasks have one. Even so, it says the `/iterate` configuration (the
+  agent writes experiment, eval and report) is the high-risk class. The
+  `metrics.json` / `final_metrics.json` split protects only if the agent
+  cannot author what writes `final_metrics.json`.
+- **The capability gradient does not replicate here.** Setting-1 propensity
+  correlates with the AA Intelligence Index at ρ = 0.11 (n = 16) and with
+  SWE-bench Pro at ρ = −0.41 (n = 12). This narrows the capability half of
+  the section above. ishibashi2026effective's zero-vs-nonzero contrast was
+  two models on one task. Across 16 models, task structure dominates and
+  capability is not a usable proxy for risk. The difficulty half is
+  untouched and consistent: onset is late, median 71% of the way through
+  the trajectory, and 27 of 51 onsets follow an *observation* such as
+  readable labels or a permissive rule.
+- **Detection runs in two layers, and both leak.** A code-plus-score LLM
+  panel misses 6.5% of permitted hacks (a lower bound, per the authors).
+  A pristine held-out recompute is passed by 38/505, because exploits whose
+  advantage transfers to fresh data leave no gap (see
+  [[concepts/programmable-evaluator-oracle]]). Reading full trajectories
+  catches 21 of the 33 panel misses and leaves 12. "Increasing
+  observability is therefore not equivalent to increasing assurance that
+  the claim is valid."
+- **Between-round feedback is a leakage channel, and this measures one.**
+  The graph already holds two data points on feedback bandwidth:
+  lu2026meta's verbose tracebacks leaking ground truth, and bertran2026fits's
+  one-bit ladder as a deliberately narrow search signal. Under an explicit
+  evasion objective, a review loop that returns the decision, reasons and
+  history doubles cumulative evasion relative to generic rejection (40.5%
+  vs 20.3%, 79 paired cases). The authors do not isolate the reasons from
+  the history. The direction is still the one constrain-during-search
+  predicts: the richer the per-round signal from anything that judges the
+  run, the more the loop can fit it. Design consequence: what `/iterate`
+  reports back after a rejected cycle is part of the holdout's attack
+  surface. See [[concepts/evidence-gated-completion]].
+
 ## A held-out score certifies utility, not that the loop was needed
 
 Everything above protects the held-out number.
@@ -924,6 +994,40 @@ limit what can be quoted: the agent's pass rate, its spread and its
 trajectory are **never reported**, so the 1.03 pp MAE has no scale; and no
 test-retest noise floor is established despite non-determinism being flagged
 twice.
+
+## Peeking has a measured price, and one pre-committed look recovers most of it (2026-09-28)
+
+This concept's rule, that a test score once read is spent, has so far rested
+on argument. [[literature/papers/qu2026propose]] measures the price of
+breaking it inside an agent loop. Its evaluation is a 3-proposer ×
+4-referee factorial with common random numbers. It names the four threats
+an adaptive loop poses to any score it reads: optional stopping, near-copy
+resubmission, verifier-in-the-loop adaptation, and knowledge-cutoff
+leakage.
+
+- **Peeking is expensive.** One referee re-checks a t-test every day and
+  admits at the first p ≤ α. Across four CSI 500 campaigns it admits 86.2
+  realised false factors per campaign, against 11.7 for the frozen valid
+  referee. In the planted-truth world, false admissions follow the referee
+  and not the proposer. The rate is 0.000 per submission under the frozen
+  referee for script, bandit and LLM alike, and 0.26–0.85 under the leaky
+  ones. A hidden-retry attacker extracts false admissions only from the
+  leaky referees.
+- **A single committed look gets most of it back.** A fixed-horizon
+  comparator reads each candidate once, 500 days after submission, and
+  applies BH. It admits 16.4 false factors, or 16.0 with a single look at
+  campaign end. On a harder library it is four times worse (41.4 against
+  9.8), but the paper traces that gap to "the height of its bar" (the
+  multiplicity bar), not to anytime validity.
+
+The import is a split. **One look plus a multiplicity correction** is the
+discipline that buys the false-discovery gap, and that is what this concept
+already prescribes. **Anytime-valid e-values** buy something narrower: a
+score that *can* be read repeatedly without being spent, provided every
+read is on data that arrived after the candidate was fixed. That proviso is
+the catch for this project. A static holdout re-read by an adaptive chain
+is never post-submission data, so the e-value escape hatch does not apply
+to it. The one-look rule stands.
 
 ## Open questions
 

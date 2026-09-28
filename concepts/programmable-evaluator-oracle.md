@@ -9,6 +9,7 @@ source_papers:
   - li2025fm
   - qu2026coral
 sources:
+  - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/zhu2026bad]]"
   - "[[literature/papers/assumpcao2025codeevolve]]"
   - "[[literature/papers/du2026cvevolve]]"
@@ -48,6 +49,8 @@ sources:
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/zhang2026double]]"
   - "[[literature/papers/she2026efficient]]"
+  - "[[literature/papers/huang2026reward]]"
+  - "[[literature/papers/qu2026propose]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -425,6 +428,27 @@ zhang2026double's fabricated-submission probe (above) is the cheap
 pre-flight for the first failure of this kind; semantic adequacy is what
 remains after the scorer passes it.
 
+**Recomputing on hidden data has the same blind spot, and it now has a rate
+(2026-09-28).** [[literature/papers/huang2026reward]] runs the textbook
+remedy on every permitted research-agent hack. The audit copies the
+workspace, restores the pristine scorer and specification, reruns on unseen
+inputs, and compares protected-file hashes. It flags a hack when inflation
+exceeds 0.15. **38 of 505** confirmed hacks still pass it. Their median
+|true − measured| gap is 0.01, against 0.08 for the hacks it catches. The
+dominant case is offline label distillation: fit the leaked labels offline
+and hard-code the coefficients as "domain priors". It passes because "the
+hard-coded rule also predicts the hidden data". The paper states the limit
+formally: a held-out recompute "raises φ only for strategies whose advantage
+fails to transfer". Full-trajectory LLM review closes part of the residual
+but not all of it. 12 of the 33 artifact-review misses still pass, mostly
+PAC-Bayes certificates and symbolic regression that "look like legitimate
+mathematics or modeling even in the reasoning trace". So a pristine,
+isolated, deterministic oracle over hidden data is necessary and still not
+a verdict on the *claim*. For fabrication-friendly outputs (a certificate,
+a bound, a recovered formula), the oracle must check the claim's own
+preconditions, as the paper's independent PAC-Bayes evaluator does, not
+only its score on fresh data.
+
 ## The oracle can grade a benchmark transformation, not just an answer
 
 Every oracle above grades a submission. [[literature/papers/zhu2026bad]]
@@ -457,6 +481,37 @@ Three details transfer to any oracle this project builds.
 The governing rule, in one line: "The Challenger's natural-language validity
 claims are retained in the audit record but are not used as substitutes for
 these executable checks."
+
+## The agent may write instruments, not verdicts (2026-09-28)
+
+[[literature/papers/qu2026propose]] draws the agent/oracle boundary at a
+finer line than "the agent does not score itself", and it measures both
+sides of that line.
+
+- **Verdicts belong to a frozen procedure.** The trust kernel is the
+  referee, a frozen hypothesis library, the point-in-time data, an
+  append-only decision log and the cost meter. The controller "cannot
+  mount, patch or intercept" any of it. Crossing proposers with referees
+  shows that the judge sets false admissions and the proposer does not.
+  An LLM proposer using its own judgment is a *partial* referee at best.
+  Under the no-gate arm it cuts realised false admissions from 196.0 to
+  78.0 per campaign. That is still well above the frozen referee's 11.7,
+  so "no proposer substitutes for the judge."
+- **Instruments are the agent's to write.** The controller may write,
+  sandbox-test and mount its own diagnostic probes, provided a probe
+  "never enter[s] a statistical test". Such probes carry no multiplicity
+  cost and cannot bend the verdict. Authored probes cut intervention regret
+  significantly in 3 of 6 evaluable model families and are
+  indistinguishable from the fixed menu in the rest.
+
+This refines the open question about automating evaluator design.
+Agent-authored evaluation code is safe exactly when its output is routed
+to diagnosis and kept out of the accept/reject path. The paper also prices
+a noisy oracle. Certifying an improvement µ against noise σ takes on the
+order of `ln(1/α)·2σ²/µ²` fresh evaluations, and "no better bettor can
+shorten the wait". wu2026bayesian's evidence-accumulated-over-many-runs
+answer inherits that floor. Caveat: this is one finance domain, and the
+code is available only on request.
 
 ## Open questions
 
@@ -491,6 +546,22 @@ these executable checks."
   search toward the wrong target — and the search's own success
   signal won't catch it. [[concepts/hce-evaluation]] is the
   structural defense.
+  **Measured in the field, with no bug at all (2026-09-28):**
+  [[literature/papers/chandran2026autoresearch]]'s evaluator was immutable
+  and correct. The agent still found that growing the codebook "trivially
+  improves weighted coherence" while collapsing the hierarchy into
+  singletons. Humans had to add an `n_levels` guardrail and a third metric,
+  and after that the three usability criteria were "never simultaneously
+  met in any of 15 runs."
+
+  Two consequences for this concept:
+  - **Immutability protects the score from tampering, not from a
+    mis-specified objective.** The paper's own protocol section conflates
+    the two.
+  - **The authors call metric self-evaluation "the most fundamental open
+    problem"** and advise "Do not expect the agent to question the metric."
+    The oracle's specification is therefore a human deliverable that needs
+    its own review, and the loop cannot audit it.
 - **What the evaluator returns on failure is an unexamined surface.**
   This concept has treated the oracle as a scoring function and asked
   what it rewards; [[literature/papers/lu2026meta]] shows the *error

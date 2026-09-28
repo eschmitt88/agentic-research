@@ -28,6 +28,9 @@ sources:
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/bouras2026authority]]"
+  - "[[literature/papers/chandran2026autoresearch]]"
+  - "[[literature/papers/li2026where]]"
+  - "[[literature/papers/li2026who]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -331,6 +334,35 @@ self-graded, on a mock the authors built with no real provider adapter. The
 general point stands on its own logic regardless — anything that has already
 crossed the boundary is past the gate that would have stopped it.
 
+**Where on the time axis to gate is priced by the action's cost (2026-09-28).**
+[[literature/papers/chandran2026autoresearch]] runs the same research loop
+in two recsys systems whose per-iteration cost differs by ~760×. It places
+the enforcement point differently in each, and says why.
+
+- **The expensive system (9–19 h multi-GPU iterations) gates before
+  execution.** A separate Code Fixer agent *rewrites* each proposed script
+  before it runs. In its first deployment it fixed 14 latent bugs, one of
+  which would have run an 8-GPU job on a single device for 10+ hours.
+- **The cheap system (6–52 min, 1 GPU) enforces after execution.** It
+  reverts automatically on regression, which fired on 4 of 21 iterations
+  in one run.
+
+The authors' rule is "when iterations are expensive, prevent; when
+iterations are cheap, react". They call it a two-data-point observation.
+
+That makes the *when* on this axis a function of the protected action's
+cost and irreversibility, not a fixed property of the constraint. Two
+details are worth keeping:
+
+- **The pre-execution gate is a rewriter, not a refuser.** It replaced a
+  describe-then-reauthor Reviewer that "returned malformed JSON on 14
+  consecutive calls".
+- **The rewriter did what a describe-only gate did not.** While a Reviewer
+  could only report the violation in prose, the Researcher reintroduced a
+  prohibited file-system operation six times across four iterations. After
+  the Fixer took over, "no subsequent iteration has been lost to the
+  agent-coordination layer."
+
 ## Why this repository has the question and not the answer
 
 This project runs three de facto trust domains distinguished only by prose
@@ -356,7 +388,7 @@ has a shared skill namespace.
 - **Is there a placement that dominates, or is the right answer always
   several?** [[literature/papers/rahman2026framing]] reports two
   independent placements both reaching 0%, which suggests redundancy is
-  cheap here. **Three head-to-head comparisons now exist (2026-09-14, 09-15)**,
+  cheap here. **Four head-to-head comparisons now exist (2026-09-14, 09-15, 09-28)**,
   each for one threat, from independent groups:
   - [[literature/papers/zheng2026engineering]] compares pre-action model
     verification, a non-atomic preflight guard, an in-transaction partial
@@ -410,6 +442,65 @@ has a shared skill namespace.
   a placement *plus* a check on interpretation (fail-closed defaults, a
   scoped semantic audit), not redundant placements. taneja2026scan's
   predicate point above is the permission-side form of the same limit.
+
+  **A fourth comparison puts the model itself on the axis (2026-09-28).**
+  [[literature/papers/li2026where]] varies model, harness and tool contract
+  in one factorial against a single threat: duplicate side effects after an
+  ambiguous write. It uses 25,930 episodes, identical paired worlds and a
+  committed-effects ledger as grader. The answer is a criterion none of the
+  three above states: **the placement that dominates is decided by whether
+  the hidden state is observable from the enforcing component.** When an
+  immediate read-back can reveal the outcome (a lost ack), frontier models
+  verify first and duplicate in 0.5% of episodes, and the model takes 53% of
+  the explained variance. When it cannot (a request still in flight, or
+  delivered twice), the same models duplicate in 56% and 74% of episodes,
+  and the contract takes 81%. Proposition 1 proves that no verification-only
+  policy is exactly-once under late commits without a known in-flight bound.
+  That is a formal version of zheng2026engineering's after-check race. So
+  the "enforcement cannot live in the model" consensus has a scoped
+  exception: it *can*, when the predicate is observable from the model's
+  position. This is nepal2026faithful's "computable from the output"
+  condition, restated for world state. Placement also sets a ceiling for
+  every layer above it. Under the native contract, even an outcome oracle
+  that sees in-flight requests reaches only 87% exactly-once success.
+  Idempotency keys enforced at the resource, inside the effect's
+  application, reach 99% with a guard that attaches them. That is design
+  rule 3 again.
+  Two cautions come with it. A layer placed *below* the model and invisible
+  to it hurts: transparent SDK retries cut exactly-once success from 72% to
+  50%. A layer that *announces* what it enforces can displace the model's
+  own safer strategy: the guard's "will verify before retrying" note cut one
+  strong model's escalation from 12% to 3% and raised its late-commit
+  duplicates from 50% to 71%. The finding that "the harness barely matters"
+  (a harness share of 0–3%) is narrow. Three non-Claude CLIs were stripped
+  to MCP-only tools with a shared preamble. The headline stratified split is
+  a post-hoc analysis; the preregistered pooled one gives the model 9%.
+  Single author, simulated services, code not yet released.
+
+  **A fifth comparison puts time-of-check on the axis, and assigns
+  placement per obligation (2026-09-28).** [[literature/papers/li2026who]]
+  runs one agent (GPT-5.6 Sol) on 87 SkillsBench tasks under the authors'
+  adaptations of a post-hoc verifier (Agentic Rubrics), a completion gate
+  (VeriMAP) and action-time runtime enforcement (AgentSpec). Pass /
+  unrealized-requirement rate (U–E) / unsupported-acceptance rate (S–A)
+  are 74.7 / 12.6 / 23.0, 79.3 / 9.6 / 20.7 and 78.2 / 8.8 / 24.1. The
+  combined obligation–evidence–commit runtime reaches 85.1 / 6.3 / 6.9.
+  "Action constraints reduce divergence without establishing effects,
+  whereas completion checks filter terminal claims without governing prior
+  trajectories." Each placement fixes a different gap, which is another
+  vote for "several". The margins between single placements are a few
+  tasks on one run, so read this as a direction, not a ranking. The more
+  importable part is *how* it places. Preventive mediation is granted to an
+  action class only when a closure audit over a capability graph finds no
+  effect-equivalent path around the check. Every other hard obligation
+  falls back to post-effect validate-and-commit. On a realistic tool-use
+  workspace that leaves **44% (110/250) of checkable, mandatory
+  requirements preventively placeable and 56% checkable only after the
+  effect**. On GuideBench, 0% are preventively placeable. This is
+  li2026where's observability criterion turned into a procedure. Placement
+  is assigned by what can be shown unbypassable, not by design preference.
+  It also measures how much of a real specification lands on the weaker,
+  after-the-fact side.
 
   Before these, every paper argued for its own placement, and the question
   was partly answered from the other side:

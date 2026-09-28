@@ -33,6 +33,8 @@ sources:
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/bouras2026authority]]"
   - "[[literature/papers/zhu2026authorization]]"
+  - "[[literature/papers/li2026where]]"
+  - "[[literature/papers/li2026who]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -220,6 +222,23 @@ on violation* (log, warn-and-retry, block, kill, roll back) is now an
 open design axis with evidence that the harshest response is usually
 wrong, and that in irreversible workflows mid-procedure blocking can
 itself leave the system inconsistent.
+
+(2026-09-28) [[literature/papers/li2026where]] adds a second instance of
+"enforcement can hurt strong models", with a different mechanism. What
+hurts is not what the checker *does* but what it *says*. Its guard is
+driven only by a machine-readable tool contract (idempotency class,
+read-back function, documented lag). A note telling gpt-6-sol that the
+guard would verify before any identical retry cut the model's own
+escalation from 12% to 3% of late-commit episodes. Its late-commit
+duplicates rose from 50% to 71%, because the guard's read-back cannot see
+an in-flight request either. The authors' remedy is to attach keys
+silently, or to state uncertainty "without claiming to resolve it." The
+same paper also marks where the typed artifact currently stops. MCP lets a
+server declare a tool idempotent "only as an advisory hint", and the paper
+asks for normative contract fields instead: a key argument, a declared
+read-back, and documented visibility and in-flight bounds. With keys on
+every write, the typed contract did most of the work. Duplicates fell to
+0% in all four harnesses for one model, with or without the guard.
 
 ## The honest limit: every instance has a semantic escape hatch
 
@@ -479,6 +498,29 @@ sources in this cluster report only the safety coordinate.
   mondl2026autoformalization explicitly evaluates coverage rather than
   utility, which leaves the failure mode most likely to sink the approach
   unmeasured.
+  **Partly answered (2026-09-28)** by [[literature/papers/li2026who]].
+  It uses an LLM compiler, frozen before evaluation, to autoformalize
+  agent-visible prompts, workspace and `SKILL.md` files into obligations
+  with deterministic validators. It then reports the utility coordinate
+  next to the safety one. Raw-pass preservation, the share of tasks the
+  unguarded agent solved that still pass under enforcement, is **96.8%**.
+  What keeps it there is a *qualification* step. A validator may block
+  only after it passes a pre-deployment suite of satisfying cases,
+  targeted violations, malformed inputs and provider errors (250 of 278
+  qualified on SkillsBench; 17 of 1,946 cases mismatched). Skip
+  qualification, and preservation falls to **90.3%** and Pass to 79.3%
+  from 85.1%, while unsupported acceptance improves only 6.9 → 5.7. The
+  paper's reading: "conservative rejection is not equivalent to reliable
+  authority." The input-misreading worry in the last bullet below is also
+  partly measured. Compiler candidates were scored against hand-annotated
+  directions on a task-disjoint dev set (the chosen one matched 77/81),
+  and the output was then frozen. That is the one place in this cluster
+  where the prose→policy step has an error rate. Limits: one model, one
+  run per ablation, 87 tasks, no released artifacts. The disposition rule
+  also sidesteps the hard case. Anything without a qualifiable
+  deterministic validator is left advisory rather than enforced, so the
+  false-positive rate is measured only on the part of the policy that was
+  already easy to check.
 - No head-to-head between a formal policy engine and a well-prompted
   frontier model on the same policy set. The prompt-based baseline is
   argued to be unsound (correctly), but "unsound" and "worse in practice"

@@ -33,7 +33,9 @@ sources:
   - "[[literature/papers/li2026praxist]]"
   - "[[literature/papers/ge2026coverage]]"
   - "[[literature/papers/hickey2026saltbench]]"
+  - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/min2026autonomous]]"
+  - "[[literature/papers/qu2026propose]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -552,6 +554,85 @@ tolerance term, and neither supplies a principled way to set one.** The
 derivation still has to come from the evaluator's own reproduction spread.
 It does raise the priority — an uncalibrated band is at least analyzable,
 where a bare `>` is not.
+
+**A production loop puts a band on both comparisons, still uncalibrated,
+and wires the stall counter to redirect rather than halt (2026-09-28).**
+[[literature/papers/chandran2026autoresearch]] ran Karpathy-style
+AutoResearch for twelve weeks on two Amazon recsys systems. Its Algorithm 1
+applies a tolerance at two points:
+
+- **Keep.** A candidate is kept `if score > best_score · (1 + τ_keep)`, a
+  relative band on the champion comparison. The value of τ_keep is never
+  reported.
+- **Stall.** When `Δrel(best score)` over the last 5 iterations falls below
+  `τ_stag` = 8%, the counter fires.
+
+The stall parameters were tuned by hand against false alarms: "3 iterations
+was too frequent (firing on noise); 8 iterations was too late." There are
+no seeds and no repeated runs. The only spread the paper measures comes
+after the fact: the final model re-scored on 11 dates gives ±0.28 pp. That
+spread never feeds back into either threshold.
+
+So this is a third system that reaches for the band and does not derive it.
+It is also field evidence for the premise. Stagnation looked like five
+consecutive iterations "all within ±0.008 weighted coherence", and a window
+of 3 tripped on noise.
+
+Two things are new here:
+
+- **Stagnation redirects instead of halting.** Firing the counter calls a
+  Criticizer, which emits one strategic directive that clears on the next
+  keep. Algorithm 1 has no halt branch at all (`for i = 1, 2, …`). The largest
+  single-directive gain followed one such firing (+50 bps Recall@6 in three
+  iterations). This field-confirms guidance item 3's switch-then-halt
+  reading (zou2026fmlbench).
+- **The band needs to be defined per objective.** System B had several
+  competing criteria that were "never simultaneously met in any of 15 runs".
+  There, "improved" had no single definition at all, and humans set the
+  revert thresholds.
+
+A scalar noise band presupposes a scalar metric. A multi-criteria `/iterate`
+chain would need the band specified per criterion, or a declared primary.
+
+**An anytime-valid test answers the champion question, not the halt
+question — and at `/iterate`'s sample sizes it certifies nothing
+(2026-09-28).** [[literature/papers/qu2026propose]] is the first principled
+alternative to a band in this graph. It uses a frozen betting referee
+(e-processes → online e-BH) that scores each candidate only on outcomes
+revealed *after* it was submitted. So FDR over everything ever admitted
+holds at every stopping time, for any proposer with no foreknowledge of
+those outcomes. Its measured penalty for the practice a bare `>` or a
+re-checked band amounts to is large. The *peeking* arm (a rolling t-test,
+admit at the first p ≤ α) admits 86.2 realised false factors per campaign,
+against the frozen referee's 11.7.
+
+It does not transfer as "the tolerance term", for four reasons:
+
+- **Different object.** The guarantee controls false *admissions*, which
+  in `/iterate` terms is the honesty of "new best" claims. A halt is not an
+  inference and needs no validity.
+- **It needs a stream, not a number.** Capital is `Π(1 + λX)` with λ < 1,
+  on a bounded metric, so one run can at most double it. It cannot reach
+  1/α = 20. The paper's wait formula, `ln(1/α)·2σ²/µ²`, gives about 6(σ/µ)²
+  fresh runs per certified improvement at α = 0.05, or about 12(σ/µ)² under
+  a 20-experiment e-BH bar. That is roughly 6 runs for a 1σ gain and 24 for
+  0.5σ. (This is our arithmetic, not the paper's.)
+- **Post-submission only.** The run that made a candidate look best is
+  inadmissible evidence for it. Certification needs *new* seeds after the
+  decision, which at least doubles the cost.
+- **The price is latency.** In the paper it is about 500 trading days per
+  admitted true factor. In `/iterate` it is paid in runs against
+  `max_experiments`.
+
+With `seeds_run: 1` an e-gated counter never resets, and the ceiling
+collapses into a hard 3-cycle cap. Two things survive the transfer. One is
+the rule *don't add seeds until the band clears*, because that is peeking.
+The other is a sequential e-test on paired seed deltas, as the upgrade if
+chains ever run many cheap seeds. The paper's own comparator also backs the
+09-27 proposal's rejected heavy form. A patient fixed-horizon t-test with BH
+comes close on false admissions (16.4 against 11.7). So fixed `--seeds N`
+plus a real test buys most of it. The std band remains the right cheap
+edit.
 
 ## Inside a measurement, a ceiling is a censoring instrument
 

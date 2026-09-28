@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/ning2026scores]]"
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/dai2026agentguard]]"
+  - "[[literature/papers/li2026who]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -319,6 +320,20 @@ transportable to a workload without injected adversarial steps.
   positives are dangerous verbs appearing in *content* (a heredoc being
   written, a comment, a fetch piped into a JSON formatter), not in a
   command being run.
+  A second deterministic data point, and a remedy (2026-09-28):
+  [[literature/papers/li2026who]] ablates the step that decides which
+  deterministic validators may block. Letting unqualified validators into
+  the blocking set cuts unsupported acceptance only from 6.9% to 5.7%.
+  It also drops preservation of tasks the unguarded agent already solved
+  from 96.8% to 90.3%, and Pass from 85.1% to 79.3%. "Conservative
+  rejection is not equivalent to reliable authority." For a deterministic
+  checker, then, the over-strictness is not fixed by nature. It depends on
+  *which* checkers are admitted. The remedy is paired construction applied
+  to the checker itself before deployment: each validator must return the
+  prespecified result on satisfying cases *and* targeted violations before
+  it may block. The paper also reports S–A "with Pass and Raw-pass
+  preservation to expose over-refusal", which is this concept's pairing
+  adopted as a reporting rule. One model, one run, 87 tasks, no interval.
 - **No source measures the conservative failure in a *research* agent
   loop.** The evidence is from benchmarks, guardrails, and human-approval
   scheduling. The case this project depends on — an autonomous curation or

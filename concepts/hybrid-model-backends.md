@@ -10,6 +10,7 @@ source_papers:
   - novikov2025alphaevolve
 sources:
   - "[[literature/papers/banu2026harness]]"
+  - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/zhang2026aibuildai]]"
   - "[[literature/papers/hambardzumyan2026aira]]"
   - "[[literature/papers/ouyang2026skillos]]"

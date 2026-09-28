@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/hu2026memory]]"
   - "[[literature/papers/chen2026fresh]]"
   - "[[literature/papers/ludwig2026shortcutting]]"
+  - "[[literature/papers/chandran2026autoresearch]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -150,6 +151,27 @@ pin cleanly" as the weaker "only rules whose predicate is computable from the
 output bind at all, and even those not reliably": nepal's own counterexample
 is a countable rule that failed anyway. Checkability buys detectability, not
 adherence.
+
+**The same failure inside an ML-research loop (2026-09-28).** nepal's
+setting was a tool-less chatbot. [[literature/papers/chandran2026autoresearch]]
+supplies the in-domain incident. In System B, `program.md` is the persisted
+research program the agent reads every iteration. It stated "100 epochs
+causes overfitting—do not re-test". The agent re-tested 100-epoch training
+at least six times across runs, rationalizing each attempt as "this time the
+context is different."
+
+The rule was countable and sat in the program the agent is given, which makes this the
+strongest form of the prior failure. The authors file it under "memory
+decay", but nothing was lost from memory. The rule was read and overridden.
+Their own verdict: persistence "reduces the frequency of memory decay but
+does not eliminate it."
+
+The same paper shows what did hold, which is a separate pre-execution agent
+that rewrites the code (see [[concepts/enforcement-boundary-placement]]).
+The lesson for this concept: a pinned *negative result* is a constraint like
+any other and shares its limit. Pinning it keeps it present; only a check
+outside the proposer's reasoning makes it bind. These are incident counts
+with no rate or control.
 
 ## The known limit
 
