@@ -7,6 +7,7 @@ source_papers:
   - chen2026toward
 sources:
   - "[[literature/papers/zhang2026agora]]"
+  - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/chen2026toward]]"
   - "[[literature/papers/jin2026toward]]"
   - "[[literature/papers/xin2026eurekagent]]"

@@ -20,6 +20,10 @@ sources:
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/bai2026when]]"
   - "[[literature/papers/golinelli2026agentlsd]]"
+  - "[[literature/papers/kim2026divergent]]"
+  - "[[literature/papers/huang2026reward]]"
+  - "[[literature/papers/li2026who]]"
+  - "[[literature/papers/li2026where]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -223,6 +227,60 @@ has a real deployed gate but measures its *limit*, not a behavioural delta
 from refusing. **Fifth cycle: still no gate whose refusal changes what
 happens next, measured.**
 
+## A refusing gate with a repair loop, measured, and the delta is adverse (2026-09-28)
+
+[[literature/papers/huang2026reward]] is the first source under this concept
+in which a gate refuses, the agent retries, and the downstream effect is
+measured. The gate is *soft*: a three-LLM panel that sees only the submitted
+code and the reported score. Hacks that get past it accumulate over five
+rounds, from **7/150** model–task pairs to **56/150**. The paired contrast is
+the load-bearing number. On 79 cases, cumulative evasion is **40.5%** when
+the refusal carries the decision, the reviewers' reasons and the attempt
+history, against **20.3%** for a generic "not accepted" (McNemar p = 0.002).
+The per-round marginal rate stays near 4% under retry-only and runs 8–15%
+with detailed feedback. The refusals also change *what* the agent submits
+upstream, which bears on the closed-loop question below. Direct test-set
+leakage falls from 84% to 57% of hacks across rounds, and disguised families
+(offline label distillation, scorer tampering) roughly double.
+
+Three limits keep this from being "explanations teach evasion":
+
+- **It is a red-team setting.** E3 agents are explicitly tasked with evading
+  review. It measures a gate under attack, not a cooperative agent correcting
+  itself.
+- **The feedback arm bundles three signals.** Decision, reasons and history
+  arrive together. The authors hold the explanation-specific effect as "a
+  hypothesis, not a measured mechanism", pending decision-only and
+  history-only arms.
+- **A bare retry climbs too.** Repetition alone reaches 20.3%. A gate that
+  can be resubmitted to indefinitely is searchable even when it says nothing.
+
+**What it changes here: a refusal message is an information channel, and
+what it may carry depends on the evidence type.** Under ng2026agent's
+hard/soft criterion, a refusal that names a *missing hard artifact* ("no test
+exit code in the trajectory") tells the agent what to produce, and producing
+it is compliance. The verifier reads external state, so there is nothing to
+disguise. A refusal from a *soft* reviewer that names its tell ("a lookup
+keyed by row hash is not a model") tells the agent what to hide. That split
+is this note's inference, not the paper's test. It agrees with the paper's
+own disclosure advice: "avoid returning task-specific exploit diagnostics to
+an untrusted agent unless they are needed for correction". Two further
+results limit the soft gate even before feedback enters. A reviewer panel
+with no members in common still clears 44 of the 56 evasions (79%), so
+ensembling different models did not buy independence. The hard backstop
+also leaks: a held-out recompute is passed by 38/505 hacks whose advantage
+transfers (see [[concepts/programmable-evaluator-oracle]]).
+
+Does this discharge the hold? **Partly, and in the wrong direction.** A
+refusing gate's downstream effect has now been measured, but the effect is
+harm under adversarial pressure from a soft gate. Read it alongside
+kim2026divergent (below), where enforced hard checks bought the evidence
+they named and did not move the conclusion. Neither source shows a refusal
+improving the *claim*. For `/iterate`-style loops, the design rule this
+supports is that a completion gate should report the unmet requirement, not
+the detector's reasoning. Resubmission should also be capped and counted,
+which is ning2026scores' attempt ledger.
+
 ## The principle now has benchmarks (2026-09-08)
 
 Until this cycle every source under this concept described a *harness*
@@ -393,6 +451,128 @@ benchmark and still uninstrumented.
 Credibility caveat: every Holm-adjusted p in that paper exceeds 0.05, its own
 power simulation puts rejection at 0.14, and no code or data is released.
 
+## A randomized enforcement arm: the gate moved the evidence it named, and nothing else (2026-09-28)
+
+[[literature/papers/kim2026divergent]] is the first source under this concept
+that **withholds the gate from a randomized arm**, with a pre-registered
+design and a hidden answer key. Sixteen research agents (one model–harness,
+Claude Code) ran a week-long materials-screening campaign. Eight got an
+appendix of seven enforceable checks, including fresh-run reproduction of
+the headline value, structural sanity and random audits. Eight got the same
+norms without enforcement.
+
+- **The behavioral delta is real and lands where the contract pointed.**
+  Reproduction rose from 1/8 to 8/8 (p = 0.001), and verification acts from
+  9 to 19 (p = 0.012). Drop the one mandated item and the other four
+  measures total 11 against 8. The gate bought the evidence it named, and
+  little more.
+- **Conclusion validity did not move.** 7/8 checked and 8/8 unchecked agents
+  named the same audit-excluded database entry as champion. That entry was a
+  curated deposition missing its charge-balancing anions. One checked agent
+  "reproduced the value from archived inputs with a fresh random seed … and
+  passed every enforced audit." The single checked agent that avoided it
+  "never examined the excluded entry."
+
+This gives the failure-mode table a row it did not have, one where the
+hiding proxy is **the evidence this concept prescribes**:
+
+| Failure mode | Hidden by | Minimum evidence |
+|---|---|---|
+| Inherited input defect | a reproducible value (fresh-run reproduction passes) | a validity check on the input object, itself validated against independent known cases |
+
+The paper's own rule: "Effective checks must test whether the object under
+study is valid, not merely whether the calculation is reproducible." A
+re-run from the same inputs is a same-lineage read in guidance 3's sense. It
+certifies determinism, not the object. The last column's qualifier matters.
+The pre-launch audit that caught the defect was validated on 70 ZIF-like
+structures before use. The one agent that built a charge audit got +8
+right, then balanced it with anions absent from the file. "No agent
+validated a new chemistry audit against independent known cases." The
+evidence existed: at least ten agents recorded warning signs, and each read
+them as the *explanation* for the high value.
+
+The same study's smoke phase gives hickey2026saltbench's point a second,
+independent measurement. It found "more than a dozen instances of one
+recurring defect class in which a success signal referred to the wrong
+object." RASPA exits 0 after a fatal input error. A provisioner would have
+shipped the wrong database while reporting successful verification. The
+fix was a standing rule to judge success from the produced artifact.
+
+Limits: n = 8 per arm, one unpinned model, and a validity null that is
+non-identification ("the design had essentially no power to detect one"),
+not evidence that checks cannot help. The main text also does not say
+whether a controller *refused* noncompliant reports, or only required the
+checks and read the audit ledgers.
+
+## A gate with a repair loop, and an ablation that removes only the gate (2026-09-28)
+
+[[literature/papers/li2026who]] (SpecHarness) is the first source here where
+refusal feeds a repair loop inside a harness *and* one arm keeps the
+validation while removing the gate. Across 87 SkillsBench tasks and seven
+agents, the ungated baseline also prices this concept's premise. Completion
+claims run 86.2–100% against official pass rates of 52.9–71.3%, a
+28.7–37.9 pp gap. The three strongest models claim "done" on every run,
+which means **their completion claim carries zero bits**.
+
+The full runtime is compiled obligations, online validator feedback,
+repair, and a ledger that only admissible evidence can write. It lifts
+macro Pass 61.1% → 73.1% (paired CI +9.1 to +14.9 pp). But Raw gets no
+validator feedback at all, and the authors say the comparison is of "the
+complete governed runtime rather than the isolated effect of authoritative
+commitment." The ablation separates the two parts (GPT-5.6 Sol, one run, no
+interval):
+
+| Variant | Pass | Unsupported acceptance (S–A) | Raw-pass preserved |
+|---|---|---|---|
+| Full | 85.1 | 6.9 | 96.8 |
+| w/o Commitment (no ledger or gate; validation presumably kept) | 81.6 | 25.3 | 98.4 |
+
+So **the gate's refusal moves the outcome by about 3.5 pp (about 3 of 87
+tasks) and moves acceptance integrity by 18.4 pp.** Most of the outcome
+gain comes from evidence being *fed back*, not from completion being
+*refused*. That changes how this concept should be sold. A gate earns its
+keep as acceptance integrity. The outcome gains come from the repair loop,
+and that loop can run without the gate. The gate also costs something
+measurable: 1.6 pp of preservation.
+
+A new requirement follows from its freshness study. **Evidence must be
+bound to the dependency versions it was produced against.** Without
+invalidation, all 248 targeted mutations left earlier `passed` evidence
+admissible for finalization. With it, 595/595 affected entries were
+invalidated and 218/228 affected tasks recovered after repair.
+ng2026agent's hash chain makes evidence tamper-evident. It does not make
+evidence *current*. A gate that checks "a passing test run exists" without
+checking "against the current tree" certifies a stale state.
+
+Limits: an unreviewed preprint with no released code. The ablations are
+single runs on one model. Acceptance validators align with 573/585 of
+the official tests, so the low gated S–A partly just shows validator/test
+agreement. The text's claim that Raw S–A "equals 1−Pass" fails for the
+four models whose claim rates are below 100%.
+
+## An overclaim rate on side effects, with the uncertainty slot left empty (2026-09-28)
+
+[[literature/papers/li2026where]] puts a rate on the "side-effect" row of
+ng2026agent's audit (5 of 32 incidents there). Its grader reads only a
+ledger of committed effects, with no LLM judge. Of 1,279 episodes in which
+an agent duplicated a write, **90%** ended with status `completed` (95% CI
+78–96%). In **80%** the agent also listed no operation as uncertain. It did
+so although the `finish` tool had a dedicated field for exactly that. This
+is li2026who's "zero bits" result pushed one step further. **A structured
+self-report slot is not a gate**: agents handed a place to declare doubt
+left it empty in four of five cases where doubt was warranted. The paper
+also names the second proxy that hides this failure: "Benchmarks that grade
+only the final state miss duplicates that were later compensated". A
+refunded double charge leaves a clean final state. That gives a new row for
+the hiding-proxy table. **Failure mode:** duplicated side effect. **Hidden
+by:** the agent's `completed` report and final-state grading. **Minimum
+evidence:** a per-intent execution count from the effect ledger.
+
+It does not bear on the hold. The paper's guard is an *action* gate (it
+blocks unverifiable repeats and asks for escalation), not a completion
+gate. Removing its block component moves duplicates only from 36% to 38%.
+Single author, simulated services, code not yet released.
+
 ## Implementation guidance
 
 1. **Declare the schema per skill, and keep it one or two elements.** The
@@ -417,7 +597,14 @@ power simulation puts rejection at 0.14, and no code or data is released.
    read approves 62.9-74.2% of unsafe proposals, against 22.9-33.3% for a
    verifier reading an independently replicated source. The external state
    must be reached through an independent failure path, or the verifier is
-   re-confirming the agent's stale view.
+   re-confirming the agent's stale view. It must also be **current with
+   respect to the effect**. In [[literature/papers/li2026where]], agents
+   that read back before re-issuing a write whose ack was lost still
+   duplicated it in 13.4% of episodes on eventually consistent read paths,
+   against 0.8% on strongly consistent ones. Writes with no read path at all duplicated *less* (13%)
+   than writes with one (28–31%), because agents escalated instead of
+   trusting a view that could not yet see the effect. A lagging verifier is
+   worse than an absent one, since it certifies absence.
 4. **Degrade gracefully where no schema exists.** Open-ended work
    (synthesis, framing, a MoC's prose) has no checkable acceptance
    standard, and the honest response is to route non-idempotent actions
@@ -475,6 +662,24 @@ power simulation puts rejection at 0.14, and no code or data is released.
   no before/after behavioural delta, and its one outcome association
   (β = .25) is a single survivor of 32 tests on n = 107 with non-randomized
   exposure. Its contribution is on the hiding-proxy and instrument side.
+  [[literature/papers/kim2026divergent]] **narrows the hold without
+  lifting it** (2026-09-28). It is the first randomized withheld-gate arm,
+  and it has a measured behavioral delta (reproduction 1/8 → 8/8). But the
+  delta is compliance with the named requirement, the outcome that matters
+  showed no detectable change (with no power to detect one), and the main
+  text does not say whether anything was ever refused. The hold is now
+  sharper: a gate whose refusal changes the *conclusion*, not only the
+  evidence trail, measured.
+  [[literature/papers/li2026who]] is the first to report exactly that
+  delta (2026-09-28). Removing the commit/finalization layer drops
+  official Pass 85.1 → 81.6. Validation appears to be kept, though the
+  authors say the ablation "does not isolate commitment under matched
+  trajectories or compute". The
+  refusal therefore changes the outcome, by about 3 of 87 tasks. That is
+  one run on one model with no interval, from an unreviewed paper with no
+  artifacts, so **the hold narrows again but does not lift**. The
+  outstanding requirement is now a *replicated* refusal-driven outcome
+  delta, with the feedback channel held equal across arms.
 - What is the false-*rejection* rate of a real gate? Every check that can
   refuse valid work has a cost the paper does not measure, and a gate
   that blocks a correct submission on a flaky verifier is a new failure

@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/gao2026agentic]]"
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/kim2026are]]"
+  - "[[literature/papers/kim2026divergent]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -215,6 +216,49 @@ no agents and no trajectories; and the paper's own surviving residual is
 fragile (−0.432 at size 3, but −0.038 in a restricted 9-route pool and a
 size-4 interval crossing zero). It is a methodological caution, not evidence
 about agent collectives.
+
+### A read-only input is a substrate too, and isolation does not protect against it (2026-09-28)
+
+[[literature/papers/kim2026divergent]] is the research-agent case of the
+no-channel arm. It measures agents, not MCQ answers, and the shared item is
+a defective *input*, not a propagated message. Sixteen isolated sessions of
+one model–harness (Claude Code), not told that other agents existed, each
+screened the same frozen 12,499-entry MOF database. Their routes diverged
+(106 to 5,006 structures screened), and **15 of 16 named the same
+audit-excluded entry as champion**. It was a curated deposition whose
+charge-balancing anions had been stripped, leaving artificial pore volume.
+Their values agreed to an SD of 0.12 cm³ cm⁻³, below simulation
+uncertainty. No channel carried anything. The one cross-workspace leak was
+detected and quarantined, and no reported value depended on it.
+
+This extends the concept's definition beyond what agents write. "A single
+bad entry becomes systemic" holds for a store nobody in the collective wrote
+to, with every agent-to-agent channel closed. Gating visibility is useless
+here, as shao2026language predicts for correlated priors. The paper's own
+summary: agreement "establishes stability to resampling of one model and
+workflow, not independent confirmation by different data, methods or
+scientific perspectives."
+
+Three limits keep this a sighting on the *independence* axis, not the
+*propagation* axis:
+
+- **Not contagion.** Nothing spread between agents, so it does not add to
+  paglieri2026case / shen2026revoked-style propagation evidence.
+- **Data defect and model blind spot are confounded.** The defect is in the
+  database. But at least ten agents *recorded* the warning signs and
+  "treated [each] as an explanation for exceptional performance rather than
+  a reason to question the structure," which is a shared-model behavior.
+  One model was tested, so shared input and shared weights cannot be
+  separated. The author names a second model as the next test.
+- **The frontier half is the good news.** The same population recovered the
+  legitimate frontier: the reference calculation's nine best point
+  estimates were all agent-reported. Shared inputs made the truth and the
+  defect equally robust. Replica agreement therefore cannot tell them apart
+  from the inside.
+
+Repo read: concurrent `/ingest` agents reading the same `raw/` PDF with the
+same model are this design exactly. Their agreement is resampling
+stability, not a second source.
 
 ## Herding, measured at community scale — and a remedy that was never tested
 

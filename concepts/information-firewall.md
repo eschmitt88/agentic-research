@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/yang2026sok]]"
   - "[[literature/papers/hickey2026saltbench]]"
   - "[[literature/papers/ludwig2026shortcutting]]"
+  - "[[literature/papers/qu2026propose]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -174,6 +175,23 @@ is 0.0 in every cell. That makes the firewall's value measurable as the
 pass-rate gap between a leaky and a closed condition, not as an attempt
 rate. Both sources are software engineering, not ML research, so the
 domain gap above stands.
+
+**The prospective limit of the time boundary: score only what happens after
+submission (2026-09-28).** [[literature/papers/qu2026propose]] draws the
+time line at its strictest. Each candidate is scored only on outcomes that
+did not exist when it was proposed. That is the one placement where the
+firewall becomes a *theorem*. Its proposition states that FDR holds at every
+stopping time for any proposal policy, provided the proposer has no
+information about the post-submission stream. A live run satisfies that by
+construction. A historical replay does not. A model whose training covers
+the replayed years sits outside the guarantee, so the paper reports its own
+LLM real-data arms "as replay outcomes", not as instances of it. Its
+leakage evidence is only a sign check. The LLM leads the bandit before 2020
+and trails it after, which is the opposite of what leakage would predict.
+The paper calls this "an interpretation, not a test". For this project the
+lesson is that a backtest-style replay turns a prospective boundary back
+into a recency boundary of unknown integrity. A harness that replays past
+data to an adaptive agent owes that caveat.
 
 **A candidate boundary that fails: surface reparameterization.**
 [[literature/papers/shao2026language]] needed the memorizable answer gone from

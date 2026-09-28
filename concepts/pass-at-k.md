@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/zhang2026double]]"
   - "[[literature/papers/kim2026are]]"
   - "[[literature/papers/she2026efficient]]"
+  - "[[literature/papers/kim2026divergent]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -228,6 +229,34 @@ approximates the expensive one to within ε" is empty until the expensive one's
 own run-to-run spread is reported.** Same argument as the noise floor
 [[concepts/budget-as-ceiling]] needs for `max_consecutive_no_improvement`,
 applied to an instrument rather than a stopping rule.
+
+## k bounds stochastic error, not systematic error (2026-09-28)
+
+This concept's floor (k ≥ 3, report the distribution) treats run-to-run
+spread as the uncertainty. [[literature/papers/kim2026divergent]] shows what
+a large k with a tight distribution certifies when every run shares an
+input. Sixteen replicas of one research-agent configuration, on one frozen
+database, gave **15 of 16** the same wrong champion, a defective curated
+entry. Their values spread by an SD of 0.12 cm³ cm⁻³, below the simulation's
+own uncertainty. That is k = 16 and a near-zero spread on a wrong answer.
+zhang2026double's "a tight distribution is not evidence of reliability" had
+a scaffold-level cause (the model was not being measured). This is a second,
+independent cause: **the model was measured, and the shared input was
+wrong.** In the paper's words, "Replication reduced stochastic uncertainty
+but not this systematic error."
+
+It also sharpens the selector point above (kim2026are). Draw three of the
+sixteen: "there was a 98% chance that at least one would report the leading
+retained material, but certainty that a majority would name the excluded
+entry." pass@3 over the legitimate frontier is near 1, and maj@3 picks the
+common-mode error every time. On shared inputs, majority vote over k
+replicas does not wash out the defect. It *selects* it.
+
+Rule for this project: a distribution over k seeds of one
+configuration on one input set supports a claim about **stability to
+resampling**, and only that. A validity claim needs a varied input or source
+(a second data split, an independently curated set, a different model),
+which k does not supply at any size.
 
 ## Open questions
 
