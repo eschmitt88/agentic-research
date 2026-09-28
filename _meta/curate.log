@@ -1395,3 +1395,26 @@ Every headline number was checked by grep against the PDF text. The concept edit
 - **`kg_lint`:** unchanged by this pass. Its 4 dead wikilinks were already there.
 - **`_meta/digest.log`:** its uncommitted change is still uncommitted. It was already there when this session started (the 09-14 rollup's report), so I left it out of both commits.
 - **Push:** it worked this time, which doesn't tell us whether the automatic push hook's access error is fixed.
+**`raw/_candidates/` is empty — uncurated count 0.** All 14 leftover items plus the flagged near-miss have a recorded disposition, and the file is archived to `_done/`. Everything committed and pushed across 8 commits.
+
+**9 ingested, 6 declined, 0 duplicates.** Papers 191 → 200; concepts held at 35, 13 of them touched.
+
+Declines, all on substantive grounds: item 14 (training-time, no harness target), 15 (position paper, no evaluation), 16 (its retention result comes from exactly the auto-optimized-harness search `zhu2026bad` shows can cheat), 17 (finance domain; item 12 serves the instrumentation gap better), 19 (`selective-memory-retrieval` already carries the split), 20 (below the changes-a-concept bar).
+
+**The abstract-overstatement pattern held again, harder.** All nine full-PDF reads landed at or below the digest's own ranking, and six of nine produced a correction to its framing. Three that matter:
+
+- **Item 9's central claim doesn't exist.** The digest said AgentGuard evaluates conditional activation head-to-head against always-on rules. There is no such comparison and no ablation of any kind — two conditions only. So this repo's path-scoped `.claude/rules/` is **unjustified by evidence, not supported by it**. That was the reading that made this item look like direct support for the 09-20 `@import` finding, so the correction cuts against a conclusion the project was leaning toward.
+- **Item 6 is not "first to detect from representations"** — contradicted by its own §6 — and its independence appeal inverts `zheng2026engineering`: the 57.2% headline is judge-derived from the same channel `ludwig2026shortcutting` used, which is zheng's *weak* axis.
+- **Item 18's instruction-vs-evidence distinction is never measured**, so I left `information-firewall` untouched rather than blur it.
+
+Two things bearing on your open decisions:
+
+**`max_consecutive_no_improvement`** — item 8 was the best hope and sharpens without answering. PrimeScientist has *no stopping rule at all* (`while U < B`; its own `stop` action unimplemented), so it's a second instance of the `zhang2026agora` failure. It does use a tolerance band where you use a bare `>`, but `δ = 0.05` is asserted with no derivation or ablation. Two independent systems now agree a tolerance term is needed and neither says how to set one — the derivation still has to come from the evaluator's reproduction spread. **Config unchanged; that's your call.**
+
+**`evidence-gated-completion` stays on hold, fifth cycle.** Two candidates bore on it; neither has a gate whose refusal changes what happens next. Item 18 did give the cleanest statement of the limit in the graph — *a gate protects the verdict, not the cost* — plus a gate the concept doesn't cover: the guard on **goal revision** rather than completion.
+
+Credibility ran low across the batch — four of nine at cred ≤ 3 with no released code; item 18 was the only cred-4 and only peer-reviewed venue. Item 8's headline rests on a benchmark six of its eight authors wrote, with no conflict statement.
+
+Two notes on my own execution: an early `git add -A` swept a sibling agent's in-flight PDF into the items-12/13 commit (content is correct, attribution is off by one commit); I switched to targeted adds after. And `/promote-moc` declined for the third consecutive cycle — no new concepts, 35/35 still mapped — logged rather than forced.
+
+The ingest agents surfaced a strong follow-up queue, recorded in the archived file. The two I'd prioritize: **Wilhelm et al. 2026** (the real priority claim for representation-based hack detection — needed before this graph repeats the "first" framing) and **Zhang et al. 2026, arXiv:2604.11088**, which appears to be the rule-form head-to-head item 9 was wrongly believed to be.
