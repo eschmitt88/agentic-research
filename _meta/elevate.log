@@ -364,3 +364,24 @@ Closest miss was `ning2026scores` → `evidence-gated-completion` — it *is* th
 
 Two notes. The queue is still the binding constraint: six proposals were already pending, now eight. And I left the uncommitted `_meta/curate.log` changes from the 09-15 session alone rather than sweeping them into my commit — auto-push worked this time, unlike 09-09 and 09-14.
 {"id":"XnWTNjDGHNiU","time":1789880923,"expires":1789924123,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 2 new system-proposal(s) to review","message":"• concept-import-contract-inert\n• framework-rule-imports-dead\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
+This week's `/elevate` run produced **one proposal** out of 12 ideas considered; the other 11 were held. It's committed and pushed (`ecca7ef`), and `~/claude-system` was only read, not changed.
+
+**The proposal: define "improvement" for `/iterate`'s no-improvement counter.** File: `docs/system-proposals/2026-09-27-iterate-no-improvement-noise-band.md`. Recommendation: adopt.
+
+- **The gap:** `/iterate --chain` passes a count of cycles without improvement to `chain_budget.py`, which halts the chain when `max_consecutive_no_improvement` is reached. But the skill never says what counts as an improvement. With the obvious reading (any metric gain), tiny gains inside run-to-run noise keep resetting the count, so that limit never stops the chain.
+- **Evidence:**
+  - The Agora paper (`zhang2026agora`) measured this failure: 13 agents spent five days improving a score by about 1e-5 per step, when the paper's own reproduction noise was up to 1.3e-3.
+  - MLE-bench (`chan2024mle`, peer-reviewed) shows that single-run results vary a lot between seeds.
+  - PrimeScientist and `xing2026compute` (both with released code) independently arrive at a noise margin rather than a bare comparison.
+- **The change:** one paragraph in `/iterate`. A result only counts as an improvement if it beats the chain's best by more than the standard deviation that `/implement --seeds` already records. No new file, setting or script.
+- **Why it isn't blocked this time:** earlier cycles held this idea because they aimed it at `budget.yaml`, which is waiting on a pending proposal. The count is actually worked out in `/iterate`, and no pending proposal touches that file.
+- **Its limit:** for single-seed runs the behaviour doesn't change. The log line just says `band=none`, which makes the problem visible without fixing it. Fixing it fully would mean requiring `--seeds ≥ 2` for chains, which roughly doubles experiment cost, so I left that as your call. Payoff is also mostly future: there's been one chain on the box (mle-bench in April), and its winning run beat the previous best by +0.0128 on a single run, with no noise estimate.
+
+**Closest miss:** two papers (`nepal2026faithful`, `dai2026agentguard`) suggest deleting the rules in skills that describe how to behave rather than a checkable action. I held it because it has two attestations and no peer review or code. It also has no concrete list of rules to cut, and the accepted instruction-ablation program is already the method for that kind of cut. All 11 holds are recorded in `_index.md` and in `_meta/log.md`.
+
+**Things you may want to act on:**
+- **Queue:** nine proposals are now waiting for your review; the evidence keeps coming faster than decisions. The 09-20 `@import` pair gained supporting input this cycle: `dai2026agentguard` found that rules that actually reach the model's context change behaviour substantially, so rule files that never load are a real cost.
+- **Worktree check still undone:** the 09-21 follow-up to see whether `git log --all` inside an experiment worktree exposes sibling experiments' branches in downstream projects hasn't been done.
+- **Uncommitted changes I left alone:** `_meta/curate.log` has changes left over from the 09-22 curate session. `~/claude-system` has a modified `settings.json` and an untracked `skills/synced/` folder.
+- **Google Drive:** the claude.ai Google Drive connector needs authorizing in your claude.ai connector settings before it can be used; this run didn't need it.
+{"id":"TSllfGdrf6Tn","time":1790485426,"expires":1790528626,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• iterate-no-improvement-noise-band\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
