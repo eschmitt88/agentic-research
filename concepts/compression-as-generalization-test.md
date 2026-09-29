@@ -9,6 +9,7 @@ sources:
   - "[[literature/papers/goyal2026does]]"
   - "[[literature/papers/chen2026repo]]"
   - "[[literature/papers/ning2026scores]]"
+  - "[[literature/papers/xia2026rrsi]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/pass-at-k]]"
@@ -119,3 +120,17 @@ the artifact to whichever model wrote it.
   and supplies measurement, but implements no compression audit of its
   own. A second mechanism paper is still wanted before promoting past
   seedling.
+- **Not the second mechanism: complexity measured as runtime cost
+  (2026-09-29).** [[literature/papers/xia2026rrsi]] (RRSI) regularizes
+  harness evolution against "complexity accumulation" during search, using
+  a cost-acceptance rule and stale-component pruning. Its complexity proxy
+  is **policy tokens per trial**, not the description length of the
+  harness. Within its own ablation, cost and transfer co-move:
+  unregularized evolution runs at 3.80M tokens with an OOD average of 40.3,
+  and RRSI at 2.42M with 43.6. Across methods they do not. In its Fig. 4a,
+  TTHE is nearly as cheap as RRSI (about 2.5M, read off the plot) and has
+  the worst OOD average. Runtime footprint is therefore not a
+  generalization test; a compact channel has to constrain *what is
+  written*, not what it costs to run. The paper belongs with the
+  constrain-during-search family (like ladder feedback), not with the
+  reproducer audit.

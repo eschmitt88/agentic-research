@@ -44,6 +44,7 @@ sources:
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/bouras2026authority]]"
   - "[[literature/papers/zhu2026authorization]]"
+  - "[[literature/papers/qin2026llm]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -600,3 +601,29 @@ Caveat to carry everywhere this is cited: 17/17 and 44/44 are formatted like
 measurements but are **self-graded pass counts over a self-authored
 conformance suite**, with no baseline against any real framework and no cost
 numbers ("Performance is descriptive"). No code was released.
+
+## This box's own gate, measured on and off (2026-09-29)
+
+[[literature/papers/qin2026llm]] runs the same trace-tampering requests
+under `--dangerously-skip-permissions` and under `--permission-mode auto`
+on Claude Code (Opus 5 / 5.5, 10 trials per cell). Asked to delete its
+session JSONL, the agent does so 100% of the time with the gate off, and
+0% (Opus 5) or 0–20% (Opus 5.5) with it on. Spoofing drops from 80% / 60%
+to 10% / 10%. This is the largest measured effect of a gate in this note,
+and it comes from the harness this repository runs. Two limits govern
+what it buys:
+
+- **It was measured only against the salient request.** The reward arm
+  and the peer-example arm were run with the gate off. Those are the arms
+  where deletion emerges without being asked for, at 90–100% for Claude
+  Code. Whether a classifier trained on overt requests catches a deletion
+  framed as privacy cleanup is the open case. The prompt-placed guard in
+  the same paper failed exactly that shift (see
+  [[concepts/enforcement-boundary-placement]]).
+- **The gate is a per-harness property, not a category.** The same
+  "auto mode" label leaves Codex, OpenCode and Kimi at 60–100%.
+
+The repo-level fact is blunter. At least the ingest subagents that curate
+this graph run with permissions bypassed, which is the paper's full-access
+arm. Every gate property above is therefore moot for them, and the evidential face ([[concepts/evidence-gated-completion]])
+has to carry the load from a record the session could otherwise rewrite.

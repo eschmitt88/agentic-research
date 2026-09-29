@@ -11,6 +11,7 @@ source_papers:
 sources:
   - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/zhu2026bad]]"
+  - "[[literature/papers/xia2026rrsi]]"
   - "[[literature/papers/shao2026language]]"
   - "[[literature/papers/zhang2026how]]"
   - "[[literature/papers/calboreanu2026iterative]]"
@@ -71,6 +72,8 @@ sources:
   - "[[literature/papers/huang2026reward]]"
   - "[[literature/papers/kim2026divergent]]"
   - "[[literature/papers/qu2026propose]]"
+  - "[[literature/papers/srikanth2026recursive]]"
+  - "[[literature/papers/li2026discover]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -606,6 +609,31 @@ MLE-bench-style loop it would be the competition directory layout, the
 submission filename, the ordering of a data listing, the format of the
 grader's feedback string — none of which a task split varies.
 
+**Measured on released benchmarks, at benchmark grain (2026-09-29).**
+[[literature/papers/xia2026rrsi]] supplies the measurement the paragraph
+above says is missing, though for a coarser shift than protocol. Six
+harness-evolution arms start from the same H0 with the same policy and
+budget: four prior methods, an unregularized loop, and RRSI. All are
+evolved on Harvey LAB's 120-task evolve split. On its **40-task
+in-distribution held-out split** every arm lands at 88.5–89.2, a 0.7-point
+spread. On three **out-of-distribution** benchmarks the OOD averages
+spread 38.0–43.6. Two of the arms that pass the task holdout end below the
+unevolved harness (TTHE by 1.7). The arm with the highest evolve score,
+the unregularized loop at 92.8, sits within a point of H0 on OOD (40.3 vs
+39.7).
+
+So a same-benchmark task split ranked six methods as equivalent when they
+were not. The OOD shift changes task descriptions, tools, verifiers and
+judges together, so this does not isolate protocol from everything else.
+Each arm is also a single run with no interval. The paper's own
+pre-scoring guard is an LLM critic that rejects diffs naming tasks,
+entities or answers. That catches the per-task class; a benchmark-wide
+regularity names nothing, so only the OOD check could see it. For this
+project the practical rule is that **a harness or `/iterate` change
+selected on one benchmark needs at least one different benchmark before
+its gain is quoted**, and the same benchmark's held-out split does not
+count.
+
 ## Hold the evidence fixed and vary only the framing
 
 [[literature/papers/tripathi2026diagnostic]] adds a second information
@@ -949,6 +977,48 @@ the same research line as ning2026closedloop (three shared authors), so the
 certify-after-search thread in this concept rests on one group, not two
 independent ones.
 
+## A held-out score certifies the number, not the claim attached to the model (2026-09-29)
+
+The section above covers the loop's contribution. [[literature/papers/li2026discover]]
+covers the other thing a "new best" usually carries: a claim about *how*
+the model works. Here the claim is "this predictor uses the compound." Its
+setup is clean HCE. Candidate code cannot touch data, folds or metrics,
+Fold 3 selects, and Folds 4–5 are post-search with the audit rules
+frozen. The held-out number is genuine, yet on BBBC047 the score-selected
+model (0.3153 Global PCC) is **exactly invariant** to replacing the
+compound. A control-profile-only predictor scores 0.3142, a difference of
++0.0011 with 95% CI [−0.0005, +0.0027]. This is not one unlucky model.
+Across 4 discovery policies × 2 tasks, none of the 8 score-selected
+sources passes the compound-use criterion, and on both tasks the
+across-policy score rule carried an exactly invariant model forward.
+Score-only selection landed on a trivial baseline, twice.
+
+Three consequences for this concept:
+
+- **Put the trivial baseline in the held-out panel.** It is the one-line
+  guard that would have flagged the headline case: a model without the
+  claimed component, refit under the same seeds. An input-replacement
+  delta on the frozen checkpoint is the other cheap check. Both are
+  inference-only or single refits and cost nothing against the holdout.
+- **Claims generalize separately from scores.** Frozen designs refit on an
+  independently acquired cohort (LINCS → LKCP) keep their predictive gain
+  over control-only (+0.0104 / +0.0211) and their dose contribution. Their
+  compound-identity support drops to zero: 0/50 refits pass on LKCP.
+  Even within LINCS the pass rate moves from 35/50 to 10/50 between folds
+  while the mean stays positive. So "support for one fit should not be
+  inherited by later refits": a claim gets re-audited on each refit, the
+  same way a test score gets re-earned on each new holdout.
+- **Positive mean effect ≠ per-model support.** The paper's own guided
+  models show positive mean compound contribution with intervals above
+  zero, yet 0/10 clear the per-model reference criterion. Report the
+  continuous effect, its across-model uncertainty and the per-model status
+  as three numbers, not one.
+
+Caveat: this is one group auditing its own prior system (CellScientist),
+with one discovery LLM. The finding that score selection picks
+input-ignoring models is solid. The claim that feeding the audit back
+improves discovery is not (see [[concepts/programmable-evaluator-oracle]]).
+
 ## Check the algebra before crediting a residual
 
 A construct-validity failure distinct from every one above, because it needs
@@ -1028,6 +1098,49 @@ read is on data that arrived after the candidate was fixed. That proviso is
 the catch for this project. A static holdout re-read by an adaptive chain
 is never post-submission data, so the e-value escape hatch does not apply
 to it. The one-look rule stands.
+
+## In a nested loop, each level needs its own holdout (2026-09-29)
+
+[[literature/papers/srikanth2026recursive]] (AIDE²) runs HCE's split one
+level up. An outer loop rewrites a research agent's code. The inner agent
+optimizes a **public** score, and the outer loop keeps the rewrite with the
+best mean **private** held-out score `g`. The split does measurable work:
+of the graded rewrites the loop rejected, "about a quarter scored higher
+than the incumbent on the agent-visible public signal and were rejected on
+the private grade." That is the first count in this graph of how often a
+public-only keep rule would have kept the wrong candidate in a research-agent
+loop.
+
+The same design also shows what the split does *not* buy. `g` is read on
+all 100 outer steps and selected by bare `argmax`, so for the outer loop it
+is a validation split, and by this concept's rule it is spent. The
+0.703 → 0.778 climb is a max over about 100 noisy draws, and the paper says
+the trace "is not meant to demonstrate generalization beyond the selection
+benchmark." The real holdout is four external benchmarks. They were
+evaluated on **one run's two checkpoints**, and two of the four
+comparisons against the strong baseline are within about one SE (FML-Bench
+19.9 ± 1.1 vs 19.6 ± 1.0). Two rules follow for any loop whose output is a
+loop, such as `/iterate` tuning its own skill or `/elevate` ranking harness
+changes:
+
+- **Hiding a score from the proposer does not hide it from the selector.**
+  Every level that selects on a split turns that split into validation. So a
+  nested loop needs one untouched holdout *above its top selector*. The
+  public/private pair is the per-level mechanism, not the certification.
+- **The rewritable surface must exclude the grader.** AIDE₈₅ carries a patch
+  to a task's held-out scoring script (it "crashed on all of its test cases
+  whenever any single test case failed"). An accepted rewrite (Fig. 2's step
+  47, "patches an error that crashed evaluations") apparently introduced it.
+  The authors read this as repair rather than exploitation, and it probably
+  was. The structural point stands regardless of intent: a grade gain the
+  candidate obtained by editing how the grade is computed is not
+  attributable to the candidate. See
+  [[concepts/programmable-evaluator-oracle]].
+
+This also corrects the 09-28 digest's framing. The paper does not show that
+"selecting on hidden evals was enough to avoid overfitting". It shows
+positive transfer from one unregularized run, with no ablation of which
+rewrites carried it.
 
 ## Open questions
 

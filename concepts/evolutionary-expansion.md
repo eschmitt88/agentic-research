@@ -31,6 +31,7 @@ sources:
   - "[[literature/papers/yoon2026arcticswarm]]"
   - "[[literature/papers/li2026autorecsys]]"
   - "[[literature/papers/min2026autonomous]]"
+  - "[[literature/papers/srikanth2026recursive]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -194,6 +195,37 @@ adversary generating constraints.
    fails to cross the capability threshold, depth gains are
    statistically indistinguishable from selection noise. Fix
    capability first, then spend effort on allocation.
+
+## Pointed at the searcher itself: what the loop converges on (2026-09-29)
+
+[[literature/papers/srikanth2026recursive]] (AIDE²) makes the population
+member a whole research agent. An outer loop proposes rewrites of the
+agent's harness code, grades each rewrite by running it under a fixed dollar
+budget on a task suite, and keeps the argmax. Over 100 nodes it accepted
+seven rewrites. Two results bear on this concept.
+
+- **Evolution over search policies re-derives guidance 7 and FML-Bench's
+  stall rule.** The final agent runs UCB1 over five drafting-strategy arms
+  and forks the global best under a new arm every five steps. The first is
+  xing2026compute's bandit allocation. The second is close to
+  zou2026fmlbench's AdaptiveSearch (greedy until a stall, then widen).
+  Independent convergence from a blind search is weak but real evidence that
+  these are the right defaults. It also means little here is new.
+- **A negative list, graded under a fixed budget.** Among rejected proposals
+  (pooled over three runs), island migration scored −0.021, pairwise
+  LLM-judge tournaments −0.090 and majority-vote ensembles up to −0.031.
+  Ensembling "was explored … but never retained", and the loop's own analyses
+  noted it "consumes budget that could otherwise fund additional search
+  steps." That backs guidance 5 and 6: at a fixed budget, depth-buying
+  changes beat breadth-for-robustness changes.
+
+**The recursive claim is unproven.** When a discovered agent drives the
+outer loop (the "ignition test"), endpoints are 0.780 vs 0.782 for the
+human-built driver over 3 seeds, which the authors call "inconclusive." And
+the argmax keep rule has no noise band. In this setting a false accept does
+more than crown the wrong champion. It becomes the code every later proposal
+edits, so noise compounds down the lineage (see the noise-floor discussion
+in [[concepts/budget-as-ceiling]]).
 
 ## Open questions
 

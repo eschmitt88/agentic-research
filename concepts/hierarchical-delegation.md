@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/piriyakulkij2026subagents]]"
   - "[[literature/papers/gao2026agentic]]"
   - "[[literature/papers/bouras2026authority]]"
+  - "[[literature/papers/hu2026analyzing]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -238,3 +239,24 @@ stated input/output interface, not whether it is a distinct role. It also
 bounds the manager-context claim in guidance 4: isolation lowers *peak*
 context but raises *total* spend, because each child must be re-supplied
 context the parent already holds.
+
+**The return path leaks too (2026-09-29).**
+[[literature/papers/hu2026analyzing]] measures the reverse cost on Claude
+Code (Sonnet 4.6 main agent, Haiku 4.5 explorer subagents, SWE-bench
+Verified). Because "subagents return summaries rather than the retrieved
+code", the parent re-reads regions the child already read. That accounts
+for **50.15% of CC's redundant retrievals**. So a lossy return channel
+charges twice: once for the child's read and once for the parent's re-read.
+It argues that an explorer's contract should return *addresses* (file and
+line ranges it read and found relevant), not only prose. Then the parent's
+re-read is a targeted page-in rather than a rediscovery (compare
+[[concepts/lossless-context-offload]]).
+
+The same paper shows the cheap-tier discount is fragile. Adding a
+structure-aware retrieval tool (CodeGraph over MCP) cut Haiku subagent calls
+from 4.81 and 11.03 per task to zero. About the same token volume moved to
+the main model, priced 3× higher. Cost rose 8.30% on Verified (within noise)
+and 12.19% on Pro (robust), even though redundant reads fell by more than
+75%. **Delegation to a cheaper model is a cost lever that an unrelated tool
+change can switch off silently.** Watch the per-tier call mix, not only
+total tokens.

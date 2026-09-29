@@ -18,6 +18,8 @@ sources:
   - "[[literature/papers/li2026praxist]]"
   - "[[literature/papers/he2026stored]]"
   - "[[literature/papers/zhu2026claimreceipt]]"
+  - "[[literature/papers/xu2026dont]]"
+  - "[[literature/papers/li2026discover]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -165,6 +167,61 @@ each reduced to a *one-element* evidence requirement (8 citation lookups,
 7 test runs, 5 human approvals, 3 external-state checks, 1 screenshot).
 The typology is cheap to act on once the types are decidable. The
 completion-boundary application is [[concepts/evidence-gated-completion]].
+
+**The type belongs to the (evidence, claim) pair, not to the evidence
+(2026-09-29).** [[literature/papers/xu2026dont]] breaks the assumption,
+implicit in GSAR's `tool_match` weight of 1.00, that tool-observed
+provenance is strong evidence in general. A `t2v_generate -> status:
+success` line is a genuine tool output, and it is hard evidence that the
+call returned. For "the event occurred in the clip" it carries no
+information: it is identical whether the generator succeeded or failed.
+The paper splits auxiliary text into:
+
+- **Plan-derived text.** This can only shift a judge's threshold.
+- **Artifact-derived text** (a logged checker verdict). This is worth
+  "exactly … the checker's accuracy".
+
+Judges weighted the provenance anyway. On near-miss clips, a supportive
+log took open-weight judges' false accepts from 0.07–0.19 to 0.78–0.90.
+The same trace scored 0.89–1.00 when the claim was about the process ("a
+plan was written before generation"). The implementation consequence
+for guidance #2 above: an evidence weight has to be looked up per claim
+type, and a tool line about the *call* should score zero for a claim
+about the call's *output*.
+
+### Hard evidence is typed by layer, and the layers diverge (2026-09-29)
+
+A hard verifier certifies only the layer it reads.
+[[literature/papers/li2026discover]] shows this for *mechanism* claims
+about an agent-built model ("this predictor uses input X"). Each claim is
+checked at three layers, and each layer has its own deterministic
+verifier:
+
+- **Source consumption.** An AST checker returns *implemented /
+  implementation-contradicted / unresolved*.
+- **Fitted dependence.** Do frozen-checkpoint predictions change under
+  matched input replacement?
+- **Target-relevant contribution.** Does that change raise loss relative
+  to a reference threshold? The answer is *supported / unsupported /
+  inconclusive*.
+
+All three are hard in the Ng sense, and they still disagree. In a
+stratified sample of 48 agent-generated models, one source is
+*implemented* yet exactly invariant. 47/48 change predictions under
+replacement, but only 20/48 show a positive target-loss interval on both
+folds. That split depends on the cohort: 0/24 on one task, 20/24 on the
+other. The headline case runs the other way: the cited attention pathway
+is contradicted in source (one key, one value, so a constant softmax
+weight), and the behavioural test confirms it.
+
+Two refinements follow. First, *grounded* for a mechanism claim should
+name its layer, since "the code wires it in" does not license "the model
+uses it" or "using it helps." Second, the partition needs a fourth
+outcome beside supported / contradicted / unresolved: **not
+identifiable**, meaning too few legal interventions exist to test the
+claim at all. BBBC047 dose has 0/4380 eligible rows on one fold. That is
+different from inconclusive, and collapsing the two hides an untestable
+claim inside a noisy one.
 
 ## Open questions
 

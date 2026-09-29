@@ -49,6 +49,9 @@ sources:
   - "[[literature/papers/li2026autorecsys]]"
   - "[[literature/papers/piriyakulkij2026subagents]]"
   - "[[literature/papers/shen2026what]]"
+  - "[[literature/papers/nguyen2026cliffcompaction]]"
+  - "[[literature/papers/hu2026analyzing]]"
+  - "[[literature/papers/srikanth2026recursive]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -203,6 +206,30 @@ what gets dropped to disk?
    representation for these distinctions, which is why it can remove
    many tokens and still break the run.
 
+   [[literature/papers/nguyen2026cliffcompaction]] is the first
+   head-to-head that tests "compact, don't truncate" directly, and it
+   **does not support the rule as a default.** Its truncate-only policy
+   keeps verbatim fragments (tool results ≤500 chars, ~150-char call
+   signatures, 300-char thoughts) and drops the rest. It is compared with
+   LLM summarization (Claude Code's prompt), a reimplementation of Claude
+   Code's microcompaction + summarization, and a sliding window. On
+   SWE-bench Verified all four land within 2.6 points, and summarization is
+   the weakest. On Terminal-Bench at 16K, swapping Terminus-2's native
+   summarizer for truncation moves Kimi K2.6 from 55.45 to 61.42. On 1M-token
+   KernelBench runs, truncation scores 3.58× and summarization 3.47×, with
+   summarization slightly cheaper ($8.10 vs $8.32). So summarization buys no
+   measurable quality over faithful truncation in coding workspaces, and the
+   paper's re-read counts suggest one reason. A dropped span leaves a visible
+   gap the agent refills from the workspace (+5.04 re-reads per instance),
+   while a plausible paraphrase discourages the re-read (+2.35). Revised
+   guidance: **where evicted content is re-derivable from the environment,
+   truncate to verbatim fragments and let the agent re-fetch. Keep
+   summarization for content that cannot be re-derived.** Its "never compact a
+   compaction" rule (discard the previous block rather than nest it) is the
+   design answer to summary-of-summary drift. That drift is argued, not
+   measured. The evidence covers coding and terminal tasks on open-weight
+   models only.
+
 4. **Run compaction proactively, not reactively.** Savelis's writeup
    on the Claude Code source notes "self-healing compaction that
    runs proactively." Waiting for overflow forces a panic-compaction
@@ -256,6 +283,20 @@ what gets dropped to disk?
    copied as a constant, but the shape generalizes: eviction policy is
    a spend policy ([[concepts/budget-as-ceiling]]), and the cache term
    is why "evict as soon as you can" is wrong.
+
+   [[literature/papers/nguyen2026cliffcompaction]] measures the cadence
+   directly. Three policies ran on the same KernelBench runs: append-only
+   growth with rare large resets ("cliffs"), frequent small prefix edits
+   (microcompaction), and a per-step shift (sliding window). Cost per
+   problem was $8.32, $12.84 and $21.52 respectively, and the per-step
+   cache decomposition shows why: each microcompaction tooth is a fresh
+   partial re-prefill. On Terminal-Bench the uncompacted bill is 78% cache
+   reads, and the savings come entirely from cutting them (−80%). Two cautions
+   carry over. Tightening the threshold lowers the provider cache-hit rate
+   (79% → 47% for GLM 5.1), so savings are **non-monotonic in budget**: 53%
+   at 16K and 37% at 8K for Kimi K2.6. And on a cheap, already well-cached
+   model the saving can vanish: +1% at 8K on mini-swe-agent. Price a
+   threshold on metered cost, not tokens.
 
 ## Cache reads are the dominant cost line
 
@@ -348,6 +389,30 @@ plan documents, specifications) can. Conflating them "inflates the eviction
 denominator and deflates the apparent fault rate." In the paper's own
 steady-state production session, 11 of 15 evictions were garbage collection
 and only 4 were pageable — a 3.75× difference in the denominator.
+
+A third category belongs next to those two: **re-reads that no eviction
+caused.** [[literature/papers/hu2026analyzing]] finds that 11.05–18.10% of
+all retrieved code lines on SWE-bench are re-reads of regions an earlier
+read fully covered. It traces their causes to things other than paging:
+
+- a subagent returned a summary instead of the code (50.15% of Claude
+  Code's re-reads);
+- an edit tool gave no feedback, so the agent re-read to check the result;
+- a `cat` without line numbers prompted a zoom-in read;
+- the content "becomes less salient" deep in a long debugging loop.
+
+The trajectories are short (tens of calls), so most of this content was
+plausibly still resident. That is our inference; the paper does not report
+compaction events. A harness fault counter that logs every re-read as a
+fault would therefore charge the eviction policy for salience and
+interface failures it did not cause. The fix for those lies elsewhere: a
+prompt rule ("reuse context; say why before re-reading"), line-numbered
+reads, and edit tools that report what they changed.
+
+The paper also reports the size of the saving. Task cost moved 2.83× as
+much as the behavior-attributed cost on Verified, because a prevented
+action also shortens every later cache read. This is bai2026how's
+cache-read dominance, seen from the savings side.
 
 ## The failure mode has a name, and a monetary cost
 
@@ -497,6 +562,22 @@ keeps the metered summarizer from firing.
 A caution on that cost table: the unmanaged arm's low cost at tight budgets
 is the cost of dying early. No cost-per-task figure is interpretable without
 its success rate beside it.
+
+**A blind search lands on the same rule, and under a dollar cap the second
+payoff is more steps (2026-09-29).** [[literature/papers/srikanth2026recursive]]
+evolved a research agent's harness under fixed per-run dollar budgets. The
+context policy it kept is anchor-plus-recency. Draft and improve prompts read
+"a compact summary of the root and recent candidates rather than the full
+history". A state-gated injection adds up to three deduplicated error
+signatures only when the run's bug rate is ≥ 15%. The unmanaged starting
+agent reproduces the liveness finding: it overflowed on five FML-Bench runs
+and 48 ALE-Bench runs, and the managed agents never did. The new element is
+the cost-capped regime. The median per-call prompt shrinks by 7× on
+MLE-Bench and about 50× on ALE-Bench and FML-Bench, and the authors'
+argument is that "shorter prompts … buy more search steps in cost-bound
+runs." That is a benefit on top of not dying. Caveat: the policy shipped
+bundled with a new search policy, and no rewrite was ablated. The
+steps-per-dollar gain is argued, not isolated.
 
 ## Sufficiency is a property of the future, not of the current query
 

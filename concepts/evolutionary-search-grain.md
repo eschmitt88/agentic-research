@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/ge2026coverage]]"
   - "[[literature/papers/min2026autonomous]]"
   - "[[literature/papers/yu2026primescientist]]"
+  - "[[literature/papers/xia2026rrsi]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -241,3 +242,37 @@ study — same LLM, same editor, same step budget, 18 tasks — ranked MCTS
 over 8 tasks. It cites FML-Bench and never addresses the conflict. FML-Bench's
 design is the stronger of the two, so treat the search-algorithm comparison
 here as unsupported and take only the grain point.
+
+## Grain on a schedule: count the edits, then anneal the count (2026-09-29)
+
+[[literature/papers/xia2026rrsi]] (RRSI, harness evolution) adds a third
+grain axis alongside span and per-candidate effort: **how many
+independently attributable edits one candidate may bundle**. It puts that
+number on a cosine schedule, `b_t = b_min + (b_max − b_min)·½(1 +
+cos(πt/T))`, from 3–4 edits in round 0 down to 1 by the last round. The
+rationale is about generalization, not capability. A bundle of unrelated
+edits "can fit more idiosyncrasies of the current feedback, and any
+measured change is difficult to attribute". Late single-edit rounds make
+the per-edit credit log (component, hypothesis, diff, ΔS, ΔC, kept?)
+attributable.
+
+This is the first attested *scheduled* grain, which Implementation
+guidance 4 said was unattested. It runs in the opposite direction from the
+one guessed there: coarse-to-fine, not function-first-then-file. It pairs
+with two things above:
+
+- **Stall-triggered redirection toward components never touched** (w = 3,
+  one reserved slot). This is the operator-attractor fix gurkan2026mutation
+  calls for, and it uses zou2026fmlbench's stall trigger. The authors'
+  named attractor is "repeatedly rewriting prompts while leaving agent
+  structural mechanisms untouched".
+- **A search space left fully open** (prompt, control flow, config,
+  context, tools, skills, memory, subagents), with the declared component
+  vocabulary serving only to steer exploration.
+
+The evidence is thin for the grain itself. The anneal, credit history
+and stall exploration are ablated together as "proposal regularizers" in
+one run. Removing them leaves the evolve score flat (90.5 → 90.7), lowers
+the OOD average (43.6 → 41.9), and raises tokens per trial (2.42M →
+2.69M). So the direction matches the rationale, but the contribution of
+the edit schedule alone is unmeasured.

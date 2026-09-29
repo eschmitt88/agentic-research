@@ -27,6 +27,8 @@ sources:
   - "[[literature/papers/li2026autorecsys]]"
   - "[[literature/papers/singh2026churnbench]]"
   - "[[literature/papers/suresh2026grounding]]"
+  - "[[literature/papers/li2026benchmark]]"
+  - "[[literature/papers/cheng2026scope]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -348,6 +350,42 @@ Two smaller findings worth carrying:
   decomposition dilutes L1 payloads while fragmentation is exactly the
   L2 attack.
 
+## Certified for where? Preservation only covers the scopes in the evidence
+
+[[literature/papers/cheng2026scope]] finds a second ceiling on the write
+gate, and this one involves no adversary. Its gate (ORC) is a paired,
+execution-grounded check of exactly this concept's preservation clause. It
+compares candidate and incumbent on the same probes, and it requires no
+regression beyond 0.02 on any channel for the current task family and for
+every historical family. Every write it admitted was sound on its own
+evidence: 8/8 safe on same-family probes. Deployed globally, six of the
+eight lowered the next hidden checkpoint, and positive predictive value went
+"from 1.00 locally to 0.25 globally". The paper names the limit itself: the
+gate "only covers outcomes represented in the gate evidence; it cannot
+protect an unscoped global edit from interactions with task families that
+have not yet appeared." At the first write, no historical family exists, so
+the preservation check is vacuous at exactly the moment the first durable
+write lands.
+
+The remedy is not a stricter gate. It is on the read side. Store the
+admitted edit in the slot for the family that certified it, and retrieve it
+only there. Over 27 prespecified paired streams this gives +0.063
+[0.037, 0.094] mean hidden utility, and harmful/admitted falls from 6/12 to
+0/63. That result is partly true by construction and comes from a
+single-slot, oracle-labeled toy setting (limits are in
+[[concepts/skill-library-lifecycle]]).
+
+This refines the definition. Coverage, preservation and faithfulness are
+each judged against *some* evidence set, and "keeps valid prior memory
+intact" can only be checked for the memory and contexts the probes
+exercise. **A verified write should carry the scope its evidence covered,
+and retrieval should honor that scope.** This is the benign counterpart of
+MemPoison's ceiling above. There the harm lives *between* records; here it
+lives in contexts the evidence never sampled. In both cases the stage that
+can catch it is retrieval, which extends the retrieval-as-defense argument
+in [[concepts/selective-memory-retrieval]] from poisoned content to
+correct content deployed out of scope.
+
 ## Revocation is a read-side property, and write-back launders it
 
 The definition above puts trust at consolidation time, "not left to
@@ -542,3 +580,51 @@ The stale-repair mechanism isn't isolated either: probing's lead is
 mostly in place before the migration, and existing records are only
 re-checked when a new task's curation retrieves them. The same check
 appears as a skill-admission gate in [[concepts/skill-library-lifecycle]].
+
+## Admission to a shared tier: counting sources is not checking them (2026-09-29)
+
+Every gate above guards one writer's store.
+[[literature/papers/li2026benchmark]] (CPB) measures admission to a store
+that a team shares. Lineage is fixed by the scenario, not inferred by the
+policy, and a consumer answers from the store alone. Four backbones are
+tested, including Claude Opus 5. Each mechanism class this concept
+collects leaves its own entry route:
+
+- **Copy collapse counts lineage and over-rejects truth.** Requiring two
+  independent sources after surface collapse admits 0.119–0.306 of false
+  candidates but only 0.051–0.127 of true ones, so correctness drops to
+  0.13–0.17. Rewording also defeats it: reworded copies reach 0.65–0.72
+  adoption.
+- **Faithfulness checks pass supported falsehoods.** A-MemGuard's
+  consistency check rejects 0.00, 0.01, 0.18 and 0.00 of false
+  candidates, because each arrives with source text that supports it.
+  That is the "faithful to the evidence is not true" section above, now
+  measured on a shipped checker.
+- **Deduplication is not verification.** Mem0's write path absorbs 0.67
+  (Gemma) and 0.86 (Llama) of admissions, "mostly by folding false
+  candidates into false beliefs already held". The false-belief-held rate
+  is unchanged from the native store.
+- **A declared type field works until someone declares it.** The only
+  gate that keeps adoption low while still answering (0.06–0.09) is a
+  rule on *declared source type*. It admits a reworded copy at 0.70
+  adoption once that copy is typed as an authoritative register document.
+  That is louck2026securing's malleability point: an authority signal the
+  writer supplies is not bound to origin.
+- **Even perfect lineage does not establish truth.** A lineage oracle
+  refuses every copy regime, yet admits a false claim beside a genuinely
+  independent restatement at 0.95, against 0.90 for the true one.
+
+Independence counting is therefore a copy filter, not a truth test. It
+belongs in the gate, but it needs li2026remember's *verify* or
+suresh2026grounding's re-observation behind it. Two more results bear on
+the design. First, none of the 1,695 admitted false beliefs was ever
+retracted, although the store offered contest, demote and supersede. A
+write gate with no revision path gets one attempt. Second, a consumer
+with no other source asserts an uncontested false belief in 0.97–0.99 of
+probes, so the gate is the only defence it has.
+
+Scope: all Live scenarios are authored fiction, Live results are
+descriptive with no hypothesis tests, the voting, collapse and judge
+policies are reimplementations, and the backbones are small (8–12B)
+except for Claude. The abstract's headline contrast (0.06–0.09 against
+"0.22–0.47") omits the Claude-family judge, which sits at 0.19.

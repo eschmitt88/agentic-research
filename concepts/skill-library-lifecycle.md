@@ -45,6 +45,8 @@ sources:
   - "[[literature/papers/kapner2026scanning]]"
   - "[[literature/papers/gao2026agentic]]"
   - "[[literature/papers/suresh2026grounding]]"
+  - "[[literature/papers/hu2026analyzing]]"
+  - "[[literature/papers/cheng2026scope]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -411,6 +413,55 @@ about execution. Its synthesized skills were also distilled from successful
 trajectories on the very tasks they are scored on — the holdout gap flagged
 below.
 
+**Third attestation (2026-09-29), with a different mechanism: interference,
+not dilution.** [[literature/papers/cheng2026scope]] shows that scope matters
+even when nothing is diluted. There is one 360-character skill and the same
+prompt budget either way. A frozen model edits the skill after each round of
+a 12-round code-repair stream over nine recurring task families, and a
+paired, execution-grounded gate (ORC) admits or rejects each edit. Every
+admission passed its same-family probes. Deployed as *the* global skill,
+though, the round-0 rule scored +0.398 on its own family and −0.461 /
+−0.234 / −0.148 / −0.117 on four others. The gated agent ended below
+never updating: 0.713 vs Static 0.775 mean hidden trajectory utility over
+8 streams. The same eight edits, stored only under the family that produced
+them, give 0.816, with 0 harmful instead of 6. A prespecified 27-stream
+randomized-order extension reruns everything end to end and finds scoped
+minus global = +0.063 [0.037, 0.094]. Scoped memory makes 63 admissions to
+global's 12, 19/27 streams keep admitting (vs 2/27), and harmful/admitted is
+0/63 vs 6/12.
+
+What this adds is a **coupling rule between the admission gate and the
+loading function.** An admission gate certifies an edit only for the scope
+its evidence sampled, and loading must not deploy the edit wider. The
+admission sections below (tang2026memory, shang2026hypothesis) treat
+admission as yes/no. This source makes it yes/no *plus where*, and argues
+that the "where" should be recorded at admission rather than rediscovered
+by retrieval. Limits, ordered by how much they matter for import:
+
+- **"Global" is a single-slot overwrite.** Each admitted edit replaces the
+  whole skill for every family. Scoped keeps nine slots. An additive
+  library, where a new rule is one entry among many, is untested.
+- **The scope key is free here.** Families carry opaque tokens and
+  templated prompts, so a character n-gram router scores 243/243.
+  Wrong-slot routing is untested. For real tasks, choosing the key is the
+  hard part (piriyakulkij's LLM-built trees did worse than source-task
+  grouping).
+- **Scoping forbids positive transfer.** That is in tension with
+  tang2026memory's cross-domain gains on all six pairs. "Retrieve where
+  certified, widen on cross-scope evidence" is the untested middle.
+- **Some of the effect is structural, and the world is small.** A scoped
+  edit's non-current-family effect is 0.000 by construction. The 8-stream
+  0.816 recomposes archived outputs. The 18-stream single-update
+  replication is not significant on its own (0.041 [−0.004, 0.107],
+  p = 0.1875). ORC itself did not beat accept-everything (Holm p = 1.0).
+  There is one model and nine code-contract families.
+
+For this box, `~/.claude/` user-global skills, the global `CLAUDE.md` and
+auto-memory are the global slot, and project `CLAUDE.md` plus path-scoped
+`.claude/rules/` are the family slots. Promoting a lesson validated in one
+project straight to the global layer is the Global-ORC move. Record where a
+rule was validated when promoting it.
+
 ## Open questions
 
 - **Joint read/write training.** SkillOS trains write-side
@@ -590,6 +641,48 @@ the split it verifies on. A library whose gates are tuned on the tasks it
 is then scored against drifts exactly the way [[concepts/hce-evaluation]]
 describes — **skill promotion needs a holdout too**, and this is the
 clearest open gap in the cluster.
+
+**A holdout test of who should write the skill (2026-09-29).**
+[[literature/papers/hu2026analyzing]] builds skills from analysis-split
+trajectories and scores them only on held-out tasks. The holdout has two
+parts: a date split within SWE-bench Verified, and a cross-benchmark
+SWE-bench Pro. It compares two arms:
+
+- **SynSkills:** ungated Trace2Skill distillation, 23–41 rules per
+  configuration.
+- **DevSkills:** seven principles the authors wrote, such as "reuse
+  context", "persist artifacts", and "rerun only if code changed".
+
+Both sets were preloaded into the system prompt, and the target was cost.
+DevSkills cut cost robustly in 6 of 8 settings (7.88–41.73%), against 3 of
+8 for SynSkills (8.86–22.32%). SynSkills come out worse than this once
+synthesis is charged: after amortization only one robust reduction is
+left, and the headline −22.32% cell becomes −2.70%. Both arms also shrink
+on the cross-benchmark holdout.
+
+The result sharpens this concept on two points:
+
+- **Distilling from raw traces yields trace-specific rules.** The
+  synthesized rules cover failed string substitutions and shell quoting,
+  as tang2026memory predicted. That is a measured instance on a holdout.
+- **Synthesis has a price to charge.** It costs 5–23% of the analysis-set
+  solve cost ($4.27–$37.59). A self-authoring library has to beat the
+  human-written one net of what it cost to write.
+
+Three limits apply before reading this as "humans write better skills":
+
+- **Rule count is confounded.** Seven principles against 23–41 rules, all
+  loaded flat, is kim2026why's dilution setting.
+- **The human authors had more information.** They wrote after seeing every
+  configuration's diagnoses.
+- **The ranking flips on Claude Code.** DevSkills win on Verified
+  (−13.94%). SynSkills win on Pro (−8.86%), where DevSkills' −1.51% is
+  noise.
+
+Against validation-gated optimization, which yang2026skillopt reports beats
+both human-written skills and Trace2Skill, the defensible reading is
+narrower: **ungated distillation loses to human abstraction.** Gated
+self-authoring is untested here.
 
 The standing caution on SkillBrew's own framing: coverage of the query
 distribution presupposes a known, stable query distribution. For a research
