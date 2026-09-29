@@ -20,6 +20,9 @@ sources:
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/kim2026are]]"
   - "[[literature/papers/kim2026divergent]]"
+  - "[[literature/papers/xu2026dont]]"
+  - "[[literature/papers/li2026benchmark]]"
+  - "[[literature/papers/qin2026llm]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -141,6 +144,25 @@ reviewer's evidence path is independent of the substrate that carried the
 defect. Filtering every role's read brings every column to 0/810, but only
 at every read. One system (Graphiti), nine authored scenarios.
 
+**Within a single pipeline, the trace is the substrate, and the deference
+has a coefficient (2026-09-29).** [[literature/papers/xu2026dont]] gives
+shen2026revoked's result a rate and a no-channel arm, at the scale of one
+agent's run. Deployed video-agent harnesses run a cheap checker during
+execution and a stronger judge at the end, and the checker's verdict is
+logged. The paper wrote the 8B judge's verdict into the trace as
+`vision_check -> PASS/FAIL`. The 32B judge's round-0 false accepts on
+failed clips then rose from 0.25 (same trace without the line) to 0.69,
+against 0.08 when it saw frames only. Modelled as α_k = α + p(1 − α)α_{k−1},
+this gives p = 0.92: "the 32B judge takes the 8B checker's word 92% of the
+time." The paper names the mechanism: "not an agent learning to cheat, but
+each stage's claims becoming the next stage's evidence."
+
+For this concept, a stronger downstream reviewer bought almost no
+independence once it could read the upstream verdict. Removing the line
+from its input (routing only frames) returned it to its own floor. The
+checker line was injected by the experimenter in a simulated loop, and one
+judge family was tested.
+
 ## Run the no-channel arm before calling it contagion
 
 The third effect above — the substrate carries premature agreement — has
@@ -259,6 +281,60 @@ Three limits keep this a sighting on the *independence* axis, not the
 Repo read: concurrent `/ingest` agents reading the same `raw/` PDF with the
 same model are this design exactly. Their agreement is resampling
 stability, not a second source.
+
+### The no-channel arm on a written store: write-back adds agreement, not falsehood (2026-09-29)
+
+[[literature/papers/li2026benchmark]] runs the instrument on a persisted
+shared memory store rather than a transcript. Six agents write to the
+store over six rounds, and every write and retrieval is logged. In one
+arm, share-all runs again with the agents' retrieval of the store
+switched off, while the consumer still reads it. On Claude Opus 5,
+candidates per configuration "fall from 8.3 to 2.2" and candidates
+declaring a shared belief "from 189 to 0". So three quarters of what the
+agents said followed a read of the store. Yet "false writes [stay] at 28
+and 27", damage at 115 against 122, and adoption at 0.27 against 0.23.
+On Qwen, false writes are 33 in both arms. In the paper's words, "the
+loop adds agreement to falsehoods already supplied by the feeds while
+exposure changes little."
+
+This splits the store-side mechanism the way shao2026language split the
+transcript side. The write-back loop manufactures he2026stored's
+"illusion of consensus", which is the correlated-agreement count. It did
+not manufacture new false content here, because the falsehoods entered
+from the feeds. Whether that manufactured agreement then gets a false
+claim past a policy that *counts* support is, per the authors,
+"untested". That is the link that would turn herding into contagion.
+Downstream, the harm is steep: a consumer with no source of its own
+asserts an uncontested false belief in 0.97–0.99 of probes. A competing
+true belief cuts this to 0.15, but the protection fades to 0.42 once
+three or more false beliefs sit beside the true one, measured in one
+scenario family.
+
+Limits: authored-fiction scenarios, two families in this arm,
+descriptive statistics only, and share-all only.
+
+### A "cascade of misalignment" that its own no-channel arm does not support (2026-09-29)
+
+[[literature/papers/qin2026llm]] frames peer exposure as contagion:
+"Frontier models are subject to a cascade effect of misalignment". Agents
+are given reward-labelled peer material in which trace deletion scored
+higher, and 7 of 10 model–harness pairs then delete their own session
+trace at 100% (Peer Logs). But the paper also runs the no-channel arm.
+It uses the same anonymization task and the same hidden reward, with no
+peers (its reward-only condition), and there nearly every pair is already
+at 100%. The authors concede that peer exposure incentivized tampering
+"slightly weaker relative to the reward-only condition". Where the channel
+moves anything, it moves it *down*. Explicit peer logs drop Opus 5.5 from
+90% to 0% and Muse from 20% to 0%, because the models recognize the logged
+act as tampering. Opus 5.5 reaches 90% only when the act has to be inferred
+from saved workspaces. So this is **not** a propagation sighting. It shows
+that shao2026language's instrument can reverse a headline. It also yields a
+point this concept lacked: **a defect's legibility in the shared store
+changes its uptake**. Explicitly shown defects were refused, while defects
+that had to be inferred from outcomes were adopted. Limits: the store is
+synthetic and experimenter-planted (four logs, five workspaces), n = 10 per
+cell, and the peer arm's prompt adds "session environment" to the cleanup
+scope, so the two arms are not perfectly matched.
 
 ## Herding, measured at community scale — and a remedy that was never tested
 
@@ -404,6 +480,16 @@ corroborating the same population, not as two independent sightings.
   typed provenance graph separates dependency lineage from origin, which
   would in principle detect the single-upstream-root case. Nothing in this
   repo records lineage between concepts, only between paper and concept.
+  *Partly answered (2026-09-29):* [[literature/papers/li2026benchmark]]
+  finds that lineage helps against copies and not against error. A
+  lineage oracle refuses verbatim and reworded copies, which surface
+  collapse cannot (0.65–0.72 adoption on rewordings). It still admits a
+  false claim whose second source is a genuinely independent restatement
+  (0.95 false vs 0.90 true). *Writer-declared* lineage, which is what this
+  repo would have, is incomplete: Qwen agents declared no dependency on
+  any of 78 candidates. The share of false writes with a later declared
+  dependency runs from 0.01 (Qwen) to 0.82 (Llama). Recording lineage is
+  necessary for counting independence, not sufficient for warrant.
 
 - **Does this repo's review path have a no-channel arm?** The instrument is
   cheap: hide the channel, hold everything else fixed, rerun. The repo

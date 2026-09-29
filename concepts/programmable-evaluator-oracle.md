@@ -48,9 +48,11 @@ sources:
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/zheng2026benchshield]]"
   - "[[literature/papers/zhang2026double]]"
+  - "[[literature/papers/xu2026dont]]"
   - "[[literature/papers/she2026efficient]]"
   - "[[literature/papers/huang2026reward]]"
   - "[[literature/papers/qu2026propose]]"
+  - "[[literature/papers/li2026discover]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -230,6 +232,26 @@ submissions through the scorer, and require the correct one to strictly
 beat every degraded one. Its nine-benchmark census puts the shape-scorer
 failure at 1 of 9 (most shipped scorers are outcome-based) and names
 LLM-judging as the other route to the same failure.
+
+[[literature/papers/xu2026dont]] measures that other route, and the
+readmission turns out to be dominant, not additive. Qwen-VL judges were
+given the artifact (video frames) *and* the agent's execution log. A
+supportive log took false accepts on near-miss clips to 0.78–0.90, from
+0.07–0.19 with frames alone. A contradicting log took the Qwen3 judges'
+acceptance of correct clips to 0.08 / 0.00. Two findings bear on this
+section:
+
+- **Scale inside a family did not help.** The 32B judge had learned to
+  discount narration and captions but still treated the tool log as
+  ground truth (0.83).
+- **Frontier closed judges were flat.** Their no-text accuracy was no
+  better, so the paper reads the vulnerability as a learned weight on the
+  provenance channel, not a capability gap. That reading is a conjecture.
+
+A judge's trust in the account is therefore a model property that is
+never stated and rarely measured. The clause above should be enforced by
+what the evaluator is *given*, not by which evaluator is chosen. See the
+paper's least-privilege routing in [[concepts/evidence-gated-completion]].
 
 ## A judge is only admissible against a stated operating point
 
@@ -512,6 +534,37 @@ order of `ln(1/α)·2σ²/µ²` fresh evaluations, and "no better bettor can
 shorten the wait". wu2026bayesian's evidence-accumulated-over-many-runs
 answer inherits that floor. Caveat: this is one finance domain, and the
 code is available only on request.
+
+## A correct scalar oracle under-specifies the mechanism, and selection finds the gap (2026-09-29)
+
+[[literature/papers/li2026discover]] is the model-discovery case of
+chandran2026autoresearch's lesson (see Open questions: immutability
+protects the score, not the objective). The executor is fixed and
+correct. Candidate code cannot alter data, targets, folds or metrics, and
+the oracle returns held-out Global PCC. Four discovery policies each
+select their best source on that oracle across 2 cell-response tasks,
+and none of the 8 selected sources passes a pre-registered check that it
+uses the compound it was built around. On both tasks the final score rule
+picked a model **exactly invariant** to the compound, which scores within
++0.0011 PCC of a control-only predictor. The scalar rewarded what the
+data make cheap (the control profile), and selection amplified it. This
+is the mis-specification analogue of the hacked-score amplification
+above, with no hack involved.
+
+The paper also tests the constructive answer to "what the evaluator
+returns" (Open questions). In the Audit arm, the oracle returns
+development-set input-replacement effects, source-check results and
+grouped errors alongside the score. Selection stays PCC-first. Over 5
+paired trajectories, Audit beats Score in the mean (PCC +0.0024, paired
+95% CI [−0.0013, +0.0060]; MSE 9.58% lower). Mean compound and dose
+contributions are larger, it costs roughly 2× the tokens (592,347 vs.
+≥286,995), and the intervals span zero. So richer diagnostics are
+*compatible* with better, more honest models here but not shown to cause
+them. The direction runs opposite to lu2026meta's leakage worry because
+these diagnostics are computed on development data and carry no test
+labels. The practical rule is to put diagnostics that test the claimed
+mechanism in the feedback, keep them off the holdout, and keep the
+accept/reject verdict on the frozen score plus the post-search audit.
 
 ## Open questions
 

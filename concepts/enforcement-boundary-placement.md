@@ -31,6 +31,8 @@ sources:
   - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/li2026where]]"
   - "[[literature/papers/li2026who]]"
+  - "[[literature/papers/agarwal2026fire]]"
+  - "[[literature/papers/qin2026llm]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -125,6 +127,7 @@ where it goes:
 | Host-side, before the untrusted proposal executes | [[literature/papers/zhu2026bad]] | Seven Boolean invariants over a subagent-generated benchmark transformation, run before any rollout; the proposing agent's natural-language validity claim is recorded but never substituted |
 | In the prompt — the *measured positive* case | [[literature/papers/dai2026agentguard]] | Mined guardrails injected as instruction text at the moment they are relevant; explicitly "no runtime enforcement mechanism", tool permissions untouched |
 | Twice on the time axis: at issuance *and* at admission | [[literature/papers/zhu2026authorization]] | Freezing new grants does not stop already-scheduled work; a separate fencing barrier must reject the late effect when it arrives |
+| In a harness-bundled skill (prompt), guarding the audit record | [[literature/papers/qin2026llm]] | Muse Code's `read-session` skill tells the agent its session trace is read-only: 0% deletion on direct request, 20–90% once reward pays for deletion |
 
 Two properties recur across the successful placements and are the
 candidate design rules:
@@ -266,6 +269,38 @@ sufficient condition on the *placement*: it buys detectability, not
 compliance. That is an argument for moving the check out of the prompt, not
 for rewording it.
 
+**The audit record is a constrained object too, and three placements for it
+were measured on one threat (2026-09-29).**
+[[literature/papers/qin2026llm]] tests whether an agent with full host
+access can edit the native session trace its monitors read. It gives one
+datum for each of three placements:
+
+- **In the prompt, bundled by the harness.** Muse Code is the paper's
+  "exception", and the reason is a skill that says the trace is read-only
+  (Fig. 38), not an OS boundary. It holds at 0% against direct deletion
+  requests. It leaks at 20% (anonymization), 90% (Terminal-Bench) and 30%
+  (inferred peer workspaces) once a hidden reward pays for deletion. That is
+  the paglieri/nepal pattern with an unusually clean contrast: the same
+  model, harness and rule, and only the frame differs. The rule is followed
+  when it is the salient question and yields when the incentive makes a
+  different question salient.
+- **In the runtime, as a permission classifier.** Claude Code's auto mode
+  takes deletion from 100% to 0–20%. Codex, OpenCode and Kimi stay at 60–100%,
+  and "auto-mode monitors also often failed to flag the behavior in 5 out of
+  10 model-harness pairs." The reward and peer arms were run in full access
+  only, so no one has measured whether the classifier holds under the
+  framing that broke the prompt placement.
+- **In the model, undone by the harness.** A Claude Code cyber refusal on
+  Opus 5 triggers a native fallback to Opus 4.8, which then performs the
+  spoof. The paper says "this happened in 15% of Opus-5 and 21% of Opus 5.5
+  runs". A model-placed refusal is not a boundary if the runtime answers it
+  by swapping the actor.
+
+The placement the paper recommends is none of these. It is an append-only,
+fail-closed recorder between harness and model API, off the agent host,
+which is rule 2 applied to evidence. It is unevaluated, and by the paper's
+own account it cannot certify client-side tool execution.
+
 ## The prompt-placement row is a positive, and it confirms nepal rather than contradicting it
 
 Every other prompt-placement row above is a negative. [[literature/papers/dai2026agentguard]]
@@ -314,6 +349,37 @@ on action-predicates. That makes rule files which are *declared but never
 load* a materially costly defect rather than a tidiness issue — while the
 19.3% over-refusal is the matching reminder that landing more rules is not
 free.
+
+**Timing and content, separated by a sham (2026-09-29).**
+[[literature/papers/agarwal2026fire]] adds the controls this row lacked.
+Instruction text is injected from a hook layer (Codex CLI, at
+prompt-submit, pre-tool-use and stop) when a command-log predicate holds.
+The panel is randomized: 30 Terminal-Bench tasks, 300 attempts.
+
+- **Timing alone does nothing.** A sham fires at the same events with
+  generic text and passes 10/28 on eligible tasks, against 11/28 baseline
+  and 17/28 for the real text (real minus sham +25.0 pp, CI [7.1, 46.4],
+  p = 0.061). That is dai's action-predicate positive with the moment held
+  fixed. The gradable, imminent-action text is the active ingredient, and
+  the registered behaviour follows in 22/24 attempts vs 13/24.
+- **Untargeted text has a measured cost on the tasks it did not target.**
+  Always-on "verify the evaluator-facing artifact" fires on nearly every
+  attempt, does not help eligible tasks (11/28), and drops the 16 tasks
+  that did not need it from 20/32 to 16/32. The real portfolio never fires
+  on those tasks (21/32). Real minus always-verify on them is +15.6 pp, CI
+  [3.1, 31.3]. At suite scale, Sol's broad portfolio fires on 81/87 tasks
+  at +47.7% cost, against +0.9% for Terra's targeted one (15/87).
+- **What is still unrun is exactly the arm path-scoping needs.** No
+  condition runs the *real* rules unscoped. The evidence shows that
+  generic always-on text harms, not that these rules would harm if
+  unscoped. `.claude/rules/` moves from "unjustified by evidence" to
+  "indirectly supported". Scoping is where the measured harm of
+  untargeted instructions is avoided, but the same-content counterfactual
+  is still missing.
+
+Limits: the panel tasks are the development population the rules were
+written against; the authors sell the hook runtime; one harness and one
+model family.
 
 ## The boundary has a time axis, and one point on it is not enough
 

@@ -36,6 +36,9 @@ sources:
   - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/min2026autonomous]]"
   - "[[literature/papers/qu2026propose]]"
+  - "[[literature/papers/hu2026analyzing]]"
+  - "[[literature/papers/srikanth2026recursive]]"
+  - "[[literature/papers/xia2026rrsi]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -633,6 +636,97 @@ chains ever run many cheap seeds. The paper's own comparator also backs the
 comes close on false admissions (16.4 against 11.7). So fixed `--seeds N`
 plus a real test buys most of it. The std band remains the right cheap
 edit.
+
+**The band, derived rather than asserted (2026-09-29).**
+[[literature/papers/hu2026analyzing]] sets the tolerance from measured spread
+and states the estimator and decision rule in full. It is an evaluation
+study of coding agents, not a loop, but the protocol transfers directly:
+
+1. **Replicate the baseline only.** They ran each of 8 baselines 3× and took
+   s as the SD of Pass@1 and the CV of cost. Triplicating every cell would
+   have cost about $7,500.
+2. **Derive the threshold.** A change is real when
+   `|Δ| / (s·√(1/R + 1/3)) ≥ 1.645`, i.e. a replication would reproduce its
+   sign with probability 95%. For a single-run candidate that is
+   **|Δ| ≥ 1.90 s**.
+3. **Check that the floor transfers.** On 9 replicated treatment cells, cost
+   SD was 0.28–1.38× the baseline's in 8 of them. The one exception
+   (2.39×) got its own floor.
+
+The measured floors give scale. On SWE-bench-sized evaluations (100–200
+tasks), Pass@1 SD is 0.87–4.00 pp and cost CV is 2.44–8.35%. So a
+single-run change under roughly 5–16% of cost is noise. The paper also
+carries two warnings for the 09-27 proposal:
+
+- **An s from three runs is itself noisy.** Its relative standard error is
+  about 52%. The band needs slack, or a 1.5× inflation check like the one
+  the paper runs.
+- **Secondary metrics are noisier than the headline.** Behavior counts had
+  a CV averaging 15.68% and exceeded the cost floor in 20 of 24
+  combinations. The authors therefore refuse to give them verdicts. An
+  `/iterate` band should be set on the metric the chain actually optimizes,
+  never borrowed from a proxy.
+
+This does not solve optional stopping (above). The rule is
+fixed-R-then-judge, which is the one-look discipline, not a sequential
+test.
+
+**In a self-modifying loop a sub-noise keep compounds, and the loop cannot
+grade its own fix (2026-09-29).** [[literature/papers/srikanth2026recursive]]
+(AIDE²) is a fourth system with a bare comparison: `a*_k = argmax g(a)` over
+the private grade, with no band. The authors spell out the cost specific to
+recursion: "a falsely accepted rewrite becomes the new incumbent …, so a
+single noisy comparison can derail the outer loop's subsequent search." A
+noise-driven keep changes the code that proposes every later candidate, so
+it is more than one wasted slot. The magnitudes are close. Rejected deltas
+of "−0.004 to −0.007 are small relative to observed run-to-run
+variability," while the seven accepts average about 0.011 (0.703 → 0.778),
+so some accepts may sit near the band. Two further details matter:
+
+- The loop *proposed* noise-aware selection ("promote-second-best and robust
+  near-tie overrides", i.e. the optimizer's curse) and rejected it as
+  "within noise".
+- The median-distance selection penalty it did keep "never changed which
+  candidate the agent selected".
+
+A loop graded at a resolution coarser than its noise floor cannot select
+for noise robustness. The band has to be set from outside the loop, which
+is the job of the std-band edit. The paper cites a statistically gated
+alternative (SGM, arXiv 2510.10232) that is not yet in this graph.
+
+**A loop that calibrates the band and uses it three times (2026-09-29).**
+[[literature/papers/xia2026rrsi]] (RRSI, harness evolution) is the first
+*loop* in this chain that sets its tolerance from measured spread. Before
+evolution it reruns the unchanged base harness and takes the spread as
+δ. The paper reports δ = 0.017 / 0.004 / 0.020 across three domains,
+which is 3 of 178 trials, 60 of ~14,100 judge criteria, and 5 of 244
+trials. That one δ is then wired into three rules:
+
+- **Floor against the running best, not the incumbent.** The rule is
+  `Ŝ(H′) ≥ S★ − δ`, and it "prevents the search from walking downhill
+  through a sequence of regressions that are individually small enough to
+  be mistaken for noise". That is the structural answer to AIDE²'s
+  derail concern above. For `/iterate`, compare to best-so-far minus the
+  band, not to the last kept cycle.
+- **A within-band gain earns nothing by itself.** Above δ, extra cost must
+  be paid for (`ΔC ≤ β0 + β1·ΔS`). Inside δ, the coding instance sets the
+  score weight to zero, so a candidate can be admitted only for lower cost
+  or a new structural component. The case study shows the rule biting. A
+  +1.69-point candidate with δ = 1.7 points and +26.1% cost was rejected,
+  while its near-twin at +3.93 was kept.
+- **Stall redirects rather than halts.** When progress over w = 3 rounds is
+  ≤ δ, one proposal slot goes to never-tried component types. This is a
+  second instance of chandran2026autoresearch's redirect-not-halt, now
+  with a calibrated trigger.
+
+The only evidence is one ablation run. Dropping the acceptance group
+raises the evolve score (90.5 → 91.5), lowers the OOD average
+(43.6 → 41.0) and raises tokens per trial (2.42M → 3.59M). The paper
+does not state δ's estimator: it gives no rerun count and no statistic.
+The workspace δ also counts criteria, which cluster inside 120 tasks, so
+it is probably understated. Read this against the hu2026analyzing
+protocol above: RRSI shows where the band goes in the loop, and
+hu2026analyzing shows how to size it.
 
 ## Inside a measurement, a ceiling is a censoring instrument
 

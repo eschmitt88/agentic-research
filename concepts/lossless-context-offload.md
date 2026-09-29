@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/goyal2026does]]"
   - "[[literature/papers/shen2026what]]"
   - "[[literature/papers/zhang2026correct]]"
+  - "[[literature/papers/nguyen2026cliffcompaction]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -279,6 +280,25 @@ workspace can regenerate it, the address is redundant machinery. Where it
 cannot — a completed experiment's stdout, a web capture, a non-deterministic
 log, this project's own immutable `raw/` corpus — the invariant stands
 untested by fan2026empirical. Ask the re-derivability question first.
+
+[[literature/papers/nguyen2026cliffcompaction]] builds a production policy
+on exactly that scope condition, and adds two things. First, the **address
+can be the action itself**. A dropped tool result keeps only its call
+signature (tool, path, key arguments, ~150 chars). Recovery means re-issuing
+the call, so no store, identifier or recall tool is needed. The agent uses
+it: +5.04 re-reads per instance, against +2.35 under summarization. Second,
+**a visible gap is a better recall trigger than a plausible summary**.
+Summarization is the only strategy that also opens *fewer* new files, which
+the authors read as the paraphrase "discourag[ing] it from returning to the
+ground-truth source". That is the behavioural counterpart of the
+write-before-query barrier below: a lossy summary hides its own omission. It
+also answers the open question about addresses outliving their summaries
+with a blunt rule: the signatures are discarded along with the rest of the
+block two compactions later. Past that, only the workspace and the agent's
+own conditioned behaviour carry anything forward, and that still sustained
+1M-token KernelBench runs. Limits: truncated thoughts (300 chars) have no
+recovery path at all, so the invariant here holds for environment-backed
+content only.
 
 ## A counting bound, and the archive that beats the summary
 

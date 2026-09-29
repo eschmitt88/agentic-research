@@ -24,6 +24,8 @@ sources:
   - "[[literature/papers/kim2026are]]"
   - "[[literature/papers/she2026efficient]]"
   - "[[literature/papers/kim2026divergent]]"
+  - "[[literature/papers/agarwal2026fire]]"
+  - "[[literature/papers/nguyen2026cliffcompaction]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -213,6 +215,22 @@ best-of-k experiment selection), the selector belongs in the specification
 alongside k, and [[concepts/programmable-evaluator-oracle]] is the component
 that has to carry it.
 
+On agent trajectories, a trained selector does much better than vote, and
+it comes with a new trap: where it was trained.
+[[literature/papers/nguyen2026cliffcompaction]] reports pass@1, a learned
+"Practical" selector and the Oracle for each configuration on
+Terminal-Bench 2.0 (Kimi K2.6, k=3). The selector is a LightGBM over
+trajectory features plus within-group line and symbol agreement. It
+harvests 8.3 of a 12.8-point oracle gap (61.4 → 69.7, oracle 74.2) with
+compaction, and 4.8 of 11.6 without (59.2 → 64.0, oracle 70.8). But the
+selector was trained on another model's rollouts **of the same 89 tasks**.
+The paper's own 5-fold instance-level CV (Table 16) gives 64.4 and 60.7
+for those two cells, 5.3 and 3.3 points lower. That turns a claimed
+Opus-4.7 match into a result below GPT 5.3 Codex. So add to the
+specification: **a selector's number is only a deployment estimate when it
+was trained on disjoint tasks.** Cross-model training does not substitute
+for task holdout.
+
 ## Report the repeat-run distribution before reporting an approximation error
 
 A small but clean instance of this concept's rule, in an unusual place.
@@ -257,6 +275,37 @@ configuration on one input set supports a claim about **stability to
 resampling**, and only that. A validity claim needs a varied input or source
 (a second data split, an independently curated set, a different model),
 which k does not supply at any size.
+
+## Two marginals hide churn; unfired tasks are a free placebo (2026-09-29)
+
+[[literature/papers/agarwal2026fire]] is a second pass@k-vs-passᵏ
+separation after li2026acm, at k = 2. Harness runtime policies on
+Terminal-Bench 2.1 raise Sol's pass∧2 from 64.4 to 73.6 while pass@2 moves
+only 86.2 → 87.4. The paper's own task-transition table (its Table 6)
+shows two things the marginals do not.
+
+- **A flat pass@k can be net churn, not stasis.** Sol's +1 task of reach
+  is 4 tasks gaining reach (0/2 → ≥1/2) minus 3 losing it (1/2 → 0/2).
+  Its +8 in passᵏ includes 3 tasks that went straight from 0/2 to 2/2,
+  which is not "reachable made repeatable". Report the baseline-by-
+  treatment transition matrix of per-task success counts; pass@k and passᵏ
+  are two projections of it.
+- **Where an intervention fires on a known subset, the unfired tasks
+  measure the noise floor for free** (my reading, not the paper's
+  analysis). Terra's portfolio fired on 15 of 87 tasks, yet 32 tasks
+  changed their success count (21 up, 11 down). So at least 17 tasks moved
+  with no intervention in the treatment arm. For Luna, at least 13 of 25
+  changed tasks were never touched. At k = 2 with cross-date runs, about
+  one task in five moves from resampling and drift alone. That is the scale
+  a suite-level passᵏ delta has to clear, and the paper reports no interval
+  on passᵏ at all. Its randomized panel does the same thing by design: 16
+  pre-registered silent tasks where the policy never fired (21/32 vs 20/32).
+
+Also a caution on reading the separation as mechanism. The clean
+"passᵏ up, pass@k flat" pattern appears only in the tier whose policies
+fired on 81/87 tasks at +47.7% cost. The narrowly targeted tier moved
+reach more than repeatability (+6.9 vs +5.7 pp). None of the three
+suite-level pass@1 deltas is significant (p = .43, .17, .09).
 
 ## Open questions
 

@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/song2026string]]"
   - "[[literature/papers/chen2026repo]]"
   - "[[literature/papers/li2026autorecsys]]"
+  - "[[literature/papers/hu2026analyzing]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -129,6 +130,38 @@ the relevant one: prefer the composed shell call, and keep structured tools
 for operations carrying harness-side validation. The paper's action-space arm
 removes those *together* with the tools, so it cannot tell you which half of
 the structured interface you are giving up.
+
+## A script is an artifact: ephemeral ones get regenerated
+
+The guidance above treats a script as a one-shot compiled plan.
+[[literature/papers/hu2026analyzing]] measures what that costs when the
+same logic is needed again. **Similar-script generation** means emitting a
+near-duplicate (line Jaccard ≥ 0.60) instead of editing the existing script.
+It affects up to 68.00% of tasks and up to 9.57% of cost on Mini-SWE-Agent
+(shell-only), against 20.67% and 1.02% on Claude Code.
+
+The two forms fail differently. Ephemeral `python -c` or heredoc probes
+leave nothing to reuse, so they are rewritten from scratch (CC's Django
+example: four 23–29-line probes differing by 2–8 lines). File-based
+scripts do persist, but the agent loses track of them as the trajectory
+grows, and editing them with `sed -i` is error-prone. So `patch.py`,
+`patch2.py`, `patch3.py` appear instead. The paper names Claude Code's own
+"NEVER create files unless they're absolutely necessary" instruction as the
+reason CC's duplicates are almost all ephemeral.
+
+Two refinements follow:
+
+- **Persist multi-step logic as a named, parameterized file and revise it
+  in place.** Keep inline scripts for true one-off probes. This is the
+  paper's "persist artifacts; version only with intent" principle, part of
+  a skill set that cut cost robustly in 6 of 8 settings.
+- **Fan2026empirical's shell-only win has a hidden cost:** feedback. On the
+  shell harness, silent `sed -i` failures cause re-reads around patches
+  (274–374 per configuration vs 56 on CC), and `cat` without line numbers
+  causes zoom-in re-reads. Keep structured edit and read tools where they
+  return the result of the operation. The two harnesses differ in more
+  than the tool surface, so this is not a matched ablation. On matched
+  Sonnet 4.6, CC cost $0.520 per task against $0.554.
 
 ## Connections
 
