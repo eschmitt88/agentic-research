@@ -502,3 +502,22 @@ Sources (web searches):
 - [Epistemic Admission in Shared Agent Memory (arXiv 2609.30813)](https://arxiv.org/abs/2609.30813)
 - [Claude Code AGENTS.md telemetry gate (saascity.io)](https://saascity.io/blog/claude-code-agents-md-telemetry-gate-2026)
 - [Fix: Claude Code ignores AGENTS.md (startdebugging.net)](https://startdebugging.net/2026/09/fix-claude-code-ignores-agents-md/)
+I added a `## 2026-09-28` weekly rollup to `NOTES.md` covering 09-22 to 09-28, then committed and pushed it as `d918a04`.
+
+- **Did:** On 09-22, `/curate` closed the 09-21 backlog: 9 ingested, 6 declined, papers 191 → 200. On 09-27, `/elevate` raised one proposal, `iterate-no-improvement-noise-band`, and held 11 ideas. On 09-28 the digest switched to arXiv's bulk-listing interface (OAI-PMH) after the search API failed, and 6 papers were ingested (papers 200 → 206, 35 concepts). `/promote-moc` declined twice.
+- **Findings:**
+  - Every full paper read this week came in at or below what its abstract suggested.
+  - `qu2026propose` doesn't settle how much improvement should count; it adds one rule to the proposal instead.
+  - The `@~/` import still fails on Claude Code 2.1.283, from one observation.
+  - arXiv's API failed in a different way on each of the last three digest runs.
+- **Next:**
+  - Nine proposals are waiting on your decision. The 09-27 noise-band proposal replaces the separate open question about adding a tolerance term to the no-improvement stop rule.
+  - Curate items 7–20 of the 09-28 digest.
+  - Make OAI-PMH the default for `/digest`.
+  - The older open items carry forward. I dropped two: the 09-21 backlog (closed 09-22) and the standalone tolerance-term decision (now the proposal).
+
+The entry runs about 35 lines with its heading and blank lines, a little over your ~30 target. It's still shorter than the previous one (44). The journal files for this window only record session-end timestamps, so the content comes from `_meta/log.md`, the commit messages and the 09-28 digest report.
+
+The commit also includes the 09-28 digest's session report in `_meta/digest.log`, which was already uncommitted when this session started. The last three rollups committed that file the same way.
+
+The Google Drive connector needs authorizing in your claude.ai connector settings before it can be used. This session couldn't do the sign-in.
