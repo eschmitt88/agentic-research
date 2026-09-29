@@ -547,3 +547,13 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-09-28 07:11 ingest raw/papers/qu2026propose.pdf
 2026-09-28 07:12 digest-autoingest n=6 verdict=go/high
 2026-09-28 promote-moc declined (graph unchanged since 67d5f3f, 35/35 concepts mapped)
+2026-09-29 04:01 fetch-paper 2609.26457 → raw/papers/srikanth2026recursive.pdf
+2026-09-29 04:01 fetch-paper 2609.30266 → raw/papers/qin2026llm.pdf
+2026-09-29 04:01 fetch-paper 2609.28564 → raw/papers/xu2026dont.pdf
+2026-09-29 04:01 fetch-paper 2609.30813 → raw/papers/li2026benchmark.pdf
+2026-09-29 04:01 fetch-paper 2609.24972 → raw/papers/xia2026rrsi.pdf
+2026-09-29 04:01 fetch-paper 2609.26048 → raw/papers/agarwal2026fire.pdf
+2026-09-29 04:01 fetch-paper 2609.29144 → raw/papers/cheng2026scope.pdf
+2026-09-29 04:01 fetch-paper 2609.26779 → raw/papers/nguyen2026cliffcompaction.pdf
+2026-09-29 04:01 fetch-paper 2609.30725 → raw/papers/hu2026analyzing.pdf
+2026-09-29 04:01 fetch-paper 2609.27234 → raw/papers/li2026discover.pdf
