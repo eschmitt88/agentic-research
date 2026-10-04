@@ -29,6 +29,95 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | proposed |
 | 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | proposed |
 
+## Considered and held (2026-10-04 run)
+
+This is the first run over the 09-28 digest and the 09-29 leftovers: 16
+papers, papers 200 → 216, still 35 concepts. There are no proposals. The
+strongest candidate passes both gates, but its target is `/iterate`, which
+the pending 09-27 proposal already touches. The no-stacking rule therefore
+holds it. Held:
+
+- **Stall → redirect before halt in `/iterate`.** This was the closest miss
+  and is the strongest queued input so far. Step 3 picks the `next_candidate`
+  "most directly implicated by" the last delta. That is a hill-climb rule,
+  and in a stall it keeps proposing the marginal tweaks that caused the
+  stall. Four groups wire the stall signal to a strategy change instead:
+  - `chandran2026autoresearch`: peer-reviewed (ICDM 2026), cred 3. Its
+    Criticizer fires on stagnation, and the largest single-directive gain
+    followed one firing. Algorithm 1 has no halt branch.
+  - `zou2026fmlbench`: cred 4, code. Switch, then halt.
+  - `xia2026rrsi`: cred 3, code. When progress over 3 rounds is ≤ δ, one
+    proposal slot goes to component types never tried.
+  - `hu2026analyzing` DevSkill 7: cred 4, code. "When repeated actions
+    produce no new evidence, take one materially different action." It is
+    bundled with six other principles and not isolated.
+
+  Gate 1 passes on all three disjuncts. The simplest form is one sentence
+  in step 3: when the counter is non-zero, pick a candidate whose mechanism
+  differs from the stalled cycles', and halt only if that also fails. It
+  adds no surface. **Held** only because `skills-experiment/iterate/SKILL.md`
+  has the undecided 09-27 `iterate-no-improvement-noise-band` proposal, and
+  the redirect needs a defined counter to fire on. Whoever decides 09-27
+  can fold this sentence in, or accept 09-27 and let the next cycle propose
+  it. Caveat: no source runs a redirect-vs-halt ablation. The evidence is
+  convergent design plus one incident-level gain.
+- **Reviewer input for the 09-27 noise-band proposal (not a new
+  proposal).** Three papers bear on it:
+  - `hu2026analyzing` (cred 4, code) supplies the estimator that proposal
+    lacked. Triplicate the baseline once, derive a single-run threshold
+    from its spread, and reuse it. It also warns that an s from 3 runs has
+    about 52% relative standard error.
+  - `xia2026rrsi` (cred 3, code) says to compare against best-so-far minus
+    the band, not against the last kept cycle.
+  - `qu2026propose` (cred 2) says not to keep adding seeds until the band
+    clears.
+
+  All three refine the proposal; none contradicts it.
+- **`qin2026llm` (cred 4, code) → meter tokens from the API side, not from
+  the agent-writable transcript JSONL `token_logger.sh` reads.** The
+  exposure is real: bypass mode is the paper's full-access condition.
+  **Held** on Gate 2. A Max-plan box has no per-request API meter to read,
+  so the only remedy is new infrastructure (an interception gateway, which
+  the paper proposes but does not build). The threat model is also
+  adversarial, while this box's agents are honest but wrong. Claude Code
+  resisted skill-borne trace deletion in the paper (0%/10%).
+- **`hu2026analyzing` DevSkills 5/7 → add "capture test output to a file,
+  filter, don't rerun" to `/implement`.** **Held** on Gate 2. It adds prose,
+  and the paper's own numbers show a small payoff on this harness: wastes
+  are 6.86% of cost on Claude Code against about 22% on Mini-SWE-Agent.
+- **`agarwal2026fire` (cred 3, code) → a state-triggered Stop hook.** The
+  sham arm shows that generic "verify your work" stop text does nothing.
+  This box has no such text to remove: the only Stop hook is
+  `token_logger.sh`. Adding a content-specific hook is net-new surface on
+  a delivery-task result from one vendor. Held. The paper does confirm the
+  current choice not to add a generic verify hook.
+- **`xu2026dont` (cred 3, no code) + `li2026where` → in `/curate`, have the
+  parent re-run one artifact check instead of trusting a subagent's
+  report.** **Held.** Both sources are cred 3 with no code and no peer
+  review, and no false subagent report has been observed here. Claude-family
+  judges were also flat in xu2026dont, so the magnitude does not transfer.
+  The concept's guidance #3 already says this. A future `/curate` incident
+  would change the call.
+- **`li2026discover` (cred 4, code) → a mechanism-claim check on `/iterate`
+  "new best" results** (a baseline without the component, plus an
+  input-replacement delta). It adds steps, and `/iterate` is blocked as
+  above.
+- **`kim2026divergent` (cred 4, code) + `li2026benchmark` (cred 3, code) →
+  tighten `/elevate` Gate 1's attestation count.** Concurrent ingests of
+  the same PDF are resampling, not independent confirmation, and concept
+  `sources:` counts are declared by the same agent pass that writes them.
+  Gate 1 already requires "distinct groups". The residual point targets
+  `skills/elevate/SKILL.md`, which is blocked behind `elevate-paired-control`.
+- **`cheng2026scope` → record where a rule was validated when promoting it
+  to global.** Fails Gate 1 (cred 2).
+- **`nguyen2026cliffcompaction` (cred 3, code) → rule-based compaction.** No
+  Claude model was tested, quality ties summarization, and the note itself
+  says to trial it first. `pre-compact.sh` is also blocked behind 08-16.
+- **`srikanth2026recursive`, `huang2026reward`, `li2026who`**: these
+  strengthen `hce-evaluation` and `evidence-gated-completion`, but have no
+  claude-system target. The box has no completion gate beyond HCE, and
+  `rules/evaluation.md` is blocked behind `hce-retrieval-boundary`.
+
 ## Considered and held (2026-09-27 run)
 
 This is the first run over the 09-21 digest and the 09-22 curate: 15 papers,
