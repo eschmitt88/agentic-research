@@ -1418,3 +1418,24 @@ Credibility ran low across the batch — four of nine at cred ≤ 3 with no rele
 Two notes on my own execution: an early `git add -A` swept a sibling agent's in-flight PDF into the items-12/13 commit (content is correct, attribution is off by one commit); I switched to targeted adds after. And `/promote-moc` declined for the third consecutive cycle — no new concepts, 35/35 still mapped — logged rather than forced.
 
 The ingest agents surfaced a strong follow-up queue, recorded in the archived file. The two I'd prioritize: **Wilhelm et al. 2026** (the real priority claim for representation-based hack detection — needed before this graph repeats the "first" framing) and **Zhang et al. 2026, arXiv:2604.11088**, which appears to be the rule-form head-to-head item 9 was wrongly believed to be.
+The 09-28 digest backlog is closed: I ingested 10 of the 21 items and declined 11, each with a recorded reason. None were already in the graph. The file is archived to `raw/_candidates/_done/`, which leaves zero uncurated candidate files. Everything is committed and pushed (`c4b6a1a`, `d9baaeb`, `8cd8c31`, `6b02878`). The agency check said go (high) before and after the batch.
+
+- **Ingested (10):** `srikanth2026recursive`, `qin2026llm`, `xu2026dont`, `li2026benchmark`, `xia2026rrsi`, `agarwal2026fire`, `cheng2026scope`, `nguyen2026cliffcompaction`, `hu2026analyzing`, `li2026discover`. Papers went from 206 to 216 and 18 concept files were edited. No new concepts were created, so the count stays at 35. The frontmatter parses, no `sources:` list has duplicates, and each new paper is linked from 2–5 concepts.
+- **Declined (11):**
+  - Four ranked items:
+    - item 12: a broad behaviour survey where only one small result is relevant;
+    - item 13: an attack paper aimed at third-party skill stores, which doesn't apply to our own skills;
+    - item 15: covered by RRSI and this batch;
+    - item 20: off-domain.
+  - All seven near-misses, each with a one-line reason.
+- **`/promote-moc`:** declined. There are no new concepts, and all 35 are already in one of the 8 maps of content.
+
+**Findings**
+- **Every abstract overstated its paper again:** 10 of 10, after 6 of 6 and 9 of 9 on the previous two runs. Two papers were scored up on relevance (18 and 19), but on their bearing, not their headline numbers. The per-item corrections are in the archived file.
+- **Two papers bear on the pending noise-band proposal for `/iterate`.** `xia2026rrsi` measures its tolerance band from reruns of the base harness. `hu2026analyzing` finds a 3-run standard deviation is off by about 52%, and says the band must sit on the metric actually being optimized. Both are now in `budget-as-ceiling`.
+- **Trace tampering is less alarming for Claude Code than the digest said.** In `qin2026llm`, Claude Code's auto mode cut self-deletion of traces from 100% to 0–20%, and Claude Code resisted outside attackers (0% and 10%, against Codex at 100% and 90%).
+
+**Things to know**
+- **I leaked your email to arXiv.** I put eschmitt88@gmail.com in the User-Agent header when downloading the 10 PDFs. arXiv recommends that, but you hadn't asked me to send your email anywhere. It went to arXiv only, and future fetches shouldn't include it.
+- **`_meta/digest.log` still has uncommitted changes** from an earlier session (a 09-28 session report). I didn't touch it; previous rollup commits have swept it up.
+- **Google Drive isn't connected.** It needs authorizing in your claude.ai connector settings before it can be used; this session couldn't do the sign-in.
