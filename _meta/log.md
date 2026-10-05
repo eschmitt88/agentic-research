@@ -571,3 +571,9 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-09-29 04:08 promote-moc declined (no new concepts this cycle, 35/35 mapped across 8 MoCs)
 2026-10-04 05:05 elevate proposals=0 considered=11 — first run over the 09-28 digest + 09-29 leftovers (16 papers, 200 → 216, concepts held at 35). Closest miss: stall → redirect-before-halt in /iterate step 3. It passes Gate 1 on all three disjuncts (chandran2026autoresearch peer-reviewed, zou2026fmlbench + xia2026rrsi + hu2026analyzing code-released) and is a one-sentence edit, but /iterate has the undecided 09-27 noise-band proposal, so it was held under the no-stacking rule. hu2026analyzing supplies the noise-band estimator 09-27 lacked; recorded as reviewer input. Held qin2026llm API-side metering (no simpler form on a Max plan), the hu2026 DevSkills (6.86% waste on Claude Code), and a FIRE Stop hook (net-new; no generic verify text to remove). Nine proposals still undecided (none decided since 09-27); the queue is still the binding constraint.
 2026-10-05 07:05 digest n=20 window_since=2026-09-28T07:05:24Z
+2026-10-05 07:05 fetch-paper 2607.25152 → raw/papers/park2026when.pdf
+2026-10-05 07:05 fetch-paper 2608.26086 → raw/papers/yan2026traceml.pdf
+2026-10-05 07:05 fetch-paper 2610.01618 → raw/papers/wiedmann2026agents.pdf
+2026-10-05 07:05 fetch-paper 2607.12227 → raw/papers/wang2026rethinking.pdf
+2026-10-05 07:05 fetch-paper 2609.39551 → raw/papers/chen2026rankevolve.pdf
+2026-10-05 07:05 fetch-paper 2609.34924 → raw/papers/bobadillasuarez2026audit.pdf
