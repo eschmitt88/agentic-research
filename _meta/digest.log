@@ -521,3 +521,36 @@ The entry runs about 35 lines with its heading and blank lines, a little over yo
 The commit also includes the 09-28 digest's session report in `_meta/digest.log`, which was already uncommitted when this session started. The last three rollups committed that file the same way.
 
 The Google Drive connector needs authorizing in your claude.ai connector settings before it can be used. This session couldn't do the sign-in.
+The weekly digest is done: 20 new candidates, the top 6 read and added to the knowledge graph, and everything is pushed (last commit `7c47f53`).
+
+**Harvest.** I went straight to arXiv's bulk-listing service (OAI-PMH) rather than the search API, which had failed three runs in a row. It returned 12,149 cs records changed since 09-28. After removing 488 papers already in the graph, a keyword filter left 528. I read about 75 abstracts in full and listed 20 in `raw/_candidates/2026-10-05-digest.md`. Three web searches mostly found papers already in the graph. One blog post is noted for the pending noise-band proposal: a community AutoResearch run found that seed-to-seed noise was larger than most of the changes it had kept.
+
+**Correction to last week's method note.** The `created` date in arXiv's bulk records is the latest version's date, not the original submission date. So "created in the window" really means "submitted or revised in the window". This run picked up three revised July/August papers the graph had never seen. I've recorded this in the candidates file.
+
+**Ingested (verdict go/high, so the top 6):**
+- **Park & Choi** (relevance 4, credibility 2): the agent claimed an improvement in all 54 cycles, while 56% made no real gain or got worse. A strong LLM judge still let through 4 of 10 regressions. It's a pilot: 3 repeats × 6 cycles.
+- **TraceML** (4/4, NeurIPS 2026): expert humans change approach on 25% of steps, Codex on 9%. Telling the agent in its prompt to check whether it's stuck made it switch *less*. The paper never tests halting.
+- **Wiedmann et al.** (4/4): re-running the same setup accounts for 50–93% of score variance, and each re-run writes new code. So a noise band built only from training-seed spread understates the real noise.
+- **Wang et al.** (4/3): automatic harness evolution did not beat simply re-running the original harness on the same budget, and gained +0.0 on held-out tasks.
+- **RankEvolve** (4/3): two Claude Code runs fail on the same cases far more often than Claude Code and Codex do (correlation 0.58 vs 0.21), and mixed-vendor review fixes more errors.
+- **Bobadilla-Suarez et al.** (3/3): re-running an agent on its own output mostly changes nothing.
+
+I applied 17 edits across 13 concept notes. No new concepts were created, so `/promote-moc` declined (all 35 concepts are already mapped).
+
+**Abstracts overstated again.** All 6 papers read at or below their digest summaries, which makes 21 of 21 across the last three digest runs. The usual problem is a headline number taken from the most favourable cut. For example, the "majority vote fails 23/55" figure comes mostly from pooling a strong model with a weak one; within a single model the vote does about as well as the average worker.
+
+**What this means for the two pending `/iterate` changes:**
+- **Noise band:** Wiedmann gives absolute spread figures. Park gives a clear target: the band should push the chance of keeping a non-improvement toward zero.
+- **Redirect before halting:** TraceML and Bobadilla-Suarez support it, but as something the controller forces, not a prompt instruction. Still no paper compares redirecting against halting directly.
+
+**Housekeeping:**
+- Items 7–20 are still open for `/curate`, so the candidates file stays out of `_done/`.
+- I committed the 10-04 `/elevate` session report in `_meta/elevate.log` separately (`53dfb1f`). It was already uncommitted when this session started, which is how previous sessions handled it.
+- The claude.ai Google Drive connector needs authorizing in your claude.ai connector settings. This session can't do the sign-in, and the digest didn't need it.
+
+Sources from the web searches:
+- [autoresearch@home Day 5: The Plateau](https://ensue.dev/blog/autoresearch-at-home-day-5/)
+- [AutoResearch at Production Scale](https://arxiv.org/html/2609.30541v1)
+- [The Optimizer Is the Agent](https://arxiv.org/pdf/2608.06714)
+- [LLM Agents Can Easily Tamper With Their Own Traces](https://arxiv.org/abs/2609.30266v1)
+- [Inferred Generative-Process Diversity Predicts Correlated Failure](https://arxiv.org/pdf
