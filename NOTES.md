@@ -691,3 +691,39 @@ Weekly rollup for 2026-09-22 → 09-28 (sourced from journal/ + _meta/log.md).
 - Make OAI-PMH the default harvester in /digest.
 - Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
   sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
+
+## 2026-10-05
+
+Weekly rollup for 2026-09-29 → 10-05 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 09-29 /curate closed the 09-28 backlog: 21 items (items 7–20 + 7 near-misses) →
+  10 ingested, 11 declined, file archived to `_done/`. Papers 206 → 216, 18 concept edits.
+- 10-04 /elevate: 0 proposals from 11 considered. Closest miss was redirect-before-halt
+  in `/iterate` step 3. It cleared the evidence bar but was held because the 09-27
+  noise-band proposal for the same file is still undecided (no-stacking rule).
+- 10-05 digest → auto-ingest (go/high), via OAI-PMH straight away (12,149 cs records,
+  no errors). 20 candidates; top 6 ingested. Papers 216 → 222, 17 concept edits.
+- /promote-moc declined 09-29 and 10-05. Concept count held at 35 all week, 35/35 mapped.
+
+### Findings
+- Abstracts overstate: 31/31 PDFs since 09-22 read at or below their digest entry.
+  The usual cause is a headline number taken from the most favourable cut.
+- The 09-27 noise-band proposal now has reviewer input. `hu2026analyzing`: rerun the
+  baseline 3× once and set the band from that spread, though a 3-run spread is itself
+  noisy. `wiedmann2026agents`: build it from re-implementation noise, not seed noise.
+  `park2026when`: aim for P(keep | Δ ≤ 0) → 0.
+- Redirect-before-halt has support from four systems (one peer-reviewed, three with
+  code), and `yan2026traceml` supports it as a controller move, not a prompt line.
+  But no paper yet runs redirect against halt.
+- `qin2026llm`: agents can edit or delete the transcripts that token counts come from.
+  This holds only with permissions bypassed; auto mode cut deletion to 0–20%.
+
+### Next
+- Nine proposals undecided (3× 08-02, 08-16, 08-23, 09-06, 2× 09-20, 09-27). Deciding
+  09-27 also unblocks redirect-before-halt.
+- Curate items 7–20 in `raw/_candidates/2026-10-05-digest.md`.
+- Make OAI-PMH the documented default in /digest. It has been used four runs in a row,
+  but the skill text still says WebSearch.
+- Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
+  sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
