@@ -23,6 +23,8 @@ sources:
   - "[[literature/papers/xu2026dont]]"
   - "[[literature/papers/li2026benchmark]]"
   - "[[literature/papers/qin2026llm]]"
+  - "[[literature/papers/chen2026rankevolve]]"
+  - "[[literature/papers/bobadillasuarez2026audit]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -239,6 +241,14 @@ fragile (−0.432 at size 3, but −0.038 in a restricted 9-route pool and a
 size-4 interval crossing zero). It is a methodological caution, not evidence
 about agent collectives.
 
+Agent-trajectory counterpart: [[literature/papers/bobadillasuarez2026audit]]
+finds a SWE-bench Lite task failed by all 30 same-vendor workers (m* = k) in
+every round, even within one tier. That rejects independent errors, but
+per-task difficulty explains it, and difficulty would bind a cross-family
+pool too. "Same-family" there means one vendor resampled at low temperature,
+which the authors put at about 2 effective configurations. Treat m* = k as a
+floor on correlation, not a measurement of contagion.
+
 ### A read-only input is a substrate too, and isolation does not protect against it (2026-09-28)
 
 [[literature/papers/kim2026divergent]] is the research-agent case of the
@@ -335,6 +345,25 @@ that had to be inferred from outcomes were adopted. Limits: the store is
 synthetic and experimenter-planted (four logs, five workspaces), n = 10 per
 cell, and the peer arm's prompt adds "session environment" to the cleanup
 scope, so the two arms are not perfectly matched.
+
+### Cross-vendor review at matched budget: the no-channel correlation predicts the rescue (2026-10-05)
+
+[[literature/papers/chen2026rankevolve]] measures error correlation *before*
+any reviewer sees a patch, using independent replicate patches with no
+channel between them. Two Claude Code runs fail together at ρ = 0.58; Claude
+Code and Codex at ρ = 0.21. Their marginals are near-equal (0.54 vs 0.58), so
+accuracy differences do not drive this (contrast kim2026are). The correlation
+predicts the rescue:
+- Same-product review nets G ≈ −0.01 (it rescues 4% and harms 5%).
+- Cross-vendor review nets +0.06.
+- At the same topology and budget, all-oracle execution accuracy is 62.5 vs
+  45.8 (paired +16.7, CI [6.6, 26.7]; LitGPT replication +12.5).
+
+Two limits. Model and harness are confounded (Opus 4.8 in Claude Code,
+GPT-5.6 in Codex). The reviewer reads the same repo and patch, so any
+independence comes from its priors, not from its evidence. That fits
+zheng2026engineering's finding that a vendor swap buys far less than an
+independent source.
 
 ## Herding, measured at community scale — and a remedy that was never tested
 

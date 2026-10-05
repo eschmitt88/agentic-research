@@ -39,6 +39,10 @@ sources:
   - "[[literature/papers/hu2026analyzing]]"
   - "[[literature/papers/srikanth2026recursive]]"
   - "[[literature/papers/xia2026rrsi]]"
+  - "[[literature/papers/park2026when]]"
+  - "[[literature/papers/wiedmann2026agents]]"
+  - "[[literature/papers/bobadillasuarez2026audit]]"
+  - "[[literature/papers/yan2026traceml]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -766,6 +770,66 @@ For this project, comparing two configurations whose chains halt at
 different rates inherits the second bullet. It is the concrete case of
 [[concepts/hce-evaluation]]'s point (via ray2026what) that a ceiling
 visible to the agent is an intervention on the measured system.
+
+## Noise band and redirect-before-halt: the 2026-10-05 evidence
+
+Four papers from the 10-05 digest bear on the two pending `/iterate` changes:
+the 09-27 noise-band proposal, and the redirect-before-halt idea held on 10-04.
+
+**What the gate must achieve.** [[literature/papers/park2026when]] holds one
+agent fixed and changes only what the keep gate is grounded in.
+- A gate that trusts the agent's own claim accepts everything: the claim was
+  "improves" in 54/54 cycles while 56% had Δ ≤ 0.
+- A strong in-band LLM judge still accepted 4 of 10 regressions.
+- An isolated oracle gate accepts none.
+
+The paper's sign-only gate (`Δ > 0`, no numbers) matches full feedback (110 vs
+113, 3 reps). That holds only because its oracle is noise-free by
+construction, and the authors name "interval-estimate-based acceptance" as
+the open design for noisy metrics. Read the noise band's job in its
+operating-point form: push P(keep | Δ ≤ 0) toward the oracle's 0 without
+inflating P(reject | Δ > 0). The pilot is small (3 reps × 6 cycles, models
+unnamed; credibility 2).
+
+**The band must cover re-implementation noise, not only seed noise.**
+[[literature/papers/wiedmann2026agents]] repeats each of 432 agent
+configurations 5 times and finds 50–93% of score variance within a
+configuration, 54% pooled. Each repeat is a fresh agent run that writes
+different code, not a fresh training seed. Two consequences:
+- A band built from `--seeds` std measures fixed-code training noise. It
+  *understates* the noise in a hypothesis-vs-hypothesis keep.
+- Count crashed or degenerate runs as failures and exclude them from the
+  band's std. Otherwise one catastrophic run widens the band until nothing
+  beats it.
+
+By our arithmetic, n = 3 per arm detects only ≈2.3 SD differences. A 3-seed
+band can veto sub-noise "new bests" but cannot certify small real gains.
+
+**Retrying a fixed move set is a no-op, not a hazard.**
+[[literature/papers/bobadillasuarez2026audit]] re-invokes the agent on its own
+output over 1,650 SWE-bench Lite trajectories (T = 4). 69–81% of
+trajectories never move after round 0, and regressions are ≤ 2.9%. Its advice
+is the redirect rule in so many words: on a plateau, "ask which kind of
+change you are making". Resampling explores a fixed class; new tools,
+retrieval or decomposition can move it. The paper never varies the scaffold
+with weights fixed (its open problem 4).
+
+**Agents do not redirect on their own, and asking them does not help.**
+[[literature/papers/yan2026traceml]] gives the first human base rate.
+- Expert Kaggle humans pivot (backbone, representation, objective or
+  validation change) on 25% of transitions; a single-loop Codex agent on 9%.
+- Top humans reopen an abandoned line on 9.1% of versions; Codex did so once
+  in 658.
+- MLEvolve pivots on 58% of transitions with a post-pivot payoff of about 0,
+  so pivot rate alone is not the target.
+- A prompt-level "stuck on the same category 3+ steps?" self-check went with
+  *less* mode switching (7.1% → 2.2%).
+
+So a redirect should be **enforced by the controller**: force the next
+candidate's category to differ under a structural pivot test, or reopen an
+abandoned line from the run's history. Asking for it in the prompt does not
+work. Still missing: its baseline prompt forbids halting, so no paper yet
+runs redirect against halt.
 
 ## Open questions
 

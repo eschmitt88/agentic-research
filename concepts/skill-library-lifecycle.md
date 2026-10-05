@@ -47,6 +47,7 @@ sources:
   - "[[literature/papers/suresh2026grounding]]"
   - "[[literature/papers/hu2026analyzing]]"
   - "[[literature/papers/cheng2026scope]]"
+  - "[[literature/papers/yan2026traceml]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -461,6 +462,20 @@ auto-memory are the global slot, and project `CLAUDE.md` plus path-scoped
 `.claude/rules/` are the family slots. Promoting a lesson validated in one
 project straight to the global layer is the Global-ORC move. Record where a
 rule was validated when promoting it.
+
+## Which clauses of a human-distilled skill transfer (2026-10-05)
+
+[[literature/papers/yan2026traceml]] probes a ~1k-token planning skill built
+from human Kaggle practice, clause by clause.
+- A clause that names a level the agent has not reached transfers: ensemble
+  re-weighting fell from 50% to 11%, against a human 8.9%.
+- A prohibition overshoots: plain hold-out went from 10% to 0, against a
+  human 24%, "a direction with no destination".
+- A prescription the agent already exceeds does nothing.
+
+That gives three admission tests for a skill clause: it states a target
+level, the agent is below that level, and it is more than a ban. The score
+evidence is one run per competition.
 
 ## Open questions
 

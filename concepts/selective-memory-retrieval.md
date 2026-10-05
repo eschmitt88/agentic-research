@@ -40,6 +40,7 @@ sources:
   - "[[literature/papers/shen2026revoked]]"
   - "[[literature/papers/shen2026what]]"
   - "[[literature/papers/singh2026churnbench]]"
+  - "[[literature/papers/yan2026traceml]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -189,6 +190,20 @@ emits a trigger when it judges the current context is insufficient
   trajectories that invoke memory at high-value points outperform
   and propagate, giving the gating policy itself as a learned
   artifact across the search loop.
+
+## Stall as the retrieval trigger: agents never reopen their own history (2026-10-05)
+
+[[literature/papers/yan2026traceml]] separates two senses of "going back".
+- Score recovery: Codex climbs back from 89% of its setbacks, more often than
+  top humans (79%).
+- Solution revisit: Codex returned to an earlier approach once in 658
+  eligible versions, where the human rate predicts about 60. Every version
+  sat in git on disk.
+
+The authors call this "a search without memory" and name "retrieval over a
+run's earlier states" as the missing piece. It is a concrete case for gating
+retrieval on a stall signal over the run's own trajectory, not only over
+cross-task memory.
 
 ## Open questions
 

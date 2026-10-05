@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/zhu2026authorization]]"
   - "[[literature/papers/li2026where]]"
   - "[[literature/papers/li2026who]]"
+  - "[[literature/papers/chen2026rankevolve]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -280,6 +281,18 @@ evaluating them. "Formally enforced" should be read as "formally enforced
 modulo the escape hatches," and a design's quality is largely a question of
 how much it pushes into the skeleton versus the hatch. This is the
 cluster's open frontier, not a footnote.
+
+[[literature/papers/chen2026rankevolve]]'s enforcement contract (its Table 7)
+is the cleanest published statement of this limit for a research loop. Each
+construct gets three columns: compile-time checks, runtime enforcement, and
+"Not guaranteed". For example:
+- Phase dependencies are enforced, but not "that the predecessor's artifact is
+  semantically correct".
+- Tool allowlists are enforced, but not "scientifically valid interpretation".
+
+Its two worst deployment leaks (a feature fed only to positives, and DPO
+negatives derived from the target) passed every enforced check. An anomalous
+metric trajectory on the persistent leaderboard caught them; no gate did.
 
 ## What the largest cross-vendor test actually shows: measurement, not compliance
 

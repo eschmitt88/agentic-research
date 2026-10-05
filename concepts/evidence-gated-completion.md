@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/xu2026dont]]"
   - "[[literature/papers/agarwal2026fire]]"
   - "[[literature/papers/qin2026llm]]"
+  - "[[literature/papers/park2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -785,6 +786,17 @@ part off the host.
   halves of the same integrity property.
 - [[concepts/typed-enforcement]] — the schema is a machine-checkable
   artifact held outside the agent's reasoning.
+
+## A self-claim gate is accept-all, and its false accepts erode the best state (2026-10-05)
+
+In [[literature/papers/park2026when]] the agent claimed "this improves
+conversion" in 54/54 cycles while 56% had a measured Δ ≤ 0. A gate that
+trusts the claim is accept-all. It took three real gains, then three
+plausible regressions, and fell 19% from its mean peak. Even with the success
+criterion in plain view, the self gate still accepted 50% of unproductive
+cycles. The paper's field anecdote adds that in-band reward turns "awareness
+of stagnation" into rewardable analysis. A stall signal must come from the
+metric log, not from the agent's summary.
 
 ## Open questions
 

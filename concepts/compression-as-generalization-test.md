@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/chen2026repo]]"
   - "[[literature/papers/ning2026scores]]"
   - "[[literature/papers/xia2026rrsi]]"
+  - "[[literature/papers/wang2026rethinking]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/pass-at-k]]"
@@ -87,6 +88,15 @@ compression tests generalization only when the compressed form is
 independently verifiable — a skill that runs, or a strategy that
 reproduces. A prose summary is compression without a check, and it couples
 the artifact to whichever model wrote it.
+
+[[literature/papers/wang2026rethinking]] shows the same split inside harness
+evolution. On Terminal-Bench the meta agent's edits were mostly per-task facts
+("install Coq 8.16.1"). The authors' verdict: "most edits memorize fixes
+rather than distilling strategies". The held-out gain was 0.0. On ARC-AGI-3,
+memory-only evolution "can only accumulate prose about a misperception it
+cannot correct". The gains came from agent-written executable tools (a
+~20-line pixel-mask tool, BFS solvers). What transfers is checkable code;
+accumulated prose does not.
 
 ## Connections
 
