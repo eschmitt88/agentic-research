@@ -26,6 +26,9 @@ sources:
   - "[[literature/papers/kim2026divergent]]"
   - "[[literature/papers/agarwal2026fire]]"
   - "[[literature/papers/nguyen2026cliffcompaction]]"
+  - "[[literature/papers/wiedmann2026agents]]"
+  - "[[literature/papers/wang2026rethinking]]"
+  - "[[literature/papers/bobadillasuarez2026audit]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -231,6 +234,23 @@ specification: **a selector's number is only a deployment estimate when it
 was trained on disjoint tasks.** Cross-model training does not substitute
 for task holdout.
 
+[[literature/papers/wang2026rethinking]] gives the agent-trajectory version. On
+5 Terminal-Bench samples a self-judge lifted pass@1 from 68.2 to 72.3. With
+unit tests as the selector, the same budget reached 82.0. Harness evolution's
+advantage appeared only in pass@5, so its gains are attempt-count gains.
+Watch the column definitions: with tests, Parallel Sampling's "pass@1" equals
+its pass@5 in every cell, so for that arm it is oracle best-of-5.
+
+A majority vote does no better. [[literature/papers/bobadillasuarez2026audit]]
+scores 30 one-vendor workers on 55 SWE-bench Lite tasks: Sonnet/Haiku 4.5 ×
+3 prompts × 5 seeds, at temperature 0.25.
+- Within a tier the vote equals the *average* worker (Sonnet 0.145 vs 0.147;
+  Haiku 0.545 vs 0.565).
+- Pooling tiers makes it worse (0.418 vs 0.356).
+
+The abstract's "majority fails 23/55" figure is mostly this pooling artifact
+(its own Appendix C).
+
 ## Report the repeat-run distribution before reporting an approximation error
 
 A small but clean instance of this concept's rule, in an unusual place.
@@ -306,6 +326,20 @@ Also a caution on reading the separation as mechanism. The clean
 fired on 81/87 tasks at +47.7% cost. The narrowly targeted tier moved
 reach more than repeatability (+6.9 vs +5.7 pp). None of the three
 suite-level pass@1 deltas is significant (p = .43, .17, .09).
+
+## Split the hurdle, report absolute spread, not a variance share (2026-10-05)
+
+[[literature/papers/wiedmann2026agents]] separates a binary "genuine attempt"
+indicator from the continuous score given success (a Cragg-style hurdle).
+Without the split, "rare but severe failures inflate MS_within far out of
+proportion". Its headline "54% of variance is run-to-run noise" is an ICC
+share over a deliberately wide 432-configuration grid; a narrower comparison
+would show a larger noise share. The absolute figures are the ones that transfer:
+- Per-configuration SD is about 11–13% of the reference-to-trivial range on
+  well-behaved tasks (85% on the worst).
+- The 95% CI half-width is still about 13% of that range at k = 5.
+- Better configurations are less noisy (ρ = −0.79), so a spread measured on
+  weak runs overstates noise near the frontier.
 
 ## Open questions
 

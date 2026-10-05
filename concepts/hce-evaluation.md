@@ -74,6 +74,8 @@ sources:
   - "[[literature/papers/qu2026propose]]"
   - "[[literature/papers/srikanth2026recursive]]"
   - "[[literature/papers/li2026discover]]"
+  - "[[literature/papers/wang2026rethinking]]"
+  - "[[literature/papers/chen2026rankevolve]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -830,6 +832,17 @@ the substrate with a validated check, seal the findings with the holdout,
 and score acceptance of known defects as a separate outcome from the
 headline metric.
 
+[[literature/papers/chen2026rankevolve]]'s ExecML benchmark plants failures for
+patch correctness rather than for hacking. It has 96 private tasks per repo
+across six incident families: leakage, tensor routing, gradient flow,
+train/eval mode, metric semantics and config wiring. A hidden oracle passes a
+patch only if the regression suite, behavioural checks, scientific-safety
+invariants and evaluator integrity all pass. It also reports a *silent
+critical-defect* rate: the patch runs, but the conclusion is invalid. The
+deployment it came from adds a field datum for noise discipline. A subset
+eval read 0.005–0.010 high, and without full-test separation the loop
+"repeatedly chased phantom 0.005-scale 'gains'".
+
 ## Ablatability is a property of the harness, not of the experiment
 
 [[literature/papers/cheng2026agenticsts]] makes an argument this concept
@@ -1141,6 +1154,23 @@ This also corrects the 09-28 digest's framing. The paper does not show that
 "selecting on hidden evals was enough to avoid overfitting". It shows
 positive transfer from one unregularized run, with no ablation of which
 rewrites carried it.
+
+## An evolution gain needs a same-budget search arm (2026-10-05)
+
+[[literature/papers/wang2026rethinking]] adds a control this concept lacked:
+spend the evolution loop's rollout budget on the *unchanged* system (K parallel
+samples or K sequential refinements) and compare. On Terminal-Bench 2.1 (K=5,
+3 models), AHE-style harness evolution scored 67.4 pass@1 without tests,
+against 72.3 for parallel sampling and 68.2 for direct sampling. On a 45/10/34
+task split its held-out gain was +0.0. The two controls answer different
+questions:
+- A held-out split says whether a gain transfers.
+- A matched search arm says whether the gain came from the harness or from
+  extra attempts.
+
+Require both before crediting any self-modifying loop, `/elevate`'s
+self-application included. Caveat: no CIs, and the paper's own repeated
+baselines vary by about 2.5 points.
 
 ## Open questions
 

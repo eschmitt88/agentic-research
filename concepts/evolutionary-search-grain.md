@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/min2026autonomous]]"
   - "[[literature/papers/yu2026primescientist]]"
   - "[[literature/papers/xia2026rrsi]]"
+  - "[[literature/papers/yan2026traceml]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -186,6 +187,17 @@ nulls are unresolved. Compare [[literature/papers/chi2026ai4ai]], where
 more reasoning effort raised structural attempts from 8% to 64% on a
 benchmark that scores only structural change. The two fit together if the
 declared space dominates willingness.
+
+[[literature/papers/yan2026traceml]] independently reproduces the
+min2026autonomous pattern, using 430 paired human trajectories as the
+reference. Both scaffolds settle into one band. Codex re-weights an ensemble
+it never grows (78% of its ensemble edits), and MLEvolve mutates layers,
+epochs and seeds in place. The cross-family moves (checkpoint swap,
+pretrained-source swap, re-running unchanged code to verify) "all stay an
+order of magnitude below the human rate". This holds for both a single loop
+and an evolutionary tree on the same backend, so topology alone does not
+widen the grain. Caveat: 3 MLEvolve runs and 6 informative Codex runs, all on
+gpt-5.4-mini.
 
 ## Open questions
 

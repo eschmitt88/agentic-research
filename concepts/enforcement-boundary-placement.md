@@ -33,6 +33,8 @@ sources:
   - "[[literature/papers/li2026who]]"
   - "[[literature/papers/agarwal2026fire]]"
   - "[[literature/papers/qin2026llm]]"
+  - "[[literature/papers/wiedmann2026agents]]"
+  - "[[literature/papers/chen2026rankevolve]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -381,6 +383,17 @@ Limits: the panel tasks are the development population the rules were
 written against; the authors sell the hook runtime; one harness and one
 model family.
 
+**Once a runtime holds the order, prompt content about the order is a cost
+(2026-10-05).** [[literature/papers/chen2026rankevolve]] forks one runtime
+checkpoint into two arms. One prompt carries only the active phase; the other
+also carries every inactive phase body. Runtime, tools, budget and gates are
+identical. The scoped prompt wins on execution accuracy by +2.1 / +6.2 / +10.4
+points at early / middle / late phases, using half the input tokens. In a
+playbook-only pilot with no runtime, 0 of 10 runs were faithful. Read this
+narrowly. There are no CIs, the length-matched arm is unreported, and no arm
+compares runtime against no runtime. It shows less prompt is better *given*
+enforcement, not that enforcement helps.
+
 ## The boundary has a time axis, and one point on it is not enough
 
 Every placement in the table above answers *where*.
@@ -448,6 +461,19 @@ and [[literature/papers/wu2026evomal]] demonstrates why the executable
 domain is the one that matters: a shared skill namespace with
 imitation-based authoring is a self-propagating medium, and this project
 has a shared skill namespace.
+
+## Prompted verification vs a verification tool, at n = 8,640 (2026-10-05)
+
+[[literature/papers/wiedmann2026agents]] escalates a verification prompt
+through four levels, up to "do not submit unless your own verification is
+convincing". Across 8,640 runs, reference-based checking moves only from 19%
+to 22%, and about 75% of runs check only the answer's format. Adding an
+`oracle_check` tool lifts reference-based checking to 55–63% at every prompt
+level. This is a well-powered replication of
+[[literature/papers/agarwal2026fire]]'s finding that generic verify text does
+nothing: placed in the tool layer, the check changes behaviour; placed in the
+prompt, it does not. Caveat: the tool scores against the test labels, and the
+deployable validation-split version is not tested.
 
 ## Open questions
 

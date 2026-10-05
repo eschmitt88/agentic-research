@@ -32,6 +32,8 @@ sources:
   - "[[literature/papers/li2026autorecsys]]"
   - "[[literature/papers/min2026autonomous]]"
   - "[[literature/papers/srikanth2026recursive]]"
+  - "[[literature/papers/wang2026rethinking]]"
+  - "[[literature/papers/bobadillasuarez2026audit]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -226,6 +228,22 @@ the argmax keep rule has no noise band. In this setting a false accept does
 more than crown the wrong champion. It becomes the code every later proposal
 edits, so noise compounds down the lineage (see the noise-floor discussion
 in [[concepts/budget-as-ceiling]]).
+
+**The missing arm in AIDE².** [[literature/papers/wang2026rethinking]] says the
+comparator for any harness-level search is the same budget spent re-running
+the seed harness. On Terminal-Bench, neither per-task nor cross-task harness
+evolution beat that arm by more than noise, and its held-out gain was exactly
++0.0. Per-task "Harness Scaling" does win on long-horizon games (ARC-AGI-3
+RHAE 43.3 → 77.5), but there the edits are test-time adaptation scored
+best-so-far on the same instance, not a reusable artifact. AIDE²'s
+0.703 → 0.778 has no matched re-run arm.
+
+[[literature/papers/bobadillasuarez2026audit]] names the regime AIDE² occupies.
+Rewriting the harness with frozen weights can grow the reachable edit set,
+while the weights cap the eventual ceiling, so the loop should saturate with
+jumps along the way. Both halves are assumptions, not measurements. The
+governance point: in a scaffold-rewriting loop, log whether the tool or
+verifier set grew, not just whether the weights changed.
 
 ## Open questions
 

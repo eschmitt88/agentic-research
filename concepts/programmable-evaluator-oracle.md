@@ -53,6 +53,8 @@ sources:
   - "[[literature/papers/huang2026reward]]"
   - "[[literature/papers/qu2026propose]]"
   - "[[literature/papers/li2026discover]]"
+  - "[[literature/papers/wiedmann2026agents]]"
+  - "[[literature/papers/park2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -196,6 +198,27 @@ Practical use: state which tier a loop's oracle occupies, and treat
 climbing as the improvement direction. This project's own graph checks are
 Tier II where `scripts/kg_lint.py` decides (dead wikilinks, missing
 frontmatter) and Tier VIII wherever a skill judges its own output.
+
+[[literature/papers/wiedmann2026agents]] measures the top of the ordering: an
+on-demand scorer against the test labels.
+- Score rises (Qwen-122B 0.822 → 0.923).
+- Overconfidence nearly disappears (calibration error 0.093 → 0.002).
+- Cost per run rises 34–112%, and 4.4% of runs hill-climb (up to 111 calls).
+
+The deployable validation-set arm is never run. So the gain bounds what a
+test-label oracle buys, not what a realistic one does, and under
+[[concepts/hce-evaluation]] the oracle-arm scores are not clean held-out
+numbers.
+
+**A stronger judge does not replace grounding.**
+[[literature/papers/park2026when]] holds one agent fixed and swaps only the
+keep gate. A stronger LLM judge, reading the full files, the diff and its own
+verdict history, still accepted 4 of 10 regressions and rejected 3 of 8 real
+improvements. That is "not a problem of leniency but a ceiling on
+discrimination". When the success criterion can be checked from the artifact,
+its false accepts drop to 0. Report a gate as P(accept | Δ ≤ 0) and
+P(accept | Δ > 0), not as one accuracy number. This is pilot scale (3 reps ×
+6 cycles), and the judge's two rates are not statistically distinguishable.
 
 ## The oracle's access restriction, stated formally
 
