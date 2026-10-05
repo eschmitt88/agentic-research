@@ -385,3 +385,21 @@ This week's `/elevate` run produced **one proposal** out of 12 ideas considered;
 - **Uncommitted changes I left alone:** `_meta/curate.log` has changes left over from the 09-22 curate session. `~/claude-system` has a modified `settings.json` and an untracked `skills/synced/` folder.
 - **Google Drive:** the claude.ai Google Drive connector needs authorizing in your claude.ai connector settings before it can be used; this run didn't need it.
 {"id":"TSllfGdrf6Tn","time":1790485426,"expires":1790528626,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• iterate-no-improvement-noise-band\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
+This week's `/elevate` run made **no proposals**. I checked 11 ideas from the 16 papers added since 09-27, and none should go into the review queue right now. The reasons are recorded and pushed (`b6c1937`).
+
+**Closest miss: when an `/iterate` chain stalls, change strategy once before halting.** Right now, step 3 of `claude/skills-experiment/iterate/SKILL.md` always picks the next idea closest to what just ran. In a stall, that keeps producing the same small tweaks. The fix would be one sentence: when the no-improvement counter is above zero, pick an idea that works differently from the stalled ones, and halt only if that also fails.
+- **Evidence:** it's strong. One paper is peer-reviewed (`chandran2026autoresearch`, ICDM 2026) and three have released code (`zou2026fmlbench`, `xia2026rrsi`, `hu2026analyzing`). It adds nothing new to the system.
+- **Why I held it:** the 09-27 proposal on the same file is still undecided, and earlier runs set a rule of not stacking proposals on one file. This change also only works once that proposal defines what "no improvement" means. When you decide 09-27, you can add this sentence at the same time, or accept 09-27 and let next week's run propose it.
+- **Caveat:** no paper directly compares changing strategy against halting. The support is four separate systems making the same design choice, plus one gain that followed a strategy switch in a single case.
+
+**New input for the 09-27 proposal:** `hu2026analyzing` gives the missing recipe for setting the noise band. Run the baseline three times once, set the threshold from that spread, and reuse it. It also warns that a spread from only three runs is itself very noisy. I recorded this as reviewer notes, not as a new proposal.
+
+**Other ideas held, with the reasons in `docs/system-proposals/_index.md`:**
+- **Token counts come from a transcript the agent can edit or delete** (`qin2026llm`). The risk is real, but the only fix is new infrastructure, because a Max plan has no per-request usage meter to read instead.
+- **Telling agents not to re-run tests and re-read files.** The paper itself measured this waste at only 6.86% of cost on Claude Code.
+- **A Stop hook that checks for specific missing work.** It would be a new hook. The same paper shows generic "verify your work" text does nothing, and this box has none to remove.
+- **The rest** either have weak evidence, have no file in claude-system to change, or target a file that already has a pending proposal.
+
+Nine proposals are still waiting for your decision, the oldest from 08-02. That backlog, not a lack of evidence, is what's holding things up.
+
+Nothing in `~/claude-system` was touched. `_meta/curate.log` already had uncommitted changes before this session, and I left them uncommitted.
