@@ -23,6 +23,8 @@ sources:
   - "[[literature/papers/he2026stored]]"
   - "[[literature/papers/zhu2026claimreceipt]]"
   - "[[literature/papers/brueckner2026kbench]]"
+  - "[[literature/papers/xiao2026search]]"
+  - "[[literature/papers/wang2026making]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -205,6 +207,37 @@ The caution that travels with it: content-addressing makes an anchor
 contributions all resolve and all pass, and none of them caught anything. A
 non-rotting anchor raises the ceiling on what a mechanical check can do; it
 does not raise the floor on what a lazy check does do.
+
+**Every anchor can resolve and the conclusion can still be one-sided
+(2026-10-06).** [[literature/papers/xiao2026search]] names a gap no
+per-claim check can close. Citation correctness verifies that each cited
+source supports its local claim. It "does not show whether adaptive search
+exposed a representative view" of the evidence available. An agent whose
+early hits steer its later queries can produce a report in which every
+anchor resolves faithfully but the documents behind them are a skewed
+sample. Anchoring checks the claims one at a time. Whether the cited set
+represents the evidence is a property of the selection process, and checking
+it needs the pool and the selection rule recorded. The paper does not
+measure how often this bites real agents under their native ranking: its
+large effects come from imposed supporting-first or opposing-first orderings.
+
+**An anchor into your own summary is traceable, not verifiable
+(2026-10-06).** [[literature/papers/wang2026making]] (XCIENTIST) gives
+evidence-graph records a verbatim `quote` field for exactly this reason. Its
+claim audit separates *drifted* (the anchor resolves and contradicts) from
+*unverifiable* (the evidence cannot settle the claim). In one audited claim
+the wording "could be traced to an internal evidence-graph summary, but the
+record lacked an independent abstract, full text or original retrieval
+return". It was labelled unverifiable: "Traceability to an internal summary
+established the origin of the wording, not the scientific validity of the
+attribution." Our concept notes cite `literature/papers/*.md`, which are
+derived summaries. By this standard, a concept claim whose only anchor is a
+literature note resolves, but stays unverifiable until the note carries the
+source's quote or a page into `raw/`. The paper's measured gap between
+systems is also mostly this distinction. XCIENTIST's 3.6–16.7% "audit claim
+drift" is (drifted + unverifiable)/N. On confirmed drift alone it is 3/362,
+against 1/111 for EvoScientist. What the anchors bought was auditability,
+not a demonstrated drop in error. Report the two rates separately.
 
 ## Open questions
 

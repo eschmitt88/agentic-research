@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/dai2026agentguard]]"
   - "[[literature/papers/li2026who]]"
+  - "[[literature/papers/guo2026groundability]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -271,6 +272,19 @@ Two disciplines to take from how the paper reports it, both cautionary:
 Scope: pairing is within-task only, every task carries an adversarial step,
 so the **benign-only over-refusal rate is unmeasured** — the 19.3% is not
 transportable to a workload without injected adversarial steps.
+
+A second paired instance, with a lesson about the missing baseline
+(2026-10-06). [[literature/papers/guo2026groundability]] reports catch and over-rejection together for every
+review condition, with abstentions kept in the denominators. That is this
+concept's discipline, adopted. Its deployable cascade reaches catch 0.76
+at over-rejection **0.66** [0.49, 0.81] and coverage 0.89. By our
+reconstruction it correctly accepts only about 4 of 32 acceptable patches.
+The paper never plots the constant **reject-all** policy. At its 74%
+defect base rate, reject-all scores coverage 1.00 and risk 0.26, which
+beats the cascade's 0.33. When a gate leans toward refusal and the base
+rate leans toward defects, pairing catch with over-rejection is necessary
+but not sufficient. The constant-policy baselines have to be on the same
+plot.
 
 ## Connections
 

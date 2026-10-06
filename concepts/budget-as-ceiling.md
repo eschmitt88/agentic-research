@@ -43,6 +43,11 @@ sources:
   - "[[literature/papers/wiedmann2026agents]]"
   - "[[literature/papers/bobadillasuarez2026audit]]"
   - "[[literature/papers/yan2026traceml]]"
+  - "[[literature/papers/wang2026pear]]"
+  - "[[literature/papers/wang2026research]]"
+  - "[[literature/papers/xu2026conflictguide]]"
+  - "[[literature/papers/samanta2026learning]]"
+  - "[[literature/papers/woo2026youra]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -830,6 +835,119 @@ candidate's category to differ under a structural pivot test, or reopen an
 abandoned line from the run's history. Asking for it in the prompt does not
 work. Still missing: its baseline prompt forbids halting, so no paper yet
 runs redirect against halt.
+
+**A specification for interval-based keeps, with no evidence attached
+(2026-10-06).** [[literature/papers/wang2026pear]] (ByteDance production
+search) deploys the "interval-estimate-based acceptance" that park2026when
+left open. The rule has three outcomes on a Welch CI at α = 0.05:
+- PROMOTE if the lower bound L > 0;
+- STOP if the upper bound U < 0;
+- RETAIN, meaning keep evaluating, otherwise.
+
+Every round compares against a **concurrently re-run baseline**, not a
+stored champion score, and that is its actual answer to non-stationarity.
+Exact replications go through a separate queue. Three points for the
+noise-band proposal:
+- RETAIN is the state a std band lacks. "Not yet distinguishable" becomes a
+  reason to spend more seeds, not a keep or a discard.
+- RETAIN without a re-look cap is the optional stopping that qu2026propose
+  priced (86.2 vs 11.7 false admissions per campaign).
+- With n = 3 seeds, Welch t is about 2.8–4.3, so the gate RETAINs almost
+  every sub-2-SD change (our arithmetic).
+
+The paper has no keep-if-better arm and no no-gate arm. It is a design
+endorsement, not a third measured case for the band.
+
+## A world-state stall counter that never halts, and the run it let through (2026-10-06)
+
+[[literature/papers/wang2026research]] (AfS) keeps two progress counters
+with deliberately asymmetric authority:
+
+- **Repeat** counts byte-identical responses that produced no durable
+  change. It aborts at 6, after a warning at 3.
+- **Stall** counts consecutive turns with no change to a workspace
+  fingerprint, "a statement about the world, not about the transcript". It
+  never terminates and emits a notice every 15 turns. The stated reason is
+  that "a breaker that treats silence as failure would kill exactly the runs
+  doing the most expensive work".
+
+Token accounting is warn-only, and the turn cap is the only hard bound. The
+paper reports the cost of that choice itself. In its 50-hour campaign one
+experiment run reached **turn 153 and 17.5M tokens** with nothing stopping
+it, and the limits section lists "no per-node spending ceiling" as an open
+gap: the ledger "makes the problem visible after the fact; it does not yet
+stop it." It also reports one measured busy-wait under model-judged
+continuation, at 47 turns and 6.7M tokens. This is a single-system anecdote
+with no comparison. It supports this page's position: a fingerprint-based
+stall signal is the right *measure* of no-progress, but without a hard
+ceiling behind it a run can still overspend.
+
+**A matched continue-vs-redirect, though not a plateau-triggered one
+(2026-10-06).** [[literature/papers/xu2026conflictguide]] branches each of 3
+search rounds, on 5 model families, from a shared scalar-only Stage-I
+incumbent into two equal 100-proposal continuations:
+- plain continuation, which keeps any edit with G > 0;
+- a redirect that adds behaviour-level probe feedback, narrows the prompt
+  to the conflict's components, and keeps only G > τS, or a marginal or
+  tied G with probe-confirmed alleviation.
+
+The redirect wins in most of the 15 cells. The effect is large on SNGP
+and the ESN transfer task (means of 18–19%) and small on FNO, GCNII and
+TCM-Lite (2–4%, often inside seed noise). The headline "up to 28%" is the
+best cell. Three caveats for `/iterate`:
+1. **The switch is a fixed iteration count** (100, or 20 for ESN), not a
+   stall detector, so the trigger is untested.
+2. **The redirect bundles new evidence, a scope restriction and a
+   thresholded keep rule.** On SNGP the ablation credits most of the gain
+   to the keep rule. The scalar-only arm's G > 0 winners were *worse than
+   the unmodified reference* in 2 of 3 rounds at full scale, which is
+   indirect support for the noise band. The isolating arm (scalar-only
+   plus the same τS) is missing.
+3. **Timing matters.** Probe feedback from iteration 0 left FNO worse than
+   the reference, so redirect *after* broad exploration, not instead of it.
+
+A one-sentence "consider trade-offs" prompt did nothing (yan2026traceml's
+lesson again). Still no paper runs redirect against halt.
+
+**A learned value-of-continuing is not yet an alternative to the patience counter (2026-10-06).**
+[[literature/papers/samanta2026learning]] (MIRA) trains a decision-level
+critic that forecasts the remaining best-so-far improvement from the curated
+research state (RMSE 0.214 on a 0–1 scale). It was flagged in the digest as
+a possible learned replacement for `max_consecutive_no_improvement`. The
+paper does not test that:
+- The critic is used only as the actor–critic baseline.
+- Termination is the policy's own sampled action, and every rollout is
+  capped at 20 decisions.
+- No arm stops on V(o_t), or compares against a patience rule.
+
+What it does offer bears on redirect-before-halt. With weights frozen, a
+fresh-context outer loop pivots more than one persistent session with the
+same model and tools (strategic inertia 0.772 vs 0.862). That is a
+structural redirect, consistent with yan2026traceml's finding that prompting
+for a pivot fails. RL on proxy reward then cut judged "local-search
+stagnation" from 33.5% to 18.8% of trajectories. It also raised "continuing
+despite contrary evidence" on HCB-CPU (10% → 26%) and lowered keeping the
+best graph on BNLearn (32% → 19%). A redirect pressure without a keep gate
+erodes the champion, so keep the monotone hard cap and the metric-computed
+counter.
+
+**What a redirect ladder does once it is built (2026-10-06).**
+[[literature/papers/woo2026youra]] routes a MUST_WORK failure that survives
+bounded repair to one of two rungs: redesign the hypothesis, or reset to
+problem scoping with a new research direction. Reflection over a structured
+failure record makes the choice, and a separate controller enforces it.
+- Across 30 MLR-Bench runs, 86 escalations fired: **81 resets and 5
+  redesigns**, with up to 11 in one task.
+- Disabling both rungs (failures documented, run continues) costs −0.87
+  Overall. That is the weakest of the four ablations, and it does not hold up
+  by sign test (17/11/2, p = 0.345).
+
+So a built ladder mostly jumps to the top rung, and the gain from having it
+is marginal. The comparison is still redirect against
+continue-with-limitation, not against halt. A reset also archives the failed
+folder, and the judges see only the final directory, so a redirect that
+re-scopes doubles as a file drawer. A `/iterate` redirect should log which
+rung fired and keep the abandoned line visible in the write-up.
 
 ## Open questions
 

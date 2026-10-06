@@ -48,6 +48,7 @@ sources:
   - "[[literature/papers/hu2026analyzing]]"
   - "[[literature/papers/cheng2026scope]]"
   - "[[literature/papers/yan2026traceml]]"
+  - "[[literature/papers/zhang2026veriharness]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -476,6 +477,41 @@ from human Kaggle practice, clause by clause.
 That gives three admission tests for a skill clause: it states a target
 level, the agent is below that level, and it is more than a ban. The score
 evidence is one run per competition.
+
+## Failure-driven evolution of a verifier's skills, with a held-out split (2026-10-06)
+
+[[literature/papers/zhang2026veriharness]] evolves a *verifier's* skill
+library from development failures. Each failure package holds the task, the
+evidence record, the delivered artifact and the grader's per-item verdicts.
+The admission protocol is worth copying:
+
+- tasks sharing a workspace or template are grouped before a ~75/25
+  dev/held-out split;
+- a candidate library replaces the current one only on a non-negative
+  paired dev gain;
+- a filter rejects task IDs, benchmark names, dev filenames and reference
+  values;
+- round schedules are fixed before any held-out score is inspected;
+- held-out grades are never fed back to the proposer.
+
+Held-out results (Opus 4.8, one run each, no significance testing):
+
+| Benchmark | Empty library | Human-authored | Evolved from empty | Evolved from human |
+|---|---|---|---|---|
+| APEX-Agents | 38.6 | 45.3 | 49.6 | 52.1 |
+| SpreadsheetBench 2 | 32.8 | 35.7 | 38.5 | 39.4 |
+
+The paper compared all 95 evolved checks with the human library by hand:
+
+| Relation to the human library | Count |
+|---|---|
+| Restates a human check | 5 |
+| Makes a human check concrete (script, constant, document type) | 48 |
+| New | 42 |
+
+So evolution mostly specializes a general check. Two caveats: both
+trajectories regress on held-out tasks along the way, and the
+"human-authored" baseline was itself written from development failures.
 
 ## Open questions
 

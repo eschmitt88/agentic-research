@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/qin2026llm]]"
   - "[[literature/papers/wiedmann2026agents]]"
   - "[[literature/papers/chen2026rankevolve]]"
+  - "[[literature/papers/tiwari2026assay]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -474,6 +475,30 @@ level. This is a well-powered replication of
 nothing: placed in the tool layer, the check changes behaviour; placed in the
 prompt, it does not. Caveat: the tool scores against the test labels, and the
 deployable validation-split version is not tested.
+
+## A model-free merge gate whose floor rests on key placement (2026-10-06)
+
+[[literature/papers/tiwari2026assay]] puts the whole acceptance decision
+in a pure function of an index, a signed ledger and the diff. The function
+checks coverage, freshness, separation of duties, review status, exit
+code, plausibility, evidence monotonicity and an HMAC signature. No model
+is consulted at the gate.
+
+Two placements carry the guarantee, and the paper is candid about both:
+
+- **The reviewer.** The gate consumes a reviewer's verdict, and that
+  verdict may come from a model. The semantic judgement has moved upstream
+  of the gate rather than disappeared.
+- **The signing key.** The signature check is a floor only if the key sits
+  outside the agent's reach: "the process that executes the agent's tool
+  calls holds the key". The paper describes this but does not enforce it.
+  On a box where the agent's shell can read the environment or git-ignored
+  files, the model-free gate is forgeable.
+
+It also places points on the time axis. Staleness is computed at index
+time on every commit through a pre-commit hook, and refusal happens at
+merge. The evidence is scripted only: 12 scenarios written by the
+designers, one per mechanism, with no agent measured.
 
 ## Open questions
 

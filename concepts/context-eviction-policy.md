@@ -52,6 +52,7 @@ sources:
   - "[[literature/papers/nguyen2026cliffcompaction]]"
   - "[[literature/papers/hu2026analyzing]]"
   - "[[literature/papers/srikanth2026recursive]]"
+  - "[[literature/papers/samanta2026learning]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -578,6 +579,21 @@ argument is that "shorter prompts … buy more search steps in cost-bound
 runs." That is a benefit on top of not dying. Caveat: the policy shipped
 bundled with a new search policy, and no rewrite was ablated. The
 steps-per-dollar gain is argued, not isolated.
+
+**A per-decision rebuild from a repo, with a fixed curator (2026-10-06).**
+[[literature/papers/samanta2026learning]] (MIRA) takes the opposite
+extreme to compaction. Nothing carries over between research decisions.
+The outer context is rebuilt from a fixed portion (task, workspace summary,
+latest proxy eval, a structured summary of the previous episode with a
+pointer to its handover, remaining budget), plus evidence a fixed curator
+selects from the Git record. This is still anchor-plus-recency: Fig. 7 shows
+a stable task scaffold plus recent artifacts and the latest handover, about
+10 files out of a repo of about 5k. The selection is not ablated against a
+simpler rule, and the curator's outputs were "not fully logged". The
+cost comparison against full-history replay (10.6M input tokens per episode
+measured, vs higher *projected* replay costs) is a projection, not a run. It
+adds a fourth locus to the open three-way split, *fixed LLM curator over a
+persistent repo*, but no evidence that it beats the other three.
 
 ## Sufficiency is a property of the future, not of the current query
 

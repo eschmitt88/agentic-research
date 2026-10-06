@@ -76,6 +76,9 @@ sources:
   - "[[literature/papers/li2026discover]]"
   - "[[literature/papers/wang2026rethinking]]"
   - "[[literature/papers/chen2026rankevolve]]"
+  - "[[literature/papers/xiao2026search]]"
+  - "[[literature/papers/wang2026pear]]"
+  - "[[literature/papers/chen2026false]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -474,6 +477,22 @@ weak-to-strong aggregation of imperfect LLM verifiers) "all concede that any
 single learned check is attackable and must be defended or ensembled." Prefer
 a deterministic check to a learned one wherever the property admits it.
 
+**A post-hoc auditor the loop never sees is the cheap version, and it
+found the divergence (2026-10-06).** [[literature/papers/chen2026false]]
+saves every step's source, label and solver responses from a
+self-evolving search loop. It then has an external LLM build an
+evidence-backed reference and judge them, and none of this feeds back
+into training. In-loop agreement rose while audited solver truth fell
+(about 62% → 71% vs 74% → 67% at 4B). The loop's own signal could not
+have revealed that. Two cautions apply. First, the auditor is a single
+learned check, `gpt-6-astra/high`, with about 86% coverage and no human
+agreement reported, so it sits at the tier criticised above. Second, the
+audit scores each arm's *own* generated questions, so a lower error rate
+"can also result from rejecting difficult tasks", in the authors' words.
+The fix is the one this concept already prescribes: freeze the evidence.
+Their 3,000-question fixed-bank replay, with 5 seeds, is the only part of
+the paper where arms are compared on identical items.
+
 ## A harness feature you evaluate on ungated traces is not measured, it is unidentified
 
 HCE hides the answers from the search loop so a number means what it
@@ -535,6 +554,26 @@ hash-lock, screen or validity judge which condition is likelier to trip it.
 Those false positives stay invisible unless read on purpose: 201 scored
 Lean episodes produced exactly one screen refusal, and it was a complete
 proof.
+
+**A policy-invariant correction cannot double as a policy effect
+(2026-10-06).** [[literature/papers/xiao2026search]] states the converse of
+ray2026what's point as a one-line theorem. Take any estimator built to
+recover the same target under every policy, such as a reweighted or
+debiased score. Its expected contrast between two policies is zero by
+construction. So "both arms corrected to the same number" shows that the
+correction worked. It does not show that the policy change did nothing.
+
+The paper's 4,800 paired trajectories put a number on how different the two
+quantities are:
+- the directly measured selection effect is moderately repeatable (ICC about
+  0.68);
+- its rank correlation with the contrast between corrected estimates is only
+  0.24–0.27;
+- the stopping effect does not repeat at all (ICC about 0.10).
+
+The rule for this graph: attribution claims ("the harness change moved X")
+need paired runs under both conditions. Never take the difference of two
+estimates that were each adjusted toward a common target.
 
 ## Who made the decisions, and does the scorer look at the answer?
 
@@ -1171,6 +1210,25 @@ questions:
 Require both before crediting any self-modifying loop, `/elevate`'s
 self-application included. Caveat: no CIs, and the paper's own repeated
 baselines vary by about 2.5 points.
+
+## The decision-grade test is a selection step too (2026-10-06)
+
+[[literature/papers/wang2026pear]] puts a production A/B test (L4) at the top
+of a four-level screening ladder and reports the L4 winners as the result:
++2.73% and +3.30% Main Order/DAU. By this concept's rule, L4 was used to
+select, which makes it a validation split, not a holdout.
+- In Task B, 1 of 8 candidates sent to L4 cleared p < 0.05.
+- In Task A, the better of 2 is reported.
+- Task C's 3 promoted candidates have no reported outcome.
+- There is no multiplicity correction and no confirmation re-run.
+
+On null candidates, a one-sided 2.5% bar passes at least one of 8 about 18%
+of the time (our arithmetic). So the reported magnitudes are selected
+maxima. The paper's RETAIN state ("retained for further evaluation"
+whenever the CI straddles 0, with no cap on re-looks) is the optional
+stopping that [[literature/papers/qu2026propose]] priced. The rule
+generalises to every rung of a fidelity ladder: whichever level makes the
+last selection, it needs one untouched confirmation run above it.
 
 ## Open questions
 

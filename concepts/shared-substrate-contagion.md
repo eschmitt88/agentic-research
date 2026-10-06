@@ -25,6 +25,8 @@ sources:
   - "[[literature/papers/qin2026llm]]"
   - "[[literature/papers/chen2026rankevolve]]"
   - "[[literature/papers/bobadillasuarez2026audit]]"
+  - "[[literature/papers/chen2026false]]"
+  - "[[literature/papers/zhang2026veriharness]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -364,6 +366,54 @@ GPT-5.6 in Codex). The reviewer reads the same repo and patch, so any
 independence comes from its priors, not from its evidence. That fits
 zheng2026engineering's finding that a vendor swap buys far less than an
 independent source.
+
+### Inside one training loop: the source is the substrate, and only a source-level split removes it (2026-10-06)
+
+[[literature/papers/chen2026false]] finds contagion in proposer/solver
+self-evolution, where the substrate is the **source document**. A wrong
+pseudo-label from a source trains the solver. The solver then reproduces
+that error on later questions from the same source, and the match is paid
+out as proposer reward ("co-cheating"). Audited false agreement rises over
+3 rounds to 0.061 (4B) and 0.088 (9B). The seeded fixed-bank replay is the
+no-channel arm, and it pins the channel. With 3,000 questions and labels
+held fixed, F under each feedback solver is:
+- same-source auxiliary solver: 0.064 / 0.087;
+- full-data auxiliary: 0.058 / 0.069;
+- random-row split: 0.050 / 0.062;
+- **source-ID split: 0.004 / 0.001**.
+
+A separate evaluator with the same data ancestry is therefore not
+independent. That is zheng2026engineering's point measured in a training
+loop. Limits:
+- In the live loop, source exclusion stops at 3.0% / 3.7%. That residual
+  is consistent with li2026benchmark's F6, since correlated priors survive
+  lineage.
+- The live loop has one run per arm.
+- F comes from one LLM auditor with no human validation.
+
+### Common-mode error in one model's rollouts, and a same-model challenger against it (2026-10-06)
+
+[[literature/papers/zhang2026veriharness]] measures the no-channel arm at the
+claim level. Ten independent Opus 4.8 rollouts were drawn per APEX-Agents
+task, with no channel between them. **34% of unanimous claims were wrong**
+(917 consensus claims; values extracted by Opus; omissions counted as a
+value). This is the independence axis, not propagation, so it is not
+contagion.
+
+The countermeasure is a same-model "consensus challenger". It proposes how
+a unanimous claim could fail and tests that against the environment.
+- Its precision is clean: it never refuted a unanimous claim that was
+  correct.
+- Its recall is unreported.
+- Of the unanimous errors it upheld, 70% were cases where it checked a
+  correct upstream intermediate and stopped "where the rollouts stopped".
+- Challenger-only adds +3.0 points (Opus average), and it needs a revision
+  pass to realize anything.
+
+The evolved skill libraries learned "a recomputation that matches the pool
+is not confirmation". This is shared priors defeating a same-model check,
+which is the same mechanism this section's same-product review result shows
+(G ≈ −0.01).
 
 ## Herding, measured at community scale — and a remedy that was never tested
 

@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/wiedmann2026agents]]"
   - "[[literature/papers/wang2026rethinking]]"
   - "[[literature/papers/bobadillasuarez2026audit]]"
+  - "[[literature/papers/zhang2026veriharness]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -340,6 +341,28 @@ would show a larger noise share. The absolute figures are the ones that transfer
 - The 95% CI half-width is still about 13% of that range at k = 5.
 - Better configurations are less noisy (ρ = −0.79), so a spread measured on
   weak runs overstates noise near the frontier.
+
+## An agentic selector harvests about 30% of the oracle gap (2026-10-06)
+
+[[literature/papers/zhang2026veriharness]] gives the selector-vs-oracle gap
+for a strong agentic verifier. The setting is ten rollouts per task on five
+workspace benchmarks, with the verifier being the same model as the
+generator. Its evidence-checking selector lifts the pool mean by +4.4 (Gemini
+3.5 Flash) and +4.1 (Opus 4.8). That is 28–30% of the oracle headroom
+(oracle 62.7 / 63.1). Its margin over the best competing selector is only
++2.1 for both models.
+
+Within one model's samples, agreement is not correctness. This was measured
+on APEX-Agents with Opus only:
+- 34% of unanimous claims were wrong;
+- among disputed claims, the modal value was right only 47% of the time,
+  although 74% contained a correct candidate;
+- on unanimous pools, selection gained +0.6.
+
+This adds to the specification above. Report pass@k together with the
+selector's capture ratio, (selected − mean)/(oracle − mean). Do not treat
+maj@k agreement as a confidence signal. The gains rest on 3 verifier seeds,
+and several runner-up margins sit within 1–2 SD.
 
 ## Open questions
 

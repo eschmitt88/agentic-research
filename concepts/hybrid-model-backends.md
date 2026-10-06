@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/esakkiraja2026starharness]]"
   - "[[literature/papers/gao2026agentic]]"
+  - "[[literature/papers/guo2026groundability]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -193,3 +194,22 @@ system is a single agent, so it says nothing about the role split itself.
   generalist judge cannot even fit the full skill bodies in its context
   budget. Route structured sub-decisions to structured specialists; save
   the frontier model for open-ended reasoning.
+- **A cheap reviewer is only as good as the evidence it can check
+  (2026-10-06).** [[literature/papers/guo2026groundability]] holds six reviewers fixed, from Llama-3.1-8B to
+  GPT-4.1, and varies only the evidence they see about a stronger agent's
+  patch. Parameter count does not consistently predict review quality.
+  This is observational, with n = 6 across three vendors.
+  - **Grounded evidence closes the scale gap.** With the official test
+    result shown, the 8B reviewer reaches catch 0.98 at over-rejection
+    0.00.
+  - **Unchecked summaries do not.** A deployable cascade's residual
+    Llama-8B stage, reading generated-test packets, rejects 0.70 of the
+    acceptable patches it sees against 0.76 of the defective ones. That is
+    essentially no discrimination (our reconstruction from the paper's
+    counts).
+  - **Small models still misread decisive lines.** Llama-8B misreads on
+    10/61 correct patches.
+  - **Implication for a cheap `/iterate` reviewer.** Route a small model
+    only to decisions backed by a check. Let code, not the model, consume
+    any check whose result is decisive. Do not use a small model to audit
+    agent-written narrative.
