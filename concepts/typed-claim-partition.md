@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/zhu2026claimreceipt]]"
   - "[[literature/papers/xu2026dont]]"
   - "[[literature/papers/li2026discover]]"
+  - "[[literature/papers/wang2026making]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -264,3 +265,24 @@ majority-vote evaluation all compare generated text and inherit the
 same failure. Worth auditing anywhere we aggregate model outputs; the
 tell is any comparison of strings for equality where a *judgment* was
 the thing actually wanted.
+
+## Type the relation, keep "unverifiable" out of the error rate (2026-10-06)
+
+[[literature/papers/wang2026making]] (XCIENTIST) types AI-scientist claims
+along two axes. The first is the **relation** a claim needs:
+evidence→idea, idea→implementation and experiment→claim. A claim enters a
+relation's denominator only "when its wording required that relation". The
+second is the outcome: **supported / drifted / unverifiable**, with
+confirmed mismatch taking precedence. Three independent groups now use the
+same ternary: this paper, [[literature/papers/zhu2026claimreceipt]]
+(PASS / INVALID / INCONCLUSIVE) and li2026discover (implemented /
+contradicted / unresolved). The paper also shows why the two non-supported
+outcomes must not be summed into one scalar. Its headline "audit claim
+drift" of 3.6–16.7% is (D+U)/N, and it beats three comparison systems in
+all nine cells. On confirmed drift alone, XCIENTIST is 3/362 and
+EvoScientist 1/111, and XCIENTIST is strictly lowest in only 1 of 9 cells.
+U is partly a property of the auditor's retrieval: a 20-record human check
+flipped 6 labels, all on comparator records and all toward "supported". It
+measures evidence access as much as the claim. Report D/N and U/N as
+separate numbers, and treat any (D+U)/N comparison across systems with
+different record formats as a test of auditability, not of error.

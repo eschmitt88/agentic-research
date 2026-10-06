@@ -14,6 +14,8 @@ sources:
   - "[[literature/papers/cao2026agentsk1]]"
   - "[[literature/papers/yu2026recursive]]"
   - "[[literature/papers/badhe2026skill]]"
+  - "[[literature/papers/woo2026youra]]"
+  - "[[literature/papers/wang2026pear]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -129,3 +131,41 @@ consistency across rounds.
   a world-model file; NOTES.md + log files substitute implicitly.
   Graduate to `active` when a downstream project uses a dedicated
   world-model artifact end to end.
+- **A published hypothesis-ledger schema from a production loop
+  (2026-10-06).** [[literature/papers/wang2026pear]] (ByteDance search
+  AutoResearch) keeps one research state per strategy task:
+  context/protocol, hypotheses, intervention space and evidence. App. B.1
+  gives the hypotheses half as a schema:
+  - each hypothesis has Support/Refute/Neutral counters and
+    Score = S − R, with ≥ 2 meaning active, ≤ −2 meaning risky, and
+    superseded entries archived rather than deleted;
+  - each has a scope and a risk field, plus evidence references in the form
+    round:candidate verdict;
+  - at most one verdict per round per hypothesis, and at most 3 new
+    hypotheses per round;
+  - a **strategy-version fingerprint**, so a hypothesis is reused only when
+    the version matches.
+
+  The fingerprint is the EvoArena versioning point above, applied to
+  hypotheses. The lessons log adds a write rule: "When summaries disagree
+  with measured evidence or experimental records, correct the summaries."
+  Caveats:
+  - the verdicts are LLM-assigned vote counts, not statistics;
+  - nothing ablates the ledger;
+  - it is single-agent per task, so it attests the schema'd-state half of
+    this concept, not multi-agent coordination.
+
+**A second ML-research ablation, this time of the schema'd variant
+(2026-10-06).** [[literature/papers/woo2026youra]] (YouRA) keeps research
+state in one `verification_state.yaml`. It holds hypotheses, MUST_WORK
+gates, evidence pointers, a failed-hypothesis registry and a timestamped
+history, and every stage reads and writes it. Replacing it with "a short
+in-context state summary at each stage" costs −1.13 Overall on MLR-Bench's
+10-task end-to-end subset (30 backbone × task cells, p = 0.002, 22/8/0).
+Judges flag numbers that disagree across sections, code that implements a
+different experiment from the paper, and selective reporting. That is the
+drift this concept predicts. With chen2026toward's workspace ablation, both
+ends of the schema-vs-workspace knob now have an ML-research ablation, and
+this one carries the history field xu2026evoarena argued for. Limits: one
+run per cell and LLM judges only. The drop is also smallest on the strongest
+backbone (−0.95 on Sonnet 4.6 against −1.32 on Sonnet 4.5).

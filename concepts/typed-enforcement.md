@@ -36,6 +36,8 @@ sources:
   - "[[literature/papers/li2026where]]"
   - "[[literature/papers/li2026who]]"
   - "[[literature/papers/chen2026rankevolve]]"
+  - "[[literature/papers/wang2026research]]"
+  - "[[literature/papers/tiwari2026assay]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -293,6 +295,47 @@ construct gets three columns: compile-time checks, runtime enforcement, and
 Its two worst deployment leaks (a feature fed only to positives, and DPO
 negatives derived from the target) passed every enforced check. An anomalous
 metric trajectory on the persistent leaderboard caught them; no gate did.
+
+**2026-10-06.** [[literature/papers/wang2026research]] (AfS) is a full
+research platform built on this concept's premise. Its stated aim is to make
+"the non-compliant state unrepresentable". It adds three things here:
+
+- **A placement ladder.** Eight layers run from guidelines to the process
+  sandbox (its Table 5).
+- **A pairing rule.** The three strongest layers (write gate, closing gate,
+  sandbox) "can refuse a legitimate action, so each is paired with an
+  explicit discharge path" named in the error text.
+- **Five questions to answer before adding any gate.** What is the discharge
+  path? Does the advertised contract match the schema? Should the gate fail
+  open or closed when its own source of truth is missing? Is a parse failure
+  loud? Is the gate on a path that is actually taken?
+
+It also names the hatch from the other side. "Gates that teach performance":
+a falsifiability gate that demanded a numeric threshold got an invented one.
+"Judgment in a threshold's clothing": a five-citation rule was gamed by
+scattering identifiers. Its own limits section concedes the gates block
+"claimed but not done" but not an unsound validation protocol. Its best
+campaign shows the same limit. A frozen preregistration named the weighted
+fit, yet the first draft reported the unweighted number as "supported". Four
+reviewer rounds passed it, and a human caught it. The freeze made the error
+correctable after the fact, not unrepresentable. This is design, not
+evidence: there is no benchmark or ablation, all runs used one model family
+(DeepSeek V4), and no code is released.
+
+[[literature/papers/tiwari2026assay]] (2026-10-06) draws the same
+guaranteed / not-guaranteed split for its own merge gate. It guarantees
+"fresh, signed, independently reviewed evidence for the whole blast radius,
+and that the evidence is at least plausible". It does not guarantee "the
+evidence is sufficient". It names three hatches:
+
+- a reviewer who accepts a weak suite;
+- two models from one provider sharing a blind spot;
+- a doer who can read the signing key.
+
+There is also a hatch in the skeleton itself. The dependency graph that
+freshness is computed over is extracted by regular expressions for every
+language except Python. The "sound" binding is therefore sound only up to
+an edge recall that is never measured.
 
 ## What the largest cross-vendor test actually shows: measurement, not compliance
 

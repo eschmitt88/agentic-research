@@ -29,6 +29,8 @@ sources:
   - "[[literature/papers/gao2026agentic]]"
   - "[[literature/papers/bouras2026authority]]"
   - "[[literature/papers/hu2026analyzing]]"
+  - "[[literature/papers/samanta2026learning]]"
+  - "[[literature/papers/woo2026youra]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -260,3 +262,42 @@ and 12.19% on Pro (robust), even though redundant reads fell by more than
 75%. **Delegation to a cheaper model is a cost lever that an unrelated tool
 change can switch off silently.** Watch the per-tier call mix, not only
 total tokens.
+
+**An outer loop that delegates every investigation to a fresh executor, ablated against one persistent session (2026-10-06).**
+[[literature/papers/samanta2026learning]] (MIRA, Meta AI) is a two-level
+version of this pattern for research agents. An outer meta-reasoner reads a
+curated slice of a Git repo and writes a work order: objective, evidence,
+acceptance criteria and a stopping condition. A fresh Codex executor carries
+it out and leaves a handover. Both contexts reset at each decision. With
+GPT-5.5, the Codex harness and the tools held fixed, adding the outer loop
+lowers strategic inertia (the share of consecutive steps that stay in one
+direction) from 0.862 to 0.772 on IMOProofBench. It also gives the best
+architecture in one-campaign-per-arm RMT and Loop Transformer searches.
+Two caveats travel with it:
+- The 67.1% → 100% proof headline is mostly budget. Forcing the baselines
+  to MIRA's output-token count recovers about 80% of the gap (93.3%).
+- The NAS comparisons are n = 1.
+
+What is new for this concept is that the parent's turn becomes a *trainable
+unit*. Policy loss on only the work-order tokens (25.8% of output) improves
+gold outcomes on SR and Physics. But in-environment training on BNLearn
+*regressed* solved tasks from 76 to 48 or 56, and the evaluation tasks are
+the training tasks. So "train the delegator, freeze the delegate" is
+plausible, not established.
+
+**A controller that reads state, not the trace, ablated (2026-10-06).**
+In [[literature/papers/woo2026youra]], a separate GPT-5.2 context decides
+stage transitions, recovery escalation and debate convergence. It sees only
+a compact VSA summary and the latest artifact pointer, never the execution
+trace. Its verdict reaches the Claude Code worker through a Stop hook, which
+approves, emits a resume prompt, or escalates MUST_STOP. Moving these
+decisions back into the execution session costs −1.12 Overall on MLR-Bench
+(30 cells, p = 0.001, 22/6/2). Judges note crashed runs reported as findings
+and "validation gates relaxed post hoc instead of escalated". Two caveats:
+- The arm removes a second model family along with the separation, so it
+  does not isolate context separation from model diversity.
+- The drop nearly vanishes on the strongest backbone: −0.35 on Sonnet 4.6
+  against −1.82 on Sonnet 4.5.
+
+It is the first evidence here that *control* is worth delegating out of the
+worker, not only work into children.

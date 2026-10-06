@@ -29,6 +29,8 @@ sources:
   - "[[literature/papers/suresh2026grounding]]"
   - "[[literature/papers/li2026benchmark]]"
   - "[[literature/papers/cheng2026scope]]"
+  - "[[literature/papers/wang2026research]]"
+  - "[[literature/papers/tiwari2026assay]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -167,6 +169,27 @@ opposite reasons, so the instrument is a per-entity last-refresh timestamp,
 not an expiry count. This graph has only `added:`, a build time. Thin
 evidence: one model, synthetic data, single-digit counts under tiering, and
 no mutation-rate sweep.
+
+[[literature/papers/tiwari2026assay]] (2026-10-06) gives the code-domain
+mechanism for chen2026fresh's dependency-scoped validity. Each claim is
+keyed to a Merkle hash over the dependency cone of what it covers. That
+makes staleness a hash comparison, and the set of claims an edit
+invalidates equals its blast radius. The binding is sound and minimal
+relative to the dependency graph.
+
+Mapped onto this graph, a concept paragraph's cone is the set of
+literature notes it wikilinks. Hashing those notes when the paragraph is
+written would give `kg_lint` its first validity check. It would replace
+age, the variable singh2026churnbench already rejected.
+
+The limit applies with force here, because cone binding only sees changes
+*inside* the cone. Literature notes rarely change and `raw/` is immutable.
+The dominant staleness in this graph is new contradicting evidence
+arriving as a new note, and that is outside every cone by construction. A
+cone check would catch "what I cited changed", not "the graph learned
+more". Catching the second would need a reverse-edge check, such as new
+notes that touch a concept's tags or citekeys. That last step is our
+inference, not the paper's.
 
 ## Connections
 
@@ -628,3 +651,28 @@ descriptive with no hypothesis tests, the voting, collapse and judge
 policies are reimplementations, and the backbones are small (8–12B)
 except for Claude. The abstract's headline contrast (0.06–0.09 against
 "0.22–0.47") omits the Claude-family judge, which sits at 0.19.
+
+**2026-10-06: scope in the identity, and a tier reachable only by
+promotion.** [[literature/papers/wang2026research]] (AfS) answers the
+shared-tier question structurally, without voting. Record identifiers are
+content-addressed *with the scope inside the identity*, so the same sentence
+at project scope and at organization scope are two different records, not
+one record with a mutable field. New records default to project scope
+unconditionally, and organization scope is accepted only from the promotion
+path.
+
+Promotion has three gates:
+
+- the source project has closed;
+- its evidence closure is frozen throughout;
+- on the human lane, the text contains no project deixis or leaked run
+  identifiers.
+
+Facts additionally need an external anchor (DOI, arXiv, PMID). The
+motivating measurement is internal and uncontrolled: when scope was guessed
+at write time, 224 organization claims carried zero complete promotion
+provenance. This addresses li2026benchmark's laundering through a
+writer-declared type, because scope cannot be declared, only earned. It does
+not address the "perfect lineage is not truth" result. A frozen evidence
+closure can still contain a supported falsehood, and AfS's own limits
+section concedes its gates do not catch an unsound validation protocol.

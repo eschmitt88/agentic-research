@@ -55,6 +55,10 @@ sources:
   - "[[literature/papers/li2026discover]]"
   - "[[literature/papers/wiedmann2026agents]]"
   - "[[literature/papers/park2026when]]"
+  - "[[literature/papers/guo2026groundability]]"
+  - "[[literature/papers/wang2026pear]]"
+  - "[[literature/papers/chen2026false]]"
+  - "[[literature/papers/xu2026conflictguide]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -276,6 +280,21 @@ never stated and rarely measured. The clause above should be enforced by
 what the evaluator is *given*, not by which evaluator is chosen. See the
 paper's least-privilege routing in [[concepts/evidence-gated-completion]].
 
+**The clause also covers what the evaluator was *trained* on (2026-10-06).**
+[[literature/papers/chen2026false]] describes a learned evaluator that
+breaks the clause without reading any account. In self-evolution, the
+solver that scores the proposer's questions was itself trained on that
+proposer's pseudo-labels. Its agreement with a wrong label is the
+proposer's own error coming back as reward. Audited false agreement
+compounds over rounds, reaching 6.1% / 8.8%, which is ishibashi2026effective's
+selection amplification in a training loop. Swapping in a separate solver
+with the same data ancestry changes nothing in replay (0.064 / 0.087).
+Only excluding the evaluated source from the evaluator's training
+restores independence (0.004 / 0.001). Even so, as the authors say, this
+"does not turn the auxiliary solver into a truth oracle". It is a
+participant with one leak closed. The paper's own ground truth is a
+single LLM auditor with no human check.
+
 ## A judge is only admissible against a stated operating point
 
 [[literature/papers/ray2026what]] supplies the precise form of this
@@ -342,6 +361,18 @@ The complement is [[concepts/refusal-cost-symmetry]]: an oracle's advantage
 over a judge is partly that its false-positive behavior is stable and
 inspectable, but determinism is not immunity from being systematically
 over-strict, and only a paired legitimate case detects that.
+
+[[literature/papers/guo2026groundability]] (2026-10-06) supplies a coding-patch analogue, holding the judge fixed
+and varying its grounding. Unchecked "structured" evidence lowers net
+correctness below patch-only (about 0.38 vs 0.42 over 154 traces). Official
+execution evidence lifts it to about 0.9+. Reviewer scale is not a
+consistent predictor across six models. The useful refinement for the
+strength ordering is a **directional asymmetry inside a single oracle
+tier**. An LLM-generated test kept only if it fails on the unpatched repo
+(a fail-on-base filter) has reject precision 0.82 when it fails on the
+patch, but accept precision only 0.30 when it passes. A grounded fail
+proves more than a grounded pass, so a weak generated oracle may veto but
+should not certify.
 
 ## Build the environment so the deterministic check exists
 
@@ -589,6 +620,31 @@ labels. The practical rule is to put diagnostics that test the claimed
 mechanism in the feedback, keep them off the holdout, and keep the
 accept/reject verdict on the frozen score plus the post-search audit.
 
+**A second case of diagnostics in the feedback, and it adds a caution
+(2026-10-06).** [[literature/papers/xu2026conflictguide]] puts frozen,
+null-calibrated behaviour probes into an AutoResearch loop after 100
+scalar-only proposals. Each probe measures one side of a model-specific
+trade-off. They are read-only measurements recorded on a "Conflict Probe
+Card", and the agent cannot write them. This is the same
+instrument-not-verdict boundary as the 2026-09-28 section. Unlike
+li2026discover's Audit arm, the probes also enter the **verdict**: a
+marginal or tied task gain is kept only if the probes show alleviation.
+
+The ablation separates the two uses. On FNO the feedback alone does
+nearly all the work (NRMSE 0.0382 → 0.0348, against 0.0344 for the full
+method). On SNGP the feedback alone only gets back to the unmodified
+reference (NLL 1.0381 vs 1.0434), and the probe-aware keep rule supplies
+the rest (0.8455). Generic extra metrics with a plain keep rule reached
+0.8918 on SNGP.
+
+So diagnostics help the proposer when they target the actual mechanism.
+Part of the measured gain, though, is a stricter keep threshold that a
+plain scalar band might buy without any probe. The practical rule above
+stands: keep the verdict on the frozen score, add a noise band, and treat
+diagnostic-gated tie-breaking as a separate, still-unisolated lever.
+Evidence grade: 3 search rounds per model, with s.d. over training seeds
+only; unreviewed; code not yet public.
+
 ## Open questions
 
 - The pattern works cleanly for problems with crisp objective
@@ -679,3 +735,28 @@ no outcome matrix released. Treat the mechanism as attested and the numbers
 as one data point. The paper's own parent literature (tinyBenchmarks,
 metabench, Anchor Points) is peer-reviewed and absent from this graph; a
 durable anchor for benchmark-subsetting should come from there.
+
+## A ladder of oracles, each gated on its own interval (2026-10-06)
+
+[[literature/papers/wang2026pear]] (ByteDance production search) is the
+other answer to the cost of an expensive oracle. It does not weaken the
+oracle. It **stacks** oracles by fidelity:
+- L1, offline replay through a learned list-level reward model;
+- L2, the same model on shadow traffic;
+- L3, a short online A/B test;
+- L4, a long online A/B test.
+
+Each level gates on its own CI against its own concurrent baseline, and the
+levels' scores are never pooled into one number. Two observations matter
+here:
+- **The proxy rung inflates and reorders.** The two traced candidates
+  scored +45.9% and +61.6% at L2, +15.5% and +29.8% at L3, and +2.73% and
+  +2.16% at L4. The leader at L2 and L3 trails at L4. A cheap rung can
+  screen out regressions, but its magnitudes and rankings do not carry
+  upward. Only the top rung's number is admissible as the result. This is
+  the selection-amplification point above, observed across fidelities.
+- **Same α at every rung.** The rule does not get stricter as cost rises.
+  Protection comes from passing successive independent tests. For an ML
+  loop the analogue is short-schedule run → full run → held-out seeds. The
+  paper has n = 2 traced candidates and no ladder-vs-single-stage
+  comparison, so treat the shape as attested and its value as unmeasured.

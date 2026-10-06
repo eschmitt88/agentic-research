@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/srikanth2026recursive]]"
   - "[[literature/papers/wang2026rethinking]]"
   - "[[literature/papers/bobadillasuarez2026audit]]"
+  - "[[literature/papers/xu2026conflictguide]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -244,6 +245,16 @@ while the weights cap the eventual ceiling, so the loop should saturate with
 jumps along the way. Both halves are assumptions, not measurements. The
 governance point: in a scaffold-rewriting loop, log whether the tool or
 verifier set grew, not just whether the weights changed.
+
+**The cost of a G > 0 keep rule, seen at formal scale (2026-10-06).** In
+[[literature/papers/xu2026conflictguide]] the scalar-only AutoResearch arm
+keeps any proxy improvement with G > 0, from a single proxy evaluation.
+On SNGP its retrained winners were worse than the unmodified reference in
+2 of 3 rounds: CIFAR-100 NLL 1.0578 and 1.1777 vs 1.0434. This is the
+lineage-compounding false accept described above, observed rather than
+argued. The competing arm keeps directly only when G > 1e-3, and needs
+probe corroboration below that. It did better, though the thresholded
+rule was never tested without the probes.
 
 ## Open questions
 

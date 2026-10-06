@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/yu2026primescientist]]"
   - "[[literature/papers/xia2026rrsi]]"
   - "[[literature/papers/yan2026traceml]]"
+  - "[[literature/papers/xu2026conflictguide]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -288,3 +289,20 @@ one run. Removing them leaves the evolve score flat (90.5 → 90.7), lowers
 the OOD average (43.6 → 41.9), and raises tokens per trial (2.42M →
 2.69M). So the direction matches the rationale, but the contribution of
 the edit schedule alone is unmeasured.
+
+**A scheduled feedback signal, coarse-to-fine like the edit schedule above
+(2026-10-06).** [[literature/papers/xu2026conflictguide]] schedules what the
+proposer *sees* rather than the edit size:
+- Stage I: 100 proposals on the scalar metric alone.
+- Stage II: 100 proposals that also see behaviour-level probes and are
+  told which components the conflict lives in.
+
+On FNO, the share of mechanism-targeted (spectral) edits rose
+12.3% → 43.4%, and SNGP and GCNII show similar shifts. The order matters.
+The same probes shown from iteration 0 concentrated proposals early
+(spectral edits 18.1% → 31.8%), and the resulting model was *worse than
+the unmodified reference*: test NRMSE 0.0465 vs 0.0458, while scalar-only
+search reached 0.0379. This is one model and one run, but it is the first
+attested cost of narrowing search too early. Like the anneal above, the
+schedule is fixed in advance (T1 = 100), and the only sensitivity check
+(50/100/150 on FNO R0) favours the middle split.

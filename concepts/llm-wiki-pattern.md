@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/chen2026repo]]"
   - "[[literature/papers/singh2026churnbench]]"
   - "[[literature/papers/suresh2026grounding]]"
+  - "[[literature/papers/wang2026research]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -157,6 +158,38 @@ Neo4j + embeddings rather than markdown the agent owns — evidence that
 the pattern's economic core (organization work amortized at compile
 time) is substrate-independent, while what survives from the wiki
 form is provenance-per-field and typed links, not human readability.
+
+**A two-tier variant for a research group, with its alternatives measured
+(2026-10-06).** [[literature/papers/wang2026research]] (AfS) is the nearest
+published system to this repo's own layout. It has a single tracked
+`MEMORY.md` per project worktree and a two-tier knowledge base. Its central
+rule is that the organization tier "has no birth channel except promotion".
+Promotion is a rewrite, not a move: project parameters become applicability
+conditions, the card must be self-contained, and it must state the
+mechanism. Three gates apply: the project is closed, the evidence is
+frozen, and on the human lane the text contains no project deixis.
+`dead_end` cards are called "the highest-yield" type.
+
+Its maintenance rules map onto this page's failure half:
+
+- Delivery is unconditional, with constant byte budgets, because "a channel
+  that requires the model to ask is a channel it will sometimes not use".
+- Retirement is driven by falsifiability, not age: dead tool references,
+  applicability never hit, or contradiction within scope. It is proposed,
+  never automatic.
+- There is no log layer, because git, transcripts and ledgers already hold
+  it.
+
+Its internal audits of the alternatives bear on `raw/_candidates/` here. A
+candidate queue awaiting curation left **47% of 800 candidates unprocessed**
+(the oldest 49 days), and retirement was never invoked across 24 projects.
+Guessing scope at write time left 224 organization claims with zero
+promotion provenance.
+
+Limits: these are uncontrolled internal numbers, and promotion's downstream
+effect "has not been separated from a ceiling effect". The one replay also
+promoted three cards "taken verbatim" from the source project, so the
+rewriting step itself went unexercised.
 
 ## Open questions
 

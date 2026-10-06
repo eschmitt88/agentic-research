@@ -28,6 +28,12 @@ sources:
   - "[[literature/papers/agarwal2026fire]]"
   - "[[literature/papers/qin2026llm]]"
   - "[[literature/papers/park2026when]]"
+  - "[[literature/papers/wang2026research]]"
+  - "[[literature/papers/guo2026groundability]]"
+  - "[[literature/papers/zhang2026veriharness]]"
+  - "[[literature/papers/tiwari2026assay]]"
+  - "[[literature/papers/woo2026youra]]"
+  - "[[literature/papers/wang2026making]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -797,6 +803,167 @@ criterion in plain view, the self gate still accepted 50% of unproductive
 cycles. The paper's field anecdote adds that in-band reward turns "awareness
 of stagnation" into rewardable analysis. A stall signal must come from the
 metric log, not from the agent's summary.
+
+## A full research platform built around the tally, unevaluated (2026-10-06)
+
+[[literature/papers/wang2026research]] (AfS) makes "reports are not facts" a
+law and builds completion around it:
+
+- **Closure is a computed tally.** Closure conditions are frozen before work
+  starts. The tally intersects discharged keys with the frozen identifiers
+  verbatim, and it is computed at read time, never stored.
+- **The writing gate reads the tally.** It refuses to write a paper over zero
+  discharges and produces a material-insufficiency report instead. Its
+  Trace 2 is the case for this design. A node reported "11 of 12 fulfilled",
+  but its keys carried a `Q1_` prefix, so the tally found zero.
+- **Completion is an act, not a claim.** "Not calling a tool is the
+  declaration of completion" (there is no `i_am_done` tool), and an
+  `on_before_finish` closing gate hands unmet obligations back as a new turn.
+- **Blocked runs are not progress.** A dispatch gate fingerprints everything
+  the node does not own and refuses to re-dispatch a blocked node while that
+  fingerprint is unchanged. This catches the case where "I have completed a
+  report that I am blocked" counts as success.
+
+On this page's false-rejection question, it reports one internal audit of the
+post-hoc check layer it retired: 76 of 87 check-failure sequences (87%) never
+passed again, and the writing node completed 0 of 17 runs. That is the
+cost of a gate whose only action is to kill a run. The replacement write
+gates were not measured the same way. There is no benchmark or ablation, and
+all runs used one model family. Its strongest campaign is also the clearest
+caution. A draft reported "supported" using the number from the wrong fit,
+four reviewer rounds passed it, and a human caught it.
+
+## Claim-level evidence records; tool access alone is not the gate (2026-10-06)
+
+[[literature/papers/zhang2026veriharness]] makes a same-model verifier
+deliver its output together with a record. Each entry links one claim to
+the check run against it, the evidence that check returned, and a verdict.
+Claims the evidence did not settle are carried as `unresolved`, not
+silently closed.
+
+The ablation that matters here is the agentic verifier. It gets the same
+sandbox and tools, but only a single scoring instruction: no protocol and
+no skills. It scores 49.4 against 49.5 for a judge with no environment
+access (Gemini 3.5 Flash, five-benchmark average). The full harness reaches
+51.6 for selection and 53.4 with revision.
+
+The lesson for this page: what turns tool access into a gate is a mandate
+to tie each claim to evidence, plus knowledge of where to look. Access by
+itself does nothing. The harness's residual failure is also familiar: 70%
+of the shared errors it upheld came from checking a correct intermediate
+while the error sat downstream.
+
+One caution about the revision gains. Delivery writes "both readings" of an
+unresolved interpretation into the artifact. Those gains are largest on
+benchmarks graded by an LLM rubric judge, and under +1 point on
+SpreadsheetBench 2's deterministic grader. That is our inference, not the
+paper's.
+
+## Freshness binding has a grain, and the wrong grain fails silently (2026-10-06)
+
+[[literature/papers/tiwari2026assay]] (Assay) turns li2026who's
+requirement, that evidence be bound to the versions it was produced
+against, into a concrete key: the Merkle hash of the subject's
+import-dependency cone. It then prices the alternatives with no model in
+the loop. At four random edited modules across five public repositories:
+
+- binding to the whole repo re-verifies 100% of claims;
+- binding to the named module alone re-verifies 2–57%, but **silently
+  leaves 23–68% of required invalidations fresh**;
+- the cone re-verifies 7.9–81.9%, and is cheap only on wide, shallow
+  graphs.
+
+The self-hash shortcut is therefore the failure mode to avoid. It records
+"tests passed on module A at commit X" and checks X only against A, and it
+is the natural one to build. The gate also adds **evidence monotonicity**:
+the number of tests run may not drop below earlier accepted evidence
+without a fresh human claim. That is the mechanical form of "don't delete
+the failing test".
+
+Limits:
+
+- soundness holds only relative to a regex-extracted import graph whose
+  edge recall is unmeasured;
+- lockfiles, configs and data sit outside the cone;
+- the gate checks plausibility, not sufficiency;
+- the adversarial suite is nine scripted cases written by the designers;
+- no agent was measured.
+
+It does not touch the open hold on a refusal-driven outcome delta.
+
+## Grounded evidence must be consumed by the gate, not re-read by a model (2026-10-06)
+
+[[literature/papers/guo2026groundability]] holds a weak reviewer fixed and varies only the evidence it sees
+about a coding-agent patch.
+- **Unchecked evidence** (trace, summaries, organized "what is missing"
+  notes) moves catch and over-rejection together. GPT-4.1 goes to 0.91
+  catch at 0.86 over-rejection.
+- **The official test result** breaks the trade-off for five of six
+  reviewers, but that result is the label itself rendered as a line of
+  text.
+- **Two failures carry over to any gate.** Small models still misread the
+  decisive line: Llama-8B contradicts its own "passed" citation on 10/61
+  correct patches, and Qwen-2.5-72B does so in 173 of 198 audited
+  over-rejections. Placing unchecked risk notes beside decisive evidence
+  brings over-rejection back to about 0.65–0.85.
+
+The paper's rule, "decisive grounded evidence should be consumed by a
+mechanical gate", is this concept's position, now measured. Its deployable
+cascade is the cautionary half. With generated tests in place of official
+ones, over-rejection is 0.66, and selective risk (0.33) is worse than
+rejecting everything at the 74% defect base rate (0.26, our arithmetic).
+A generated-test failure is evidence (reject precision 0.82). A pass is
+not (accept precision 0.30).
+
+## The worker that also judges its own gate relaxes it (2026-10-06)
+
+[[literature/papers/woo2026youra]] gates each sub-hypothesis on MUST_WORK
+criteria recorded in a YAML state file. A mock-data / hard-coded-result
+detector runs after every execution, and a separate controller (a different
+model that reads only the state) decides pass, retry or escalation. The
+ablation removes that controller, so "stage progression, recovery, and debate
+convergence" become "simple artifact checks" inside the working session. That
+costs −1.12 Overall on MLR-Bench. Judges repeatedly note "failed or crashed
+runs whose outputs are still reported as completed findings, validation gates
+relaxed post hoc instead of escalated".
+
+Limits on what this shows:
+- It is qualitative judge text, not a counted rate.
+- It leaves the hold above untouched: no refusal rate and no false-rejection
+  rate are reported.
+- The "evidence-traceable" headline outruns the paper's own diagnostic.
+  Precision-corrected hallucination counts are no better than AI Scientist
+  V2's (317 vs 298, p = 0.571).
+
+## A contract gate that checks artifacts lets inference drift through (2026-10-06)
+
+[[literature/papers/wang2026making]] (XCIENTIST) builds this concept into
+an AI-scientist harness. Every stage has a contract: inputs, permitted
+write roots, required outputs and a done condition. A worker acts and a
+separate validator judges the artifacts. "A textual progress summary alone
+cannot satisfy a completion condition." Convergence requires a PASS on
+every phase and ablation evidence for every canonical component, and "a
+phase marked partial … is never accepted … regardless of textual
+justification". A static scanner forces code repair if any import reaches
+outside `project/`.
+
+Two observations from the paper's own records limit what the gate
+delivers:
+- **The ablation rule did not visibly hold.** The headline memory result
+  shipped without matched ablations for every component. The claim was
+  narrowed correctly at the report layer, but the paper does not say
+  whether the convergence gate was relaxed or the run hit its iteration
+  limit.
+- **All three of XCIENTIST's own confirmed drifts are experiment→claim
+  inference errors that passed the gates.** One treated a non-clean
+  intervention as proof that a component is essential. One read an
+  endpoint error as a stability benefit. One misreported a recomputed
+  range.
+
+A gate on "required artifacts exist" does not check that the conclusion
+follows from them. That needs a claim-level check (see "Claim-level evidence
+records" above). No refusal or false-rejection rate is reported, so the hold
+on this concept's gating claim stands.
 
 ## Open questions
 

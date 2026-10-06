@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/xiong2026autoresearchbench]]"
   - "[[literature/papers/wang2026search]]"
   - "[[literature/papers/chen2026evigraph]]"
+  - "[[literature/papers/xiao2026search]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -145,6 +146,36 @@ Two things a downstream project inheriting these skills should carry:
   source makes retrieval auditable after the fact. Our candidate files
   record the *rationale* for inclusion but not the query string that
   produced it — a cheap gap to close.
+
+**What we read is an adaptive sample, not the field (2026-10-06).**
+[[literature/papers/xiao2026search]] separates three things:
+- what a fixed candidate pool supports;
+- what an agent concludes from the documents it happened to open;
+- how a change of search policy moves that conclusion.
+
+Early hits steer later queries and picks, so the second can drift from the
+first even when every citation is correct. Its correction, CESS, is
+inverse-propensity reweighting of opened documents. That **does not transfer
+here**: it needs a logged, positive selection probability for every document
+in an enumerated pool. Ranked WebSearch and our regex-then-read funnel give
+most documents probability zero.
+
+The part that does transfer is the paper's partial-identification bound. With
+an unreachable share ρ of the pool, the pool-level conclusion is pinned only
+to an interval of width 2ρ, however carefully the reachable part is read. So
+when propensities are unknown, coverage beats correction. That favours a
+complete category harvest (OAI-PMH) over ranked queries, though the inference
+is ours and the paper never discusses harvesting.
+
+Two cheap consequences:
+- Record the pool size and the selection rule (query or regex) with each
+  candidate file.
+- To test whether `/digest` is one-sided, rerun triage under a relaxed regex
+  or reversed ranking and compare what gets read. A reweighted estimate cannot
+  answer that question (the paper's Theorem 2).
+
+Caveat: the paper's large gains come from 2-document budgets under adversarial
+orderings, and it scores dataset labels, not written reports.
 
 ## Open questions
 

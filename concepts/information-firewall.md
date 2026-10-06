@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/hickey2026saltbench]]"
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/qu2026propose]]"
+  - "[[literature/papers/chen2026false]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -240,6 +241,23 @@ constraint tolerance. The measured inflation: one transformation scored
 set "the recorded gain destruction is 4.08%, which is below the 7.5%
 confirmation threshold." It was correctly rejected. **A red-team result
 measured on the set the red team searched is not a result.**
+
+## A fifth boundary: the evaluator's training ancestry (2026-10-06)
+
+[[literature/papers/chen2026false]] draws the firewall around what the
+**evaluator** learned from, not around what the agent sees. In
+proposer/solver self-evolution, CrossFit lets a question from source fold
+A be scored only by a solver trained on fold B. In a seeded fixed-bank
+replay, the grain of the split decides whether the firewall holds.
+Splitting by individual question (random rows) barely moves false
+agreement, from 0.058 to 0.050 at 4B and from 0.073 to 0.062 at 9B,
+because "questions derived from the same document can still enter both
+folds." Splitting by **source ID** takes it to 0.004 / 0.001. A
+half-budget control rules out extra evaluator compute as the cause. The
+lesson carries over: a holdout cut at the item level leaks whenever items
+share an upstream root. In the live adaptive loop, the boundary still
+leaves 3.0% / 3.7%, which shared pretraining does not respect. One run
+per arm.
 
 ## Connections
 

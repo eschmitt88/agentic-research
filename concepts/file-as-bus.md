@@ -18,6 +18,8 @@ sources:
   - "[[literature/papers/ishibashi2026effective]]"
   - "[[literature/papers/song2026string]]"
   - "[[literature/papers/li2026autorecsys]]"
+  - "[[literature/papers/samanta2026learning]]"
+  - "[[literature/papers/woo2026youra]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
@@ -253,3 +255,32 @@ with typed tokens so erasure does not break downstream references — a
 deletion story `file-as-bus` currently lacks entirely. See
 [[concepts/verified-memory-writes]] for why the paper's provenance layer
 verifies the wrong property.
+
+## The repo as the only state across context resets (2026-10-06)
+
+[[literature/papers/samanta2026learning]] (MIRA) makes the bus the *only*
+thing that survives between decisions. Each task has a Git repository with
+the artifact, experiments, analyses, proofs and per-executor **handovers**.
+The outer meta-reasoner and the executor are rebuilt from it at every
+iteration, and "model contexts are temporary". Two points are new here:
+- **A fixed curator reads the bus selectively.** It has read-only access to
+  files, diffs and commit history. In the 48 h Loop Transformer campaign it
+  picked about 10 files per decision out of about 5k (Fig. 7), weighted to
+  recent artifacts and the latest handover.
+- **The bus defines the RL transition.** Context resets, compaction and
+  batch splits are explicitly *not* episode boundaries. App. I's invariant
+  is "only true environment termination may stop value bootstrapping;
+  infrastructure boundaries never do."
+
+The reported 10.6M input tokens per episode is measured. The no-compaction
+and 200k-compaction alternatives are only *projected* replays, so the cost
+advantage of rebuilding from the repo is argued, not run.
+
+**A second end-to-end ML-research system replicates the shape
+(2026-10-06).** [[literature/papers/woo2026youra]] compares durable files (a
+YAML state record plus per-stage artifacts linked by pointers) with an
+in-context summary. Losing the files costs −1.13 Overall on MLR-Bench (30
+cells, p = 0.002). Its controller reads only "a compact summary of the
+current VSA and the most recent per-stage artifact pointer". So re-grounding
+from the bus is also what keeps the control context at a constant size. The
+evidence is single-run and LLM-judged; see [[concepts/structured-world-model]].
