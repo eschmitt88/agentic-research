@@ -555,3 +555,27 @@ Sources from the web searches:
 - [LLM Agents Can Easily Tamper With Their Own Traces](https://arxiv.org/abs/2609.30266v1)
 - [Inferred Generative-Process Diversity Predicts Correlated Failure](https://arxiv.org/pdf/2609.03422)
 - [Co-Failure Ceiling across 67 models](https://arxiv.org/pdf/2606.27288)
+I added the weekly rollup for 2026-09-29 → 10-05 to `NOTES.md` under `## 2026-10-05`, then committed and pushed it as `5f5bda8`. The entry has Did, Findings and Next sections and is about 29 lines of content.
+
+- **Did:** 
+  - On 09-29, /curate closed the 09-28 backlog: 10 papers ingested and 11 declined.
+  - On 10-04, /elevate made no proposals. The closest miss, "change strategy once before halting", was held because an undecided 09-27 proposal already targets the same file.
+  - On 10-05, the digest pulled arXiv through OAI-PMH and ingested the top 6 of 20 candidates.
+  - /promote-moc declined twice.
+  - Papers went from 206 to 222, and the concept count stayed at 35.
+- **Findings:** 
+  - Every paper read since 09-22 came in at or below its digest summary.
+  - The 09-27 proposal on what counts as "no improvement" now has reviewer input from three papers on how to set that noise band.
+  - The strategy-change idea has support from four systems, but no paper yet compares it directly against halting.
+  - One paper found agents can edit or delete the transcripts that token counts are read from, but only when permissions are bypassed.
+- **Next:** 
+  - Nine proposals are still waiting for your decision. Deciding the 09-27 one also unblocks the strategy-change idea.
+  - Curate items 7–20 of the 10-05 digest.
+  - Make OAI-PMH the documented default in /digest. It has been used four runs in a row, but the skill text still says WebSearch.
+  - Four older items are still open. I dropped the tolerance-term item because the 09-27 proposal replaces it, and the 09-28 curation item because that backlog is now closed.
+
+The 10-05 digest file says "21/21" papers read at or below their summary, but it leaves out the 10 papers read on 09-29. Counting those, the total is 31/31, which is the figure I used in the entry.
+
+`_meta/digest.log` had an uncommitted change before this session started. It completes a cut-off source link and adds one more. I didn't write it, so I left it out of the commit and it's still uncommitted.
+
+The claude.ai Google Drive connector needs authorizing in your claude.ai connector settings before it can be used. This task didn't need it.
