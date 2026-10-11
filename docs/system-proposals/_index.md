@@ -29,6 +29,87 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | proposed |
 | 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | proposed |
 
+## Considered and held (2026-10-11 run)
+
+This is the first run over the 10-05 digest (6 papers) and its 10-06 curate
+leftovers (11 papers): papers 216 → 233, still 35 concepts. `~/claude-system`
+is unchanged since the last run, and all nine proposals above are still
+undecided. There are no proposals. Held:
+
+- **Stall → redirect before halt in `/iterate` step 3 (second hold).**
+  This was the closest miss again. It is now the best-evidenced idea
+  waiting in the graph:
+  - `yan2026traceml` (cred 4, **peer-reviewed** NeurIPS 2026 E&D, code)
+    gives a human base rate. Codex, the single edit-run loop and the
+    `/iterate` shape, pivots on 9% of transitions against 25% for humans.
+    It almost never returns to an abandoned line, where humans do 9.1% of
+    the time and win 78.5% of those returns.
+  - `xu2026conflictguide` (cred 3) is the first matched branch-point test.
+    A controller-enforced scope change beat plain continuation in most
+    cells across five model families, under the same proposal budget.
+  - `samanta2026learning` (cred 3) and `woo2026youra` (cred 3, code) add
+    weaker support. `bobadillasuarez2026audit` (cred 3) adds the premise
+    that fixed-move-set retries are mostly no-ops, not harms.
+
+  The new sources also **change the simplest viable form**:
+  - TraceML's and ConflictGuide's prompt-only arms ("stuck 3+ steps?",
+    "consider trade-offs") did not produce pivots. So the 10-04 sentence
+    "pick a candidate whose mechanism differs" is too soft. The sentence
+    should make a non-zero counter *require* a candidate that changes the
+    backbone, representation, objective or validation scheme (TraceML's
+    pivot test). The candidate may also be a line abandoned earlier in
+    the run's own log.
+  - It still adds no surface: one conditional sentence in step 3, fed by
+    the counter step 7 already logs.
+  - It is still missing a redirect-vs-halt ablation. No source halts in
+    either arm.
+
+  **Held** on process, for the second cycle running: the target file
+  carries the undecided 09-27 noise-band proposal (the same-file stacking
+  precedent, 07-26). The two edits do not conflict. The band defines when
+  the counter ticks, and the redirect defines what step 3 does once it
+  has. A reviewer could accept both in one pass.
+- **Reviewer input for 09-27 (not a new proposal).**
+  - `wiedmann2026agents` (cred 4, code): a band built from `--seeds`
+    measures training-seed noise. It does not measure the noise of
+    re-implementing the same hypothesis, so it understates the noise in a
+    keep decision between hypotheses. Count crashed candidates as hurdle
+    failures, outside the band's std. n = 3 can veto sub-noise "new
+    bests" but cannot certify a 1σ gain.
+  - `park2026when` (cred 2): state the band's goal as
+    P(keep | Δ ≤ 0) → 0, and compute the counter from the metric log,
+    never from the agent's account of progress.
+  - `wang2026pear` (cred 3): a PROMOTE / RETAIN / STOP alternative. This
+    is design without evidence, and at n = 3 it collapses into "never
+    keep".
+  - None of the three contradicts the proposal.
+- **`wang2026making` (cred 3, harness code only) → a `/lint` check for
+  concept claims whose only anchor is a literature note with no verbatim
+  quote or page reference.** By the paper's Case-05 standard such a claim
+  is "traceable but unverifiable". **Held**: it adds a check (surface) on
+  one partially-released source, and `skills/lint/SKILL.md` is blocked
+  behind 08-02 `lint-rule-consistency-pass`. `tiwari2026assay`'s
+  cone-hash staleness check is held for the same reasons. Its own note
+  concedes the dominant staleness here is new evidence outside the cone,
+  which the check cannot see.
+- **`woo2026youra` → move the keep/stop decision into a Stop hook that
+  reads a YAML state file (YouRA's Controller).** This is net-new hook
+  surface. The w/o-Controller arm is LLM-judged, n = 10 and single-run.
+  **Held** on Gate 2.
+- **`chen2026rankevolve` (cred 3, no code) + `chen2026false` (cred 2) →
+  a cross-vendor or source-blind re-read of `/ingest` concept diffs.** Both
+  sources say same-model re-reads are common-mode (ρ ≈ 0.55–0.58; the
+  same-ancestry auxiliary gave 0.058 vs 0.058). The remedy is new
+  infrastructure resting on weak sources. Fails both gates.
+- **`/digest` text still names `WebSearch` while four straight runs used
+  OAI-PMH.** This is real drift, but it is an operational fix already in
+  `NOTES.md` Next, not a literature-derived idea. `xiao2026search`
+  (cred 3, no code) supports full-coverage harvesting only qualitatively.
+  It should be made directly, not elevated.
+- `wang2026research` (dispatch fingerprints for jobs that re-fail
+  identically; "unknown is never zero" in cost ledgers) fails Gate 1
+  (cred 2, design only).
+
 ## Considered and held (2026-10-04 run)
 
 This is the first run over the 09-28 digest and the 09-29 leftovers: 16
