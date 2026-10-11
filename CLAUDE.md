@@ -16,40 +16,26 @@ they directly inform research-agent architecture.
 ## Role
 
 This project is the research hub for every other project on this box.
-Downstream projects `@import` files from `./concepts/` and `./literature/`
-by absolute path (see the import contract below), so concept notes and
-literature notes here are a read interface, not only internal artifacts.
-When `/ingest` processes a file on a downstream project that imports a
-concept from here, it appends a `used_by:` back-reference to the target
-concept so the meta project can see which concepts are load-bearing.
-Evolution here propagates to downstream projects at their next session
-start — no copy-paste.
+Concept and literature notes here are a read interface, not only
+internal artifacts: downstream projects declare the concepts they
+depend on, and `/sync-imports` appends `used_by:` back-references so
+this project can see which concepts are load-bearing.
 
 ## Import contract
 
-Canonical downstream usage — add lines like these to any other
-project's `CLAUDE.md`:
+Downstream projects declare hub concepts in their `CLAUDE.md`:
 
 ```
-# In ~/projects/research/<other-project>/CLAUDE.md
-
 ## Inherited architecture
-@import ~/projects/research/agentic-research/concepts/hce-evaluation.md
-@import ~/projects/research/agentic-research/concepts/citation-anchoring.md
+Read these by path before relying on them (they don't auto-load):
+- ~/projects/research/agentic-research/concepts/hce-evaluation.md
 ```
 
-On the downstream side, `/ingest` detects these `@import` directives and
-appends a `used_by:` list entry to each referenced concept note with:
-
-```yaml
-used_by:
-  - project_slug: <downstream-slug>
-    imported_on: <YYYY-MM-DD>
-```
-
-The append is idempotent — re-ingesting does not duplicate entries for
-the same `project_slug`. If the target concept's `status:` is
-`retired`, `/ingest` warns on the downstream side but allows the import.
+This is a **declaration, not a load**: Claude Code `@` imports resolve
+only inside the project tree, so a hub concept never enters a downstream
+session by itself. `/sync-imports` turns each declared path into an
+idempotent `used_by:` entry (`project_slug`, `imported_on`) on the
+concept; a `retired` concept warns but is still recorded.
 
 ## Scoped rules
 
@@ -76,4 +62,6 @@ to GitHub (`git.auto_push: true`) so overnight curation persists off-box.
 
 ## Framework rules
 
-@~/claude-system/claude/rules/agency.md
+Framework rules in `~/claude-system/claude/rules/` can't be `@`-imported
+(imports resolve only in-tree): read `agency.md` before an autonomous
+run. Skills with `respects:` do this automatically.
