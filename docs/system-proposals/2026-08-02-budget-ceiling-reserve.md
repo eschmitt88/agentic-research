@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [ye2026agent, khan2026token]
 evidence_strength: "peer-reviewed + code-released (ye2026agent); code-released 63-incident corpus (khan2026token); credibility ~3"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 

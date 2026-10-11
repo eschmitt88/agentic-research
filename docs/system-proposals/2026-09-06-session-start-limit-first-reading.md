@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: true
 evidence_citekeys: [nakayashiki2026when, guo2026when, chen2026governance, semenov2026beyond]
 evidence_strength: "code-released (Zenodo artifact deposit, DOI 10.5281/zenodo.22084498) + 3 in-graph attestations; credibility ~3"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 

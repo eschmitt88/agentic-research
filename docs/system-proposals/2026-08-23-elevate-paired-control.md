@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: true
 evidence_citekeys: [ho2026soundnessbench, tripathi2026diagnostic, ray2026what, wu2026hasbench, ge2026governance]
 evidence_strength: "code-released ×2 (ho2026soundnessbench HF dataset, ray2026what GitHub); 5 independent attestations across five literatures; credibility ~3.4 (4/4/4/3/2)"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 
