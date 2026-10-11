@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [li2026acm, xu2026llm, dang2026addressable, hao2026selfgc, semenov2026beyond]
 evidence_strength: "code-released (li2026acm, xu2026llm); 5 independent attestations; credibility ~3.2 (4/4/3/3/2)"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 

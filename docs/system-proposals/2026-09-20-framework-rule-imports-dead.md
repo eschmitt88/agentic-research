@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [kapner2026scanning, madatha2026deterministic]
 evidence_strength: "code-released (harness-eval, Red Hat + Ben-Gurion), credibility 4; plus a direct 6-variant measurement on this box against Claude Code 2.1.275"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 

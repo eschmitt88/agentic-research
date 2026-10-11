@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [zhang2026agora, chan2024mle, yu2026primescientist, xing2026compute]
 evidence_strength: "peer-reviewed (chan2024mle, seed variance) + code-released (yu2026primescientist, xing2026compute) + 1 direct measurement of the failure (zhang2026agora); credibility ~3.5"
-status: proposed            # proposed | accepted | rejected | superseded
+status: accepted            # proposed | accepted | rejected | superseded
 recommendation: adopt
 ---
 

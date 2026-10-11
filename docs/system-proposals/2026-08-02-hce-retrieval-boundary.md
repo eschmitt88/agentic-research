@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: true
 evidence_citekeys: [wang2026search, wang2026naturebench, wang2026evobrowsecomp]
 evidence_strength: "code-released ×2 (wang2026search, wang2026naturebench); 3 attestations across three boundary types; credibility ~4"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 

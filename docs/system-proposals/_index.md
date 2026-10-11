@@ -19,15 +19,15 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-07-19 | [hce-evaluator-integrity](2026-07-19-hce-evaluator-integrity.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-07-31, claude-system@e181a3b) |
 | 2026-07-26 | [token-metering-cumulative-double-count](2026-07-26-token-metering-cumulative-double-count.md) | `hooks/token_logger.sh` (+ `coordinator/policy.py`) | adopt | **accepted** (applied 2026-07-31, claude-system@422e4b7; historical rows backfilled, state.db.bak-20260731 kept; weekly default recalibrated to 150M against the post-fix measured ~100M/7d; /plan verified admitting) |
 | 2026-07-31 | [instruction-ablation-program](2026-07-31-instruction-ablation-program.md) | skills prose corpus, coordinator admission layer, hooks | adopt-in-phases | **accepted** (all 5 phases applied 2026-08-01, claude-system@d8be0f7/f934124/dc323da/4b85862/d7521bd; 16 project repos migrated to per-project rule imports; smoke tests 22/22) |
-| 2026-08-02 | [hce-retrieval-boundary](2026-08-02-hce-retrieval-boundary.md) | `rules/evaluation.md` | adopt | proposed |
-| 2026-08-02 | [budget-ceiling-reserve](2026-08-02-budget-ceiling-reserve.md) | `templates/project/budget.yaml` | adopt | proposed |
-| 2026-08-02 | [lint-rule-consistency-pass](2026-08-02-lint-rule-consistency-pass.md) | `skills/lint/SKILL.md` | adopt | proposed |
-| 2026-08-16 | [precompact-addressable-offload](2026-08-16-precompact-addressable-offload.md) | `hooks/pre-compact.sh` | adopt | proposed |
-| 2026-08-23 | [elevate-paired-control](2026-08-23-elevate-paired-control.md) | `skills/elevate/SKILL.md` | adopt | proposed |
-| 2026-09-06 | [session-start-limit-first-reading](2026-09-06-session-start-limit-first-reading.md) | `hooks/session-start.sh` | adopt | proposed |
-| 2026-09-20 | [framework-rule-imports-dead](2026-09-20-framework-rule-imports-dead.md) | `templates/project/CLAUDE.md` (+ `install.sh`, 8 skills, 19 repos) | adopt | proposed |
-| 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | proposed |
-| 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | proposed |
+| 2026-08-02 | [hce-retrieval-boundary](2026-08-02-hce-retrieval-boundary.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
+| 2026-08-02 | [budget-ceiling-reserve](2026-08-02-budget-ceiling-reserve.md) | `templates/project/budget.yaml` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
+| 2026-08-02 | [lint-rule-consistency-pass](2026-08-02-lint-rule-consistency-pass.md) | `skills/lint/SKILL.md` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
+| 2026-08-16 | [precompact-addressable-offload](2026-08-16-precompact-addressable-offload.md) | `hooks/pre-compact.sh` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c; field verified via sibling hooks (token_logger/status_emit), not a captured PreCompact payload) |
+| 2026-08-23 | [elevate-paired-control](2026-08-23-elevate-paired-control.md) | `skills/elevate/SKILL.md` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
+| 2026-09-06 | [session-start-limit-first-reading](2026-09-06-session-start-limit-first-reading.md) | `hooks/session-start.sh` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c; wording verbatim) |
+| 2026-09-20 | [framework-rule-imports-dead](2026-09-20-framework-rule-imports-dead.md) | `templates/project/CLAUDE.md` (+ `install.sh`, 8 skills, 19 repos) | adopt | **accepted** (applied 2026-10-11 with the skill-side Read step, claude-system@60f9f4c; re-verified on 2.1.296; Read step added to all 15 `respects:` skills (proposal counted 8); 19-repo CLAUDE.md sweep) |
+| 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | **accepted** (applied 2026-10-11, claude-system@60f9f4c; used_by kept as a declaration ledger, mle-bench @import lines replaced with a path list) |
+| 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
 
 ## Considered and held (2026-10-11 run)
 

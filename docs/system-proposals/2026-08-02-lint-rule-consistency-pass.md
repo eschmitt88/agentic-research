@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: true
 evidence_citekeys: [palumbo2026formal, mondl2026autoformalization, ye2026agent, khan2026token, louck2026securing]
 evidence_strength: "peer-reviewed in cluster (ye2026agent) + code-released ×3; 7-source typed-enforcement convergence; direct attestations credibility 4 and 3"
-status: proposed
+status: accepted
 recommendation: adopt
 ---
 
