@@ -49,6 +49,7 @@ sources:
   - "[[literature/papers/cheng2026scope]]"
   - "[[literature/papers/yan2026traceml]]"
   - "[[literature/papers/zhang2026veriharness]]"
+  - "[[literature/papers/zhang2026who]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -512,6 +513,29 @@ The paper compared all 95 evolved checks with the human library by hand:
 So evolution mostly specializes a general check. Two caveats: both
 trajectories regress on held-out tasks along the way, and the
 "human-authored" baseline was itself written from development failures.
+
+## A vacuous grader trains the library as well as a valid one (2026-10-12)
+
+[[literature/papers/zhang2026who]] puts a self-evolved verifier in front of
+the authors' Ratchet skill loop. The verifier decides which attempts become
+failure capsules for skill synthesis. With the verifier's guards removed it
+collapses to always-pass, yet held-out peak scores match or beat the
+anchored arm on all three tasks: 0.742 / 0.458 / 0.841 vs 0.717 / 0.458 /
+0.812. By our arithmetic it retains 100 / 100 / 98% of the ground-truth
+loop's lift. On Spider the anchored verifier sat at chance (0.500) and the
+loop still kept its lift. The paper's reading is that the verdict is only
+"directional". The capsule's content (tracebacks, empty results) comes from
+the environment, and measurement and peak selection read the locked ground
+truth. This qualifies the 2026-10-06 section above. There, an evolved
+verifier sits on the *keep* path and its accuracy is the result. Here it
+sits on the *training-input* path, where the loop barely uses it. So the
+admission and retirement gates this concept recommends need their verdicts
+validated directly. A rising library score cannot show the admitting grader
+works. The paper also reports that the lifecycle (birth gate, shadow tier,
+retirement) is not load-bearing for a *detector* pool. Junk detectors stay
+inert unless selection picks them, whereas junk skills get routed into
+prompts. Caveats: three seeds, one model family, and the skill loop is the
+same group's own.
 
 ## Open questions
 

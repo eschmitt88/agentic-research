@@ -7,6 +7,7 @@ sources:
   - "[[literature/papers/xu2026llm]]"
   - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/mason2026missing]]"
+  - "[[literature/papers/zhang2026judged]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -146,6 +147,28 @@ The concept's core claim gets independent behavioral support too: without
 any instruction, a model resuming a session recognized retrieval handles it
 had never been told about and chose to fault content in before acting. Give
 the agent legible state and it uses it.
+
+## Legible state did not produce the stop it was meant to inform (2026-10-12)
+
+[[literature/papers/zhang2026judged]] tests this concept's claim on the
+*stop* meta-decision and finds a boundary. Two arms surface runtime state to
+tool-using agents:
+
+- **A budget line** ("[Actions remaining: n]" on every observation). The
+  7–8B models used it, but as a deadline: they answered at the last action,
+  and doubling the budget doubled their tool calls for no gain.
+- **A ledger of their own judgments** ("Consecutive observations judged
+  USELESS so far: k"), with a request to decide. Stopping still did not
+  follow the count (time-matched contrast −0.14 to −0.24, exploratory).
+
+Only a harness rule that removed the search actions at k = 5 made stopping
+track the state. So "give the agent legible state and it uses it" holds for
+keep/archive/recover in xu2026llm and mason2026missing, but for stop it held
+only partly here, and the most visible budget line changed behaviour in the
+wrong direction. Two caveats: the models are mostly 7–8B, and Claude Sonnet
+5 partly stopped on its evidence unaided. Read it as support for pairing
+perception with an enforced action, as mason2026missing's involuntary zone
+already does.
 
 ## Open questions
 

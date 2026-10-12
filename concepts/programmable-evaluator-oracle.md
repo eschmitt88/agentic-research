@@ -59,6 +59,8 @@ sources:
   - "[[literature/papers/wang2026pear]]"
   - "[[literature/papers/chen2026false]]"
   - "[[literature/papers/xu2026conflictguide]]"
+  - "[[literature/papers/hu2026winners]]"
+  - "[[literature/papers/zhang2026who]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -644,6 +646,52 @@ stands: keep the verdict on the frozen score, add a noise band, and treat
 diagnostic-gated tie-breaking as a separate, still-unisolated lever.
 Evidence grade: 3 search rounds per model, with s.d. over training seeds
 only; unreviewed; code not yet public.
+
+## A correct oracle on few items is unbiased per candidate and biased after selection (2026-10-12)
+
+Everything above treats a correct, tamper-proof oracle as the end of the
+problem. [[literature/papers/hu2026winners]] shows a remaining bias that
+needs no bug and no hacking. Its scorer is deterministic exact-match on
+labelled items, which is as crisp as an oracle gets. Each candidate's
+paired gain on n items is unbiased. The *selected* candidate's gain is not.
+It is overstated by (1 − h²_w)·σ_w·κ_K plus the incumbent's shared error,
+where h²_w is the reliability of differences at that n. Even with a single
+candidate, conditioning on acceptance adds about 1.53 noise SDs when the
+true effect is harmful.
+
+At 16 items the loop's own score ran 13–20 points above held-out.
+GEPA's validation score claimed +38.8 for a real +19.2. This sharpens the
+"cut evaluator cost by subsetting the items" section above. Subsetting
+keeps the oracle correct, but every item removed lowers h²_w, and the
+selection step converts that variance into bias. A subset evaluator in a
+loop therefore needs a selection-aware margin, or a final paired re-score
+on items it never selected on. A small item count also bought GEPA about
+10× more search with no held-out gain. Scope: instruction-optimization with
+small Qwen models; the scaling law is standard selection theory, and the
+magnitudes are task-specific.
+
+## An evolved evaluator, and the degenerate optimum its objective hides (2026-10-12)
+
+[[literature/papers/zhang2026who]] partly answers this concept's open
+question that "evaluator design itself is unautomated". It evolves the grader
+as a readable expression over typed drawback detectors in three cost tiers:
+static, execution and one-question LLM judge. Detectors are synthesized from
+clustered failures, gated at birth and retired on marginal contribution.
+Candidates are selected for agreement with a 10-item anchored dev set times
+consensus on unlabeled outputs, never for the agent's score. Validity moved
+only where failures are mechanically detectable. On MBPP+, held-out
+agreement went from 0.417 to 0.625 (p = 0.12 under task-clustered
+permutation, three seeds). Spider ended at chance (0.500). Report started at
+ceiling. This fits the strength ordering above: evolution composes cheap
+deterministic checks well and cannot manufacture a check for "runs cleanly
+but semantically wrong". The new hazard is in the objective. When abstention
+on every dev item is not scored fail-closed and all-pass candidates are not
+gated out, selection latches onto a near-never-firing detector. It reports a
+perfect objective and passes 97–100% of what it grades, on 3/3 seeds of the
+one task where this was quantified. Rule for any agreement-scored evaluator:
+an abstention is not agreement. The named-detector form also paid off once.
+A proxy-gaming defect (metric tags written in place of values) was localized
+to one added check and repaired, which a scalar judge would not have allowed.
 
 ## Open questions
 

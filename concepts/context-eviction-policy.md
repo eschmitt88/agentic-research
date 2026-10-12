@@ -53,6 +53,8 @@ sources:
   - "[[literature/papers/hu2026analyzing]]"
   - "[[literature/papers/srikanth2026recursive]]"
   - "[[literature/papers/samanta2026learning]]"
+  - "[[literature/papers/cai2026forkandflush]]"
+  - "[[literature/papers/li2026humanize]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -636,6 +638,58 @@ shortcut does not solve unknown future relevance."
 **What to do with it here:** treat it as an evaluation design, not a policy
 recommendation. Before crediting any eviction rule, run one paired history
 where the future update differs and the current answer does not.
+
+## Compaction preserves the strategy; a flush is an exploration move (2026-10-12)
+
+The sections above treat eviction as a way to keep the agent alive and
+correct within a fixed task line. [[literature/papers/cai2026forkandflush]]
+measures a side effect of what survives. Multi-day autoresearch runs that
+compact their history periodically still stay in one region of approach
+space. "One might expect this compaction to weaken dependence on the
+earlier reasoning path and reopen exploration. We find that it is
+insufficient." A summary keeps the run's strategic commitment, which is
+what anchor-plus-recency is designed to do.
+
+The paper's alternative is a full flush, (W, C) → (W, ∅): keep every file,
+drop all conversation. Flushed branches must re-derive intent from the
+workspace. At equal token spend, flush-only (K = 1, two flushes) lifts the
+normalized mean from 0.45 to 0.55 over 11 tasks. It is erratic per task
+(better on 6 of 11) and more reliable when combined with best-of-K
+selection (0.71). For this concept the point is that eviction policy has
+a third role beyond liveness and selection: **an aggressive eviction is a
+search operator**, and a cleverer summary works against it. Any context
+policy for a long `/iterate` chain should be judged on whether it lets the
+chain change direction, not only on whether it preserves task state.
+
+## A full flush on a schedule, used against deceleration rather than overflow (2026-10-12)
+
+[[literature/papers/li2026humanize]] (HMA) uses the most extreme eviction
+policy, a total flush that keeps nothing in the prompt, and adopts it for a
+reason this page has not yet recorded. The context is not overflowing. The
+policy is meant to restart a session that is slowing down. Each agent session
+on MLE-bench is cut after k = 5 accepted experiments. Context resets to
+empty, and only the shared workspace and the retained best result carry
+over. The motivating measurement is "long-horizon deceleration": in
+uninterrupted 6 h single-agent runs, output tokens per response fall by
+29.8–45.0% from hours 0–2 to hours 3–5, across six models. Within a
+session, the first five experiments hold 97.8% of the observed gains. With
+the flush, HMA keeps 86.4% of its early response length, against 60.7% for
+the single agents.
+
+This adds a third role to the liveness reading
+([[literature/papers/fan2026empirical]]) and the selection reading. The
+policy acts as a **restart device**. The evidence is weak in exactly the
+place this page cares about:
+- The flush is always paired with a switch to a *different* model and
+  harness, and no same-model reset arm exists.
+- Response length is a confounded proxy. Early turns write pipelines and
+  late turns poll jobs, and every reset restarts the code-writing phase.
+- In the one cap ablation, flushing every 1 or 3 experiments scored below
+  never flushing on a schedule.
+
+Treat "flush to restart" as a hypothesis. The single-backend test of it is
+fork-and-flush (arXiv 2610.07447), which keeps the workspace, flushes the
+chat and holds the model fixed.
 
 ## Open questions
 

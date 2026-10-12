@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/wang2026rethinking]]"
   - "[[literature/papers/bobadillasuarez2026audit]]"
   - "[[literature/papers/xu2026conflictguide]]"
+  - "[[literature/papers/hu2026winners]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -255,6 +256,32 @@ lineage-compounding false accept described above, observed rather than
 argued. The competing arm keeps directly only when G > 1e-3, and needs
 probe corroboration below that. It did better, though the thresholded
 rule was never tested without the probes.
+
+## A population selected on validation inflates beyond the single-step curse (2026-10-12)
+
+[[literature/papers/hu2026winners]] instruments GEPA (reflective
+evolutionary prompt search with a Pareto pool) and MIPROv2 on a held-out
+set the optimizers never see. The validation score GEPA selects on
+overstated the returned program's held-out gain heavily at 16 validation
+items: +38.8 vs +19.2 on TREC, and +18.8 vs +1.2 on Banking77, at 1000
+metric calls. From a strong start, it reported +25.0 on both tasks for
+real gains of 1.6 and 4.1. The single-step winner's-curse model
+under-predicts GEPA's overstatement by a factor of 1.1–1.9. The authors
+attribute the gap to the pool itself being selected on the validation
+set, so selection compounds across the archive and not only at the final
+pick.
+
+The budget trade is the import for this concept. A small validation set
+made each evaluation cheap: about 10× more reflections and a pool of 91
+programs against 9. GEPA's held-out gain still did not grow with
+n_val. MIPROv2, which mostly holds its proposal pool fixed, doubled its
+TREC held-out gain going from 16 to 256 items (11.4 vs 5.8). Spending the
+budget on more candidates per noisy evaluation bought archive size, not
+transfer. A population method's reported best should be re-scored on
+items outside its selection set before it is credited (see
+[[concepts/hce-evaluation]]). Caveat: Qwen3.5-4B task model, 5 seeds, two
+tasks, and the GEPA reported-gain measure was added after eight runs had
+been seen.
 
 ## Open questions
 

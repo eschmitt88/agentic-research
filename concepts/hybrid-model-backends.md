@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/esakkiraja2026starharness]]"
   - "[[literature/papers/gao2026agentic]]"
   - "[[literature/papers/guo2026groundability]]"
+  - "[[literature/papers/li2026humanize]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -147,6 +148,32 @@ decimals (33.57 for Sonnet 3.7 and 4.0, 116.04 for Gemini 2.5 and GPT-5),
 which is what a few discrete outcomes from one run per cell would produce,
 and no variance is reported. It is also one production model, and the
 system is a single agent, so it says nothing about the role split itself.
+
+## Alternating whole model–harness pairs in time, and why a custom harness ages (2026-10-12)
+
+[[literature/papers/li2026humanize]] (HMA) adds an axis this page did not
+have. Every section above splits models *by role* (ideator vs implementer)
+or *by tier within a role* (breadth vs depth). HMA gives both agents the
+same role and splits them *in time*. Two complete native pairs, such as
+Opus 5 in Claude Code and GPT-5.6-sol in Codex, take turns on one shared
+workspace, five experiments each, with a context reset at every handoff.
+Over six pairs on the full 75-task MLE-bench (6 h), alternation beats the
+*stronger* constituent alone in every pair. The margins are small: +0.9 to
++5.8 any-medal points, +2.7 on average (our arithmetic). The abstract's
+"+6.4" is measured against the *mean* of the two constituents. The best
+pair reaches 78.2% against 72.4% for Opus alone. The gain is largest when
+the stronger model starts. Mixing in a weak partner still helped in every
+pair, though inside noise for most rows, since five of six are single runs.
+
+The paper also names **harness staleness**. Three research MLE harnesses
+matched or beat the native DeepSeek harness on DeepSeek-V4-Flash and lost
+to it on V4.1-Flash, despite 2–4× the time budget. This extends this page's
+first open question: a harness tuned on one backend is a parameter that
+ages with the backend, just as the prompt does (gao2026agentic). The
+evidence is thin: one model step, 16 tasks, single runs, and ported
+harnesses with their prior knowledge disabled. HMA also cannot tell how
+much of its gain comes from the second *model* and how much from the fresh
+*context*.
 
 ## Open questions
 

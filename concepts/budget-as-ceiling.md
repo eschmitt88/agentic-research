@@ -48,6 +48,10 @@ sources:
   - "[[literature/papers/xu2026conflictguide]]"
   - "[[literature/papers/samanta2026learning]]"
   - "[[literature/papers/woo2026youra]]"
+  - "[[literature/papers/cai2026forkandflush]]"
+  - "[[literature/papers/hu2026winners]]"
+  - "[[literature/papers/zhang2026judged]]"
+  - "[[literature/papers/li2026humanize]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -948,6 +952,123 @@ continue-with-limitation, not against halt. A reset also archives the failed
 folder, and the judges see only the final directory, so a redirect that
 re-scopes doubles as a file drawer. A `/iterate` redirect should log which
 rung fired and keep the abandoned line visible in the write-up.
+
+## A matched-compute redirect beats continuing, but a stall trigger rarely fires (2026-10-12)
+
+[[literature/papers/cai2026forkandflush]] (Microsoft Research, 13 long-horizon
+optimization tasks) is the first source here to separate a controller-level
+redirect from selection at equal token spend. Its redirect is a **flush**:
+the chat context is emptied and the workspace is kept. On 11 tasks the
+min–max normalized means are 0.45 for continuing, 0.55 for flush-only
+(K = 1, flushed at 33% and 66% of the budget), 0.57 for fork-only (K = 4
+branches that keep their context, best one kept) and 0.71 for both. Flush-only
+beats continuing on just 6 of 11 tasks, and fork-only on 10 of 11. So the
+redirect helps on average, but without selection it is erratic. A "pick a
+DIFFERENT approach" directive given to half the branches did not change
+which branch won (46% vs 50%, p = 0.26). That is one more controller-not-prompt
+result alongside yan2026traceml and xu2026conflictguide.
+
+The trigger finding matters more for `/iterate`. A plateau-triggered version
+never fired in 15 of 25 development runs, because micro-improvements kept
+resetting the stall clock. It did worse than continuing on AHC014 and p171.
+The paper fell back to a fixed schedule. A redirect hung off
+`max_consecutive_no_improvement` will meet the same problem unless sub-noise
+"new bests" are prevented from resetting the counter. That makes the
+accepted noise band a precondition for a stall-triggered redirect, not an
+independent change. There is still no halt arm, and "equal compute" counts
+model tokens only: solver and GPU time from parallel branches is unmetered.
+The headline +66% is a ratio of normalized means; the median per-task raw
+gain is about 7%.
+
+## A band is right for the stop counter and unproven for the keep rule (2026-10-12)
+
+[[literature/papers/hu2026winners]] is the first source in this graph to test
+noise-band-like acceptance rules against bare keep-if-better, with held-out
+ground truth for every candidate. The setting is Qwen2.5-1.5B/7B rewriting
+their own instructions, K = 4 candidates per generation and 20 generations,
+on a reused selection set. The nearest analogue to the band is McNemar at α,
+whose threshold is τ = z_α·e, where e is the per-item noise of the
+difference.
+
+- **Per decision, on fresh items, a band beats `>`.** At n = 16 greedy
+  loses 0.47 held-out points per decision. Every calibrated rule avoids
+  the loss (pilot Bayes gate +0.77 over greedy), "mainly by committing
+  less often". This is the counter's premise: sub-noise "improvements"
+  are net harmful when most proposals are.
+- **Over whole runs on a reused set, no rule beats greedy.** The pilot gate
+  scored −2.1 (95% CI [−4.3, 0.1]). Fixed-level McNemar made 3 commits in
+  32 runs and gave up 7–12 points of real TREC gain.
+
+So the 09-27 proposal's scope is right. A band should decide when a chain
+halts, and it should not decide which champion is kept. That second use is
+the extension the proposal's last risk bullet considers, and this paper is
+evidence against expecting it to pay.
+
+The paper also shows a gap in the band itself. A `--seeds` std is measured
+on the *same* validation items, so it misses item-sampling error, and that
+error is what accumulates into champion inflation (13.6 points at n = 16
+after 11–20 generations). Paired per-item disagreement between champion and
+candidate supplies the missing term (our inference). Scope: instruction-only
+artifacts, deterministic scoring, n ≤ 256; no band-gated stop was tested.
+
+## A run-length counter must act through the harness, and its action here is a stop (2026-10-12)
+
+[[literature/papers/zhang2026judged]] tests the exact shape of
+`max_consecutive_no_improvement` (a counter of consecutive "this didn't help"
+results that resets on a useful one) in tool-using QA agents with
+controlled source failures. The agents judge failed results useless almost
+always, yet after five such judgments in a row the 7–8B models answer on
+0.3–7% of questions. Showing them the running count and asking them to
+decide does not help. When the harness masks every action except `finish`
+at k = 5, stopping tracks the evidence. Three points for `/iterate`:
+
+- **Enforce by masking, not asking.** This is the third source, after
+  yan2026traceml and xu2026conflictguide, where the prompt version of a
+  controller rule fails. Read the redirect rule as "reject same-category
+  candidates once the counter is non-zero", not "ask for a different idea".
+- **A stated ceiling becomes a deadline.** Telling 7–8B agents their budget
+  moved stops to the last action. Doubling the budget doubled their tool
+  calls for no gain, while the masked rule's stopping point did not move.
+  Keep the counter in the controller rather than in the proposer's prompt.
+- **k must exceed the real payoff lag.** When the source recovered after
+  five failures, the k = 5 rule cost up to 21 points of success.
+
+Limits: the forced action is a stop, not a redirect. A switch-to-backup arm
+added +0.7 to +5.4 points, and the model that already switched unaided gained
+nothing. Sonnet 5 partly integrates on its own, and Haiku 4.5 with a stated
+price beat the masked rule. Still no paper runs redirect against halt.
+
+## A handoff at the halt point, and a schedule that is not a stall trigger (2026-10-12)
+
+[[literature/papers/li2026humanize]] (HMA, Tsinghua/NVIDIA/MIT) alternates
+two native agents (e.g. Opus 5 in Claude Code and GPT-5.6-sol in Codex) on
+one shared workspace under a 6 h MLE-bench budget. The controller ends each
+session after k = 5 accepted experiments, wipes the context, and hands over
+to the other model. This is a controller-enforced structural move with no
+prompt nudge. On average it beats one continuous session of either model at
+matched wall-clock. Against the *stronger* single agent, the gain is +0.9
+to +5.8 any-medal points, +2.7 on average across six pairs (our arithmetic).
+Five of the six HMA rows appear to be single runs.
+
+The datum that bears most directly on redirect-before-halt is a side arm,
+**NTA**: no cap, and the handoff happens exactly when the active agent
+*naturally terminates*. Single agents halt at that point. GPT-first NTA
+scored 77.3 against GPT alone at 68.0, and Kimi-first NTA scored 56.0
+against Kimi alone at 54.2. Both NTA figures are single, historical runs
+compared with 3-repeat means, so read them as a direction only. It is
+still the first source in this graph whose two arms differ in whether the
+run is allowed to stop. Two constraints on the `/iterate` design follow:
+1. **Fire on the stall, not on a schedule.** On the one pair where the cap
+   was varied, forced handoffs every k = 1 or k = 3 experiments scored
+   *below* the stronger single agent (65.3 and 66.7 against 68.0). Uncapped
+   NTA beat every capped variant. Frequent forced redirects cost score.
+2. **The move tested is a model swap plus a flush, not a flush alone.**
+   There is no same-model arm, so it does not show that a fresh context on
+   the same backend would work.
+
+Returning agents also overwrote standing medal candidates, which a
+cross-agent final review over the archive restored (311 → 319 of 330). As
+with MIRA above, the redirect must sit behind the monotone keep gate.
 
 ## Open questions
 

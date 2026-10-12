@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/xia2026rrsi]]"
   - "[[literature/papers/yan2026traceml]]"
   - "[[literature/papers/xu2026conflictguide]]"
+  - "[[literature/papers/cai2026forkandflush]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -199,6 +200,29 @@ order of magnitude below the human rate". This holds for both a single loop
 and an evolutionary tree on the same backend, so topology alone does not
 widen the grain. Caveat: 3 MLEvolve runs and 6 informative Codex runs, all on
 gpt-5.4-mini.
+
+## A run-level attractor that compaction does not break (2026-10-12)
+
+[[literature/papers/cai2026forkandflush]] finds gurkan2026mutation's operator
+attractor one level up, at the grain of a whole multi-day agent run. Eight
+independent runs of one coding agent on one task plateau at very different
+scores. On an LLM-judged functional-similarity map, each run's submissions
+stay in one region (an "idea basin"), and periodic context compaction does
+not move them. The paper's move is go-with-the-winners at run grain: fork K = 4
+continuations of the leader's workspace, start each with an empty chat
+context, keep the best. A node is an episode chain over a workspace and the
+value estimate is the task grader.
+
+Two points for this concept. First, the attractor is carried by the
+*conversation*, not the code. Branches that keep the context move about one
+median step from the fork point, while a flushed branch can jump 10–43
+steps into another basin (one hand-picked polyomino fan-out; the size
+depends on the embedding). Second, it agrees with zou2026fmlbench that
+structure matters most on sparse landscapes. The large gains are on AHC014
+(+142%) and order-add (+101%). On dense tasks such as relay-lay and
+LLM-SQL the gain is under 1%. How often a winning branch actually changes
+basin is never counted, so "escaping basins" is illustrated rather than
+measured.
 
 ## Open questions
 

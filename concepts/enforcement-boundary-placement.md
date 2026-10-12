@@ -36,6 +36,8 @@ sources:
   - "[[literature/papers/wiedmann2026agents]]"
   - "[[literature/papers/chen2026rankevolve]]"
   - "[[literature/papers/tiwari2026assay]]"
+  - "[[literature/papers/zhang2026judged]]"
+  - "[[literature/papers/waks2026what]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -499,6 +501,51 @@ It also places points on the time axis. Staleness is computed at index
 time on every commit through a pre-commit hook, and refusal happens at
 merge. The evidence is scripted only: 12 scenarios written by the
 designers, one per mechanism, with no agent measured.
+
+## The same stopping rule in the prompt and in the harness, across seven agents (2026-10-12)
+
+[[literature/papers/zhang2026judged]] places one rule ("after five
+consecutive useless results, answer") at two points and measures whether
+stopping follows the agent's own evidence judgments, at the same step:
+
+- **In the prompt.** Followed only partly by Llama-3.1-8B, Qwen3-32B and
+  Claude Haiku 4.5, and ignored by Qwen2.5-7B and Qwen3-8B, which answer
+  early regardless.
+- **In the harness**, by removing every action but `finish`. Stopping
+  follows the evidence for every model, and the stopping point holds when
+  the budget doubles.
+
+This fits the prompt-placement rows above: the rule is a gradable action
+predicate, and it buys partial compliance at best. The paper adds two
+qualifications this page lacked. First, the gap narrows near the frontier:
+Claude Sonnet 5 partly integrates with no rule at all, and Haiku 4.5 given a
+per-call price in the prompt beat the harness rule on success and utility,
+though its stops were not evidence-driven. Second, what the harness needs
+from the model is small: a keyword reader on the agent's own thought, or a
+lexical heuristic, works as well as asking it for a judgment. Placement
+carries the effect, not the quality of the signal. The evidence is QA
+retrieval with mostly 7–8B models.
+
+## Objection, verdict, enforcement: three acts, and only one needs the authority (2026-10-12)
+
+[[literature/papers/waks2026what]] separates three things reviewers
+routinely conflate. An *objection* raises a reviewable finding. A *verdict*
+decides the claim is unsupported. *Enforcement* refuses to release it. Output-only
+LLM judges and claim auditors such as zhu2026claimreceipt operate at the
+first two. Enforcement needs a reference fixed in advance (an approved
+denominator and claim ceiling) and an authority the agent cannot impersonate.
+P4 puts the authority out of band: specification approval, waivers,
+data-governance authorization and report promotion need authenticated human
+identity, and "chat confirmation is not approval". The paper states its trust
+boundary explicitly: protected (approved contract, digest chain, gold labels,
+authorization record, checker predicate), assumed (observations collected on
+a path the agent cannot rewrite) and untrusted (transcript, narrative,
+proposed edits, self-reported completion). Its own refusal audit shows the
+placement is partial: 11/14 unauthorized transitions refused, three MCP cells
+`not_reached`, overall not passed. For this repository P4 is the unmet
+clause. The agent commits as the user, so a frozen contract's git hash gives
+tamper evidence, not a boundary. That is the same signing-key problem as
+tiwari2026assay.
 
 ## Open questions
 

@@ -30,6 +30,7 @@ sources:
   - "[[literature/papers/wang2026rethinking]]"
   - "[[literature/papers/bobadillasuarez2026audit]]"
   - "[[literature/papers/zhang2026veriharness]]"
+  - "[[literature/papers/cai2026forkandflush]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -363,6 +364,29 @@ This adds to the specification above. Report pass@k together with the
 selector's capture ratio, (selected − mean)/(oracle − mean). Do not treat
 maj@k agreement as a confidence signal. The gains rest on 3 verifier seeds,
 and several runner-up margins sit within 1–2 SD.
+
+## A normalized-ratio headline can hide a 7% median (2026-10-12)
+
+[[literature/papers/cai2026forkandflush]] reports "+66% over single-run and
++44% over best-of-4" as a ratio of min–max normalized means across 13
+tasks, with n = 5 per cell and no intervals. Min–max scaling stretches each
+task to the observed range. A 0.3% raw gain (relay-lay) therefore weighs as
+much as a 142% one (AHC014), and the ratio depends on which runs set the
+range. The same fork-and-flush runs score 0.78 in one table and 0.71 in
+another with a different pool. The median raw per-task gain is about 7% over
+single-run and 4% over best-of-4, and one task (LWE-rec) goes backwards.
+Rule for this project: report per-task raw deltas and their spread
+alongside any normalized aggregate. Never quote a ratio of normalized
+means as a relative improvement.
+
+Two further reporting points from the same paper. Its best-of-4 baseline
+splits a budget that was sized to the single-run plateau, so each draw
+gets a quarter of it, and its max falls below single-run's on 7 of 13
+tasks. Best-of-N at one N set by a budget tuned to another arm is a weak
+comparator; sweep N. Its baseline counts are also inconsistent (5, 6, 7
+or 8 runs depending on the table), and figures show excluded single runs
+scoring above the reported single-run maxima. Report the per-arm k and
+any exclusion rule next to the result.
 
 ## Open questions
 
