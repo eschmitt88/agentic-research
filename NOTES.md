@@ -727,3 +727,36 @@ Weekly rollup for 2026-09-29 → 10-05 (sourced from journal/ + _meta/log.md).
   but the skill text still says WebSearch.
 - Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
   sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
+
+## 2026-10-12
+
+Weekly rollup for 2026-10-06 → 10-12 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 10-06 /curate closed the 10-05 backlog: 26 items (items 7–20 + 12 near-misses) →
+  11 ingested, 15 declined, archived to `_done/`. Papers 222 → 233, 23 concept edits.
+- 10-11 /elevate: 0 proposals from 8 considered. Redirect-before-halt was the closest
+  miss again and was held a second time behind the 09-27 noise-band proposal.
+- 10-11 (human): all 9 pending proposals accepted and applied to claude-system (`60f9f4c`).
+  CLAUDE.md now reads framework rules by path, because `@~/` imports are still dead on 2.1.296.
+- 10-12 digest → auto-ingest (go/high), the fifth OAI-PMH run in a row (10,123 cs records).
+  20 candidates; top 6 ingested. Papers 233 → 239, 23 edits across 15 concepts.
+- /promote-moc declined 10-06 and 10-12. Concepts held at 35, 35/35 mapped.
+
+### Findings
+- Abstracts overstate: 46/48 PDFs since 09-22 read at or below their digest entry.
+  `hu2026winners` and `waks2026what` are the first two that matched. (The 10-12 record says
+  "35 of 37", but that count leaves out the eleven papers from 10-06.)
+- Redirect-before-halt now has controller-level support at matched compute
+  (`cai2026forkandflush`). It also has a third harness-beats-prompt result
+  (`zhang2026judged`), but still no comparison of redirect against halt.
+- The noise band has to come before redirect. In Fork-and-Flush, the stall trigger never fired in 15/25 runs
+  because sub-noise gains kept resetting the counter. `hu2026winners` scopes the band to the
+  no-improvement counter, not best-version selection, and shows that the seed spread on fixed val items understates noise.
+
+### Next
+- Re-run /elevate on redirect-before-halt. The noise band it was waiting on was accepted 10-11.
+- Curate items 7–20 + near-misses in `raw/_candidates/2026-10-12-digest.md`.
+- Make OAI-PMH the documented default in /digest. The skill text still says WebSearch.
+- Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
+  sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
