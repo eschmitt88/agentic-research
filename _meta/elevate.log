@@ -403,3 +403,25 @@ This week's `/elevate` run made **no proposals**. I checked 11 ideas from the 16
 Nine proposals are still waiting for your decision, the oldest from 08-02. That backlog, not a lack of evidence, is what's holding things up.
 
 Nothing in `~/claude-system` was touched. `_meta/curate.log` already had uncommitted changes before this session, and I left them uncommitted.
+`/elevate` wrote no proposals this cycle. I considered 8 ideas from the 17 papers ingested since 10-04. The held record is in `docs/system-proposals/_index.md` and the log line in `_meta/log.md`, committed as `6386dc2` and pushed. Nothing in `~/claude-system` was touched, and it hasn't changed since the last run.
+
+**Closest miss (held for the second week running): redirect-before-halt in `/iterate`.** This is now the best-supported idea waiting in the graph:
+- **TraceML** (peer-reviewed at NeurIPS, code released, credibility 4): a single edit-run loop agent, the same shape as `/iterate`, changes approach about 3× less often than humans in the same situations. It almost never goes back to a line it abandoned, while humans who do win 78.5% of the time.
+- **ConflictGuide** (credibility 3): when a stalled loop was forced to change scope, it beat plain continuation in most cells across five model families, at the same proposal budget.
+- **What it changes about the proposal:** in both papers, prompt-only nudges ("stuck 3+ steps?", "consider trade-offs") did not produce changes of approach. So the simplest form is no longer the soft sentence from 10-04. Once the no-improvement counter is non-zero, step 3 should require a candidate that changes the backbone, representation, objective or validation scheme, or that revisits a line abandoned earlier in the run. It's still one sentence and adds no new surface.
+- **What's still missing:** no source tests redirect against halting.
+- **Why it's held:** the 09-27 noise-band proposal for the same file is still undecided, and the same-file stacking rule blocks a second edit. The two don't conflict: 09-27 decides when the counter ticks, and this decides what step 3 does once it has. You could accept both in one pass.
+
+**Also held:**
+- **Anchor check in `/lint`** (from `wang2026making`): adds surface, and `/lint` is already blocked behind the 08-02 proposal.
+- **Stop-hook controller** (from `woo2026youra`): adds a new hook on thin, single-run evidence.
+- **Cross-vendor re-read of concept edits:** weak sources and new infrastructure, so it fails both gates.
+- **`wang2026research`'s ideas:** credibility 2, so they fail the evidence gate.
+
+The `/digest` skill still says `WebSearch` while the last four runs used OAI-PMH. That's real drift, but it's an operational fix already on your `NOTES.md` Next list, not something to put through `/elevate`. It's worth making directly.
+
+I added three papers' input on the 09-27 proposal to the index. The main point, from `wiedmann2026agents`: a band built only from training seeds understates the noise when two hypotheses are compared. That's because it doesn't measure how much results vary when the same hypothesis is implemented again.
+
+Nine proposals are still undecided. Deciding 09-27 would unblock the strongest idea in the graph.
+
+`_meta/curate.log` has uncommitted changes that weren't from this run, so I left them out of the commit.
