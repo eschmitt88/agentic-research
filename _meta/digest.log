@@ -579,3 +579,33 @@ The 10-05 digest file says "21/21" papers read at or below their summary, but it
 `_meta/digest.log` had an uncommitted change before this session started. It completes a cut-off source link and adds one more. I didn't write it, so I left it out of the commit and it's still uncommitted.
 
 The claude.ai Google Drive connector needs authorizing in your claude.ai connector settings before it can be used. This task didn't need it.
+Six readers are running in the background, one per paper (items 1–6). I'll wait for them to finish, then apply their concept edits serially and commit.
+
+One of six is done (`zhang2026judged`). It reads below its digest framing, consistent with the house pattern. Waiting on the other five.
+
+Two of six are done. `waks2026what` reads *at* its framing, the first paper to break the overstatement pattern since 09-22. Four readers are still running.
+
+Three of six are done. `cai2026forkandflush` reads below its framing: the median raw gain is about 7%, not 66%. It also finds that a stall-triggered redirect only fires if sub-noise gains don't reset the counter. That ties redirect-before-halt to the accepted noise band. Three readers are still running.
+
+Four of six are done. `hu2026winners` reads at its framing (rel 5, cred 4). It supports the noise band's halting counter but not extending the band to choosing the champion. Two readers are still running (`li2026humanize`, `zhang2026who`).
+
+Five of six are done. `li2026humanize` reads below its framing: against the stronger single agent the gain is +2.7 points on average, not +8.0. One reader is still running (`zhang2026who`).
+
+This week's `/digest` is done: 20 candidates written, and the top 6 fetched and ingested. Everything is committed and pushed (`3d5b0e2` → `668cb43` → `e538aa3` → `cbe8c29`). The uncommitted change to `_meta/elevate.log` was already there when I started, so I left it alone.
+
+**Run**
+- I pulled 10,123 arXiv computer-science records submitted or revised since 10-05, via arXiv's OAI-PMH feed, with no errors. After removing papers already in the graph and scoring the rest against the project's themes, I read about 42 abstracts and listed 20 in `raw/_candidates/2026-10-12-digest.md`.
+- The skill also asks for web searches, so I ran three. None found a paper that compares redirecting a stalled loop against halting it. They did turn up three relevant papers from before this week's window, which I listed as near misses for a later `/discover` pass.
+- The spending check said go at high pace, before and after the ingest, so I fetched and ingested items 1–6. That brings the graph from 233 to 239 papers, with 23 additions across 15 concept notes and no existing text changed. `/promote-moc` declined: the 35 concepts haven't changed and all are already in a map.
+- Items 7–20 haven't been reviewed yet, so the candidates file stays in `raw/_candidates/` rather than `_done/`.
+
+**Findings**
+- **Abstracts still mostly overstate, but not always.** Four of the six papers read below their digest summary, each because the headline number came from the most favourable cut. For example, the Fork-and-Flush abstract claims +66%, but the median gain per task is about 7%. Two papers matched their summary (`hu2026winners`, `waks2026what`), the first exceptions since 09-22. The count is now 35 of 37 at or below the summary.
+- **Redirect-before-halt is better supported but still untested against halting.** That is the open idea of forcing a structural change in `/iterate` when it stalls, instead of stopping.
+  - `cai2026forkandflush` shows that a redirect run by the loop's controller beats simply continuing, at matched compute.
+  - `zhang2026judged` is the third paper where a rule enforced by the harness works and the same rule written into the prompt doesn't.
+  - No paper yet compares redirecting with halting.
+- **Redirect depends on the noise band you accepted on 10-11.** In Fork-and-Flush, the stall trigger never fired in 15 of 25 runs, because tiny improvements below the noise level kept resetting the counter. So the noise band has to be in place before a redirect rule can work.
+- **The noise band's scope:** `hu2026winners` supports using it on the no-improvement counter, but not extending it to picking the best version. It also shows that a seed-to-seed spread measured on the same validation items misses part of the noise.
+
+**Still open:** items 7–20 and the near misses need a `/curate` pass. The skill text still says to use web search for the harvest, even though OAI-PMH
