@@ -608,4 +608,4 @@ This week's `/digest` is done: 20 candidates written, and the top 6 fetched and 
 - **Redirect depends on the noise band you accepted on 10-11.** In Fork-and-Flush, the stall trigger never fired in 15 of 25 runs, because tiny improvements below the noise level kept resetting the counter. So the noise band has to be in place before a redirect rule can work.
 - **The noise band's scope:** `hu2026winners` supports using it on the no-improvement counter, but not extending it to picking the best version. It also shows that a seed-to-seed spread measured on the same validation items misses part of the noise.
 
-**Still open:** items 7–20 and the near misses need a `/curate` pass. The skill text still says to use web search for the harvest, even though OAI-PMH
+**Still open:** items 7–20 and the near misses need a `/curate` pass. The skill text still says to use web search for the harvest, even though OAI-PMH has now been used five runs in a row.
