@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/xu2026dont]]"
   - "[[literature/papers/li2026discover]]"
   - "[[literature/papers/wang2026making]]"
+  - "[[literature/papers/waks2026what]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -223,6 +224,26 @@ identifiable**, meaning too few legal interventions exist to test the
 claim at all. BBBC047 dose has 0/4380 eligible rows on one fold. That is
 different from inconclusive, and collapsing the two hides an untestable
 claim inside a noisy one.
+
+## Type the scope against an approved ceiling, and type the obligation's discharge (2026-10-12)
+
+[[literature/papers/waks2026what]] adds two typed fields this concept lacks.
+First, **claim scope** is typed over population, task and endpoint, data
+version and split, comparator, metric, time, site and domain. It is checked
+against a ceiling approved before execution, not against the evidence after.
+An over-scope claim is not simply "unsupported": the checker returns the
+largest admissible scope (a fixture shows a multi-site claim blocked while
+the benchmark claim stands). That is a fifth outcome beside supported /
+contradicted / unresolved / not identifiable: **admissible at narrower
+scope**. Second, each evidence obligation carries `discharge_method`
+(`mechanical` | `human_semantic`) and `waiver_policy` (`forbidden` |
+`scope_reducing` | `permitted_under_conditions`). A `scope_reducing` waiver
+downgrades the claim rather than blocking it. The paper also bounds what
+typing buys at review time. 17 of 18 output-only judges flagged the overbroad
+external-generalization claim from the package alone, so scope inflation is
+mostly *visible*. What the contract adds is the authority to block promotion,
+not detection. The evidence is 8 self-authored fixtures, and
+`permitted_under_conditions` has no condition language behind it yet.
 
 ## Open questions
 

@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/li2026autorecsys]]"
   - "[[literature/papers/samanta2026learning]]"
   - "[[literature/papers/woo2026youra]]"
+  - "[[literature/papers/li2026humanize]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
@@ -181,6 +182,32 @@ the bus, no arm that removed it. Unlike chen2026toward's File-as-Bus
 ablation, nothing here separates the substrate's contribution from the
 brief's. Cite it for the *shape* of a bus that crosses machines and trust
 boundaries, not as a second attestation of the ablation.
+
+## A bus shared by two different models, and an archive to undo their overwrites (2026-10-12)
+
+[[literature/papers/li2026humanize]] (HMA) runs the bus across a model
+boundary. Two native agents from different providers, e.g. Opus 5 in
+Claude Code and GPT-5.6-sol in Codex, take turns on one workspace. The
+workspace and the retained best result are the only things that survive a
+handoff, because every session starts with an empty context. The case
+studies show cross-model reuse through the files: GPT pruning Opus's
+retrieval features, and Kimi stacking GLM's saved out-of-fold predictions.
+Alternation beats the stronger single agent by +0.9 to +5.8 any-medal
+points, but there is no arm without the shared workspace. So this attests
+that the pattern works across heterogeneous agents, not that the bus is
+what causes the gain.
+
+The new design point is a failure the bus alone does not prevent. A
+returning agent can overwrite the standing best with a worse candidate. On
+MBM-01, GPT replaced DeepSeek's bronze with a non-medal result. HMA's fix
+has two parts:
+- an **append-only archive** of every evaluated candidate and its author;
+- a final selection by the *other* agent over that archive.
+
+Together they recover 8 medals and lose none (311 → 319 of 330 runs that
+ever produced one), and 11 are still lost. A shared workspace needs a
+monotone champion record, and the agent's own working copy cannot serve as
+that record.
 
 ## Open questions
 

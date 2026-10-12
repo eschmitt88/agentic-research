@@ -79,6 +79,9 @@ sources:
   - "[[literature/papers/xiao2026search]]"
   - "[[literature/papers/wang2026pear]]"
   - "[[literature/papers/chen2026false]]"
+  - "[[literature/papers/hu2026winners]]"
+  - "[[literature/papers/waks2026what]]"
+  - "[[literature/papers/zhang2026who]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -1229,6 +1232,76 @@ whenever the CI straddles 0, with no cap on re-looks) is the optional
 stopping that [[literature/papers/qu2026propose]] priced. The rule
 generalises to every rung of a fidelity ladder: whichever level makes the
 last selection, it needs one untouched confirmation run above it.
+
+## How big the selection bias is, and what a held-out audit must look like (2026-10-12)
+
+This concept's premise, that a loop's validation score overstates held-out
+performance, has rested on ablations (AIRA_2) and single-system cases
+(ning2026closedloop). [[literature/papers/hu2026winners]] measures it in a
+pre-registered study, with all 600 held-out items scored for every candidate.
+After 20 greedy generations, the final selection-set score exceeded held-out
+accuracy by 13–20 points with 16 reused items, and by 1–5 points with 256.
+Incumbent inflation grows with generations (13.6 ± 1.7 at n = 16 by
+generations 11–20), and a selection model predicts its size. This partly
+answers the open question on validation-split size. What matters is the
+measurement SE relative to the spread of proposal effects. At these tasks'
+disagreement rates, "resolving gains of a few points would take a few
+hundred items."
+
+Four rules for the final-scoring pass follow:
+
+- **Score the starting configuration on the held-out set too, paired.**
+  An audit of seed and final on 64 never-used items removed the reported
+  gain's bias (+10.8 → 0.0).
+- **Report the SE with the number.** That same 64-item audit still had
+  RMSE 5.7 points, against a mean true gain of 6.2.
+- **Shrinkage from the loop's own logs is not a substitute.** It fixes the
+  average, but leaves −8.5 to +5.8 points of error per setting.
+- **Re-drawing validation every cycle is not a fix either.** It doubled
+  commits and lowered held-out gain in the one setting tried.
+
+Late in a chain the bias dominates. From a competent start, loops reported
++12 to +15 while held-out moved −1.5 to +0.2.
+
+## A preregistration binds only if the run is checked against it (2026-10-12)
+
+This page already holds that preregistration "fixes the analysis, not the
+choice of what to headline" and does not validate the scorer it names.
+[[literature/papers/waks2026what]] names the step in between: a plan that is
+written down but not **bound** to what executed. Its channels include M1
+(split, comparator or seed policy left open and filled after the data),
+M2 (plan v approved, a later config edit runs something else, and a plan hash
+quoted in the report does not help) and M4 (failed or never-started units
+leave the denominator, and retries re-enter as fresh successes). The remedy
+is mechanical. Approval records a digest over the spec and the compiled run
+config, and any later change voids it. An expected-run manifest is emitted
+before execution, and the ledger must close against it. Only 1 of 18 frontier
+judges flagged a missing required metric artifact from the package alone. For
+this project the gap is concrete. The experiments rule says the README
+hypothesis is written before the run, but nothing hashes it, binds
+`config.yaml` to it, or counts planned seeds against `metrics.json`. A
+`contract.yaml` holding scope, data hash, arms, metric, decision rule and the
+arm × seed manifest, with a checker run at `status: done`, would turn the
+declaration into a check. Caveat: this is design. The authors' evidence is 8
+self-authored fixtures, and the equal-information comparison is unrun.
+
+## A downstream gain cannot certify the grader that produced it (2026-10-12)
+
+[[literature/papers/zhang2026who]] separates two questions this concept had
+merged: is the in-loop grader valid, and is the loop's output good? It
+answers each against a different reference. Verifier validity is agreement
+with a locked labelled set that verifier evolution never reads. Task score
+is a separate held-out measurement. The split matters because an ablated
+verifier that passed 97–100% of everything still produced held-out task
+scores equal to the valid one's. "The experiment this literature reaches for
+first would here have certified a grader that passes everything." Rule for
+any loop that builds its own grader, critic or filter: report the grader's
+agreement on held-out labelled items, at a stated operating point. Task-level
+gain is not evidence for it. The paper also shows the cut problem from the
+nested-loop section above. Its headline "88–110% of ground-truth lift" is
+computed at peak, the locked-set argmax over 100 rounds. Spider's 110% comes
+from a lower round-0 baseline, while the reference loop's final-rounds lift
+there is +0.010. Read the final-rounds column; the authors report both.
 
 ## Open questions
 

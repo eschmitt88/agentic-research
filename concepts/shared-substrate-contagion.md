@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/bobadillasuarez2026audit]]"
   - "[[literature/papers/chen2026false]]"
   - "[[literature/papers/zhang2026veriharness]]"
+  - "[[literature/papers/zhang2026who]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -543,6 +544,29 @@ same unmanaged-supply-chain argument from 6,145 config files. The two use
 independent teams and instruments, but both sample public GitHub agent
 configs, so the samples likely overlap. Count them as a stronger method
 corroborating the same population, not as two independent sightings.
+
+## Detector diversity claimed as a defence against same-model grading, untested (2026-10-12)
+
+[[literature/papers/zhang2026who]] argues that a grader built mostly from
+deterministic detectors "fail[s] differently from the model being graded".
+It offers this as the remedy for the "shared-blind-spot collusion a bare LLM
+judge invites". The paper does not measure it.
+- Every in-loop role (solver, skill synthesizer, teacher, judge ops) is
+  Claude Opus 4.7, and the outer judge is Opus 4.8.
+- There is no cross-family arm and no solver-detector error-correlation
+  analysis.
+- Two of three selected verifiers keep a same-model LLM-judge leaf.
+- On the reference-free task the anchor labels themselves come from the
+  same-model teacher.
+
+The informative datum is the outer audit. A stronger same-family judge, told
+nothing of the pipeline's conventions, penalized required syntax and barely
+registered a real repair (win rate 0.122 → 0.126). Given the task contract,
+it registered the repair (0.515 → 0.770), though that rubric was written
+after reading the first judge's rationales. As with shen2026revoked and
+xu2026dont, independence came from what the reviewer was given, not from a
+different model. Treat "deterministic, therefore independent" as a design
+hypothesis still waiting for its no-channel arm.
 
 ## Open questions
 

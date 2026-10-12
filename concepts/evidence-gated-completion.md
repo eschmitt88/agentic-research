@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/tiwari2026assay]]"
   - "[[literature/papers/woo2026youra]]"
   - "[[literature/papers/wang2026making]]"
+  - "[[literature/papers/waks2026what]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -964,6 +965,28 @@ A gate on "required artifacts exist" does not check that the conclusion
 follows from them. That needs a claim-level check (see "Claim-level evidence
 records" above). No refusal or false-rejection rate is reported, so the hold
 on this concept's gating claim stands.
+
+## Absence faults need the approved requirement, not a better reader (2026-10-12)
+
+[[literature/papers/waks2026what]] supplies the reference that a completion
+gate checks *against*. A study contract, frozen and bound by digest before
+execution, carries an expected-run manifest (every arm × seed unit), typed
+evidence obligations and a claim-scope ceiling. Its diagnostic splits faults
+in two. Faults that leave a contradiction inside the package (digest
+mismatch, unequal arm budgets, an overbroad claim beside internal-only
+evidence) were flagged by 16–18 of 18 LLM judges reading the package alone.
+Faults that are an *absence* (an undeclared split, a required metric artifact
+never emitted) were flagged by 2/18 and 1/18, and the judges abstained rather
+than accepting. The analytic point is the durable one: if contract C1 requires
+artifact X and C2 does not, no function of the package can tell which applies.
+So this concept's "small set of evidence requirements" must be fixed before
+the run and stored outside the agent's write path. A requirement written at
+gate time is an absence the gate cannot see. The paper also adds the
+denominator rule: the ledger must account for every planned unit, including
+failures, and retries do not enlarge it. Limits: the deterministic checker's
+8/8 is a fault-specific rule run on self-authored fixtures, and there is no
+closed-loop or outcome measurement. The hold on a refusal-driven outcome delta
+is untouched.
 
 ## Open questions
 
