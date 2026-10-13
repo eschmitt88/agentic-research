@@ -614,3 +614,20 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-10-12 07:12 ingest raw/papers/zhang2026who.pdf
 2026-10-12 07:12 digest-autoingest n=6 verdict=go/high
 2026-10-12 promote-moc declined (graph unchanged since d006d6a, 35/35 concepts mapped)
+2026-10-13 04:01 fetch-paper 2610.09824 → raw/papers/ganesh2026homogenization.pdf
+2026-10-13 04:01 fetch-paper 2610.04433 → raw/papers/liu2026what.pdf
+2026-10-13 04:01 fetch-paper 2607.26587 → raw/papers/ning2026implementation.pdf
+2026-10-13 04:01 fetch-paper 2610.12601 → raw/papers/lumer2026reflective.pdf
+2026-10-13 04:01 fetch-paper 2609.39304 → raw/papers/wei2026scale.pdf
+2026-10-13 04:01 fetch-paper 2610.04915 → raw/papers/zhang2026are.pdf
+2026-10-13 04:01 fetch-paper 2610.06986 → raw/papers/guo2026epoch.pdf
+2026-10-13 04:01 fetch-paper 2610.05334 → raw/papers/farahbakhsh2026agentdiscover.pdf
+2026-10-13 04:01 fetch-paper 2610.08927 → raw/papers/du2026can.pdf
+2026-10-13 04:01 fetch-paper 2608.29460 → raw/papers/gomez2026can.pdf
+2026-10-13 04:01 fetch-paper 2610.04083 → raw/papers/das2026selfpropagating.pdf
+2026-10-13 04:01 fetch-paper 2610.12235 → raw/papers/wang2026language.pdf
+2026-10-13 04:01 fetch-paper 2610.10833 → raw/papers/wang2026clock.pdf
+2026-10-13 04:01 fetch-paper 2609.34177 → raw/papers/xu2026replaylens.pdf
+2026-10-13 04:01 fetch-paper 2609.00077 → raw/papers/he2026beneath.pdf
+2026-10-13 04:01 fetch-paper 2608.13417 → raw/papers/li2026beyond.pdf
+2026-10-13 04:01 fetch-paper 2605.10039 → raw/papers/mcmillan2026instruction.pdf
