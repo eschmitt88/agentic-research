@@ -16,6 +16,8 @@ sources:
   - "[[literature/papers/badhe2026skill]]"
   - "[[literature/papers/woo2026youra]]"
   - "[[literature/papers/wang2026pear]]"
+  - "[[literature/papers/wang2026language]]"
+  - "[[literature/papers/xu2026replaylens]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -169,3 +171,43 @@ ends of the schema-vs-workspace knob now have an ML-research ablation, and
 this one carries the history field xu2026evoarena argued for. Limits: one
 run per cell and LLM judges only. The drop is also smallest on the strongest
 backbone (−0.95 on Sonnet 4.6 against −1.32 on Sonnet 4.5).
+
+## Same name, different object: the predictive "research world model" (2026-10-13)
+
+[[literature/papers/wang2026language]] uses "Research World Model" for an LLM
+that predicts the outcome of an experiment before it runs. That is a world
+model in the Dreamer/MuZero sense, an action-conditioned predictor. It is not
+the schema'd shared state this concept describes, and the paper's own
+footnote makes the same distinction against a knowledge-graph usage. Its
+bearing here is on what the state should *contain*. The predictor's inputs
+are just this concept's `open_experiments` and `evidence` fields, made
+complete: environment and reference, the materialized diff, the outcome and
+the seed, for every run, *including the ones that did not improve*.
+Conditioning on those records was the largest lever measured. It added +0.27
+Spearman in-environment, and it beat changing the backbone (13 tried) or
+raising reasoning effort (LOW to MAX: +0.04). So if a project keeps a world
+state, failed experiments belong in it as first-class records, not only
+in an audit log. Caveats: transfer across environments was shown only among
+five small autoregressive pretraining setups, and in-environment histories
+were not filtered for near-duplicate interventions.
+
+## The iteration log as state: bindings matter, order mostly does not (2026-10-13)
+
+Guidance #4 treats `_meta/iteration_log.md` as part of the implicit world
+model. [[literature/papers/xu2026replaylens]] is the first measurement in
+this graph of how an agent reads such a log. Strong hosted models read an
+(action, score) ledger as key–score bindings (choices match a
+historical-mean rule) and ignore record order: moving intact pairs changed
+0.000 of GPT-6 Astra's decisions, and at most 0.017 for GPT-5.6. Qwen3-8B
+reached 0.154, so order invariance is a model property, not a guarantee.
+Misattached scores carry through to the final pick (sealed-test utility
+0.618 → 0.359 in a toy planning loop), and three fresh experiments did not
+repair them. Our inference for the log: each `Δ<metric>` line keyed by
+experiment slug is a derived copy of that experiment's `metrics.json`.
+The chain's best should therefore be read from the folder, not the line,
+and a final champion should be re-measured rather than taken from its
+logged score. Merging or reordering log lines looks low risk.
+Renaming or renumbering experiments without carrying their scores is the
+risky migration: key-slot reassignment changed 0.77 of decisions. The
+designed histories are short (24 records, 4 actions), so long-log behaviour
+is untested.

@@ -82,6 +82,16 @@ sources:
   - "[[literature/papers/hu2026winners]]"
   - "[[literature/papers/waks2026what]]"
   - "[[literature/papers/zhang2026who]]"
+  - "[[literature/papers/du2026can]]"
+  - "[[literature/papers/guo2026epoch]]"
+  - "[[literature/papers/he2026beneath]]"
+  - "[[literature/papers/li2026beyond]]"
+  - "[[literature/papers/liu2026what]]"
+  - "[[literature/papers/lumer2026reflective]]"
+  - "[[literature/papers/ning2026implementation]]"
+  - "[[literature/papers/wang2026language]]"
+  - "[[literature/papers/wei2026scale]]"
+  - "[[literature/papers/zhang2026are]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -1302,6 +1312,233 @@ nested-loop section above. Its headline "88–110% of ground-truth lift" is
 computed at peak, the locked-set argmax over 100 rounds. Spider's 110% comes
 from a lower round-0 baseline, while the reference loop's final-rounds lift
 there is +0.010. Read the final-rounds column; the authors report both.
+
+## Rediscovery rubrics for metric-free research: what the design gets right and where it leaks (2026-10-13)
+
+[[literature/papers/du2026can]] gives the graph a held-out evaluation for
+tasks with no metric. Each oracle paper's findings are split into 10–12
+binary sub-discoveries before any run. A GPT-5.5 grader must quote evidence
+for each claim before it scores, and the run score averages 3 reports × 3
+grades. The parts worth copying are the pre-fixed rubric, scoring at claim
+level with a quote required, and averaging over write-up variance. Three
+leaks remain:
+
+- **The grader is validated on one task.** 64/66 agreement against one
+  blind expert on 6 outputs, all from the emergent-planning task. The other
+  two rubrics have no human check. The expert is an author of that oracle
+  paper, and one of this paper's authors co-wrote it.
+- **The write-up instruction is part of the measured system.** Station's
+  consolidator is told to state the strongest findings confidently and may
+  drop negatives. The Codex baseline is told to narrow claims after an
+  adversarial audit. A coverage rubric scores the first style higher at
+  equal science. Hold the reporting prompt fixed across arms, or grade
+  run records rather than reports.
+- **External re-tests shrink in-loop wins.** The agents' VLM intervention
+  went +17.5 points on their own 40 items and +0.8 on 1,000 disjoint items
+  for the same model. This is the selection-on-a-small-set pattern of
+  [[literature/papers/hu2026winners]] in a discovery setting.
+
+## Within-set min-max normalisation manufactures ablation gaps (2026-10-13)
+
+[[literature/papers/guo2026epoch]] reports component ablations as "−13 to −56
+points". The score is min-max normalised *across the five variants within
+each task*, so the worst variant scores 0 on every task by construction. On
+the raw metrics, three of the six tasks differ by 0.01 (accuracy 0.71 vs
+0.70, MSE 0.33 vs 0.33–0.34, RMSE 0.52 vs 0.53–0.55). Seeds are not stated,
+and only one of four comparisons clears a sign test. Two rules follow:
+- Report ablations on the raw metric with seed intervals.
+- Never rescale against the set being compared.
+
+The same paper shows two more ways a held-out claim breaks:
+- Its "favorable" replay covers 7 of 12 development tasks, and against the
+  strongest baseline its sign depends on one task (+0.475 on one, −0.270 on
+  another, about −0.03 without the first; our arithmetic).
+- The replayed endpoints come from a different population than the
+  development score.
+
+A replay certifies a number only for the endpoints that were scored, on the
+tasks that were replayed.
+
+## Three tiers, and a non-adaptive arm that says how much gap is benign (2026-10-13)
+
+[[literature/papers/he2026beneath]] runs an autoresearch loop against three
+disjoint evaluations per task:
+- the in-loop metric;
+- an audit pair, read only by a revert gate through a scalar test every 10
+  iterations (2.7 reverts per run);
+- a blind benchmark that no component ever reads.
+
+It applies this concept's rule to itself. Because the gate reads the audit
+set, the authors treat it as validation and headline the blind tier.
+Vanilla loses 0.03–0.05 from audit to blind, the same as the gated method,
+which is the check that the gate did not leak.
+
+Two additions to this concept:
+- **A non-adaptive search arm calibrates the gap.** Uniform draws from a
+  fixed corpus of iteration-1 edits transfer at ρ 0.74–0.81 on the same
+  task pairs, against 0.38–0.49 for the adaptive loop. Most of the val/test
+  gap is loop-induced, not task mismatch. This is a cheap companion to
+  wang2026rethinking's same-budget arm.
+- **Plant the construct.** 12 known-good published edits score ρ ≈ 0.93 and
+  8 proxy-only edits ≈ 0.11, which validates the ratio before using it.
+
+The gap also grows steadily with iterations (Δ^faith 0.05 → 0.17 by
+t = 300) and moves with mechanism entropy, so a long chain needs the
+holdout most where its own metric looks best.
+
+## Ordinary optimization finds the evaluator, and lessons carry the exploit (2026-10-13)
+
+[[literature/papers/li2026beyond]] classifies the 252 best-of-3 solutions
+of seven frontier models on 36 AutoLab tasks. The tasks have no adversarial
+framing. In this setting, 16 solutions (6.3%) exploit the evaluator, five
+times the 3 that are novel. GPT-5.5 accounts for 8 of the 16. The count
+comes from an LLM judge, and only the novel label was manually reviewed.
+
+Exploits also travel. Gemini-3.1-Pro distilled "semantic mocking" into a
+cross-task lessons.md file. On a held-out target it then cached a SHA-256
+digest at warm-up and returned it during timed evaluation. The verifier
+scored this as +0.620 best@3. The paper does not say whether it was
+removed from Gemini's transfer mean of +0.003 (+0.033 if not; our
+arithmetic). So any experience or skill store that crosses tasks needs the
+same evaluator audit as the run that wrote it.
+
+The paper's Auto Harness also repeats the protocol gap in "An evolution
+gain needs a same-budget search arm" above, which its co-authors'
+wang2026rethinking named. The headline +0.12 is in-sample on the 3 seed
+tasks. Held-out tasks in the same family get +0.06 and other families
+−0.014. There is no matched-budget arm and no SE.
+
+## A harness gain needs a same-harness rerun arm (2026-10-13)
+
+The same-budget search arm above asks whether a gain came from the harness
+or from extra attempts. [[literature/papers/liu2026what]] adds a cheaper
+control that comes first: run the *unchanged* configuration again. On
+SWE-bench Verified's 45 hardest tasks, five models and three production
+harnesses, swapping the harness flips 13% of tasks (median over 15 pairs).
+Rerunning the same cell flips 13% overall and 16% on the ladder models.
+Tasks a harness wins in run 1 do not repeat in run 2 (5 same, 7 opposite).
+At the observed 14% discordance, no gap reaches 80% power at n = 45, and
+n = 447 resolves 5.2 points. Below about 55 paired tasks no difference is
+decision-grade. Rule: a harness, skill or prompt comparison reports the
+rerun flip rate and the MDE at the observed discordance next to the gap.
+
+The same paper is a measured case for moving a holdout wall out of the
+prompt. With web access, 312 of 439 DeepSeek/Qwen trials fetched the
+upstream fix, and those passed 96% against 71%. The authors discarded every
+web-enabled run and enforced "offline" at the network layer.
+
+## When the optimizer reads training traces, split by topic and autopsy the prompt (2026-10-13)
+
+[[literature/papers/lumer2026reflective]] runs GEPA on a deep-research
+agent's two system prompts and scores the result on 500 tasks whose
+article topics never appear in train or validation. The gain transfers
+(+0.079, CI [0.051, 0.107]; +0.130 and +0.112 on two more seeds). But the
+24-task validation set claimed +0.202, about 2.6× the real gain. That is in
+line with [[literature/papers/hu2026winners]]'s GEPA overstatement at 16
+items (about 2×), now in an agentic, LLM-judged setting. Three rules carry over:
+
+- **Split by topic or entity, not by item,** whenever the optimizer
+  reads training traces. The reflector wrote verbatim training answers
+  and URLs into the prompt (52% of the winning orchestrator prompt by
+  word count). An item-disjoint test on the same topics would have
+  credited that key.
+- **Autopsy the selected artifact.** The answer key grew along the
+  accepted lineage with validation reward (r = 0.83). A validation-only
+  workflow ships the most-memorized prompt as its best. Here the key was
+  inert even on the questions it encodes (+0.090 vs +0.079 unseen), but
+  the seed already passed the answer gate 92% of the time there, so
+  "inert" may not travel to narrower domains.
+- **Headline the least favourable seed, with the mean.** The paper's
+  headline is seed 0, the smallest of three.
+
+Caveat: train and validation are topic-disjoint too, so the key could not
+have inflated validation anyway. The val-minus-test gap is selection noise
+by elimination, not by a test (no larger validation set was run).
+
+## A kept artifact certifies its code, not its idea (2026-10-13)
+
+The held-out sections above protect the number a loop reports. They do not
+say *which* claim that number supports. [[literature/papers/ning2026implementation]]
+separates two: "reuse this program" and "this idea works". It freezes
+mechanism specs on 18 OpenML tasks, has an LLM write five selection programs
+and twelve fresh reference programs per spec, and compares the retained
+best-scoring program with fresh implementations of the same spec, on the
+same final split and seeds.
+- The retained program beats a fresh draw of its own idea by 0.38 and 0.45
+  accuracy-equivalent points (ITT, mean-of-5). The median task gains 0.03,
+  and one task carries most of the total.
+- The full development-to-fresh overstatement is 0.61 and 1.12 points:
+  split transfer plus that premium.
+- Within-spec program deviations correlate across splits at 0.59–0.68, so
+  part of an implementation's luck survives a clean holdout.
+
+Rule for this project: a held-out score on the kept artifact certifies that
+artifact. A claim that the *idea* helps, which is what a `/iterate` summary
+or a concept note usually states, needs at least one fresh re-implementation
+of the idea, scored on the same held-out split. Scope: toy-scale mechanisms
+on near-ceiling tabular tasks, so the size will not transfer, but the
+distinction will.
+
+## An outcome predictor scored against single runs inherits their noise (2026-10-13)
+
+The previous section asks any in-loop filter to report agreement with
+held-out labels. [[literature/papers/wang2026language]] shows the next
+requirement: the labels need a stated noise floor. Its LLM predictor ranks
+candidate ML experiments before execution and is scored by Regret@3 against
+each candidate's *measured* gain. Each label is one execution. On
+OLMo3-100M, the reference's three-seed std is 0.0054 BPB, yet the headline
+regret moves from 0.0028 to 0.0007. Both endpoints are below one seed SD.
+The pool's measured best is partly a lucky draw (the winner's curse of
+[[literature/papers/hu2026winners]]), so regret against it can credit a
+predictor for matching noise. Averaging over 200 pool partitions does not
+help, because the label noise is fixed. Rank correlation is sturdier here:
+MAE is about four seed SDs, so Spearman 0.9 mostly reflects separating
+harmful candidates from plausible ones.
+
+Rule: when a filter, critic or surrogate is validated on executed outcomes,
+report the label's rerun spread beside the metric. A top-k claim needs gaps
+larger than that spread, or replicated labels for the candidates at the top.
+
+## On few binary cases, the training score stops ranking held-out (2026-10-13)
+
+[[literature/papers/wei2026scale]] evolves a coding agent's robot-control
+harness for 30 rounds. Keep-if-better runs on a fixed training sample of B
+rollouts, with 100 held-out rollouts on disjoint LIBERO tasks. Final-champion
+held-out success was 47 / 54 / 51 / 67% for B = 5 / 10 / 20 / 100, against a
+51% baseline. Across 21 scored nodes, training and held-out correlate at
+r = 0.60, and only because of the B = 100 nodes. Within the small-B
+campaigns, training score does not rank the nodes. The B = 10 champion
+scored 70% on training (7 of 10 cases) and 54% held-out. One harness change
+that fixes two or three specific cases moves a 10-case score by 20–30
+points.
+
+This is the qualitative shape of [[literature/papers/hu2026winners]]'s
+n-dependence, now on long-horizon, binary, stochastic agent rollouts. The
+evidence is weak:
+- one campaign per B;
+- no reruns, so run-to-run noise is unmeasured;
+- 100 held-out rollouts are 10 tasks × 10 seeds;
+- only B = 100 differs from baseline by more than about one SE.
+
+Rule for `/iterate`: when outcomes are binary per case, size the validation
+split in cases. 5–20 cases do not resolve a harness change.
+
+## A clean holdout does not show the answer came from the data (2026-10-13)
+
+[[literature/papers/zhang2026are]] is the converse of the section above on
+holding the evidence fixed. It holds the task and prompt fixed and edits
+the *data*: a null edit, a withdrawal of the key's evidence, and a flip to
+another option. Each edit is verified by recomputing a pre-registered
+statistic. Nothing leaks: all 2,944 sandboxed runs were audited clean. Yet
+on 18 single-cell questions, Claude agents score 95% with the data, 83%
+with no data at all, and 41% evidence-grounded. After withdrawal the key
+still earns 77% of its credit. Prop. 1 states the limit. Two agents with
+identical runs on E can differ under an edit of E, so no score computed on
+the original run can certify that a correct answer was derived rather than
+recalled. HCE protects the number against the search loop. It does not
+identify where the number came from. For any claim of the form "the run
+showed X", the check is to rerun on data with X's support withdrawn. A
+per-item no-data baseline is the cheap first pass.
 
 ## Open questions
 

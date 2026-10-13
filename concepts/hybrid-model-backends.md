@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/gao2026agentic]]"
   - "[[literature/papers/guo2026groundability]]"
   - "[[literature/papers/li2026humanize]]"
+  - "[[literature/papers/ganesh2026homogenization]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -174,6 +175,25 @@ evidence is thin: one model step, 16 tasks, single runs, and ported
 harnesses with their prior knowledge disabled. HMA also cannot tell how
 much of its gain comes from the second *model* and how much from the fresh
 *context*.
+
+## Mixing families on one shared channel is not the same as independence (2026-10-13)
+
+[[literature/papers/ganesh2026homogenization]] assigns different model
+families to the roles of an orchestrated panel (generator vs reviewers in
+code, evaluators in hiring, author / meta-reviewer / reviewers in peer
+review) and every agent still reads the full broadcast discussion each
+round. The harms it measures for single-model panels still appear: an
+injected biased evaluator still propagates (others reach about 0.1–0.4 on
+a 1–5 scale), and specific vulnerability types still climb.
+
+The paper concludes that mixing "fail[s] to provide the expected behavioral
+diversity". It never compares magnitudes against single-model panels,
+though, and three of its own mixed setups keep conformity nearly flat. So
+the supported reading is narrower: a role split across vendors does not by
+itself remove what travels over a shared transcript. That matches
+li2026humanize's caveat that HMA cannot separate the second model from the
+fresh context. When vendor mixing is meant to buy review independence,
+the reviewer's *input* has to be separated as well.
 
 ## Open questions
 

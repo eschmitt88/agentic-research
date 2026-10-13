@@ -31,6 +31,9 @@ sources:
   - "[[literature/papers/bobadillasuarez2026audit]]"
   - "[[literature/papers/zhang2026veriharness]]"
   - "[[literature/papers/cai2026forkandflush]]"
+  - "[[literature/papers/li2026beyond]]"
+  - "[[literature/papers/liu2026what]]"
+  - "[[literature/papers/ning2026implementation]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -387,6 +390,59 @@ comparator; sweep N. Its baseline counts are also inconsistent (5, 6, 7
 or 8 runs depending on the table), and figures show excluded single runs
 scoring above the reported single-run maxima. Report the per-arm k and
 any exclusion rule next to the result.
+
+## avg@k separates models that best@k ties (2026-10-13)
+
+[[literature/papers/li2026beyond]] runs 7 frontier models × 36 AutoLab
+tasks × 3 rollouts. The highest-to-lowest gap is 0.237 on avg@3 but 0.122
+on best@3. Kimi's best@3 is within 0.03 of GLM and Gemini, while its
+avg@3 trails both by about 0.07–0.10. Harness swaps move avg@3 by up to
+0.055 and best@3 by at most 0.035. So the reliability axis is where models
+and harnesses actually differ, and a best-of-k leaderboard hides it.
+
+The paper reports no SE, CI or test anywhere, with k = 3 per cell. Its
+own Table 2 reverses most harness effects at category level. Under this
+concept's rule, the second-tier ordering (GLM 0.682, GPT 0.663, Gemini
+0.652) is unresolved. Report avg@k and best@k together, with the per-task
+spread. A model whose rank changes between the two metrics is a
+reliability finding, not a capability one.
+
+## Flip rate puts a rerun, an intervention and a model swap on one scale (2026-10-13)
+
+[[literature/papers/liu2026what]] reduces any pair of runs to its flip
+rate, (b + c)/n, the share of tasks whose outcome differs. That makes the
+k ≥ 2 noise floor directly comparable to the effect being claimed. On
+SWE-bench Verified hard45, reruns of one cell flip a median 13% (16% over
+the ladder models), harness swaps 13%, and model swaps 22%. Equal churn
+does not by itself rule out a directional effect, so the paper adds a
+replication check: does a task split in run 1 split the same way in run 2?
+For harness pairs, 5 of 12 did and 7 reversed (p = .77). For a model swap,
+10 of 15 repeated. Rule for this project: when k = 2 is all the budget
+allows, report the flip rate of a same-configuration pair next to the
+treatment pair, plus the direction of repeated splits. Caveat: the
+replication test rests on 12 tasks, so the pooled McNemar and TOST on
+447 tasks carry the "no harness effect" conclusion.
+
+## Choosing ideas: max-of-k is not better than mean-of-k, and the null is weak (2026-10-13)
+
+[[literature/papers/ning2026implementation]] tests k as a *selection*
+policy: rank four frozen ideas by one implementation, the mean of 3 or 5,
+or the max of 3 or 5, then score the chosen idea against 12 fresh
+implementations. On 18 tabular tasks and two executors, all four primary
+contrasts (max3 − mean3, single − mean5) are null, Holm p ≥ 0.56. Max
+aggregation is optimistic by construction: at equal means it favours the
+higher-variance idea (E[max] = μ + s·c_J). A single draw picks a different
+idea than a 6-program fitted leader in 19–26% of partitions, against
+12–17% for mean-of-5.
+
+Read the null with care. 8–11 of 18 tasks are exact ties in each contrast,
+seven to ten tasks have zero loss under every policy, and several
+baselines sit above 99%, where no idea can lose much. There is no
+equivalence margin. The Agentic single − mean5 contrast leans toward
+mean-of-5 (0.14 [−0.01, 0.31], 6/11/1). Rule for this project: report the
+positive/tied/negative task counts and the minimum attainable p next to a
+null selection contrast. A sign-flip test over 7 informative tasks cannot
+show that k does not matter.
 
 ## Open questions
 

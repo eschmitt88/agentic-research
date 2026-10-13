@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/li2026discover]]"
   - "[[literature/papers/wang2026making]]"
   - "[[literature/papers/waks2026what]]"
+  - "[[literature/papers/guo2026epoch]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -244,6 +245,28 @@ external-generalization claim from the package alone, so scope inflation is
 mostly *visible*. What the contract adds is the authority to block promotion,
 not detection. The evidence is 8 self-authored fixtures, and
 `permitted_under_conditions` has no condition language behind it yet.
+
+## Type the evidence boundary, not just the verdict (2026-10-13)
+
+[[literature/papers/guo2026epoch]] types the *kind* of support a retained
+result has. Every discovery is recorded against five columns: statement,
+algebraic reduction, finite/exact verification, formal kernel, and the final
+bridge to the stated claim. Each column is marked in-scope, partial or open.
+Its rules are worth copying:
+- A finite certificate supports a universal finite claim only if the checker
+  is sound *and* the enumeration is complete. Both are premises, "not
+  consequences of a large pass count".
+- Mutation controls show sensitivity, "not completeness".
+- A result whose independent exclusion check timed out stays
+  "primary-complete rather than dual-verified". A timeout neither refutes it
+  nor lets it be upgraded.
+- The same number of sampled random matrices "would have a different
+  evidential meaning" from an exhaustive coordinate check.
+
+This is waks2026what's "admissible at narrower scope" applied per result.
+The table is also a check on the paper itself: the final bridge is partial
+or open for all ten headline cases, while the contributions list still says
+"record-setting". The typing works only if the summary is held to it.
 
 ## Open questions
 

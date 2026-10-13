@@ -8,6 +8,8 @@ sources:
   - "[[literature/papers/panigrahy2026energy]]"
   - "[[literature/papers/ge2026coverage]]"
   - "[[literature/papers/yu2026primescientist]]"
+  - "[[literature/papers/liu2026what]]"
+  - "[[literature/papers/wang2026clock]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -215,3 +217,41 @@ that result says self-estimates of cost are poorly correlated with actual
 cost, which is fatal for admission and irrelevant to a controller reading a
 counter. Where this repo needs budget-sensitive behaviour, prefer the meter
 over the estimate.
+
+## A harness bill is three numbers, and the harness sets two of them (2026-10-13)
+
+bai2026how says a trajectory's cost cannot be forecast from inside the
+agent. [[literature/papers/liu2026what]] shows how much of it is fixed by
+the *harness* before the first step. Per trial, the bill is roughly
+(first-call preamble) + (growth per step) × (step count). On GLM-5.3-Flash
+the preamble (system prompt plus tool schemas) is 16.6k tokens in Claude
+Code, 7.0k in OpenCode and 0.8k in mini-SWE-agent, and it is paid on every
+step. Per-call tool returns are about equal across harnesses, and growth
+per step is within 1.5×. The same model and tasks cost 1.81 / 0.97 / 0.56
+CNY. On DeepSeek-V4-Flash the step counts diverge (104 / 141 / 88), and the
+lightest preamble ends up most expensive (1.02 CNY), so step count can
+outweigh preamble. 96–99% of input is cache hits. The cache price scales
+the bill but does not reorder the harnesses. For a forecaster here, fit
+preamble size and step-count distribution per harness × backend. A preamble
+measured at session start is a known term, not a forecast.
+
+## The downward bias holds on ML-agent wall-clock, and a declared timeout is enough to gate (2026-10-13)
+
+[[literature/papers/wang2026clock]] answers this page's second open
+question for one research-agent setting. Qwen3.6-27B on MLE-bench Lite was
+stopped mid-run in 15-minute episodes and asked how long the whole run
+would take. It underestimated by −735 ± 546 s without a clock and
+−554 ± 538 s with one (n = 9–20 probes per cell). That is the same
+direction as bai2026how, now in seconds on training-heavy trajectories,
+and present-state perception did not remove it. Action durations also
+vary from 30 s to 3 min under GPU and system load, so even an external
+forecaster faces a noisy target.
+
+The paper's working gate needs no forecast of cost. Its clamp hook
+compares a shell command's *declared* timeout, or the harness default if
+none is given, with the remaining budget, and lowers the timeout to fit.
+That is an admission decision made from a meter plus a bound the action
+carries with it. It extends the section above: admission needs a cost
+estimate, unless the action can be made to carry a hard upper bound that
+the harness enforces. The cost is lost work. A clamped training run ends
+early, and quality fell slightly (46.8 vs 49.4 percentile, within noise).

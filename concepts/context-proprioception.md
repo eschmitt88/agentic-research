@@ -8,6 +8,7 @@ sources:
   - "[[literature/papers/bai2026how]]"
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/zhang2026judged]]"
+  - "[[literature/papers/wang2026clock]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -169,6 +170,33 @@ wrong direction. Two caveats: the models are mostly 7–8B, and Claude Sonnet
 5 partly stopped on its evidence unaided. Read it as support for pairing
 perception with an enforced action, as mason2026missing's involuntary zone
 already does.
+
+## Wall-clock proprioception fixes the mean and leaves the tail (2026-10-13)
+
+[[literature/papers/wang2026clock]] answers this page's open question about
+scopes beyond the context window, for wall-clock time on MLE-bench
+(Qwen3.6-27B in OpenCode).
+
+- **Pushed perception works and pulled perception mostly does not.** The
+  harness appended "[TIME REMAINING: …]" and the generation time to every
+  tool result, which took mean use from 161% to 99.7% of a 15-minute
+  budget. On Zork, the same clock offered as a callable tool was rarely
+  called (0–0.8 times per episode for Qwen3-4B) and changed little.
+  Auto-Clock, which pushes the line every turn, adhered best.
+- **The mean is not the tail.** 38% of runs with the clock still overran.
+  The failure was an action whose duration the agent misjudged, so the
+  perception arrived too late to act on. This is mason2026missing's
+  runway point in wall-clock form.
+- **Perception is not prediction, again.** With the clock, the model read
+  elapsed and remaining time well (budget-left error −19 ± 58 s). It still
+  underestimated its total runtime by about nine minutes. Without the
+  clock the error was about twelve minutes.
+
+As in zhang2026judged, legible state became a deadline the agent filled
+rather than a resource it used well: quality was flat across 10–25 minute
+budgets. Pair the clock with a launch-time clamp
+([[concepts/enforcement-boundary-placement]]) rather than relying on it
+alone.
 
 ## Open questions
 

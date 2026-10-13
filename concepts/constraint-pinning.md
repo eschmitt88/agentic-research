@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/chen2026fresh]]"
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/chandran2026autoresearch]]"
+  - "[[literature/papers/mcmillan2026instruction]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -172,6 +173,29 @@ The lesson for this concept: a pinned *negative result* is a constraint like
 any other and shares its limit. Pinning it keeps it present; only a check
 outside the proposer's reasoning makes it bind. These are incident counts
 with no rate or control.
+
+## The rule was never evicted and still missed a third of the time (2026-10-13)
+
+[[literature/papers/mcmillan2026instruction]] measures this box's own
+channel: Claude Code reading a CLAUDE.md, with headless single-turn
+`--print` sessions, no compaction and no re-injection. The rule was a
+one-line, syntactic, AST-checked "MUST" (start every function body with
+`// @tracked`). At line 2 of a 250-line file, 67.7% of functions complied.
+With no CLAUDE.md the rate was 0/524, so the 67.7% is all instruction-driven.
+Compliance also fell within a session (pooled OR 0.944 per generated
+function, exploratory, non-monotonic). The median first miss was at function
+4, and the agent re-complied intermittently afterwards (55%).
+
+For this concept the point is the setting. The rule was in context for the
+whole session, so nothing pinning guarantees was ever at risk. This is the
+same prior failure as nepal2026faithful and chandran2026autoresearch, now
+measured at n = 16,050 on a rule gradable from the output, and the
+rule still bound only about two times in three. Pinning remains necessary
+under compaction, but this sets its ceiling. A pinned rule can bind no
+better than the same rule that was never evicted.
+
+Limits: a toy marker that plausibly fights a style prior, one CLI, three
+Anthropic models, two TypeScript repos, no released code.
 
 ## The known limit
 

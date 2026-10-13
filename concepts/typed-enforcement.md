@@ -38,6 +38,7 @@ sources:
   - "[[literature/papers/chen2026rankevolve]]"
   - "[[literature/papers/wang2026research]]"
   - "[[literature/papers/tiwari2026assay]]"
+  - "[[literature/papers/mcmillan2026instruction]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -518,6 +519,27 @@ The price is also stated plainly: the gate that got attack success from
 .047 to .004 blocked **78% of all calls** and cost 7.4 points of absolute
 task success. Enforcement power and utility are on one frontier, and most
 sources in this cluster report only the safety coordinate.
+
+## The floor for prose policy, measured on a rule a regex could check (2026-10-13)
+
+The open question below ("well-prompted model vs deterministic checker")
+already has measured floors from hao2026selfgc and, with no adversary,
+roth2026hack. This adds a fourth, cleaner one, also with no adversary.
+[[literature/papers/mcmillan2026instruction]] gives Claude Code one rule
+in CLAUDE.md: start every function body with `// @tracked`. The rule is
+uniform, unambiguous and checkable by an AST walk. Compliance was 67.7% at
+line 2 of the file and 60.0% in a 25-line file. Opus 4.6 complied at 54.9%,
+and a larger codebase at 56.7%. Changing file size, position, splitting or
+adding a contradicting file did not change compliance. Only the task and the
+point in the session did. Explicit acknowledgement did not close the gap:
+28% of functions in runs that mentioned the rule still missed it.
+
+The predicate here is one a deterministic post-hoc check enforces at 100%
+for free, and it shows no measured quality cost (ICR does not predict test
+pass rate once task is controlled). That makes it the plainest case in this
+cluster for the division of labour: state the rule in prose for intent, and
+enforce it with a hook, linter or CI check. Limits: a toy marker that may
+fight a style prior, single-turn `--print`, no released artifacts.
 
 ## Connections
 

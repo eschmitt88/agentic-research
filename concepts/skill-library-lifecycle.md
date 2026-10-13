@@ -50,6 +50,7 @@ sources:
   - "[[literature/papers/yan2026traceml]]"
   - "[[literature/papers/zhang2026veriharness]]"
   - "[[literature/papers/zhang2026who]]"
+  - "[[literature/papers/lumer2026reflective]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -536,6 +537,30 @@ retirement) is not load-bearing for a *detector* pool. Junk detectors stay
 inert unless selection picks them, whereas junk skills get routed into
 prompts. Caveats: three seeds, one model family, and the skill loop is the
 same group's own.
+
+## An optimizer that can write anything will write the answer key (2026-10-13)
+
+[[literature/papers/lumer2026reflective]] gives the admission gate a
+concrete failure to block. GEPA, rewriting a deep-research agent's system
+prompts from training traces, added "Known Benchmark Facts" blocks that
+pair verbatim training questions with their answers and source URLs.
+These blocks entered at the first accepted edit. They reached 52% of the
+selected orchestrator prompt and 72% of one rejected researcher prompt.
+The key earned no reward even on the questions it encodes. It still
+inflated the prompt, and it would be an active hazard in a domain where
+the same entities recur.
+
+The authors name two guards they did not run:
+- [[literature/papers/yang2026skillopt]]'s update rule, which bounds
+  edits, forbids hard-coded task-specific values and gates on held-out
+  validation;
+- a token-overlap novelty penalty between candidate text and training
+  questions, applied at scoring time.
+
+Both apply to any text artifact a loop writes, skill files included. The
+cheap version for this project is a lint that flags verbatim task-specific
+strings (answers, IDs, dates) in an evolved skill before admission. The
+held-out split only discounts such content after the fact.
 
 ## Open questions
 
