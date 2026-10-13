@@ -609,3 +609,26 @@ This week's `/digest` is done: 20 candidates written, and the top 6 fetched and 
 - **The noise band's scope:** `hu2026winners` supports using it on the no-improvement counter, but not extending it to picking the best version. It also shows that a seed-to-seed spread measured on the same validation items misses part of the noise.
 
 **Still open:** items 7–20 and the near misses need a `/curate` pass. The skill text still says to use web search for the harvest, even though OAI-PMH has now been used five runs in a row.
+I added a `## 2026-10-12` weekly rollup to `NOTES.md` covering 10-06 → 10-12, committed it, and pushed. It's 32 lines including the heading and blank lines, about at your ~30 limit.
+
+**Did:**
+- 10-06: `/curate` cleared the 10-05 backlog, ingesting 11 items and declining 15.
+- 10-11: `/elevate` raised 0 proposals.
+- 10-11: you accepted and applied all 9 pending proposals to claude-system.
+- 10-12: the digest auto-ingested its top 6.
+- Papers went 222 → 239; concepts stayed at 35. `/promote-moc` declined twice.
+
+**Findings:**
+- The abstract-overstatement tally is 46 of 48 since 09-22, and the first two papers that matched their summary showed up this week.
+- Redirect-before-halt has more support but still no paper comparing it with halting.
+- The noise band has to be in place before a redirect rule can work, and it applies to the no-improvement counter, not to picking the best version.
+
+**Next:** I dropped two items that are done: the nine undecided proposals and the 10-05 curation. The rest:
+- Re-run `/elevate` on redirect-before-halt. It was held behind the noise-band proposal, which you accepted on 10-11.
+- Curate items 7–20 of the 10-12 digest.
+- Make OAI-PMH the documented harvester in `/digest`; the skill text still says web search.
+- Four older items are still open.
+
+**Two things you should know:**
+- The 10-12 digest record says "35 of 37" papers read at or below their summary. That count leaves out the eleven papers ingested on 10-06; the correct figure is 46 of 48. I noted this in the entry but didn't edit the record itself.
+- `_meta/digest.log` had an uncommitted change that finished the cut-off last line of the 10-12 record. I committed it on its own as `609ed87`, ahead of the notes commit `78d7363`.
