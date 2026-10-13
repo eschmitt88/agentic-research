@@ -30,6 +30,9 @@ sources:
   - "[[literature/papers/yan2026traceml]]"
   - "[[literature/papers/xu2026conflictguide]]"
   - "[[literature/papers/cai2026forkandflush]]"
+  - "[[literature/papers/farahbakhsh2026agentdiscover]]"
+  - "[[literature/papers/he2026beneath]]"
+  - "[[literature/papers/wei2026scale]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -156,6 +159,26 @@ plausible explanation rather than the isolated one. And it is 2 runs per
 condition on a single problem with a known optimum. Treat the direction as
 a strong prior for setting per-candidate budgets, not as a tuned parameter.
 
+## Spend per evaluation, not only per proposal (2026-10-13)
+
+The section above prices *proposal* effort per candidate.
+[[literature/papers/wei2026scale]] varies the other per-individual spend:
+how many rollouts score each candidate and feed the next proposal. The
+optimizer, a coding agent, reads full trajectories of B rollouts and makes
+one bounded commit per round. With rounds fixed at 30, B = 100 produced the
+only held-out gain over baseline (67% vs 51%). B = 5–20 stayed within noise
+of baseline or overfit the training cases.
+
+B bundles three levers that the paper does not separate:
+- more failure evidence for the proposer;
+- finer resolution on the promotion decision;
+- 20× the rollout spend of B = 5, with no budget-matched arm.
+
+It points the same way as [[literature/papers/ishibashi2026effective]]:
+more spend per individual pays. But the candidate count was held at 30, so
+this was extra spend, not a reallocation under a fixed total. Caveat: one
+campaign per B, robotics simulation, and no rerun noise.
+
 ## In a research loop, the grain is the declared search space
 
 [[literature/papers/min2026autonomous]] observes where agentic search stops
@@ -223,6 +246,28 @@ structure matters most on sparse landscapes. The large gains are on AHC014
 LLM-SQL the gain is under 1%. How often a winning branch actually changes
 basin is never counted, so "escaping basins" is illustrated rather than
 measured.
+
+## The operator attractor under selection, and a controller fix that holds (2026-10-13)
+
+[[literature/papers/gurkan2026mutation]] measured the LLM operator's
+attractor with no selection. [[literature/papers/he2026beneath]] measures it
+inside a real autoresearch keep/revert loop (Opus 4.7, GPT-5.2 and
+Llama-3.3-70B, four small NLP pipelines, 300 iterations). Diff-level
+diversity stays flat while mechanism entropy over a 9-category edit taxonomy
+falls about 0.6 nats. Late edits are LR, warmup and β tweaks on different
+lines of `train.py`. This is min2026autonomous's lr/epochs default,
+reproduced with a stated mechanism: a peaked proposer prior, times an
+acceptance rule that passes low-variance tweaks more reliably, times history
+conditioning. An Aider loop with structurally different diffs collapses the
+same way, so the edit span is not what sets the effective grain.
+
+The fix acts on what is *proposed*, not on the span. The controller samples
+N candidates, reweights them by inverse category frequency, and drops any
+candidate within cosine 0.85 of the last 200 accepted intents. This kept
+entropy at 1.71 nats and cut cluster decay 0.68 → 0.28 at about 1% in-loop
+cost. Temperature 1.2 did nothing. Reading for this concept: profile the
+operator by category, not by diff, and widen it in the controller.
+Caveats: three seeds, ML-specific taxonomy, 124M–3B targets.
 
 ## Open questions
 
@@ -330,3 +375,24 @@ search reached 0.0379. This is one model and one run, but it is the first
 attested cost of narrowing search too early. Like the anneal above, the
 schedule is fixed in advance (T1 = 100), and the only sensitivity check
 (50/100/150 on FNO R0) favours the middle split.
+
+## The selection rule as a query the agent may ignore (2026-10-13)
+
+[[literature/papers/farahbakhsh2026agentdiscover]] (AgentDiscover) moves one
+level above the grain. The coding agent chooses which past candidates to
+build on, not only what to rewrite. Every idea and candidate is stored in a
+graph database, so MAP-Elites parent selection is a single Cypher query
+that the agent may use, combine or skip. The agent also runs its own local
+experiments before each submission. On Anthropic's kernel take-home at
+matched spend, it submitted 15 candidates against 128–166 for the
+population baselines, and it reached 960 cycles against 1,098. This fits
+ishibashi2026effective's per-candidate-depth finding above: fewer, deeper
+individuals.
+
+The evidence does not separate the two levers. No arm holds the coding
+agent fixed and forces a fixed selection rule on it. Local
+experimentation, a named target, prediction-before-submit, steering and a
+meta agent all travel together. The authors say they have not checked
+whether the agents rediscover MAP-Elites or UCT. Main results are single
+runs. Treat "let the agent own selection" as compatible with the data, and
+"go deeper per candidate" as the better-supported reading.

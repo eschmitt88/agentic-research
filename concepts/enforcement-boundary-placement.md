@@ -38,6 +38,9 @@ sources:
   - "[[literature/papers/tiwari2026assay]]"
   - "[[literature/papers/zhang2026judged]]"
   - "[[literature/papers/waks2026what]]"
+  - "[[literature/papers/gomez2026can]]"
+  - "[[literature/papers/mcmillan2026instruction]]"
+  - "[[literature/papers/wang2026clock]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -397,6 +400,37 @@ narrowly. There are no CIs, the length-matched arm is unreported, and no arm
 compares runtime against no runtime. It shows less prompt is better *given*
 enforcement, not that enforcement helps.
 
+## File structure inside the prompt placement is a null (2026-10-13)
+
+The rows above vary *whether* and *when* a rule reaches the prompt.
+[[literature/papers/mcmillan2026instruction]] holds the rule's presence
+fixed and varies the layout of the file that delivers it. It runs 1,650
+Claude Code sessions in a factorial over CLAUDE.md size (25–500 lines),
+position (line 2 to line 250), architecture (+AGENTS.md, +nested CLAUDE.md)
+and a contradicting AGENTS.md instruction.
+
+- **No structural variable moved compliance.** Size and conflict are
+  affirmative nulls (BF₁₀ 0.096, 0.053). Position and architecture are
+  failures to reject, with a minimum detectable effect of about 6 points.
+- **Task identity moved it far more.** Task means ran from 45.1% to 84.4%,
+  and the slope within a session differed by task (OR 0.831 to 1.005).
+
+Two readings for this repo:
+
+- **The 80-line CLAUDE.md ceiling cannot rest on adherence.** A top-placed
+  rule is followed equally at 25 and 500 lines. Its defensible basis is
+  token cost and legibility.
+- **The scoped-rules question is still unanswered.** The architecture arm
+  adds complementary files and keeps the rule in the root file. It is not
+  the same-content scoped-vs-unscoped arm that agarwal2026fire lacked
+  either. The nested arm's −6.0-point dip (raw p = 0.053) leans, weakly,
+  toward "every extra loaded file costs a little".
+
+The author recommends hooks that re-surface the rule and linters or CI
+checks, but tests neither. The prompt-placement ceiling it measures,
+about 65% on a trivial gradable rule, is the strongest argument yet in this
+graph for moving load-bearing rules out of the prompt.
+
 ## The boundary has a time axis, and one point on it is not enough
 
 Every placement in the table above answers *where*.
@@ -546,6 +580,55 @@ placement is partial: 11/14 unauthorized transitions refused, three MCP cells
 clause. The agent commits as the user, so a frozen contract's git hash gives
 tamper evidence, not a boundary. That is the same signing-key problem as
 tiwari2026assay.
+
+## One intent at three placements, plus a sanctioned exit (2026-10-13)
+
+[[literature/papers/gomez2026can]] puts one intent ("do not game the
+tests") at three placements and measures each on the same 8 models and 9
+defective-checker coding problems:
+
+- **A prompt paragraph** (E): act-based hacking 23.6% → 16.9%, and
+  gemini-3.5-flash doubled its rate.
+- **A policy document in the workspace** (C): 9.7%.
+- **The document plus an escalation tool** routed out of band (D): 5.3%,
+  zero for 6 of 8 models. D vs E has OR 5.44.
+
+The new row for the placement table is a *sanctioned alternative action*.
+Instead of blocking the forbidden act, it gives the agent a cheaper
+legitimate one at the moment of conflict. The prompt rows above
+(nepal2026faithful, zhang2026judged) say a prose rule buys partial
+compliance at best. This study agrees, and finds that adding an action
+does more than moving the rule.
+
+Caveats: the prompts are not fully crossed. D also says escalating "is not
+considered failing", so wording and placement are confounded. The domain
+is single-file competitive programming. The A-referenced contrasts carry
+selection-gate regression to the mean, though D vs E does not. The exit
+raises objections and enforces nothing. Escalation is used in only 26% of
+D episodes, and a model that never escalates (gemini-3.5-flash, 0/45)
+keeps hacking.
+
+## Rewrite or refuse at the same pre-execution point (2026-10-13)
+
+[[literature/papers/wang2026clock]] tests two actions at one placement: a
+hook that inspects each shell command before it runs, against a wall-clock
+budget, on MLE-bench Lite (Qwen3.6-27B in OpenCode, 15-minute budget).
+
+- **Clamp (rewrite):** lower the command's time limit so it stops by the
+  deadline. 74% on time, 90% valid submissions, quality 46.8 percentile,
+  17.0 turns.
+- **Refuse:** block the command and explain why. 88% on time, 78% valid,
+  quality 42.4, 20.3 turns. The agent "reissued blocked commands with
+  smaller limits", so refusal bought adherence with extra steps and lost
+  submissions.
+
+This is a second datum for chandran2026autoresearch's observation that the
+useful pre-execution gate rewrites rather than refuses. It also adds the
+trade: rewriting keeps more of the work, and refusing holds the boundary
+harder. Information without enforcement (a clock in every tool result)
+reached 62% on time. A GRPO policy trained under the refusing hook did not
+internalize it beyond the hook (86%). Single model, five competitions,
+episode counts not reported.
 
 ## Open questions
 

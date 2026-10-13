@@ -41,6 +41,7 @@ sources:
   - "[[literature/papers/shen2026what]]"
   - "[[literature/papers/singh2026churnbench]]"
   - "[[literature/papers/yan2026traceml]]"
+  - "[[literature/papers/li2026beyond]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -204,6 +205,34 @@ The authors call this "a search without memory" and name "retrieval over a
 run's earlier states" as the missing piece. It is a concrete case for gating
 retrieval on a stall signal over the run's own trajectory, not only over
 cross-task memory.
+
+## An erasure counterfactual for run memory, and distilled lessons beat raw history (2026-10-13)
+
+[[literature/papers/li2026beyond]] gives this concept a clean
+within-run test. It branches each trajectory near the midpoint and
+continues one arm normally. The other arm is re-initialized with its
+context, on-disk notes and code comments erased, keeping only the current
+artifact. Then it scores the first commit in each arm.
+- Retained memory helps six of seven frontier models (+0.036 to +0.145).
+- The weakest framers gain most, and Opus least.
+- Task signs favour memory for every model (up to 22 vs 5).
+
+The failure cases matter more for retrieval policy than the means:
+- Memory kept a premature "too slow" verdict on the stronger algorithm
+  (DeepSeek, msm_pippenger).
+- It anchored GLM to a local optimum that the erased arm escaped.
+
+Both are reasons to re-open stored conclusions at a stall, not only to
+retrieve them. This fits yan2026traceml's "search without memory".
+
+Across tasks, a distilled lessons.md beat path access to the raw source
+workspace for all three models tested (+0.035 vs −0.007 avg@3). Self-written
+lessons beat another model's in both directions. Read this as favouring
+distilled, consumer-specific memory over raw history. Caveats:
+- Erasure also gives a fresh context window, which confounds the
+  comparison.
+- Only one commit is scored.
+- No inter-task result clears a sign test.
 
 ## Open questions
 

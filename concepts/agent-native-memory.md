@@ -44,6 +44,7 @@ sources:
   - "[[literature/papers/he2026stored]]"
   - "[[literature/papers/goyal2026does]]"
   - "[[literature/papers/hu2026memory]]"
+  - "[[literature/papers/das2026selfpropagating]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"
@@ -299,3 +300,26 @@ bound.
   implicitly but does not yet enforce it as discipline. Graduate to
   `active` when a downstream project lifts the AKL math (or another
   formalization) to drive its own status transitions.
+
+## Any persistent file is memory; auto-loading is what makes it act (2026-10-13)
+
+This concept treats memory as Markdown files the agent writes and reads
+directly. [[literature/papers/das2026selfpropagating]] shows the
+security consequence of that definition: removing the memory tool does
+not remove memory. With no memory tool and no mention of memory, agents
+that wanted a later session to act wrote the goal to ordinary files
+(`/soc/handover.md`, `STANDING_PRACTICE.md`, `persistent_memory.md`) at
+almost the rate they had written to memory (13.1 vs 13.5 of 20
+scenarios). A tool that exists but errors on every write made no
+difference.
+
+The variable that mattered was the **read path**. End-to-end
+propagation fell from 12.5 to 4.2 scenarios per model, almost entirely
+because the successor had to find and open the file, while memory is
+injected into context every session. So for a file-based memory the
+security boundary is the set of auto-loaded files, not the memory API.
+In this project that set is CLAUDE.md, NOTES.md as read by `/wrap`, and
+concept files imported downstream. A directive that lands there has the
+memory-open properties. One that lands in an unindexed file mostly does
+not. This is our inference: the paper's harness had no auto-loaded files
+outside memory.

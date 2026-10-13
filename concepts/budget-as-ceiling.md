@@ -52,6 +52,13 @@ sources:
   - "[[literature/papers/hu2026winners]]"
   - "[[literature/papers/zhang2026judged]]"
   - "[[literature/papers/li2026humanize]]"
+  - "[[literature/papers/du2026can]]"
+  - "[[literature/papers/he2026beneath]]"
+  - "[[literature/papers/li2026beyond]]"
+  - "[[literature/papers/ning2026implementation]]"
+  - "[[literature/papers/wang2026clock]]"
+  - "[[literature/papers/wang2026language]]"
+  - "[[literature/papers/wei2026scale]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -1011,6 +1018,31 @@ after 11–20 generations). Paired per-item disagreement between champion and
 candidate supplies the missing term (our inference). Scope: instruction-only
 artifacts, deterministic scoring, n ≤ 256; no band-gated stop was tested.
 
+## Accept-all is the floor, and bare `>` stalls on tied binary scores (2026-10-13)
+
+[[literature/papers/wei2026scale]] compares two keep rules for a
+coding-agent harness optimizer (one commit per round, T = 30) on robot
+rollouts. Its gated rule, "Champion–Challenger", promotes iff the challenger's
+success count on the same fixed B cases strictly beats the stored incumbent
+count. That is bare keep-if-better, the greedy baseline of
+[[literature/papers/hu2026winners]], with K = 1. The alternative it is
+compared with is accepting every revision. That arm rises for a few rounds
+and then falls on training score at every B (B = 100: 42 → 47 → 34 → 38%
+in 10 rounds; B = 5: 2/5 → 0/5).
+
+So the paper establishes the bottom rung, keep-if-better over accept-all,
+and says nothing about bands vs `>`. Even that rung is one run per arm, with
+early-stopped, training-only accept-all arms.
+
+Its useful datum for the halting counter is about ties. With 5–10 binary
+cases most challengers tie the champion exactly and are rejected: 27 of 30
+at B = 5, against 22 of 30 at-or-below at B = 100. On a tiny binary
+validation split, a run of "no improvement" cycles is a resolution stall,
+not evidence that the search has converged. The counter should count it
+differently or not at all (our inference). The stored-incumbent score is
+never re-measured (Alg. 1), which is Hu's lock-in mechanism. The paper does
+not discuss it.
+
 ## A run-length counter must act through the harness, and its action here is a stop (2026-10-12)
 
 [[literature/papers/zhang2026judged]] tests the exact shape of
@@ -1069,6 +1101,158 @@ run is allowed to stop. Two constraints on the `/iterate` design follow:
 Returning agents also overwrote standing medal candidates, which a
 cross-agent final review over the archive restored (311 → 319 of 330). As
 with MIRA above, the redirect must sit behind the monotone keep gate.
+
+## The counter-pole to redirect: a controller-enforced commitment floor (2026-10-13)
+
+Every redirect source above treats under-pivoting as the failure.
+[[literature/papers/du2026can]] (Station, metric-free research tasks) treats
+the opposite one: agents drop hard directions early for easier ones (the
+"streetlight effect"). Its fix is a **Supervisor** agent that cannot run
+experiments and is forbidden to suggest directions. It enforces a written
+pre-commit clause of at least 60 ticks and rejects almost every pivot request
+unless continuing is "genuinely impossible". It holds a meeting every 10
+ticks and keeps a record of each agent's commitments outside that agent's
+context.
+
+On one task, removing the Supervisor together with periodic GPT-5.5
+reflection shortens projects (67.0 → 55.5 ticks) and cuts rediscovery
+75.8% → 57.9% (3 runs). The ablation is joint, and the ablated system still
+beats every baseline by about 3×. Persistence also stopped paying after
+tick 100 (61.2% vs 62.7% at tick 300). So this is a mechanism with weak
+evidence, not a result. For `/iterate` the design point stands: a
+stall-triggered redirect probably needs a minimum span before it may fire.
+That matches li2026humanize's finding that frequent forced handoffs cost
+score. As with the redirect, the floor here is enforced by the controller,
+not requested in the prompt. Still no source runs floor + redirect against
+halt.
+
+## The failure a no-improvement counter cannot see (2026-10-13)
+
+[[literature/papers/he2026beneath]] runs Karpathy-style autoresearch (Opus 4.7
+proposer, 5-minute runs, keep above a noise floor) for 300 iterations on four
+small NLP pipelines. The in-loop metric never stalls. Over the same window
+the *kind* of accepted edit collapses: mechanism entropy falls 1.76 → 1.18
+nats, and by iteration 200 on T1, 74% of kept edits are LR-schedule or AdamW
+micro-tunings. Only 38–49% of the in-loop gain appears on audit benchmarks.
+`max_consecutive_no_improvement` would stay at zero throughout. This is
+cai2026forkandflush's "micro-improvements reset the stall clock" seen from
+the other side.
+
+Two points for the redirect design:
+- **A trigger that sees it.** Windowed entropy over a category label per
+  accepted edit is cheap, needs no audit split, and falls while the score
+  rises.
+- **The redirect that worked is enforced by the controller.** CCR
+  reweights sampled candidates toward under-used categories, and PEM
+  rejects ones near the last 200 accepted edits. Together, with no audit
+  access, they raised blind faithfulness 0.41 → 0.67. Higher temperature
+  and a Reflexion summary did nothing. This is one more
+  controller-not-prompt result, after yan2026traceml, xu2026conflictguide,
+  cai2026forkandflush and zhang2026judged.
+
+Limits: no halt arm, no plateau trigger, and the audit-gated revert runs on a
+fixed K = 10 schedule. The headline collapse tables may be T2-only values
+labelled as averages. The paper's mechanism (F2) says a noise-floor keep
+rule favours low-variance micro-tunings, so the accepted band could deepen
+collapse. That is predicted, not tested.
+
+## A five-commit plateau hook is a scheduled ask, not a redirect-before-halt test (2026-10-13)
+
+The 10-12 digest put [[literature/papers/li2026beyond]] forward as a design
+precedent for redirect-before-halt. In that paper, an Opus-4.8 outer loop
+evolved a Claude Code harness over 4 rounds on 3 tasks. One rule it wrote:
+"After every five new commits, a hook asks the agent to reassess whether
+progress has plateaued and to attempt a larger structural change". The
+mechanism is described accurately. As a precedent it is weaker than
+xu2026conflictguide or li2026humanize:
+- **It fires on a schedule, not on a stall.** li2026humanize found that
+  frequent scheduled moves cost score.
+- **It asks rather than masks.** That is the prompt form that yan2026traceml,
+  xu2026conflictguide, cai2026forkandflush and zhang2026judged each found
+  ineffective.
+- **There is no halt arm.** The task instruction forbids early stopping.
+- **There is no ablation.** The hook is bundled with "identify what the
+  verifier rewards" and "restore your best". Its evidence is one trajectory,
+  0.37 → 0.68. The whole harness gains +0.06 avg@3 on held-out tasks in the
+  same family and nothing on other families.
+
+Two specifics carry over to `/iterate`. First, guard the champion before
+any structural move. Second, a commit-count trigger depends on run length.
+Models here averaged 2.5–16 evaluated commits per run, so a k = 5 hook
+would rarely fire for half of them. A stall trigger has to be scaled to
+the run. Still no paper runs redirect against halt.
+
+## What a seed band measures, and where the replication budget should go (2026-10-13)
+
+[[literature/papers/wiedmann2026agents]] showed that the `--seeds` band
+understates hypothesis-level noise. [[literature/papers/ning2026implementation]]
+puts numbers on the split for a frozen idea spec. Across its three cohorts,
+the SD between independent implementations is 0.9–2.7 accuracy points and
+the seed SD is 0.4–0.8. In the 18-task follow-up these are 1.17 / 0.46
+(Bounded) and 0.98 / 0.45 (Agentic). 78% of programs score identically on
+all three seeds. Ideas still differ more than implementations do (ICC
+0.83–0.92), but a std computed from seeds of one program measures the
+smaller term.
+
+The paper also gives the allocation rule (Cochran two-stage):
+K* = (σ_R/σ_M)·√(c_M/c_R) seeds per implementation. At its measured
+cost ratios (an implementation costs 2.6–3.7 seed evaluations), one seed
+per program minimises variance. 21 programs × 1 seed beats the 12 × 3 design
+it actually ran (fitted variance 0.075 vs 0.120). A second seed pays only
+above a cost ratio of about 9.5–13. For the noise band this means a band
+meant to judge a *hypothesis* should be built from re-implementations at one
+seed each, not from seeds of one implementation. Caveat: gradient boosting
+is nearly seed-deterministic, so the 2:1 ratio is a floor for stochastic
+training, and the allocation figures are model-based planning values.
+
+## A wall-clock ceiling in the prompt is ignored, and one that is met is not spent (2026-10-13)
+
+[[literature/papers/wang2026clock]] (AWS, NeurIPS 2026 workshop) runs
+Qwen3.6-27B in OpenCode on five MLE-bench Lite competitions under a
+15-minute budget. Stated only in the prompt, the budget is ignored: the
+agent used 161% of it, and 15% of runs finished on time. With a clock line
+appended to every tool result, mean use falls to 99.7%, but only 62% of
+runs finish on time. Per-run adherence needs a hook that clamps (74%) or
+refuses (88%) shell commands that would outrun the budget. GRPO trained
+under the refusing harness added nothing (86%). Two points for this
+concept:
+
+- **The ceiling must be enforced at launch, not just displayed.** The
+  dominant overrun was a command, usually training, whose timeout exceeded
+  the time left. The agent saw the clock and still launched it. This is
+  ceiling-plus-one-call measured in wall-clock time.
+- **Meeting a ceiling does not mean spending well under it.** Under the
+  harness, elapsed time tracks budgets of 10–25 minutes and quality stays
+  flat. Extra time went into "more attempts at essentially the same
+  training procedure". This is weak support for redirect over extension
+  on a plateau. It is weak because the shared prompt told the agent that
+  punctuality "MATTERS MORE THAN MODEL QUALITY".
+
+On Zork, the RL policy's near-exact adherence came from filling the clock
+with commands the parser rejects (45–88% of turns). So a utilization
+metric needs a useful-time companion before it is read as effort.
+
+## A cheap pre-execution screen decides which candidates get the budget (2026-10-13)
+
+The allocation half of this concept has so far meant splitting a budget
+across phases (hamri2026zebra) or across plan branches (yu2026primescientist).
+[[literature/papers/wang2026language]] (Amazon et al.) measures a third
+lever: predict each candidate's gain before running it, and spend compute
+only on the top few. Claude Opus 5 was given past experiment records and
+asked to rank unseen interventions. Over 2,653 real runs, mean Spearman rose
+from 0.506 with no records to 0.774 with in-environment records. Scoring 16
+candidates costs about 5% of one median 42 GPU-hour experiment. That fits
+chandran2026autoresearch's rule that pre-execution gates pay off only when
+iterations are expensive.
+
+Read the selection numbers narrowly. The abstract's "78% less regret" is the
+best of five transfer targets; the macro is 52%, and one target got worse.
+Most regret differences, and the multi-round +15.8%, are smaller than one
+reference seed's std (0.0054 BPB). The multi-round result is also a replay
+over a pre-executed pool, not a live loop. What transfers is a screen that
+*drops* clearly bad candidates, conditioned on the project's own records.
+That kind of screen sits in front of the ceiling. It does not replace the
+keep gate, and it should not be trusted to pick the winner.
 
 ## Open questions
 

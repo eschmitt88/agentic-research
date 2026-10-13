@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/brueckner2026kbench]]"
   - "[[literature/papers/xiao2026search]]"
   - "[[literature/papers/wang2026making]]"
+  - "[[literature/papers/lumer2026reflective]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -238,6 +239,27 @@ systems is also mostly this distinction. XCIENTIST's 3.6–16.7% "audit claim
 drift" is (drifted + unverifiable)/N. On confirmed drift alone it is 3/362,
 against 1/111 for EvoScientist. What the anchors bought was auditability,
 not a demonstrated drop in error. Report the two rates separately.
+
+## Anchoring as an optimizable reward, and the lever that stays binding (2026-10-13)
+
+[[literature/papers/lumer2026reflective]] turns this concept's checks
+into a reward for a deep-research agent, behind a correctness gate:
+- does the cited URL resolve in the corpus (deterministic);
+- is the source about the claim (LLM judge);
+- does it support the specific claim and figures (LLM judge);
+- is the numbering contiguous (deterministic).
+
+Prompt optimization against that reward raised the three citation levers
+by about +0.09 each on 500 held-out tasks. It did so with
+topic-independent rules any agent prompt can carry: answer first, one
+claim per citation, verify the cited page's main content supports the
+claim, cite corpus URLs only. Not-in-corpus URLs nearly vanished (4 left).
+Factual support is still the binding lever at 0.62. Its residual failures
+are "source does not support the specific claim" (173) and "topically
+related but not the exact fact" (165). That is the resolvable-not-relevant
+gap from the section above, measured. Resolution is easy to enforce and
+relevance is not. Two cautions: the relevance judge agrees with a human at
+only κ = 0.23, and the 48-pair check has a single annotator.
 
 ## Open questions
 

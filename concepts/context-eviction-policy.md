@@ -55,6 +55,9 @@ sources:
   - "[[literature/papers/samanta2026learning]]"
   - "[[literature/papers/cai2026forkandflush]]"
   - "[[literature/papers/li2026humanize]]"
+  - "[[literature/papers/farahbakhsh2026agentdiscover]]"
+  - "[[literature/papers/liu2026what]]"
+  - "[[literature/papers/xu2026replaylens]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -690,6 +693,62 @@ place this page cares about:
 Treat "flush to restart" as a hypothesis. The single-backend test of it is
 fork-and-flush (arXiv 2610.07447), which keeps the workspace, flushes the
 chat and holds the model fixed.
+
+## A flush offered on a cost trigger, with the history behind a query (2026-10-13)
+
+[[literature/papers/farahbakhsh2026agentdiscover]] (AgentDiscover) is a
+third total-flush design. This one is triggered by price, not by schedule
+or overflow. From the fifth candidate of a session, the server's reply
+includes a cost note: the context has grown to L tokens, while "a fresh
+session would start from ⟨c + i⟩". The agent decides whether to stop. A
+fresh agent inherits the worktree, the `tools/` and `skills/` folders and a
+graph database of every attempt, and it re-reads the history by query
+rather than by replaying it. The flush is cheap because nothing has to be
+re-read.
+
+The evidence is observational. After a stall of more than five candidates,
+the chance of a new best within three candidates is 21.2% when continuing
+(n = 650), 25.0% after a reset (n = 32) and 26.2% after a reset plus a
+meta-agent pass (n = 42). The reset arm's binomial SE is about 8 points,
+and the agent chose when to reset. The direction agrees with
+cai2026forkandflush (same model, flushed chat, kept workspace). It is a
+third instance of "flush as exploration move", not an independent test of
+it.
+
+## Whole-harness check: an overflow mostly marks a task already lost (2026-10-13)
+
+[[literature/papers/liu2026what]] tests the liveness reading
+(fan2026empirical) on production harnesses rather than tiers in one loop.
+mini-SWE-agent has no compaction and overflows a 131k window on 11 of 45
+hard tasks and 18 of 447 pool tasks with Qwen3.8-27B. But the harnesses
+that compact mostly failed those tasks too. Recovering every overflowed
+task that another harness passed would move mini-SWE-agent by 6.7 points
+on hard45 and 1.3 on the pool, and 7 of the 11 overflow again on rerun.
+At a generous window, then, not dying is worth little when the overflow
+is a symptom of a failing trajectory. Compaction did not make Claude Code
+or OpenCode beat the uncompacted harness: CC vs mini is equivalent within
+±5 points on both Qwen models. The cost side matters more. Each step
+re-sends the transcript, so a harness's bill is its preamble and growth
+line, and compaction's cliffs show up in the cost curve, not the pass rate.
+
+## Eviction decides whether a store survives a restore (2026-10-13)
+
+[[literature/papers/xu2026replaylens]] adds a property that this concept's
+policy comparisons have not scored: whether the retained state depends on
+*what* arrived or on *the order it arrived in*. Its pair-transport zero law
+says a store that sums a position-independent function of each record
+is invariant to reordering. FIFO retention is not, because arrival order
+decides which entries survive the cap. With a 16-slot store and 8-slot
+retrieval, replaying the same events in a different order changed FIFO's
+stored summaries and retrieved text in 192/192 test blocks. It changed 0
+for logical-time retention, an identifier-priority reservoir and per-action
+binned means. So a FIFO-evicted memory cannot be safely rebuilt from an
+unordered backup or a merged log. That is a migration hazard and needs no
+accuracy loss to matter. Two caveats keep this small. The utility cost was
+3 × 10⁻³, and the binned store also kept all 32 observations to FIFO's 16,
+which confounds coverage with order. An endpoint-only selector picked the
+same safe store anyway, and the paper's criterion for added audit value
+was not met.
 
 ## Open questions
 

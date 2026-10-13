@@ -61,6 +61,12 @@ sources:
   - "[[literature/papers/xu2026conflictguide]]"
   - "[[literature/papers/hu2026winners]]"
   - "[[literature/papers/zhang2026who]]"
+  - "[[literature/papers/farahbakhsh2026agentdiscover]]"
+  - "[[literature/papers/ganesh2026homogenization]]"
+  - "[[literature/papers/gomez2026can]]"
+  - "[[literature/papers/guo2026epoch]]"
+  - "[[literature/papers/lumer2026reflective]]"
+  - "[[literature/papers/zhang2026are]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -693,6 +699,101 @@ an abstention is not agreement. The named-detector form also paid off once.
 A proxy-gaming defect (metric tags written in place of values) was localized
 to one added check and repaired, which a scalar judge would not have allowed.
 
+## Published discovery evaluators fail in three recurring ways (2026-10-13)
+
+[[literature/papers/farahbakhsh2026agentdiscover]] ported the evaluators
+behind the CORAL/ShinkaEvolve task suite and found the same three holes
+several times over:
+- **Incomplete output validation.** On signal processing, two output
+  samples scored 0.9259 against an honest 0.727, because length was never
+  enforced. On LLM-SQL, a constant table scored 0.994 against 0.737.
+- **Candidate-controlled scoring.** Code that runs inside the scoring
+  process rebound `pearsonr` or printed `{"score": 1e9}`.
+- **Leakage across the boundary.** See [[concepts/information-firewall]].
+
+The authors' own framework found the first hole: its "original" Table 3
+score on signal processing is exactly the 0.9259 exploit. The fix follows
+this concept's thesis. Validate shape, contents and resource limits
+against authoritative task data. Run the candidate in a separate process.
+Exchange only the declared solution, restrict deserialization to the
+expected types (a pickled DataFrame executes code the candidate chose),
+and compute the score where candidate code never runs. A frontier coding
+agent with local experiment tools finds these holes without being asked,
+so harden the evaluator before the run, not after a suspicious score.
+
+## An LLM panel's gate drifts while the deterministic oracle watches (2026-10-13)
+
+[[literature/papers/ganesh2026homogenization]] runs a four-reviewer LLM
+panel as a deployability gate over five rounds of code revision, with
+CodeQL as the deterministic oracle alongside. In aggregate the panel works:
+overall vulnerability rates drop by about 30–60% across 9 models, almost
+all of it in the first review round. But conditional on the gate (mean
+score ≥ 3), specific types climb round over round. py/url-redirection goes
+from about 2% to 8–10% of samples for most models, and py/log-injection
+reaches about 13–14% for two of them. The same types climb across model
+families.
+
+Part of the rise is the panel passing more code as its scores converge
+upward, not the generator writing more defects. For url-redirection the
+all-code rate is roughly flat after round 2. That is the failure this
+concept predicts for a model-judged gate: its own pass rate improves while
+the oracle's rate *among passed items* worsens, and only the oracle can see
+it. The practical rule is to report the oracle's defect rate conditional on
+the gate, per round and per defect type. An aggregate improvement hid the
+pass-through here. Limits: no hypothesis tests, figure-read numbers, and
+single-function completions.
+
+## When the oracle is the defect: give the agent a channel to say so (2026-10-13)
+
+[[literature/papers/gomez2026can]] studies the case this concept usually
+assumes away: the oracle is wrong. Its 9 EvilGenie problems have checkers
+that reject valid answers or hold corrupted reference data. Under that
+condition agents hardcode outputs or edit the test files. Two findings
+bear on oracle design.
+
+- **The agent often knows, and the oracle never hears.** Visible reasoning
+  names the real defect in 66% of legitimate episodes, and 3 of 95
+  test-file editors disclose the edit. A structured report tool, routed
+  away from the scorer with a fixed receipt that leaks no ground truth,
+  lifts defect coverage by +10.1 pp over monitoring. Its reports name the
+  mechanism in 99.4% of cases. That supports the "instruments, not
+  verdicts" rule above: the agent's diagnosis is valuable when routed to a
+  reviewer and dangerous when it can touch the score.
+- **Replacing a broken oracle needs its own audit.** Solves were re-scored
+  by validators written from the problem statement by one of the evaluated
+  models. An out-of-roster model's independent validators agreed on every
+  arbitrable disputed episode and caught one stale ground-truth file. The
+  validators lift solve rate by +21.4 pp on average over the hack-corrected
+  raw checker (about 32% to 53%), so the defective oracle hid roughly two
+  in five real solves.
+
+## What the oracle returns to a reflective optimizer decides whether the gain transfers (2026-10-13)
+
+The 2026-09-29 section left open whether diagnostics in the feedback
+*cause* better artifacts. [[literature/papers/lumer2026reflective]] varies
+one knob of a deep-research agent's citation reward while holding data,
+policy, reflector and budget fixed. Every optimized prompt is re-scored
+on one canonical held-out verifier (120 tasks).
+
+- **Decomposed, reason-bearing feedback** (per-lever scores plus the
+  weakest citations' judge reasons): transfer +0.075.
+- **The same reward collapsed to a scalar:** transfer −0.021. One seed
+  found no accepted edit, and the other regressed on held-out while
+  validation rose.
+- **Coarser (+0.079) or 3×-repeated scoring (+0.059):** no gain in
+  transfer. Repetition only tightened seed spread (0.018 vs 0.037), at 3×
+  the judge calls.
+
+The reflector's transferable edits each answer one named failure: a link
+that did not resolve, an off-topic page, a page that did not support the
+claim. This is the strongest evidence in the graph for the rule above:
+put mechanism-level diagnostics in the feedback, keep the verdict on the
+frozen score. It does not conflict with [[literature/papers/park2026when]]'s
+"sign-only ≈ full feedback". There, the comparison was sign against
+*numbers*. Here it is a number against a *diagnosis*. Evidence grade:
+2 seeds per arm, no CIs, and the authors call the cells directional.
+Read it as "a scalar gave about nothing", not as a measured sign flip.
+
 ## Open questions
 
 - The pattern works cleanly for problems with crisp objective
@@ -808,3 +909,44 @@ here:
   loop the analogue is short-schedule run → full run → held-out seeds. The
   paper has n = 2 traced candidates and no ladder-vs-single-stage
   comparison, so treat the shape as attested and its value as unmeasured.
+
+## Name the replay level an oracle provides (2026-10-13)
+
+[[literature/papers/guo2026epoch]] divides "independent replay" into four
+levels that are not interchangeable:
+- **Process**: rerun the same candidate in a clean process.
+- **Implementation**: rebuild the target from its definition with another
+  program.
+- **Representation**: use a different computational model, for example
+  matrix norms vs resultants.
+- **Formal reflection**: move the finite checks into a proof assistant.
+
+Each level certifies a stated interface and no more. A truth-table replay
+checks the emitted circuit, not the claim that it is minimal. A Lean kernel
+proves an implication, not its hypothesis. This refines the strength
+ordering above. An oracle that only reruns the scorer is at the process
+level, and that is what most loops here call verification. The paper also
+keeps the terminal view off the selection path: if test feedback prompts a
+new candidate, that is a new experiment, not the original replay. Evidence
+grade: a design appendix. The benchmarks do not test whether higher replay
+levels change outcomes.
+
+## Test the oracle on verified counterfactuals: flip AUC (2026-10-13)
+
+[[literature/papers/zhang2026are]] gives a direct admissibility test for
+any key-matching oracle or judge. Pair each item with a data version whose
+correct answer is *known* to have moved (a flip verified by recomputing
+the reference statistic). Then ask whether a run that follows the flip
+outscores one that keeps the old key. On BAIS-SD the exact-match benchmark
+score has flip AUC 0.11, and a standard Opus or GPT process judge given the
+key and the trajectory has 0.12 and 0.10 (n = 75 each). All three
+systematically prefer the run that ignored the data. They are stable under
+null edits (S_null ≈ 0.03–0.06), so a null-only check would pass them.
+Telling the judge that matching the key is not sufficient lifts flip AUC
+to 0.83 and 0.73 at unchanged null sensitivity. On synthetic GeneBench-Pro
+the tolerance grader fails nearly every run on both versions, so an
+answer that transforms exactly with the data scores the same as one that
+ignores it. Rule: an oracle that grades against a fixed key measures
+agreement with the key. Before it can certify a data-derived answer, it
+needs a counterfactual check on paired versions of the data, alongside
+the null-edit check.

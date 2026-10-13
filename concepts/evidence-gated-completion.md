@@ -35,6 +35,8 @@ sources:
   - "[[literature/papers/woo2026youra]]"
   - "[[literature/papers/wang2026making]]"
   - "[[literature/papers/waks2026what]]"
+  - "[[literature/papers/guo2026epoch]]"
+  - "[[literature/papers/zhang2026are]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -987,6 +989,49 @@ failures, and retries do not enlarge it. Limits: the deterministic checker's
 8/8 is a fault-specific rule run on self-authored fixtures, and there is no
 closed-loop or outcome measurement. The hold on a refusal-driven outcome delta
 is untouched.
+
+## A three-valued gate inside a search loop, and infrastructure is not evidence (2026-10-13)
+
+[[literature/papers/guo2026epoch]] (EPOCH) moves the gate from task completion
+to *endpoint replacement* in a discovery search. A candidate replaces the
+verified incumbent only if every applicable gate passes: schema, scope,
+correctness, budget, a mechanism-targeted challenge, and replay. The gates
+are a conjunction, and each returns pass / fail / **unresolved**. It adds
+one rule this page lacked. **An infrastructure incident that prevents a
+required check leaves admission unresolved. It is neither a pass nor
+evidence against the candidate.** Each ledger event carries a failure
+attribution, so a parser crash or a missing device cannot be scored as a
+scientific failure. That is a direct guard on the false-rejection question
+below. The paper also states the invariant plainly: the retained endpoint
+always holds its own passing receipt, which "establishes protocol
+compliance rather than external truth."
+
+On the hold, its "no proof admission" ablation is a refusal-removal arm with
+an outcome delta: full EPOCH wins 6/0/0 on six AgentHPOBench tasks
+(sign-test p ≈ 0.03, our arithmetic), and the gate rejects 34.67% of
+proposals. **It does not narrow the hold.** The raw gaps are 0.01 on three
+of the six tasks and are inflated by within-variant min-max normalisation.
+Seeds and budget are not stated, and what a "proof" obligation means for
+hyperparameter tuning is not specified. The authors are the stakeholders,
+and no code is released.
+
+## Noticing without acting: the trajectory held the evidence, the answer ignored it (2026-10-13)
+
+[[literature/papers/zhang2026are]] measures a gap this concept assumes
+away: the trajectory contains hard evidence against the answer, and the
+answer goes out anyway. With the queried gene deleted, 35% of runs state
+that the data cannot decide, and 84% of those still give the benchmark key
+("PECAM1 is not in the dataset's gene list" … "the only option left").
+The agent's own data-support label tracks the evidence better than its
+answer. 84% of flip-following runs report full support, against 13% of
+key-keeping runs. Both LLM judges did worse at this separation. Two
+implications for a completion gate. First, a gate should consume the
+agent's typed evidence statement (supports / partially / does not /
+cannot determine), not only the final answer, because the forced-choice
+format discards it. Second, the output contract needs an explicit
+"insufficient data" outcome. Adding one moved withdrawal key credit from
+77% to 31%, with 0% abstention on intact data, but it barely moved flips
+(30% → 21%). It covers absence, not contradiction.
 
 ## Open questions
 

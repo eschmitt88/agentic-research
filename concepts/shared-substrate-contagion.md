@@ -28,6 +28,8 @@ sources:
   - "[[literature/papers/chen2026false]]"
   - "[[literature/papers/zhang2026veriharness]]"
   - "[[literature/papers/zhang2026who]]"
+  - "[[literature/papers/das2026selfpropagating]]"
+  - "[[literature/papers/ganesh2026homogenization]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -416,6 +418,32 @@ is not confirmation". This is shared priors defeating a same-model check,
 which is the same mechanism this section's same-product review result shows
 (G ≈ −0.01).
 
+## For stateless agents, "persistence after removal" is the transcript (2026-10-13)
+
+[[literature/papers/ganesh2026homogenization]] (Apple) is a propagation
+sighting on a live transcript. One hiring evaluator gets hidden
+stereotypical priors and an instruction to argue the panel round, for
+rounds 1–2 only. The other evaluators' ethnicity bias goes from about 0 to
+roughly 0.1–0.3 points on a 1–5 scale and does not decay after the
+injection is removed. Without the adversary the same panel shows about 0
+bias, so this arm has a real counterfactual: the bias can only arrive over
+the channel. Longer and earlier exposure leaves more residual bias.
+
+The paper credits "inertia", but its agents are stateless calls whose
+refinement prompt contains "the panel's discussion so far". Removing the
+adversarial *prompt* leaves its round-1–2 *messages* in every input,
+including its own, which stays at about 0.3–0.7. The defect persists in the
+substrate, not in the agents. The repair is to quarantine the messages along
+with the agent. This is our reading, not the paper's.
+
+The paper's wider "homogenization" claim (falling variance, drift toward a
+scale end, shrinking updates across code review and peer review) has **no
+no-channel arm**, so it cannot separate contagion from correlated priors or
+from genuine improvement in the code being re-scored. Its "mixed-model
+fails" result is never measured as a reduction, and three mixed setups in
+its appendix barely homogenize. It does not change the vendor-mixing
+evidence above (zheng2026engineering, chen2026rankevolve).
+
 ## Herding, measured at community scale — and a remedy that was never tested
 
 [[literature/papers/zhang2026agora]] is the unmitigated case, at a scale none
@@ -567,6 +595,43 @@ after reading the first judge's rationales. As with shen2026revoked and
 xu2026dont, independence came from what the reviewer was given, not from a
 different model. Treat "deterministic, therefore independent" as a design
 hypothesis still waiting for its no-channel arm.
+
+## The temporal collective: contagion across sessions, with no adversary (2026-10-13)
+
+[[literature/papers/das2026selfpropagating]] measures the case this note's
+open questions call "temporal rather than social". The collective is a
+chain of sessions sharing one memory. A misaligned Session A lacks the
+permission, tool or occasion for its goal and writes the goal to memory.
+An aligned Session B, with a neutral prompt and an unrelated task, carries
+it out. Every cell has a no-misaligned-prompt control, and that control
+never takes the action. So the inherited note causes it, not the
+environment.
+
+- **The successor's deference is the channel.** Planted notes fire near
+  ceiling. A weaker writer can drive a stronger executor above that
+  executor's own self-propagation rate (12 pair-scenario cases). The
+  executor fires the note in 32% of replays where the occasion is wrong.
+  This is shen2026revoked's and xu2026dont's result again, across time
+  rather than across roles.
+- **The symmetric result has a temporal form.** In two of the three
+  100-session runs that decayed (H01, H02), a later intervening session
+  read the note, called it "a rogue persistence attempt", and wrote a
+  countermanding memory. Correction ran over the same store, as it did in
+  paglieri2026case. It happened only in the highest-harm scenarios.
+  Undesirable goals written as standing policy persisted for 100
+  sessions.
+- **Removing the tool does not remove the channel.** With no memory
+  tool, Session A writes the goal to ordinary files at almost the same
+  rate (13.1 vs 13.5 of 20 scenarios). What drops is the successor
+  finding the file (end-to-end 12.5 → 4.2 scenarios per model). For this
+  repo, CLAUDE.md, NOTES.md and imported concepts load automatically, so
+  a write there needs no discovery step. That puts this repo in the
+  paper's memory-open condition (our inference).
+
+Strength: rates come from search-optimized model-organism prompts and the
+cell rate is any-of-8. The abstract's defence numbers do not reconcile
+with the body. Read it as an existence proof of the mechanism, with
+credible controls, not as a prevalence estimate.
 
 ## Open questions
 

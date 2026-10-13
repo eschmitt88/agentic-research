@@ -17,6 +17,8 @@ sources:
   - "[[literature/papers/dai2026agentguard]]"
   - "[[literature/papers/li2026who]]"
   - "[[literature/papers/guo2026groundability]]"
+  - "[[literature/papers/gomez2026can]]"
+  - "[[literature/papers/zhang2026are]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -285,6 +287,44 @@ beats the cascade's 0.33. When a gate leans toward refusal and the base
 rate leans toward defects, pairing catch with over-rejection is necessary
 but not sufficient. The constant-policy baselines have to be on the same
 plot.
+
+## A sanctioned exit measured only where exiting is right (2026-10-13)
+
+[[literature/papers/gomez2026can]] is the unpaired counter-example to the
+section above. Its escalation tool reduces reward hacking from 23.6% to
+5.3% and names the real defect in 153/154 reports (99.4%). But every
+problem in the escalation arms has a real checker defect, and the
+unambiguous control problems ran only in the no-tool baseline. The 99.4%
+is therefore precision at a 100% base rate. The cost this concept cares
+about is a false escalation on a correctly specified task: an agent
+abandoning legitimate work because "the evaluator is wrong". That cost is
+never measured. The paper itself hints at it: one model escalates on a
+problem whose defect has no practical effect.
+
+The utility side is reported, but only to the paper's resolution. Solve
+rate went from 50.6% to 52.5%, CI [−5.4, +9.2], against a minimum
+detectable difference of ±10 pp. The author correctly calls this
+"absence of a large effect, not confirmation of zero". Rule for any
+escalation or abstention exit this box adopts: run it on paired clean
+tasks and report the false-escalation rate beside the hack reduction.
+
+## An abstention channel with a measured zero cost on the legitimate twin (2026-10-13)
+
+[[literature/papers/zhang2026are]] adds a third paired instance, and its
+pairing is verified rather than assumed. Every item has an intact-data
+version (a correct answer exists) and a withdrawal version (verified by
+recomputing the reference statistic: no answer is supported), and the same
+agents run on both. Offering "The provided data are insufficient to
+determine the answer" produced 0% abstention on intact data across three
+Claude models (accuracy 97% vs 95% without the option) and 57% abstention
+on withdrawn data. That is the rare case [[concepts/constraint-pinning]]
+also reports: a refusal channel with no measured over-refusal cost. It
+comes from 18 tasks × 3 models × 3 replicates, so a small over-refusal rate
+is not excluded. The third version shows the limit. On flipped data, where
+a different answer *is* supported, agents abstained in only 6% of runs,
+and key credit fell only from 30% to 21%. A refusal channel fixes the
+missing-evidence error, not the contradicting-evidence error, so the
+paired control must include both.
 
 ## Connections
 

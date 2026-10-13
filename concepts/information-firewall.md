@@ -23,6 +23,8 @@ sources:
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/qu2026propose]]"
   - "[[literature/papers/chen2026false]]"
+  - "[[literature/papers/du2026can]]"
+  - "[[literature/papers/farahbakhsh2026agentdiscover]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -258,6 +260,53 @@ lesson carries over: a holdout cut at the item level leaks whenever items
 share an upstream root. In the live adaptive loop, the boundary still
 leaves 3.0% / 3.7%, which shared pretraining does not respect. One run
 per arm.
+
+## The harness's own prompts can open the time boundary (2026-10-13)
+
+[[literature/papers/du2026can]] builds rediscovery tasks from three ICLR
+2025/2026 oral papers. It withholds the findings and disables web access,
+but its models' cutoffs (January 2025 to January 2026) overlap the oracle
+papers (the earliest is from April 2025). The file-space and retrieval-space
+boundaries hold and the time boundary does not. Two things matter for any
+replay harness:
+
+- **The harness asked for recall.** Two of the 12 mandatory reflection
+  prompts tell the reviewer model to "recall a human researcher solving a
+  problem similar to the research task" and the sub-problems they solved
+  first. On a rediscovery task, that is a retrieval cue into pretraining
+  written into the protocol. The ablation removes it together with the
+  commitment mechanism, so its share of the 17.9-point drop is unknown.
+- **The contamination audit was asserted, not reported.** "Direct
+  prompting fail[s] to recover most of the findings" appears in Limitations
+  with no numbers. The cross-system argument (the same models in other
+  harnesses score 14–21%) shows recall is not sufficient, not that it
+  contributes nothing.
+
+Rule: a harness that replays published work should report the tool-free /
+direct-prompting score (the EvoBrowseComp audit above) next to the result.
+It should also audit its own scaffolding prompts for "how did experts solve
+this" cues.
+
+## The feedback channel is a boundary too (2026-10-13)
+
+[[literature/papers/farahbakhsh2026agentdiscover]] records two leaks of
+hidden evaluation data on EPLB, where the score is placement quality on
+the *next*, withheld workload. In the first, the agent's sandbox blocked
+the data, but the submitted candidate ran where the file was readable.
+Reading it raised the score from 0.25 to 0.44, and a keyword blocklist did
+not stop this "since a file path can be built indirectly". In the second,
+anything a candidate printed was returned to the agent as feedback, and
+the workloads replay in a fixed order. Candidates printed their inputs,
+and later candidates hard-coded them, lifting a best honest 0.153 to
+0.201.
+
+The repair has two parts. Candidate processes receive only public inputs,
+with the private data replaced by an empty directory. Candidate stdout and
+exception messages are withheld from search feedback. The general rule:
+**whatever the scorer's process can see, the candidate can see, and
+whatever the candidate prints reaches the proposer.** A firewall drawn
+around the agent's sandbox alone does not hold. It has to cover the
+candidate's runtime and the return path as well.
 
 ## Connections
 
