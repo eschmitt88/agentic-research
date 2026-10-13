@@ -648,3 +648,4 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-10-13 04:07 ingest raw/papers/he2026beneath.pdf
 2026-10-13 04:07 ingest raw/papers/li2026beyond.pdf
 2026-10-13 04:07 ingest raw/papers/mcmillan2026instruction.pdf
+2026-10-13 04:07 curate 2026-10-12-digest.md ingested=17 declined=8 dup=0
