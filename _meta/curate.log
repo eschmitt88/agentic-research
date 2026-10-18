@@ -1461,3 +1461,40 @@ The last open digest file (10-05) is curated and archived to `raw/_candidates/_d
 - `wang2026making.pdf` (15 MB) went into git directly, as several earlier large PDFs did. That goes against the >10 MB → DVC rule in `data.md`. Either move the large PDFs to DVC or relax the rule for `raw/papers/`.
 
 The claude.ai Google Drive connector needs authorizing in your claude.ai connector settings before it can be used. This run didn't need it.
+Decline reasons are drafted. I'm waiting on the 17 ingest agents.
+
+1 of 17 ingest agents done (`wei2026scale`, which reads below its digest entry). Still waiting on the other 16.
+
+4 of 17 ingest agents are done. Waiting on the other 13.
+
+5 of 17 ingest agents done. `farahbakhsh2026agentdiscover` reads below its digest entry: the main results are single runs, only a few comparisons are spend-matched, and nothing isolates its central claim. Waiting on the other 12.
+
+7 of 17 ingest agents done. `wang2026language` and `guo2026epoch` both read below their digest entries; each headline comes from the most favourable cut. Waiting on the other 10.
+
+14 of 17 done. Still running: `das2026selfpropagating`, `li2026beyond` and `liu2026what`… no, `liu2026what` is done; the third is `ganesh`… also done. Two remain, `das2026selfpropagating` and `li2026beyond`, and I'll check for a third when they report.
+
+The 10-12 candidate file is closed and archived to `raw/_candidates/_done/`, so nothing is left in the uncurated pile. Everything is committed and pushed, and the go/high verdict held throughout.
+
+**Result:** 25 items had no disposition (items 7–20 and 11 near-misses). I ingested 17 and declined 8; none were already in the graph. Papers went 239 → 256, with 54 insert-only edits across 24 concepts, and the concept count stayed at 35. Checks passed: frontmatter parses, no duplicate sources, no dead wikilinks.
+
+- **Ingested:** items 7–19, plus four near-misses I promoted: ReplayLens, Beneath the Diff, Beyond Final Scores, and the config-file instruction-adherence study. The last three were the "for a `/discover` pass" items, so that pass is no longer needed.
+- **Declined, each with a recorded reason:**
+  - Item 20, because its fix is weight training and this framework never trains weights.
+  - Society of Researchers, Causal Improvement Graph, SHOR, JANUS, MLE-InsightBench, the solar-panel study, and memory repair vs re-reading.
+
+**Digest entries vs full papers:** 13 of 17 papers read below their digest entry and 4 matched it; none read above. That makes 65 papers since 09-22 with none above their entry.
+
+**For redirect-before-halt:**
+- Still no paper tests redirecting against halting.
+- `wang2026clock` and `gomez2026can` are two more cases where the harness-enforced version worked where the prompt-only version didn't.
+- `he2026beneath` shows a collapse that a no-improvement counter can't see: the metric keeps rising while the kinds of edits narrow. A redirect trigger may need a diversity signal as well.
+- `li2026beyond`'s plateau hook is a weak precedent. It runs on a schedule, the agent judges the plateau itself, and it was never ablated.
+- `ning2026implementation` gives a usable input for the noise band: re-implementing the same idea varies about twice as much as reseeding.
+
+**The 80-line CLAUDE.md rule:** `mcmillan2026instruction` found no effect of file size on adherence. The rule can stand on readability, but not on adherence.
+
+`/promote-moc` declined with one log line, because no concept files, tags or MoC links have changed since `d006d6a`.
+
+**Uncommitted change I didn't touch:** `_meta/digest.log` has an uncommitted addition. It looks like the 10-12 NOTES-rollup chat summary was appended to the digest log by mistake. I didn't commit it; you can revert or keep it.
+
+**Not done:** I haven't run `/wrap`, so there is no NOTES.md entry for today yet.
