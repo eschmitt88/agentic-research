@@ -28,6 +28,64 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-09-20 | [framework-rule-imports-dead](2026-09-20-framework-rule-imports-dead.md) | `templates/project/CLAUDE.md` (+ `install.sh`, 8 skills, 19 repos) | adopt | **accepted** (applied 2026-10-11 with the skill-side Read step, claude-system@60f9f4c; re-verified on 2.1.296; Read step added to all 15 `respects:` skills (proposal counted 8); 19-repo CLAUDE.md sweep) |
 | 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | **accepted** (applied 2026-10-11, claude-system@60f9f4c; used_by kept as a declaration ledger, mle-bench @import lines replaced with a path list) |
 | 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
+| 2026-10-18 | [iterate-redirect-before-halt](2026-10-18-iterate-redirect-before-halt.md) | `skills-experiment/iterate/SKILL.md` | adopt | proposed |
+
+## Considered and held (2026-10-18 run)
+
+This is the first run over the 10-12 digest (6 papers) and the 10-13
+leftovers (17 papers): papers 233 → 256, 35 concepts. `~/claude-system` has
+not changed since `60f9f4c` (10-11), which applied all nine pending
+proposals. That lifted the stacking hold on `/iterate`, so the closest miss
+of the last two cycles is now the proposal above. Held:
+
+- **Escalation channel for `/implement`** (`gomez2026can`, cred 3, code,
+  NeurIPS workshop). A structured defect report beat the same instruction
+  as a prompt line (hacking 5.3% vs 16.9%). The simplest form would be a
+  Diagnostics field, such as `evaluator_defects:`, plus one sentence.
+  **Held** on balance. It is one source, and `refusal-cost-symmetry` notes
+  that its false-escalation cost is unmeasured: every escalation-arm
+  problem had a real defect. `zhang2026are`'s 0% abstention on intact data
+  is a QA abstention, not a code-task escalation. No evaluator defect has
+  been observed downstream, and `evaluation.md` §4's hash check already
+  catches the dangerous half (editing the evaluator). Re-raise if a
+  paired-clean escalation result lands, or if a downstream run hits a
+  broken checker.
+- **Build the noise band from re-implementations, not seeds**
+  (`ning2026implementation`, cred 4, code; `wiedmann2026agents`, cred 4,
+  code). Gate 1 passes: a seed std is about half the implementation SD.
+  **Held**: the remedy re-implements each hypothesis K times, which adds
+  compute per cycle and changes `/implement`. The band text applied on
+  10-11 is the counter's floor, and `hu2026winners` supports using it only
+  for the counter. It is also the same file as the proposal above. It
+  could come up next cycle as one clarifying sentence ("a seed band is a
+  lower bound on hypothesis noise").
+- **Mechanism-entropy stall trigger** (`he2026beneath`, cred 3, code).
+  The no-improvement counter cannot see edit-type collapse while the score
+  rises. **Held** on Gate 2: it needs a category label on every accepted
+  edit plus a windowed statistic, from one paper. It is noted as a limit in
+  the proposal above.
+- **`mcmillan2026instruction`: CLAUDE.md size and position did not move
+  compliance** (affirmative nulls, 1,650 sessions). This would argue for
+  dropping the 80-line project-CLAUDE.md rule, a removal. **Fails Gate 1**
+  (cred 2, no code), and its marker task is trivial.
+- **`liu2026what`** (cred 4, code): Claude Code's 16.6k-token preamble is
+  paid on every step, and no harness feature won tasks. This supports the
+  accepted instruction-ablation program and the deferred prose cuts. It
+  yields no new concrete edit.
+- `das2026selfpropagating` (memory-borne goal propagation) uses an
+  adversarial model-organism threat model, and its defences are partial.
+  There is no simplifying edit to auto-memory. `wang2026clock` (enforce
+  wall-clock at launch) is a single cred-3 source, and `chain_budget.py`
+  already checks wall time per cycle.
+
+**Paired control: `2026-06-23-digest-scenario-rich-queries`, pass.** This is
+the first control run since the control step was applied on 10-11, so the
+oldest accepted proposal goes first. Gate 1 still passes on code-released:
+`xiong2026autoresearchbench` has cred 4 and `code_url` set. Gate 2 passes:
+a one-paragraph edit with no surface. One note that does not affect the
+verdict: `/digest` now harvests via OAI-PMH, not WebSearch, so the query
+form matters less to the live system than it did when the proposal was
+accepted.
 
 ## Considered and held (2026-10-11 run)
 
