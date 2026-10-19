@@ -658,3 +658,9 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-10-19 07:47 fetch-paper arXiv:2610.18427 → raw/papers/pham2026reliable.pdf
 2026-10-19 07:47 fetch-paper arXiv:2610.19159 → raw/papers/kim2026into.pdf
 2026-10-19 07:47 fetch-paper arXiv:2610.22289 → raw/papers/rodionov2026improving.pdf
+2026-10-19 07:54 ingest raw/papers/ding2026harnessdelta.pdf
+2026-10-19 07:54 ingest raw/papers/sun2026scipivot.pdf
+2026-10-19 07:54 ingest raw/papers/giampieri2026cortex.pdf
+2026-10-19 07:54 ingest raw/papers/pham2026reliable.pdf
+2026-10-19 07:54 ingest raw/papers/kim2026into.pdf
+2026-10-19 07:54 ingest raw/papers/rodionov2026improving.pdf

@@ -45,6 +45,7 @@ sources:
   - "[[literature/papers/goyal2026does]]"
   - "[[literature/papers/hu2026memory]]"
   - "[[literature/papers/das2026selfpropagating]]"
+  - "[[literature/papers/pham2026reliable]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"
@@ -323,3 +324,27 @@ concept files imported downstream. A directive that lands there has the
 memory-open properties. One that lands in an unindexed file mostly does
 not. This is our inference: the paper's harness had no auto-loaded files
 outside memory.
+
+## A self-curated store served whole can cost more than no store (2026-10-19)
+
+This concept's defining move is that the agent doing the task also
+writes and curates its own memory. [[literature/papers/pham2026reliable]]
+measures what that produces when the store is served whole. Across 33
+ACE growth runs (11 settings × 3), 14 by our count score more than 5
+points below no playbook, and the worst scores 69.6 below. The same
+procedure on the same tasks in another order gave 82.5, 58.9 and 30.0
+against 78.4 with no playbook. A Dynamic Cheatsheet store (rewritten
+whole each batch) behaved the same way: +13.2 and −14.0 on one setting.
+Top-k similarity retrieval instead of whole-serving did not help (ACE
+50.0 vs whole 51.2 vs none 54.4). So ByteRover's benchmark wins
+([[literature/papers/nguyen2026byterover]]) do not show that a
+self-curated store is safe to auto-load.
+
+The fix that carried most of the gain is simple: grow more than one
+store, and keep "load nothing" as a candidate scored on fresh practice
+episodes. Applied to this project (our inference, untested here): the
+auto-loaded set of CLAUDE.md, NOTES.md and imported concepts is a
+playbook served whole and has never been compared with a no-memory
+control. Caveat: the paper needs hundreds of comparable practice
+episodes. Research tasks are mostly one-off, so the comparison would have
+to run on recurring jobs, not on unique investigations.

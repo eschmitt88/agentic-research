@@ -92,6 +92,9 @@ sources:
   - "[[literature/papers/wang2026language]]"
   - "[[literature/papers/wei2026scale]]"
   - "[[literature/papers/zhang2026are]]"
+  - "[[literature/papers/ding2026harnessdelta]]"
+  - "[[literature/papers/kim2026into]]"
+  - "[[literature/papers/giampieri2026cortex]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -1427,6 +1430,37 @@ prompt. With web access, 312 of 439 DeepSeek/Qwen trials fetched the
 upstream fix, and those passed 96% against 71%. The authors discarded every
 web-enabled run and enforced "offline" at the network layer.
 
+## A harness gain needs a neutralization arm, and a same-benchmark holdout passes the artifact (2026-10-19)
+
+The rerun arm and the same-budget arm above ask whether a gain is noise or
+extra attempts. [[literature/papers/ding2026harnessdelta]] adds a third
+control: disable each benchmark-specific mechanism found in the evolved
+harness and rescore. The drop is O, T comes from a compute-matched rerun
+of the baseline, and the residual is G. Over 21 significant settings
+(Meta-Harness, SkillOpt, AHE; 11 executors), mean O is 54% and mean T is
+14%. The split depends on the benchmark: ALFWorld and LiveMath are mostly
+O, CREATE mostly T, SWE-bench Verified mostly G.
+
+It is also a measured, released-benchmark case for "Task holdout is not
+protocol holdout". zhu2026bad argued that point formally and showed it
+only on a synthetic benchmark. Here, one LiveMath answer choice is correct
+in all 21 search questions where it appears, and all three frameworks
+learned to pick it. On test, the 0.8B harness scores 53/53 where that
+choice is present and 22/71 elsewhere. A zero-LLM ALFWorld controller
+reaches 93.3% held-out. Choosing the harness by validation score did not
+close the gap, because the validation split carries the same artifact.
+
+Caveats:
+- O comes from an LLM audit with human review. Its precision is unmeasured,
+  so O is a lower bound only if the audit never over-flags.
+- G is a residual with no CI, and two G = 100% SWE-bench settings regress
+  on held-out.
+- Each setting is a single run on small splits (35 LiveMath and 48
+  SWE-bench search items).
+
+Rule: report rerun, same-budget and neutralization arms together. Keep
+xia2026rrsi's different-benchmark check as the transfer test.
+
 ## When the optimizer reads training traces, split by topic and autopsy the prompt (2026-10-13)
 
 [[literature/papers/lumer2026reflective]] runs GEPA on a deep-research
@@ -1539,6 +1573,61 @@ recalled. HCE protects the number against the search loop. It does not
 identify where the number came from. For any claim of the form "the run
 showed X", the check is to rerun on data with X's support withdrawn. A
 per-item no-data baseline is the cheap first pass.
+
+## A planted candidate tests only the gates it reaches (2026-10-19)
+
+[[literature/papers/giampieri2026cortex]] extends "plant the failure" from the
+agent to the acceptance pipeline. It pushes 20 plausible placebo items, 5
+harmful items and 4 known-good items, each with a known right verdict, through
+Cortex's real keep/kill gates.
+
+- **Results:** 0/20 placebos kept (Clopper–Pearson upper bound 17%), 0/5
+  harmful kept, 2/4 known-good kept (Fisher p = 0.022 vs placebos).
+- **What the plant actually tested:** every placebo was an always-on skill the
+  agent never opened. The harmful rules were screened only on tasks the live
+  harness already failed, where no drop can show. So the plant exercised the
+  "never fired, never kept" gate and nothing else; the regression gates never
+  met a harmful item that loads.
+- **Rule:** a known-answer audit certifies only the decision points its plants
+  actually reach. Before reading a clean sheet as calibration, design plants
+  that are exposed: placebos that load, and harmful items swept on tasks that
+  pass without them.
+
+The same study also runs the same-harness rerun control (see "A harness gain
+needs a same-harness rerun arm" above) at small scale. The no-harness setup
+measured twice differed by −3.3 [−7.3, 0.0], and by −4.2 across a batch
+boundary. Its stated rule was that an A/A interval excluding zero would void
+every other result. Synthetic lab, Haiku 4.5, k = 3 for the A/A arm.
+
+## Scientist-set rubrics fix one leak, but the judge must not be a contestant (2026-10-19)
+
+[[literature/papers/kim2026into]] is the next step after
+[[literature/papers/du2026can]]'s rediscovery rubrics for metric-free
+research. Each rubric is written and line-edited by the original paper's
+author before any AI paper exists, which yields 112 recorded edits. It is
+checked against those experts on all 15 tasks, not one. Agreement falls
+with distance from what the rubric encodes: Q1 (met the direction?) 41/41,
+Q2 (major weaknesses) about 80%, Q3 (quality) 64–69%. It also adds four
+cautions:
+- **The judge is the leading contestant.** GPT-6-Astra/codex-sdk grades
+  everything and is also the top agent: 4/15 integrity failures, against
+  ≥9 for every other agent. Its submissions were excluded from the expert
+  check. This is the "who owns the evaluation" risk above, moved to the
+  leaderboard level.
+- **Agreement on an all-fail set is the base rate.** Q1's 41/41 is
+  measured where nearly every submission fails. Report agreement on the
+  passes.
+- **A conjunction amplifies judge noise.** The Claude judge's
+  node-level consistency of 92.7% becomes 57.7% at paper level. A strict
+  all-nodes gate floors at 0/135, so only node rates discriminate.
+- **The holdout leaks anyway.** "Held-out data used in development" was
+  flagged for every agent (1–4 of 15 each, 23 total), even though the spec
+  names the protocol. Data sat in the workspace and the internet was open.
+  This supports removing the holdout from the agent's filesystem
+  (lu2026meta) rather than relying on instructions.
+
+Caveats: these are single-judge counts with no false-positive check, and
+the domains are physical-science computation rather than ML research.
 
 ## Open questions
 

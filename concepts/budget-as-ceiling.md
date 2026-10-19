@@ -59,6 +59,9 @@ sources:
   - "[[literature/papers/wang2026clock]]"
   - "[[literature/papers/wang2026language]]"
   - "[[literature/papers/wei2026scale]]"
+  - "[[literature/papers/ding2026harnessdelta]]"
+  - "[[literature/papers/rodionov2026improving]]"
+  - "[[literature/papers/sun2026scipivot]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -1253,6 +1256,100 @@ over a pre-executed pool, not a live loop. What transfers is a screen that
 *drops* clearly bad candidates, conditioned on the project's own records.
 That kind of screen sits in front of the ceiling. It does not replace the
 keep gate, and it should not be trusted to pick the winner.
+
+## An unbounded per-task inference budget lets an evolved artifact buy its gain (2026-10-19)
+
+The ceilings in this concept bound what a loop spends while it runs. None
+of them bounds what the *artifact* the loop produces spends per task.
+[[literature/papers/ding2026harnessdelta]] measures what that gap costs.
+
+When a framework can rewrite orchestration, it often raises its score by
+adding model calls:
+- On CREATE, Meta-Harness made 20 calls per item. A compute-matched
+  baseline recovered 49% of its Haiku 4.5 gain and beat its
+  Qwen3.6-35B-A3B harness outright (T = 100%).
+- AHE went from 1.04 to 2.46 calls per item, and T = 75%.
+- SkillOpt can edit only the skill, with the one-call rollout fixed. It
+  never scales compute (T = 0), and its CREATE gains are not significant.
+- On SWE-bench, a 1.44× call increase accounts for T = 23% of one gain.
+
+Across 21 settings T averages 14%. The authors recommend "explicitly
+expressing the cost constraints during evolution".
+
+For this project, any loop that edits a harness or skill should do one of
+two things:
+1. Cap the evolved artifact's calls or tokens per task in its declared
+   search space.
+2. Credit gains only against a baseline rerun at the artifact's own
+   per-task cost.
+
+Caveats:
+- Some compute-matched baselines use pass@k, which picks the winner with
+  the oracle, so T is optimistic there.
+- T is a single-run difference with no CI.
+
+## A scripted restart at the failure point, and a reminder-then-stop rule nobody measured (2026-10-19)
+
+[[literature/papers/rodionov2026improving]] (EnvTraverse) runs one Codex
+agent unchanged on ARC-AGI-3, AGI Maze and Terminal-Bench. Two parts bear on
+redirect-before-halt.
+
+- **Controller-owned restart.** Every agent is told to RESET only at
+  `GAME_OVER`. Controlled_RESET adds a prompt ban on RESET, and the
+  controller issues it instead, with a cheap sanctioned exit: report
+  `GAME_OVER` and you get another attempt. This recovers 34–60% of the gap to
+  an ARC-specific agent. Only on GPT-5.6-sol is the cost close to equal
+  (+11% tokens for +7.3 RHAE at xhigh, mostly separated over 3 runs; +5% for
+  +2.4 at max, inside run spread). On GPT-5.5 the reset arm spends 2.3–3×
+  more, so the gain there cannot be separated from the extra inference.
+- **An existing stuck rule shaped like ceiling − 1.** After one no-progress
+  return the controller sends a prompt reminder. After a second it exits,
+  and a supervisor restarts it up to 10 times. That is "remind at ceiling −
+  1, then halt". The paper never reports how often it fired.
+
+What it adds to cai2026forkandflush and zhang2026judged: the
+controller-owned move here is a *restart that keeps what was learned*, not a
+stop or a flush, and it fires on an environment event, not a stall
+counter. What it does not add: no arm compares restart with stop, the reset
+gain is not separated from the prompt ban, and failure modes under
+agent-managed reset are not counted. Weak support for keeping the trigger in
+the controller and giving the agent a sanctioned action at it. Still no
+paper runs redirect against halt.
+
+## Shown both plans at a real pivot, agents keep their own, and reconsidering does not repair it (2026-10-19)
+
+[[literature/papers/sun2026scipivot]] measures the step every redirect
+source above treats as the weak one: the choice itself. 248 cases come from
+26 supervised research projects. In each, a senior researcher had overridden
+the agent's next plan. Models get the record from before the intervention
+and both plans: the agent's original and the correction. At medium effort,
+four of five frontier models pick their own continuation more often than the
+correction (29.2–38.9%, against 59.5% for GPT-6 Astra and 73.4% for fresh
+human researchers). A feedback-free "please reconsider" changes answers in
+both directions. The first review repaired 422 answers and broke 302; the
+second repaired 264 and broke 305. Earlier sources showed that agents don't
+pivot on their own: yan2026traceml's prompt self-check, and
+cai2026forkandflush's ignored "pick a DIFFERENT approach" directive. This
+paper shows they also don't pick the pivot when it is put in front of them.
+That supports the redirect-before-halt proposal's choice to force the axis
+change in the controller.
+
+It also qualifies the proposal's axis list. In one worked case the *wrong*
+plan was a backbone change (0.8B → 2B after zero scores), and the correction
+was a validation check: the scorer had skipped answer extraction. In
+another, the correction reopened a restriction the agent had carried over
+from its own earlier runs, and with the record only 1 of 10 responses chose
+it. "Change at least one axis" leaves the content to the same judgment this
+paper finds weak. When stalled results are degenerate (all zeros, optima
+pinned at a search bound), auditing the measurement should come before a
+backbone change. That ordering is our inference.
+
+Caveats:
+- Cases were kept only if the evaluated models split between the plans, so
+  the levels are challenge-set numbers, not base rates.
+- Both plans are supplied, so the paper measures recognition, not
+  generation.
+- No forced pivot's outcome is measured, and there is still no halt arm.
 
 ## Open questions
 

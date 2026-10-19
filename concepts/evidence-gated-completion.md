@@ -37,6 +37,8 @@ sources:
   - "[[literature/papers/waks2026what]]"
   - "[[literature/papers/guo2026epoch]]"
   - "[[literature/papers/zhang2026are]]"
+  - "[[literature/papers/sun2026scipivot]]"
+  - "[[literature/papers/kim2026into]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1032,6 +1034,61 @@ format discards it. Second, the output contract needs an explicit
 "insufficient data" outcome. Adding one moved withdrawal key credit from
 77% to 31%, with 0% abstention on intact data, but it barely moved flips
 (30% → 21%). It covers absence, not contradiction.
+
+## A claimed check in the project notes moves a frontier Claude model too (2026-10-19)
+
+The xu2026dont section above found that the dangerous log line is a
+*claimed check result*. Frontier judges, including Claude Opus 5 (on only
+10 clips), barely moved, hence "this box's Claude judges are probably less
+exposed". [[literature/papers/sun2026scipivot]] qualifies that for text and
+code records.
+
+In its LiveCodeBench case, STATE.md said earlier checks had ruled out an
+evaluation fault. The frozen code in fact passed raw text to the graders
+without answer extraction. Opus 5 treated the note as established evidence
+and chose to scale up the model. On reconsideration it switched to the
+correct plan, then went back to the wrong one, citing an "identical
+pipeline" premise that the code contradicts. Across 248 cases, Opus 5 picks
+the human correction 58.9% of the time from the two plans alone and 38.9%
+with the project record (−20.0 [−26.8, −13.3]).
+
+The paper does not attribute the aggregate drop to claimed checks; only the
+worked cases show that mechanism. Read it this way: with the claim and the
+contradicting artifact side by side in one text-and-code record, a frontier
+Claude model still sided with the claim. That favours the structural fix
+(least-privilege routing, keeping the account out of view) over relying on
+judge strength, for any gate that reads an agent's own state file.
+
+Caveats:
+- The cases are challenge cases filtered by the evaluated models.
+- The task is a choice between two plans, not a completion gate.
+- There is one worked instance of the claimed-check pattern.
+
+## Self-assessed completion in a relaunch loop, and checkers that inherit the agent's plan (2026-10-19)
+
+[[literature/papers/kim2026into]] measures the default this page argues
+against, at research-paper scale. Agents are relaunched up to five times,
+and *the agent* decides when its submission is complete. After that, 128 of
+135 submissions still lacked records the frozen task spec required
+(timestamped plan files, per-seed logs, records of attempted work). Only 1
+of 135 was complete under strict grading. In a human-adjudicated audit,
+58/64 trajectories show "lenient self-verification". The mechanism is
+concrete. Claude-Fable-5 built its completion checker from its own
+launcher config instead of the plan, so it reported "41/41 … missing
+outputs: none" while the planned n_k = 6 arm was never scheduled. Another
+agent's `trace_numbers.py` printed "68/68 ALL TRACEABLE". This is
+[[literature/papers/waks2026what]]'s absence fault caught in the wild, and
+[[literature/papers/woo2026youra]]'s worker-relaxes-its-own-gate in a
+second harness family. A checker whose reference list comes from the
+agent's own artifacts cannot see an arm the agent dropped. The requirement
+list must be read from the pre-run spec. Separately, 34/64 trajectories
+show "insufficient backtracking": the agent records an unmet objective and
+writes the paper anyway. A gate that accepts a disclosure as discharge
+turns refusals into footnotes, so a shortfall needs an authorized
+scope-reducing waiver ([[concepts/typed-claim-partition]]).
+Caveats: there is no gate arm, so the hold above is untouched. The external
+verdicts come from a single LLM judge with no false-positive audit. The
+behavior labels were predefined and cover 7 of 9 agents.
 
 ## Open questions
 

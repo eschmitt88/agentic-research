@@ -41,6 +41,8 @@ sources:
   - "[[literature/papers/gomez2026can]]"
   - "[[literature/papers/mcmillan2026instruction]]"
   - "[[literature/papers/wang2026clock]]"
+  - "[[literature/papers/rodionov2026improving]]"
+  - "[[literature/papers/giampieri2026cortex]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -431,6 +433,45 @@ checks, but tests neither. The prompt-placement ceiling it measures,
 about 65% on a trivial gradable rule, is the strongest argument yet in this
 graph for moving load-bearing rules out of the prompt.
 
+## The same-content unscoped arm, run once: scoping decides whether a skill is used, not whether a rule is followed (2026-10-19)
+
+[[literature/papers/giampieri2026cortex]] runs the arm that agarwal2026fire
+and mcmillan2026instruction both lacked. It takes the same evolved texts with
+and without their `paths` field (`flat`), in Claude Code with Haiku 4.5, on one
+synthetic repository with four machine-checked house rules. Removing `paths`
+turned R1's three path-scoped rules into path-less rules loaded every turn, and
+its one path-gated skill into an always-on skill.
+
+- **Rules:** families A, B and E stayed at 100% pass with no scoping.
+- **Skill:** the exporter family fell from 70% to 0%. The now always-on skill
+  was opened in none of its rollouts.
+- **Net:** 75.0% vs 87.5%, −12.5 [−28.3, +1.7], with 1,688 vs 559 always-on
+  characters.
+- **Across the loop:** always-on skill candidates were listed in 198 rollouts
+  and opened in 0; path-gated ones were listed in 66 and opened in 28.
+- **Whole guide in CLAUDE.md:** appending the contribution guide (`kitchen`)
+  scored −11.1 [−22.5, 0.0]. The agent opened CONTRIBUTING.md on its own in
+  0.5% of no-harness rollouts.
+
+For this repo, `.claude/rules/` moves from "indirectly supported" to
+"supported for cost, not compliance". In this lab an unscoped rule was followed
+as well as a scoped one; what scoping bought was characters per turn. For
+skills, the loading tier is the active ingredient: a skill whose only trigger is
+its description was effectively absent. This fits mcmillan2026instruction's
+null on file layout. What matters is whether the text is in context at the
+moment, not how the surrounding file is arranged.
+
+Limits:
+- One run at k = 3, in a later batch than the primary arms. The same-harness
+  (A/A) gap across that batch boundary was −4.2 [−9.2, 0.0], and the CI
+  crosses zero.
+- Only 3 rules and 1 skill were unscoped.
+- The skill result is one family (C), the only one whose fixes create new
+  files, so tier and family are confounded.
+- Rules on `shop/**` already fired on 97–99% of all tasks, so for them `flat`
+  barely changed exposure.
+- Haiku 4.5 only.
+
 ## The boundary has a time axis, and one point on it is not enough
 
 Every placement in the table above answers *where*.
@@ -629,6 +670,34 @@ harder. Information without enforcement (a clock in every tool result)
 reached 62% on time. A GRPO policy trained under the refusing hook did not
 internalize it beyond the hook (86%). Single model, five competitions,
 episode counts not reported.
+
+## Moving a decision the agent was already told how to make (2026-10-19)
+
+[[literature/papers/rodionov2026improving]] adds a placement the table
+lacks: the controller *carries out* the act, which is neither masking it
+(zhang2026judged) nor refusing it (wang2026clock).
+
+- **Setup.** Every arm reads the same ARC-AGI-3 rule: reset only at
+  `GAME_OVER`. Controlled_RESET adds one prompt paragraph ("report it, and I
+  will give you another attempt … You are forbidden to call RESET"). The
+  script then issues RESET when the agent returns at `GAME_OVER`.
+- **Interface.** RESET is not removed from the action interface, so the ban
+  is prose. Compliance is not reported.
+- **Result.** Over 3 blocks per arm, the variant recovers 34–60% of the gap
+  to a specialised agent. Inference is not matched.
+
+Read it as a bundle of three things: the rule restated in the prompt, a
+sanctioned alternative action (as in gomez2026can's escalation tool), and a
+change of who executes. It is not a clean prompt-vs-controller contrast.
+The isolating arms (same prompt ban without the script; RESET masked at the
+interface) are missing.
+
+The same paper has a counterweight to the prompt-placement rows. One prompt
+line ("stop and report it back to me" when unsure) raised mean ARC-AGI-3
+RHAE by 1.4–7.3 and AGI Maze by 0.4–5.0. That line worked because it routes
+control back to the controller, which then re-injects the goal; it does not
+ask for compliance with a rule. It was selected on ARC, and two of four ARC
+gains sit inside run spread.
 
 ## Open questions
 
