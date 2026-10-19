@@ -33,6 +33,7 @@ sources:
   - "[[literature/papers/tiwari2026assay]]"
   - "[[literature/papers/das2026selfpropagating]]"
   - "[[literature/papers/xu2026replaylens]]"
+  - "[[literature/papers/pham2026reliable]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -733,3 +734,31 @@ paper's own migration rule is to run the matching replay cell before
 reindexing, renaming or merging a log; a non-zero response flags the
 change. Thin evidence: one hosted model, designed 24-record histories,
 toy tasks, and a supplement that is not public.
+
+## The writer's usefulness labels do not track effect, even with no adversary (2026-10-19)
+
+The 2026-10-13 section above (das2026selfpropagating) covers a trusted
+writer that is misaligned. [[literature/papers/pham2026reliable]] shows
+the same gap when the writer is benign. ACE's Reflector tags each lesson
+helpful or harmful after every episode. Over 81 blocks, those tags and
+the blocks' randomized-inclusion effects on task success have rank
+correlation 0.21. Blocks that cut success by more than 5 points carry a
+median of 33 helpful tags per lesson, more than any group except the most
+helpful blocks. Cutting a playbook to 40% by its own tags left it harmful
+in 3 of 4 harmful settings.
+
+The mechanism is the useful part. Under pass/fail feedback the Reflector
+never sees the checker, so it invents a validator ("always pass a
+concrete, non-empty string literal as the answer"). The rule sits in
+every episode, so it collects 123 helpful tags and 0 harmful ones. It
+also raises wrong answers on no-answer tasks from 37.5% to 69.0%. Under
+per-test feedback the same system writes no such rule. This is
+suresh2026grounding's "faithful to the evidence is not true" with the
+evidence missing. Outcome information alone did not fix it. An LLM
+curator told each task's outcome, and an LLM goal-check standing in for
+task success, both did worse than measuring the effect on real success.
+
+Caveats: the actors did not cite lessons, so the Reflector tagged the
+whole playbook. That departs from ACE's own design and may make tags
+noisier. On 9B the harmful rules were mostly tagged harmful, so the
+failure is ranking by tags, not tags that always point the wrong way.

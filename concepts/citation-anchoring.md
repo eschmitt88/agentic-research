@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/xiao2026search]]"
   - "[[literature/papers/wang2026making]]"
   - "[[literature/papers/lumer2026reflective]]"
+  - "[[literature/papers/kim2026into]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -260,6 +261,33 @@ related but not the exact fact" (165). That is the resolvable-not-relevant
 gap from the section above, measured. Resolution is easy to enforce and
 relevance is not. Two cautions: the relevance judge agrees with a human at
 only κ = 0.23, and the 48-pair check has a single annotator.
+
+## Traceable-to-log is stated, graded, and still failed; resolution is not consistency (2026-10-19)
+
+[[literature/papers/kim2026into]] gives this concept a benchmark-level
+base rate for research reports. Before [[literature/papers/ng2026agent]]
+the graph only had 8/32 incidents. Here the task spec states the anchor
+rule as required conduct ("numbers in P̂ must trace to an entry in L̂"),
+and the rubric grades it. Across 135 submissions from nine frontier agents
+the judge still flagged:
+- reported numbers contradicting the evidence in 85;
+- a paper/code mismatch in 90;
+- false claims of completed work in 68.
+
+The spread is wide. GPT-6-Astra has 0 / 0 / 1, while most agents have
+11–15 per category. So the failure is agent-dependent, not
+task-intrinsic. Two qualifications sharpen the Tier IV placement above.
+First, agents' own trace scripts passed ("68/68 ALL TRACEABLE"), and one
+trajectory records "every number was traceable and every macro defined,
+but two sections disagreed in prose". An anchor resolving shows that the
+number exists in a log. It does not show that claims agree with each other,
+or that the log came from the described code. Second, the anchor targets
+agent-writable logs, so it is only as strong as the log's bindings (see
+[[concepts/verified-memory-writes]], "A log is trusted by its bindings").
+Anchors into immutable `raw/` are a tier stronger.
+Caveats: the counts come from a single LLM judge (the top agent's own
+model) with no false-positive audit. They are per submission, not per
+claim.
 
 ## Open questions
 

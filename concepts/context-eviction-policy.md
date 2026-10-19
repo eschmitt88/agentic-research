@@ -58,6 +58,7 @@ sources:
   - "[[literature/papers/farahbakhsh2026agentdiscover]]"
   - "[[literature/papers/liu2026what]]"
   - "[[literature/papers/xu2026replaylens]]"
+  - "[[literature/papers/sun2026scipivot]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -749,6 +750,37 @@ accuracy loss to matter. Two caveats keep this small. The utility cost was
 which confounds coverage with order. An endpoint-only selector picked the
 same safe store anyway, and the paper's criterion for added audit value
 was not met.
+
+## The agent's own project notes lower its choice at a pivot (2026-10-19)
+
+[[literature/papers/sun2026scipivot]] gives a paired measurement of what a
+retained record does to a decision rather than to recall. Five frontier
+models choose between an agent's original plan and a human correction. They
+do it once with the project record (idea, proposal, the agent-written
+STATE.md, code, logs) and once with only the two plans. At medium effort
+every model scores lower with the record. The five-model mean is 39.2%
+against 55.8%. The paired drop is −11.7 to −26.6 points for four models and
+−4.2 [−10.9, +2.4] for Astra. In the worked cases the record carried the
+agent's own interpretations, and the models adopted them. One was "earlier
+checks ruled out an evaluation fault". Another was a parameter restriction
+the agent had imposed on itself, which Opus 5 later called
+"human-authorized".
+
+This is the decision-level counterpart of cai2026forkandflush's finding that
+compaction preserves the run's strategy. What anchors is the narrative
+layer, which a summary keeps by design. It is in tension with
+[[literature/papers/wang2026language]], where in-environment experiment
+records *raised* Opus 5's ranking of unseen interventions (Spearman 0.506 →
+0.774). One reconciliation is that records of measured outcomes help and
+records of the agent's conclusions hurt. That split is our hypothesis.
+Neither paper runs a notes-stripped arm. Here the record also adds length,
+file retrieval and a provider-specific tool interface. Because cases were
+selected on model disagreement, the size of the gap may be inflated, though
+not its sign.
+
+For a long `/iterate` chain: when a cycle has to choose a new direction,
+give it measurements and code rather than a replay of the chain's own log,
+and mark inherited claims as unverified.
 
 ## Open questions
 

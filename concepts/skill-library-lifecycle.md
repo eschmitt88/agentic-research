@@ -51,6 +51,9 @@ sources:
   - "[[literature/papers/zhang2026veriharness]]"
   - "[[literature/papers/zhang2026who]]"
   - "[[literature/papers/lumer2026reflective]]"
+  - "[[literature/papers/ding2026harnessdelta]]"
+  - "[[literature/papers/pham2026reliable]]"
+  - "[[literature/papers/giampieri2026cortex]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -561,6 +564,114 @@ Both apply to any text artifact a loop writes, skill files included. The
 cheap version for this project is a lint that flags verbatim task-specific
 strings (answers, IDs, dates) in an evolved skill before admission. The
 held-out split only discounts such content after the fact.
+
+## A bounded, validation-gated optimizer still writes the benchmark's regularity (2026-10-19)
+
+The section above cites [[literature/papers/yang2026skillopt]]'s update
+rule as a guard against answer keys: bounded edits, no hard-coded
+task-specific values, and acceptance gated on validation.
+[[literature/papers/ding2026harnessdelta]] runs SkillOpt and shows the
+guard does not cover the next class up. On LiveMath, the skill learned
+"The meta-option is your working default … otherwise, the meta-option
+wins". That rule names no answer and no item. It encodes a construction
+regularity that holds across the search, validation and test splits, so
+the validation gate passed it. Its audited overfitting share is O = 88%.
+On ALFWorld, SkillOpt wrote appliance recipes, location priors and a rule
+distilled from one failed search episode ("this is exactly how the lettuce
+task was lost"), O = 44%.
+
+A second route: when the proposer is stronger than the executor (Opus 4.8
+writing for Qwen 0.8B–35B), it can distil its own knowledge of the
+benchmark into the skill. A same-benchmark holdout then rewards that
+knowledge.
+
+For admission:
+- the verbatim-string lint proposed above is necessary but not sufficient;
+- also flag clauses that state a default answer, a fitted threshold or an
+  environment-specific prior, then disable each one and rescore.
+
+Caveats: the "overfit" labels come from an LLM audit with human review
+and no measured precision. Some flagged clauses ("do not repeat an action
+that returns 'Nothing happens'") read as general rules. Each setting is
+one run.
+
+## Admission by randomized inclusion: measure blocks, and keep "none" as a candidate (2026-10-19)
+
+[[literature/papers/pham2026reliable]] (RBC) estimates every lesson
+group's causal effect from one experiment. It does not test candidates
+one at a time. Lessons are clustered into 8 blocks. On each practice
+episode every block is included independently with p = 1/2, and a ridge
+regression with one intercept per task gives each block's average
+marginal effect. The estimate is unbiased whatever the interactions, and
+it needs 4.5× fewer episodes than leave-one-out for the same precision.
+That is a cheaper form of hu2026skillbrew's per-skill leave-one-out
+credit and of shang2026hypothesis's S vs S∪{c} pairing. It also answers
+this note's "skill promotion needs a holdout too": all selection runs on
+a practice split, and evaluation tasks are never scored by any method.
+
+The decomposition is the transferable part. Over 19 settings, curating
+one run scores 61.6. Choosing among 3 growth runs plus "no playbook" on
+practice episodes (Best-Full, RSEA's rule) scores 66.4. Both together
+score 66.9. **Keeping the empty library as a scored candidate does most of
+the work.** Block curation adds about 1 point on ACE, nothing on Dynamic
+Cheatsheet (rewritten lessons are not separable), and +3.1 when ACE
+playbooks grow long. A 40% token cap beat serving every positive block
+(65.2 vs 63.8), so measured-positive is still not enough to serve.
+
+Caveats: there are no CIs on the 0.5-point margin over Best-Full. It
+needs about 2,800–3,250 practice episodes per setting on 57–300
+comparable practice tasks. The unit of admission is a cluster of 10–21
+lessons, not one lesson. Playbooks are frozen once grown, and the models
+are 9–31B open models.
+
+## One exposure rule for admission and removal: never-fired means unmeasured (2026-10-19)
+
+[[literature/papers/giampieri2026cortex]] (Cortex) applies one rule to both
+gates. It compares the library with and without an item only on tasks where the
+item entered context (a rule loaded, or a skill was listed), and unknown
+exposure blocks the verdict.
+
+- **Admission (`/evolve`)** is shang2026hypothesis's paired S vs S ∪ {c},
+  scored by a script at k = 3 runs per task and arm. A candidate is kept only
+  if it has a positive gain, at least 2 runs won net, no task losing 2 of its
+  3 runs, no always-passing task losing any run, and at least one rollout where
+  it fired (rule loaded or skill opened).
+- **Removal (`/prune`)** reverses the arms. An item that never fired gets
+  UNMEASURED and stays.
+
+This extends SLIM's exposure guard (shen2026dynamic), which protects only
+retirement, to admission. It also takes the "removal is not internalization"
+warning above in the other direction: absence of use is absence of evidence,
+not evidence of no value.
+
+What the exposure gate demonstrably did:
+- In a known-answer test, 10 candidates showed a positive screen gain without
+  ever firing, 9 of them from a single run on a single task. The fired gate
+  rejected them.
+- 0/20 placebos and 0/5 harmful items were kept.
+
+What it did not do:
+- No placebo or harmful skill was ever opened, and harmful rules were screened
+  only on failing tasks. The regression gates never met harm that loads.
+- Only 2 of 4 known-good items were kept.
+- `/prune` kept a placebo that was opened 0 times, because 2 tasks lost runs at
+  k = 3 when it was removed.
+
+Two qualifications for this concept:
+
+1. **The holdout cannot see scope errors.** Cortex has the holdout this cluster
+   lacked: 30 never-played scenarios, +55.0 [+34.1, +74.1] over no harness
+   (Haiku 4.5, 4 runs). But they test the same four conventions, and a gate on
+   harvested tasks cannot see scope errors on new ones. R3's money rule,
+   narrowed to 5 named files, passed every gate and then loaded in 0 of 30
+   held-out rollouts. This is cheng2026scope's coupling rule from the other
+   side: an admission certifies scope only where its evidence sampled, whether
+   the scope is too wide or too narrow.
+2. **A model change is a retirement trigger.** Value tracked how often the model
+   broke the convention. The same harness added +5.6 [−2.8, +13.9] under
+   Sonnet 5, and one `/prune` pass after the upgrade flagged 2 of 4 items.
+
+Single author, synthetic repo, Haiku in every role, no harm test.
 
 ## Open questions
 
