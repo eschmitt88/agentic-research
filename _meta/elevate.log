@@ -425,3 +425,31 @@ I added three papers' input on the 09-27 proposal to the index. The main point, 
 Nine proposals are still undecided. Deciding 09-27 would unblock the strongest idea in the graph.
 
 `_meta/curate.log` has uncommitted changes that weren't from this run, so I left them out of the commit.
+This run produced one proposal. I considered 7 ideas, and the paired control passed. It's committed and pushed as `dd0a818`, and nothing in `~/claude-system` was touched.
+
+**Proposed: `iterate-redirect-before-halt`** (`docs/system-proposals/2026-10-18-iterate-redirect-before-halt.md`)
+
+This was the closest miss in the last two runs. It was held only because the 09-27 noise-band proposal hadn't been decided yet. You accepted and applied that one on 10-11, so the hold is gone.
+
+- **The change:** one paragraph in the `--chain` section of `/iterate`. When the no-improvement counter is one below the ceiling (the ceiling is 3 in all 22 projects), the next cycle has to change the axis. That means switching the backbone, the representation, the objective or the validation scheme, or going back to a candidate an earlier cycle passed over. It also adds an optional `redirect=<axis>` field to the log line.
+- **Why it's cheap:** the chain still halts on the same cycle. The change only replaces the third refinement with a pivot, so it costs no extra compute.
+- **What the 10-12 and 10-13 papers changed:**
+  - The pivot now fires once and late, not on any non-zero counter. Forced moves on a fixed schedule cost score in `li2026humanize`, and `du2026can` argues for a minimum span before switching.
+  - The rule is written as a constraint, not as "consider something different". Four separate studies found the suggestion version had no effect.
+  - It depends on the band you accepted on 10-11. Without one, the stall trigger never fired in 15 of 25 runs in `cai2026forkandflush`.
+- **Evidence:** two peer-reviewed sources and seven with released code; average credibility is about 3.4.
+- **Main weaknesses:**
+  - No paper compares redirecting against halting; every study compares redirecting against continuing.
+  - Usage on this box is thin. The only downstream iteration log, in mle-bench, has a single 3-cycle chain from April.
+
+**Paired control:** I re-tested `2026-06-23-digest-scenario-rich-queries` against today's gates, and it passes both. This is the first control run since that step was added on 10-11.
+
+**Held (full reasoning is in `_index.md`):**
+- **Defect-report channel for `/implement`** (`gomez2026can`): it's the strongest of the ideas I held, but it's one source and nobody measured how often agents raise false alarms.
+- **Noise band built from re-implementations** (`ning2026implementation`, `wiedmann2026agents`): it adds compute per cycle and would change the same file as this proposal.
+- **Edit-type entropy as a stall trigger** (`he2026beneath`): it adds new machinery on the strength of one paper.
+- **Dropping the 80-line CLAUDE.md limit** (`mcmillan2026instruction`): the evidence is too weak (credibility 2).
+- **Harness overhead result** (`liu2026what`): nothing new to change.
+
+One thing I didn't touch: `_meta/curate.log` already had uncommitted changes when the session started, so I left it out of the commit.
+{"id":"SnjhMeaaqG0q","time":1792299830,"expires":1792343030,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• iterate-redirect-before-halt\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
