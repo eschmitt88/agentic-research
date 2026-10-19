@@ -632,3 +632,74 @@ I added a `## 2026-10-12` weekly rollup to `NOTES.md` covering 10-06 → 10-12, 
 **Two things you should know:**
 - The 10-12 digest record says "35 of 37" papers read at or below their summary. That count leaves out the eleven papers ingested on 10-06; the correct figure is 46 of 48. I noted this in the entry but didn't edit the record itself.
 - `_meta/digest.log` had an uncommitted change that finished the cut-off last line of the 10-12 record. I committed it on its own as `609ed87`, ahead of the notes commit `78d7363`.
+I'll continue once the first page lands.
+
+arXiv returned a 503 on page 1, which is a normal rate-limit response. The harvester will retry up to six times.
+
+Both harvesters are running. I'll score whichever finishes first.
+
+The search API is also returning 503s, so arXiv looks overloaded right now. Both harvesters back off and retry; I'll wait for them.
+
+I've stopped the API fallback, so only the OAI-PMH harvester is hitting arXiv now. It restarts after a 90-second cooldown, and I'll wait for its page events.
+
+That was the old monitor expiring. The new harvester has its own monitor, so I'll keep waiting.
+
+The per-day harvester is running. I'm waiting for the first day to come back.
+
+The old API monitor has expired, which is expected. I'm still waiting on the per-day harvest.
+
+I'm waiting on the listing fetches.
+
+The first cs.LG page is in, with 1,957 entries. The remaining pages are fetched 30 seconds apart.
+
+The old OAI-PMH monitor has expired. That harvester is already stopped, so nothing changes; the listing fetches are still running.
+
+The second cs.LG page returned a 429. It will retry after 60 seconds, then back off further each time, up to five attempts.
+
+Page 2 of cs.LG came back empty, so the whole week fit on the first page. The remaining categories are still coming.
+
+The cs.LG listing is complete at 1,957 entries. There was no Tuesday 13 Oct announcement; Wednesday's large batch (852 in cs.AI) seems to absorb it. The remaining CL/MA/SE/CY fetches are still running.
+
+From the cs.AI/LG titles I've picked about 65 for abstract reads. The CL/MA/SE/CY listings are still downloading, slowly to avoid the rate limit.
+
+I've stopped the duplicate loop. cs.CL is in with 1,006 entries; MA/SE/CY are still coming.
+
+A stale monitor expired, which is expected. I'm still waiting on the MA/SE/CY listings.
+
+All six readers are running, one per paper. When they finish, I'll apply the concept edits one at a time and commit.
+
+The three edits landed in the right places. I'm waiting on the other five readers.
+
+Three papers are done (8 concept edits so far). Three readers are still running.
+
+Four papers are done and 11 concept edits applied. Two readers are left: Cortex and Into the Unknown.
+
+I ran the weekly digest: 20 new candidates, the top 6 fetched and ingested, and everything committed and pushed. Papers went from 256 to 262; the concept count stayed at 35.
+
+**The harvest method changed this week.** arXiv's bulk feed (OAI-PMH), which the last five digests used, timed out on every request, even for single days, and the search API then rate-limited me. I fell back to arXiv's weekly listing pages for six cs categories (cs.AI, LG, CL, MA, SE, CY): 3,298 new submissions in the window. This coverage is narrower than before: new submissions only, no revisions, and no papers filed under other categories. From those I read 86 abstracts and listed 20. The method note in the candidates file says all this.
+
+**Commits**
+- `5017629`: the candidates file `raw/_candidates/2026-10-19-digest.md`, `_meta/last_digest` and the log line.
+- `761a6da`: six PDFs fetched into `raw/papers/`.
+- `c5d3384`: six literature notes plus 18 additions across 9 concept files, all insert-only. Each concept's frontmatter parses, no source is listed twice, and the batch adds no broken links.
+- `a0f44ee`: the auto-ingest log line, a one-line `/promote-moc` decline (nothing changed in the concept set; all 35 concepts are already mapped), and a record of what happened to items 1–6.
+
+**What the six papers changed**
+- **Redirect-before-halt (pending since 10-18).** `sun2026scipivot` is the first measurement of the pivot decision itself. Frontier agents shown their own plan and a human's correction usually keep their own plan, and giving them their project notes makes this worse. That supports forcing the change in the loop's controller rather than leaving it to the agent. It also warns that the agent can pick the wrong axis: in its examples the right move was checking the measurement, not swapping the model. `rodionov2026improving` adds weak support for a controller-owned restart. There is still no paper comparing redirecting with halting.
+- **Noise band (accepted 10-11).** `ding2026harnessdelta` finds that more than half of harness-evolution gains come from overfitting or extra inference. A gain can clear the band and still be a benchmark artifact that the validation split shares, so the band rules out noise but doesn't prove a gain is real.
+- **This box's own setup.** `giampieri2026cortex` tested Claude Code rules and skills directly. Path scoping in `.claude/rules/` saved context but didn't change how well rules were followed. Skills that are only offered and never path-triggered were opened 0 times in 198 runs. `pham2026reliable` finds that always keeping "no memory/no skill" as a scored option did most of the work in curating agent-written playbooks.
+- **Abstracts overstating.** Five of the six read below their digest entry and one matched it, so the running tally is now 52 of 54 at or below.
+
+**Still open**
+- Items 7–20 and the near misses need a `/curate` pass, so the candidates file stays in `raw/_candidates/`, not `_done/`.
+- `_meta/elevate.log` already had uncommitted changes from the 10-18 `/elevate` run, so I left it out of my commits.
+- If OAI-PMH is still down next week, the `/digest` skill text should name the listing-page fallback. The skill text still says WebSearch, which is the same open item as before.
+
+The three scenario web searches found nothing in the window. They surfaced three older papers that aren't in the graph, which I listed as near misses for a `/discover` pass:
+- [Search Discipline for Long-Horizon Research Agents](https://arxiv.org/pdf/2606.11522)
+- [How Do Agents Fail on AutoResearch](https://arxiv.org/pdf/2608.14905)
+- [Nine Judges, Two Effective Votes](https://arxiv.org/pdf/2605.29800)
+
+Other search results I checked: [2608.15191](https://arxiv.org/pdf/2608.15191), [2609.13073](https://arxiv.org/pdf/2609.13073) (both already in the graph), [2506.07962](https://arxiv.org/html/2506.07962v1), [2605.10039](https://arxiv.org/pdf/2605.10039) (in the graph).
+
+A leftover background watcher, the one waiting for the OAI-PMH harvester's first page, hit its time limit and was stopped. I'm not restarting it: that harvester had already been shut down when I switched to the listing pages. The digest is finished, and all its work is committed and pushed.
