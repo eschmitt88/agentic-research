@@ -760,3 +760,37 @@ Weekly rollup for 2026-10-06 → 10-12 (sourced from journal/ + _meta/log.md).
 - Make OAI-PMH the documented default in /digest. The skill text still says WebSearch.
 - Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
   sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
+
+## 2026-10-19
+
+Weekly rollup for 2026-10-13 → 10-19 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 10-13 /curate closed the 10-12 backlog: 25 items (7–20 + 11 near-misses) → 17 ingested
+  (4 near-misses promoted), 8 declined, archived to `_done/`. Papers 239 → 256, 54 edits / 24 concepts.
+- 10-18 /elevate: 1 proposal from 7 considered, control passed. **iterate-redirect-before-halt**
+  (at counter = ceiling − 1, force an axis change; `redirect=<axis>` log field). Held: `gomez2026can`
+  escalation field, re-implementation band, `he2026beneath` entropy trigger.
+- 10-19 digest → auto-ingest (go/high). OAI-PMH 503'd on every call, so the harvest fell back to
+  arXiv listing pages (new submissions only, six cs categories). 20 candidates; top 6 ingested.
+  Papers 256 → 262, 18 edits / 9 concepts.
+- /promote-moc declined 10-13 and 10-19. Concepts held at 35, 35/35 mapped.
+
+### Findings
+- Abstracts still overstate: 71 PDFs since 09-22, 64 below their digest entry, 7 at, none above.
+  (The 10-19 record's "52/54" doesn't reconcile with 46/48 + 17 + 6.)
+- Redirect-before-halt: still no redirect-vs-halt arm. `sun2026scipivot` is the first measurement
+  of the pivot choice: agents keep their own plan, which supports forcing it in the controller,
+  but a forced axis change can pick the wrong axis. `he2026beneath`: edit-type collapse while the
+  metric rises is invisible to a stall counter, so the trigger may need a diversity signal.
+- Noise band: `ning2026implementation` puts implementation SD at ~2× seed SD. `ding2026harnessdelta`:
+  a gain can clear the band and still be a validation-split artifact. The band rules out noise only.
+- `mcmillan2026instruction` is null on file size, so the 80-line CLAUDE.md cap is a readability
+  rule, not an adherence one. `giampieri2026cortex`: always-on skills were opened 0/198 times.
+
+### Next
+- Decide the 10-18 redirect-before-halt proposal (the only one pending).
+- Curate items 7–20 + near-misses in `raw/_candidates/2026-10-19-digest.md`.
+- Document the /digest harvest order: OAI-PMH, then listing-page fallback. SKILL.md still says WebSearch.
+- Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
+  sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
