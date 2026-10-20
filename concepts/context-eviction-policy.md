@@ -59,6 +59,8 @@ sources:
   - "[[literature/papers/liu2026what]]"
   - "[[literature/papers/xu2026replaylens]]"
   - "[[literature/papers/sun2026scipivot]]"
+  - "[[literature/papers/kumar2026turncost]]"
+  - "[[literature/papers/xu2026what]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -781,6 +783,86 @@ not its sign.
 For a long `/iterate` chain: when a cycle has to choose a new direction,
 give it measurements and code rather than a replay of the chain's own log,
 and mark inherited claims as unverified.
+
+## Coding-agent observations are small, so a compression call rarely beats truncation (2026-10-20)
+
+[[literature/papers/kumar2026turncost]] measures the thing an eviction
+policy acts on, in 600 published coding-agent trajectories (OpenHands and
+SWE-agent × Qwen3.5-122B and Minimax-M2.5). The median tool observation is
+118–286 tokens per cell, and the p99 is 4,274–6,208. The large build log
+that motivates selective compression is about the top 1%. The largest
+observations come from editor echo, not logs: edit turns are 29.9% of turns
+but 51.8% of observation tokens (mean 787). That is the content the agent
+is working on and the least safe to drop.
+
+Two consequences for this page. First, mason2026missing's "size drives
+eviction priority" is right in principle but has little to act on in coding
+traces, because the large-page tail is thin. Second, at the paper's prices
+a summary written by a cheaper model saves no more than deterministic
+truncation. Across 20 cell × threshold combinations the gap is at most
+0.17 pp, and both save 11–19% at aggressive thresholds. Savings go negative
+at conservative thresholds in two of four cells: a late observation has too
+few remaining turns to repay its own model call. This matches
+nguyen2026cliffcompaction's rule-based drop tying summarization on quality.
+
+The scaffold's truncation message also matters. After 468 truncations with
+a recovery hint (e.g. narrow with `grep -n`), 76.9% of next actions
+narrowed the query. After 50 bare truncations, 44.0% did. That is a
+behavioural point for a visible gap with a pointer, as in
+nguyen2026cliffcompaction and the [[concepts/lossless-context-offload]]
+scope condition.
+
+Caveats:
+- Cost only. Trajectories are fixed and no quality arm is run. Truncation
+  ≈ summary is a cost statement.
+- Simulated ideal prefix cache, one tokenizer, and a corpus that excludes
+  runs which hit the iteration limit. The excluded runs are where a huge
+  re-read log would sit, so the tail is understated.
+- The truncation-hint numbers are observational (n = 50 bare) and do not
+  show whether the content was recovered.
+
+Rule: before adding a model call to compress observations, compare against
+plain truncation that tells the agent how to get the content back.
+
+## A prose summary keeps about half the task state; fixed fields keep more of what cannot be re-derived (2026-10-20)
+
+[[literature/papers/xu2026what]] gives the closest measurement in the
+graph to the open "compaction fidelity" question, using an agent's
+user-facing reports as the summary. On the same 4,799 probes (37 SWE-bench
+tasks), recovery rises with what the reader keeps: latest report only
+.239 (2.6k chars), all reports .520 (6.6k), terminal scrollback .736
+(25k), full context without reasoning .890 (107k), full context .927
+(167k). Reasoning accounts for only 3.7 points. Most of what the summary
+loses is tool output and narration, which the workspace can often
+regenerate ([[concepts/lossless-context-offload]]'s re-derivability
+condition) but a report reader cannot.
+
+Two results bear on how to write the carried summary. First, at matched
+total length, a rewrite from full context recovers about 8 points over the
+agent's own reports (natural +8.3, targeted +8.5), with no targeted over
+natural advantage (+0.2 [−1.5, +1.8]). Second, on a held-out split, a
+summary organized by fixed categories picked from dev data (failures,
+facts, progress, environment) recovers more *non-inferable* state than a
+natural summary at the same budget (.110 vs .031; +.077 [.030, .133]).
+Unrecovered atoms also accumulate: 9.4 at the first checkpoint, 22.3 at
+the fourth, 18.9 of them from earlier turns. That is the same direction as
+[[literature/papers/zhang2026correct]]'s "correct now, insufficient
+later", seen across turns of a real task. With
+[[literature/papers/sun2026scipivot]] (above), the pattern is that a
+carried summary should hold structured state and measurements. Free prose
+both drops facts and carries the agent's interpretations forward.
+
+Caveats:
+- These are reports to a user, not compaction summaries the agent
+  re-reads. The analogy is ours.
+- The probe population is extracted from the full context, so the scale
+  is relative to that view, not to what a next step needs.
+- One executor model, one trajectory per task, a non-random cohort that
+  skews easy.
+
+Rule: when a long chain carries state forward as a summary, give it fixed
+fields for failures and rejected options and keep the raw logs
+addressable; do not rely on prose to carry them.
 
 ## Open questions
 

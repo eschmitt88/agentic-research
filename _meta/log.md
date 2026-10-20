@@ -683,3 +683,20 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-10-20 04:02 fetch-paper arXiv:2606.11522 → raw/papers/srinivasan2026search.pdf
 2026-10-20 04:02 fetch-paper arXiv:2608.14905 → raw/papers/fei2026how.pdf
 2026-10-20 04:02 fetch-paper arXiv:2610.15093 → raw/papers/kumar2026turncost.pdf
+2026-10-20 04:10 ingest raw/papers/lee2026when.pdf
+2026-10-20 04:10 ingest raw/papers/lange2026agentic.pdf
+2026-10-20 04:10 ingest raw/papers/zhou2026athanor.pdf
+2026-10-20 04:10 ingest raw/papers/zhang2026review.pdf
+2026-10-20 04:10 ingest raw/papers/iyengar2026sample.pdf
+2026-10-20 04:10 ingest raw/papers/xu2026what.pdf
+2026-10-20 04:10 ingest raw/papers/liu2026lost.pdf
+2026-10-20 04:10 ingest raw/papers/jiang2026researchfloweval.pdf
+2026-10-20 04:10 ingest raw/papers/yang2026approval.pdf
+2026-10-20 04:10 ingest raw/papers/he2026does.pdf
+2026-10-20 04:10 ingest raw/papers/ding2026reexecuting.pdf
+2026-10-20 04:10 ingest raw/papers/chen2026when.pdf
+2026-10-20 04:10 ingest raw/papers/sanayei2026evidencefirst.pdf
+2026-10-20 04:10 ingest raw/papers/kohli2026nine.pdf
+2026-10-20 04:10 ingest raw/papers/srinivasan2026search.pdf
+2026-10-20 04:10 ingest raw/papers/fei2026how.pdf
+2026-10-20 04:10 ingest raw/papers/kumar2026turncost.pdf

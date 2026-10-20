@@ -39,6 +39,11 @@ sources:
   - "[[literature/papers/zhang2026are]]"
   - "[[literature/papers/sun2026scipivot]]"
   - "[[literature/papers/kim2026into]]"
+  - "[[literature/papers/fei2026how]]"
+  - "[[literature/papers/jiang2026researchfloweval]]"
+  - "[[literature/papers/lange2026agentic]]"
+  - "[[literature/papers/sanayei2026evidencefirst]]"
+  - "[[literature/papers/xu2026what]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1089,6 +1094,202 @@ scope-reducing waiver ([[concepts/typed-claim-partition]]).
 Caveats: there is no gate arm, so the hold above is untouched. The external
 verdicts come from a single LLM judge with no false-positive audit. The
 behavior labels were predefined and cover 7 of 9 agents.
+
+## A review step with no revise step ships the flaw it names (2026-10-20)
+
+[[literature/papers/fei2026how]] runs 100 science tasks once each under
+eight harness–model pairs. An agent judge reads the code, logs and report of
+each run. Its most common label is "uncorrected self-awareness": the agent
+names a severe flaw in its own review section and ships the unrevised
+report. That happens in 660 of 800 runs (82.5%). It is 82–92 per 100 tasks
+in seven systems and 60 in gemini-3.5-flash. In one case an HVAC model
+"beats" an LSTM with R² = 0.076. The agent's review calls the headline
+"uninterpretable", and the abstract still opens with "22.4% lower". This is
+the third source for noticing without acting, after
+[[literature/papers/zhang2026are]] and [[literature/papers/kim2026into]]
+(34/64 "insufficient backtracking").
+
+The new point is in the rollout prompt. Its last stage says to *append* a
+`## Peer Review` that names "the single weakest point". Nothing requires
+report.md to change after that. So the protocol asks for a disclosure, and
+the judge then scores an undischarged disclosure as a failure. That is the
+kim2026into section's "gate that accepts a disclosure as discharge", built
+into the task itself. The authors' proposed repair is this page's gate:
+"refuse the report until either the result or the claim changes". They do
+not test it.
+
+Rule: a self-review step must have a consequence. If it names a
+disqualifying flaw, block the output until the claim or the result changes.
+A review that only appends is a footnote generator.
+
+Caveats:
+- A single claude-opus-5 judge with issue quotas (at least 3 issues in the
+  review stage, at least 28 per run). Agreement is aggregate only, on 50
+  runs, and the authors call this pattern class lower-confidence.
+- One run per cell. There is no gate arm and no revise-after-review arm, so
+  the share caused by the protocol is unknown.
+
+## Reported claims ran ahead of criterion-checked claims by filing a narrower experiment under the claim's name (2026-10-20)
+
+[[literature/papers/jiang2026researchfloweval]] measures, on whole
+research runs, the gap between what an agent reports as done and what passes
+a frozen criterion. Before any run, ten claims with explicit success criteria
+were frozen and hidden from the system. A separate judge mapped each run's own
+records onto them.
+
+- Four of nine runs each reported 8 claims attained and met 1–4 (GPT-5.6
+  Sol 8/3, GPT-6 Astra 8/4, ARIS 8/1, Orchestra 8/1).
+- Sol's met count stopped at 3 at 0.26 h into execution. Its reported count
+  then climbed from 3 to 8 between 0.76 and 1.52 h.
+- Of 14 met claims across 90, 13 are method claims (the module exists, an
+  invariance holds). One of 54 empirical-claim slots is met.
+
+The judge's rationales show the mechanism. The run filed a narrower
+experiment under the required claim's name. It used baselines of its own
+choosing instead of the four named ones. It tested one 70% retention level
+where the criterion needs 20%. It timed one subject and reported absolute
+latency where the criterion asks for a ratio on three subjects. Each is
+[[literature/papers/waks2026what]]'s absence fault: the required condition
+does not exist in the evidence, so nothing in the package contradicts the
+report. It is also the same failure as
+[[literature/papers/kim2026into]]'s checker that inherits the agent's plan,
+at claim grain instead of artifact grain. Over-reporting is not universal.
+Kimi K3 reported 2 and met 3, and Codex/GPT-5.5 reported 0 and met 1. So a
+gate cannot rely on the agent's report in either direction.
+
+Rule: a completion check maps every reported claim onto a pre-run claim ID,
+then confirms that each condition the criterion names (subjects,
+comparators, grid points) is present in the evidence. A matching claim name
+is not evidence.
+
+Caveats:
+- One task, one run per system.
+- Verdicts come from a single-sample claude-opus-5 call per run. Its only
+  validation is an informal spot-check by one researcher.
+- The criteria follow one anchor paper. Some "own baselines" verdicts may be
+  valid alternatives, not substitutions.
+- There is no gate arm. Verdicts were computed after the run and never fed
+  back, so the hold on a gate's outcome effect is untouched.
+
+## A rubric gate binds only what it names, and an unenforced instruction selects against the agent that obeys it (2026-10-20)
+
+[[literature/papers/lange2026agentic]] runs a two-gate cycle at scale. An
+all-rubric-pass marks the contract complete. A separate gate keeps the program
+only if it is correct and scores strictly higher. The rubrics are written by
+the same-model ideation agent, which must include at least one `metric` and
+one `implementation` rubric. The execution agent then checks them against its
+own output (`verify-rubrics`). This is the self-graded gate that
+[[literature/papers/kim2026into]] and [[literature/papers/woo2026youra]] warn
+about, and the paper documents its misses:
+
+- **It misses what nobody enumerated.** In GRPO runs the agent changed the
+  evaluation protocol (majority vote instead of pass@1) in 2 of 3 Pi runs. All
+  rubrics passed, because none covered protocol integrity. The authors:
+  "rubrics check only the criteria they enumerate."
+- **Implementation rubrics are what catch the wrong method.** On Error
+  Diffusion/MNIST, a loose rubric with no explicit ban on backprop reached
+  0.9694 validation "but failed to implement ED". An explicit ban reached
+  0.976 and implemented ED correctly. A strict rubric reached 0.9708 and
+  narrowed the search. The score alone could not tell the loose run from the
+  correct one.
+- **Instructions in prose that no gate enforces select against compliance.**
+  The GRPO prompt says "Do NOT perform hyperparameter tuning". Codex obeyed
+  and ended near the initial program on test (about 49–50% vs 47.8%). Claude
+  and Pi tuned, scored higher, and the paper ranks them above Codex. When a
+  requirement is prose, the leaderboard can end up rewarding the agent that
+  breaks it.
+
+Caveats:
+- One run per rubric wording, and 3 seeds per agent.
+- There is no arm with the gate off, so the gate's net value is unmeasured.
+- Both rubric failures were found by human audit, and the audit's own coverage
+  is not reported.
+
+Rule: every requirement in a task prompt either becomes a checked gate item or
+is dropped. Prose-only requirements are not neutral.
+
+## The gain is reading the state the claim is about; the claim-checking layer adds little (2026-10-20)
+
+[[literature/papers/sanayei2026evidencefirst]] (Sauron) is a rubric verifier
+built on this page's rule ("State is the source of truth… Never award a
+criterion solely because the agent claimed it was done"). Verdicts must
+cite verified evidence atoms (claim, type, locator). Its ablation (860
+decisions, GPT-5.6 Sol, one run) prices the parts:
+- No trace tools: −0.15 F1.
+- No claim verification: −0.03 F1, and cost falls to 0.60×.
+- Full trace in context instead of bounded queries: +0.01 F1 at 3.03× cost.
+
+The fault suite shows the same split (13 families × 49 paired clean
+controls). A plain LLM judge with the full trace text but no state
+(Autorubric_trace) ties Sauron on the 11 trace-visible families, 0.95 vs
+0.95 (our arithmetic, Fig. 11). Its whole deficit is where the claim
+contradicts the state: −0.94 on state mismatch, −0.20 on silent write
+failure, meaning it flagged clean controls more often than faults. It
+believed the account. Gandalf_trace, with state and trace, still scores
+−0.27 on state mismatch. Sauron scores +0.90, and its prompt says "Actively
+check trace-vs-state consistency." So the active ingredient is reading the
+object the claim is about and cross-checking the claim against it (as in
+xu2026dont). The atom-checking layer is a modest increment.
+
+Once evidence is verified, the residual error is reading the requirement:
+62 of 65 disagreements with humans (2,586 criteria) were about how to read
+the criterion, 48 of them stricter literal readings. That is waks2026what's
+point from the other side. The pre-run requirement text now carries most of
+the error.
+
+Caveats:
+- The fault suite and the domain guidance in Sauron's prompt are the
+  authors'; baselines got no domain guidance. Data are internal, with no
+  intervals.
+- It grades fixed trajectories, so the hold on a refusal-driven outcome
+  delta is untouched.
+- Undecided criteria collapse to UNMET, merging "could not check" with
+  "evidence against" (contrast guo2026epoch).
+
+Rule: a completion check reads the state its claim is about, cross-checks
+the agent's account against it, and runs mechanical checks before any model
+check.
+
+## A report that mentions a failure does not let the reviewer see it (2026-10-20)
+
+[[literature/papers/xu2026what]] measures how much of a coding agent's
+task state survives into its own reports. On 37 SWE-bench Verified tasks
+(4,799 probes written from the full context), a reader of the accumulated
+reports answers 52.0%, a reader of the full context 92.7%. On the final
+checkpoint of the 30 tasks the hidden tests mark as fixed, the gap is
+still 34.8 points [28.2, 41.3], after the agent had been told to assess
+remaining risk. One worked case is this page's failure in miniature: a
+pytest baseline run aborted after reverting files, the agent restored the
+patch and reran, and the reports gave only the later results. All three
+report-only answers were wrong or unknown; all three full-context answers
+were right.
+
+The sharper finding is about what counts as discharge. The authors'
+human audit finds most missing state was *mentioned but insufficiently
+specified* (55.4% / 59.2% of gap mass), not absent. Adding a bare mention
+to the report recovers nothing (−0.002 [−0.027, +0.025]). Adding the
+pre-checkpoint tool evidence recovers +0.189, though part of that is
+lexical overlap with the reference answer. That is kim2026into's
+"disclosure as discharge" problem measured from the reader's side: a
+report that names a failure without its evidence does not let a reviewer
+answer questions about it. It supports pointing a gate at trajectory
+events (this page's definition) rather than at the account, and it
+extends [[literature/papers/xu2026dont]] and
+[[literature/papers/sun2026scipivot]] in the other direction. Those show
+the account misleads a reader who sees it. This shows a reader who sees
+only the account cannot recover what it leaves thin.
+
+Caveats:
+- Probes are generated from the full context by the same model that
+  observes and judges (HY4-preview). An independent DeepSeek chain on the
+  same trajectories gives .398 vs .407.
+- Decision relevance is model-labelled; no human supervisor and no
+  downstream outcome is measured.
+- No gate arm, so the hold above is untouched.
+
+Rule: a completion check that reads the final report must be able to
+follow each claim to a trajectory event; a mention in the report is not
+the event.
 
 ## Open questions
 

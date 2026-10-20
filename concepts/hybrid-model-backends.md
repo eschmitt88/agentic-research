@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/guo2026groundability]]"
   - "[[literature/papers/li2026humanize]]"
   - "[[literature/papers/ganesh2026homogenization]]"
+  - "[[literature/papers/kumar2026turncost]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -194,6 +195,42 @@ itself remove what travels over a shared transcript. That matches
 li2026humanize's caveat that HMA cannot separate the second model from the
 fresh context. When vendor mixing is meant to buy review independence,
 the reviewer's *input* has to be separated as well.
+
+## Under prefix caching a cheaper model must beat the incumbent's cached price, not its list price (2026-10-20)
+
+Every section above prices a role split by list price.
+[[literature/papers/kumar2026turncost]] shows that under prefix caching the
+comparison is different. The strong model reads its own cached transcript
+at roughly a tenth of its list input price. Swapping a cheaper model in for
+a whole turn means a cold prefill of the full transcript. So an in-band
+swap pays only if the weak model's input price is below the strong model's
+*cached* price. "A weak model priced at 20% of the strong model's list
+price appears to offer an 80% saving under flat accounting but is a net
+loss once caching is counted."
+
+Out-of-band delegation leaves the strong model's cache intact. The weak
+model gets only a slice, such as one observation, and returns a short
+result. This pays only when the remaining turns T − j exceed
+roughly p_W^in / p_S^cache, adjusted for compression ratio and prompt
+overhead (Eq. 3). At the paper's defaults that horizon is under one turn,
+yet delegation still saves no more than deterministic truncation (gap
+≤ 0.17 pp over 20 settings, ≥ 0 over 16 price combinations). The binding
+limit is that observations are small (median 118–286 tokens), not price.
+
+For this page: cache economics favour splitting by *session*, not by turn.
+An ideator and an implementer that each keep their own long-lived context
+fit that. Per-turn routing inside one transcript fights it. TRACE-Router's
+pin-at-admission design is the routing form that respects the cache.
+
+Caveats:
+- Simulated ideal prefix cache, two open-weight models, coding traces. No
+  task-success measurement, so nothing here says whether the weak model's
+  work is good enough.
+- Provider cache pricing and TTLs differ and change. Treat the 0.1 cached
+  ratio as a parameter, as the paper does.
+
+Rule: when comparing backends for a role inside one running context, use
+the incumbent's cached-read price as the bar.
 
 ## Open questions
 

@@ -54,6 +54,9 @@ sources:
   - "[[literature/papers/ding2026harnessdelta]]"
   - "[[literature/papers/pham2026reliable]]"
   - "[[literature/papers/giampieri2026cortex]]"
+  - "[[literature/papers/he2026does]]"
+  - "[[literature/papers/jiang2026researchfloweval]]"
+  - "[[literature/papers/liu2026lost]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -672,6 +675,129 @@ Two qualifications for this concept:
    Sonnet 5, and one `/prune` pass after the upgrade flagged 2 of 4 items.
 
 Single author, synthetic repo, Haiku in every role, no harm test.
+
+## Failure-driven revision rarely removes the rule that causes the failures (2026-10-20)
+
+[[literature/papers/he2026does]] plants three erroneous rules in a
+playbook and lets the model revise it from its own failures. The result
+bears on whether failure-driven update can serve as the removal half of a
+library's lifecycle. Mostly it cannot.
+
+- **Editors blame non-compliance, not the rule.** None of the 18 coded
+  diagnoses of rule-caused failures said a rule was wrong. For the
+  "write counts in words" rule, 7 of 12 diagnoses mentioned it, and 6 of
+  those said the agent had *not followed* it, although the answer ("five")
+  had followed it. None of the 12 children neutralized the rule, and two
+  stated it more firmly. With the format restrictions lifted, it was
+  neutralized in 1 of 11 (vs 0 of 11).
+- **Misapplication framing works when it fits.** For the rounding rule, 5
+  of 6 diagnoses said it was applied where not needed, restricted it, and
+  repaired the target. Scoping the rule down is what failure reflection
+  found, not deleting it.
+- **A rule that causes no failure is never examined.** The inert
+  navigation rule survived 27 of 28 failure-driven revisions; all 4
+  children given no evidence removed it while rewriting.
+
+The removal mechanisms already in this concept do not depend on the editor
+diagnosing the rule: hu2026skillbrew's counterfactual leave-one-out,
+pham2026reliable's randomized inclusion, and giampieri2026cortex's paired
+with/without comparison. This paper is evidence for keeping it that way.
+A rule or skill that the agent is visibly following looks, to a reflective
+editor, like a rule it should follow better. The inert-rule result is the
+reflection-side twin of Cortex's "never fired means unmeasured": no
+failure, no pressure, no removal.
+
+Rule: retire skills and instruction clauses by ablation against a scored
+holdout, not by asking the agent to reflect on its failures.
+
+Caveats:
+- Qwen3-4B as both agent and editor, artificial rules by design, 18
+  rule-caused cases coded by one coder (the author).
+- The revision prompt told the editor to keep final-answer format rules,
+  which may have protected the number-words rule; the small control (11
+  per arm) does not estimate that effect precisely.
+
+## Two research skill packs tied the bare harness by trading evidence for write-up (2026-10-20)
+
+[[literature/papers/jiang2026researchfloweval]] gives a no-skill arm for
+two off-the-shelf research skill packs. ARIS and Orchestra each run on
+Codex/GPT-5.5 with one added instruction line. They are compared with
+Codex/GPT-5.5 alone, on the same task, budget and judge.
+
+- Overview: 44.5 and 45.2 against 45.1.
+- Paper writing: 52.5 and 47.5 against 32.5.
+- Result quality: 20.0 for both, against 30.0.
+- Claim completion: 32.5 and 37.5 against 42.5.
+- Met claims: 1 each, the same as the bare harness.
+- Self-reports: each pack reported 8 claims attained within half an hour.
+  The bare harness reported 0.
+
+The overall tie hides opposite-signed shifts. The packs moved effort into
+the write-up and into confident self-reports, not into evidence. This is
+the empty-library candidate that [[literature/papers/pham2026reliable]]
+says must always be scored, and here it ties a full pack. It adds one
+point to that note: score a pack on the dimension it claims to improve,
+not on the aggregate.
+
+For this box it is weak support for scoping research skill groups to the
+projects that need them. A general pack loaded everywhere can raise how
+finished the output looks without raising what it establishes.
+
+Caveats:
+- One run per arm, on one task.
+- The bare harness itself stopped after 0.30 h.
+- The skill arms ran on a different host.
+- Which skills actually fired is not reported, so
+  [[literature/papers/giampieri2026cortex]]'s exposure rule cannot be
+  applied.
+
+## Large libraries suppress loading through description interference, and matched-size preselection recovers it (2026-10-20)
+
+[[literature/papers/liu2026lost]] holds SkillsBench tasks, verifiers and
+golden skills fixed and adds 0 to 10,000 random distractor skills from a
+20,000-skill market pool. The agent uses progressive disclosure: it sees
+every skill's name, description and location, and decides during
+execution what to open. Aggregate loaded-skill recall (82 tasks × 3
+open-weight models × 3 runs) is 73.6 → 68.2 → 53.3 → 27.4% at 0 / 10 /
+100 / 1,000 distractors. The zero-load rate goes 9.3 → 51.6%.
+
+This is the fourth source on the loading function, after kim2026why,
+piriyakulkij2026subagents and cheng2026scope. It adds three things they
+lacked:
+
+- **The failure is under-loading, not wrong loading.** Non-golden loads
+  occur in 2.32% of evaluations. When agents do load at 1,000
+  distractors, 76–89% of loads are golden. The agent stops opening
+  skills; it does not open the wrong ones.
+- **The mechanism is description semantics, not context budget.** On a
+  10-task subset at 1,000 distractors, replacing distractor metadata with
+  length-matched `<mask>` tokens raises loaded recall 18.6 → 63.9%. The
+  no-distractor value is 73.5%. Masking descriptions alone gives 63.3%.
+  So kim2026why's "context budget displacement" is not the main channel
+  here. Plausible-sounding entries are.
+- **Retrieval at matched exposed size is now tested.** The limit noted
+  above was "flat vs dump-everything, not retrieval at matched size."
+  Preselecting ≤5 skills before execution keeps loaded recall at 62.0%
+  (LLM pick from full list) and 67.1% (hybrid: LLM-written queries,
+  embedding pool, LLM pick) at 1,000. Hybrid keeps 55.2% at 10,000, with
+  zero-load at 9–11%. A prompt instruction to plan skills first recovers
+  only 44.6%.
+
+One contrast with kim2026why: here even the full 1,000-skill list beats
+no skills (Pass@3 29.3–43.9 vs 26.8–34.1). Flat loading hurt loading
+but was not inert.
+
+Caveats:
+- Custom JSON terminal harness with all metadata in the system prompt,
+  not Claude Code's `Skill` tool. Effect size may not transfer.
+- Distractors are random, not topically clustered. There is no tiered or
+  hierarchical arm to compare against kim2026why's tiers.
+- No CIs. The mechanism arms are 10 tasks; field-level masking is 1 run
+  per task and model. Code URL returned 404 on 2026-10-20.
+
+Rule: above a few dozen skills, narrow the visible list before the task
+starts (scope or preselect); do not rely on the agent to route from the
+full list mid-task.
 
 ## Open questions
 

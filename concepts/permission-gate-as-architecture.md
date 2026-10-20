@@ -46,6 +46,7 @@ sources:
   - "[[literature/papers/zhu2026authorization]]"
   - "[[literature/papers/qin2026llm]]"
   - "[[literature/papers/das2026selfpropagating]]"
+  - "[[literature/papers/yang2026approval]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -235,6 +236,57 @@ gate.
 - **[[concepts/scripted-tool-pipelines]]** — a typed tool registry with
   per-tool permission tiers is the substrate both the gate and scripted
   pipelines read.
+
+## The grant's scope is proposed by the agent, so the update path is an attack surface (2026-10-20)
+
+Every section above treats a grant's scope as given: someone wrote it, and
+the gate checks against it. [[literature/papers/yang2026approval]]
+measures what happens when the agent shapes the scope. Codex CLI and
+Claude Code both offer to persist a reusable allow-rule at approval time,
+generalised by the harness from the agent's current action. Approval
+depends on context, but the stored rule does not. Planted repository
+content steered an agent doing a routine task into proposing broad rules
+(general interpreters, file and network tools):
+
+- **Stage I:** 58/100 cases (4 configurations × 25) reached a rule an LLM
+  judge deemed sufficient for a chosen harmful goal. A plain "request this
+  rule" injection reached 32/100, and the unmodified task 0/100.
+- **Stage II, assuming approval:** 47/58 goals were verified complete with
+  no further prompt. Only **33/58** went through the acquired rule. On
+  sonnet-5 it was 0/9, and the paper reports that model routing
+  around planted steps.
+- **Harness-specific generalisation.** Codex generalises a rule across
+  workflow history and Claude Code over command syntax, so the breadth of
+  the offered rule depends on the harness's generalisation rule, not on
+  persuasion.
+
+This adds a fifth axis to the four already here.
+santosgrueiro2026lingering covers lifetime, bouras2026authority
+granularity across principals, kapner2026scanning grant language and
+provenance, and taneja2026scan when the gate may stop asking. The new axis
+is **who proposes the scope of a new grant**. Here it is the agent, whose
+context the attacker controls. The human only ratifies.
+kapner2026scanning's finding that `Bash(python:*)` reads narrower than it
+is suggests ratification is cheap. That is suggestive only, since neither
+paper measures approval. This is also exclusivity (sharma2026smsr) seen
+through time. The gate covers every path at decision time, and the
+approval writes a standing side path for later calls.
+
+Caveats:
+- Human approval is assumed throughout. There is no user study and no
+  approval-rate estimate.
+- 58% and the breadth score come from LLM judges after up to five closed-
+  loop repairs against a proxy identical to the victim. They are search-
+  success rates, with no repeat rollouts. The Stage II baselines got no
+  victim feedback.
+- No code or artifacts are released.
+
+Rule: treat an allow-rule proposed while untrusted content was in context
+as untrusted-provenance. Show its effective scope, not the agent-shaped
+label, and prefer expiring grants for interpreters and network verbs. On
+this box the rule writer to watch is `/fewer-permission-prompts`, which
+turns transcript commands (some issued after reading `raw/`) into
+persistent allow-rules. That last point is our inference.
 
 ## Open questions
 

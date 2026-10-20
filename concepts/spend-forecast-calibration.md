@@ -10,6 +10,7 @@ sources:
   - "[[literature/papers/yu2026primescientist]]"
   - "[[literature/papers/liu2026what]]"
   - "[[literature/papers/wang2026clock]]"
+  - "[[literature/papers/kumar2026turncost]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -181,6 +182,44 @@ a larger fraction of their total — biasing any agentic-vs-linear ratio toward
 - [[concepts/context-eviction-policy]] — cache reads dominate billed
   cost, so any forecast denominated in token *surface* rather than
   billed cost will misprice eviction decisions.
+
+## Turn count carries the cross-run cost variance, and a token count is not a bill (2026-10-20)
+
+[[literature/papers/kumar2026turncost]] re-prices 600 published
+coding-agent trajectories (2 scaffolds × 2 open-weight models) under a
+simulated prefix cache. On log–log axes, turn count alone explains
+R² = 0.844 of per-trajectory cost (exponent 1.23). Mean observation size
+alone explains 0.040, with a slightly negative slope. Cost per turn is
+fairly stable (median 0.005 normalized units, CV 0.28). From the first to
+the tenth turn-count decile, median turns rise 36 → 168 and median cost
+about 7×.
+
+This sharpens the section above. liu2026what found step count can outweigh
+harness preamble. Here the per-turn cost is steady enough that a forecaster
+can be (turn-count quantile) × (per-turn cost), fitted per scaffold ×
+backend, which is what this page's implementation guidance already asks
+for. It is still not a forecast from inside the agent. bai2026how's
+r ≤ 0.39 for self-estimates stands, and the turn count is the unknown.
+
+The paper also puts a number on units. Flat input pricing overstates the
+cached bill by 6.5–7.8× (mean 7.14×), rising from 5.33× below 40 turns to
+7.99× above 130. At 90% cache efficiency the gap is 4.0×, and at 50% it is
+1.45×. A gate and a forecast must use the same units. A raw token ceiling
+that counts cache reads at par with fresh input is a much looser limit on
+billed spend than it looks on long sessions.
+
+Caveats:
+- The 84% is partly mechanical, since cost is a sum over turns. The
+  authors say so.
+- Adding observation size to turn count raises R² by 0.101. "4%" is the
+  univariate figure, not observation size's whole contribution.
+- The cache is simulated (h_t = C_{t−1}), not metered. liu2026what's
+  metered 96–99% hit rate is the better anchor for this box.
+- The corpus excludes runs that hit the iteration limit. Those are the
+  long-tail runs a ceiling most needs to catch.
+
+Rule: fit the turn-count distribution, not observation size, and state
+whether a token budget counts cached reads.
 
 ## Open questions
 

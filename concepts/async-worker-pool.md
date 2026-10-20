@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/philippov2026glite]]"
   - "[[literature/papers/ishibashi2026effective]]"
   - "[[literature/papers/li2026autorecsys]]"
+  - "[[literature/papers/lange2026agentic]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -187,6 +188,41 @@ accounts posting identical scores, 63% are within an hour of each other and
 no allocator, the frontier view *is* the allocation policy, and a pure
 leaderboard is a bad one. See [[concepts/shared-substrate-contagion]] for the
 proposed diversity-aware fix and why it is untested.
+
+## Worker count and the shared channel, ablated over seeds: they buy wall-clock, not a better best (2026-10-20)
+
+[[literature/papers/lange2026agentic]] is the first source on this page with
+matched arms over seeds. Agora had no single-worker control, so this fills
+that gap. The task is GRPO fine-tuning of Qwen2.5-Math-1.5B. Each evaluation
+is a roughly 2.5 h training run on 2 H100s, and each arm gets 50 idea cycles
+and 3 seeds with Opus 4.7 + Claude Code. Workers lease cycles from a queue and
+share distilled memory at cycle boundaries.
+
+- **Worker count.** Two workers reach the 1-worker peak in less than half the
+  wall-clock time. Four are no better than two. The authors' reading: "larger
+  pools can redundantly concentrate on similar local improvements". That is
+  [[literature/papers/zhang2026agora]]'s duplicate-work mode at a pool size of
+  four.
+- **Seed spread is larger than arm gaps.** Read from Fig. 14, post-search test
+  accuracy within one config spans about 52–68% (1 worker), 50–66% (2) and
+  57–63% (4). Run-to-run noise is about the size of the effect being measured.
+- **The shared channel buys speed and convergence, not a better best.**
+  Removing shared memory slows progress and widens the gap between workers.
+  The final best is "not statistically significant" against sharing. This is
+  the benign side of [[concepts/shared-substrate-contagion]]: the same channel
+  that lifts the weaker worker also narrows the spread, so a pool that shares
+  more explores less.
+
+Caveats:
+- Three seeds and one task.
+- Per-cycle evaluation is a single training run with a strictly-higher keep
+  rule, so the "best" in each arm is selected on noise. The 2-worker best
+  diverged on 1 of 5 reseeded runs.
+- The scheduled context pruning (every 20 cycles) is not ablated.
+
+Rule: for a GPU-bound loop on this box, size the pool for wall-clock, at two
+workers rather than four. Do not count on parallelism or sharing to raise the
+final best above seed noise.
 
 ## Open questions
 
