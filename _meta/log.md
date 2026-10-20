@@ -666,3 +666,20 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-10-19 07:54 ingest raw/papers/rodionov2026improving.pdf
 2026-10-19 07:54 digest-autoingest n=6 verdict=go/high
 2026-10-19 promote-moc declined (graph unchanged since d006d6a, 35/35 concepts mapped)
+2026-10-20 04:02 fetch-paper arXiv:2610.22779 → raw/papers/lee2026when.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.18933 → raw/papers/lange2026agentic.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.21055 → raw/papers/zhou2026athanor.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.15897 → raw/papers/zhang2026review.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.23255 → raw/papers/iyengar2026sample.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.20003 → raw/papers/xu2026what.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.18522 → raw/papers/liu2026lost.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.18088 → raw/papers/jiang2026researchfloweval.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.22987 → raw/papers/yang2026approval.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.14662 → raw/papers/he2026does.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.14460 → raw/papers/ding2026reexecuting.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.16067 → raw/papers/chen2026when.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.17724 → raw/papers/sanayei2026evidencefirst.pdf
+2026-10-20 04:02 fetch-paper arXiv:2605.29800 → raw/papers/kohli2026nine.pdf
+2026-10-20 04:02 fetch-paper arXiv:2606.11522 → raw/papers/srinivasan2026search.pdf
+2026-10-20 04:02 fetch-paper arXiv:2608.14905 → raw/papers/fei2026how.pdf
+2026-10-20 04:02 fetch-paper arXiv:2610.15093 → raw/papers/kumar2026turncost.pdf
