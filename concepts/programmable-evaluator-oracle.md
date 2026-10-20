@@ -67,6 +67,10 @@ sources:
   - "[[literature/papers/guo2026epoch]]"
   - "[[literature/papers/lumer2026reflective]]"
   - "[[literature/papers/zhang2026are]]"
+  - "[[literature/papers/chen2026when]]"
+  - "[[literature/papers/ding2026reexecuting]]"
+  - "[[literature/papers/iyengar2026sample]]"
+  - "[[literature/papers/lee2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -793,6 +797,149 @@ frozen score. It does not conflict with [[literature/papers/park2026when]]'s
 *numbers*. Here it is a number against a *diagnosis*. Evidence grade:
 2 seeds per arm, no CIs, and the authors call the cells directional.
 Read it as "a scalar gave about nothing", not as a measured sign flip.
+
+## A stateful oracle can return the right value and leave the wrong state (2026-10-20)
+
+[[literature/papers/chen2026when]] audits τ-bench's reward function as a
+program. `calculate_reward()` resets the database to replay the reference
+solution and never restores it. The value it returns is correct, and
+τ-bench's own runner never reads the environment again. The author's
+harness did read it again after the episode, so it graded the reference
+solution's state. Replaying 4,320 archived episodes against a clean
+database cuts success from 94.3% to 65.5%. The replay reproduces all 137
+step-limit labels and all 33,402 tool observations. **A correct return
+value does not make a correct oracle if grading mutates the graded state.**
+
+Seven author-built defect classes test five state invariants and three
+known-answer controls. All 7 classes are caught, and 54 of 57 separable
+variants. The cheapest checks need no reference, no model and no human:
+- score the same episode twice and get the same verdict and state;
+- after the session ends, the environment still holds the agent's state;
+- a do-nothing episode fails. Here it passed.
+  [[literature/papers/zhang2026double]]'s fabricated-submission probe is
+  the same idea.
+
+Invariants miss a state-clean but wrong oracle, and controls miss a
+state-dirty one that happens to be right. This adds the oracle-function
+level beneath [[literature/papers/zheng2026benchshield]]'s run-lifecycle
+invariants. In [[literature/papers/gomez2026can]] a defective checker
+*hid* real solves; here a defective read *inflated* them.
+
+Caveats:
+- The 29-point gap is the author's own integration bug, not an error in
+  published τ-bench numbers. The paper says so.
+- The battery is author-built. The one miss, an oracle that swallows its
+  own exception, disables the check meant to catch it.
+- One benchmark, single author, preprint.
+
+Rule: before an oracle grades a loop, score one artifact twice and one
+known-bad artifact once. A changed verdict, a changed artifact or a passing
+no-op is a defect to fix first.
+
+## A grader validated on the reference solution can still reject correct alternatives (2026-10-20)
+
+[[literature/papers/ding2026reexecuting]] tests the usual validation for a
+hermetic grader: the reference (gold) patch passes and the empty patch
+fails. It shows that check is not enough. In a selected stratum of 11
+SWE-bench Pro Go tasks, a reconstruction of Lego-RL's gold-bound module
+cache passed the gold patch on 11/11. It still rejected 6 of 15 accepted
+alternative patches, from five runs of four models. Every one of the 6
+passed once its own declared modules were added. The cause is structural.
+The cache contains only what the reference needs. A correct fix that bumps
+a dependency to another version cannot build, and it gets a wrong-fix
+verdict. On one Flipt task, three models each added a `Masterminds/semver`
+version that is absent from the gold `go.sum`.
+
+This is the build-environment version of the defective oracle in
+[[literature/papers/gomez2026can]], which rejected valid answers. It also
+follows the same logic as the counterfactual check from [[literature/papers/zhang2026are]]
+above. An oracle validated only against the reference certifies agreement
+with the reference's environment, not correctness. The paper's fix
+(provision each candidate's own dependencies) recovered every loss. It
+failed its own safety check, though: one officially unresolved candidate
+passed one of three restored runs.
+
+Caveats:
+- The stratum was chosen for exposure. This shows the error exists, not
+  how common it is.
+- On the random confirmatory sample the offline option rejected 0 of 59
+  exposed patches. The upper bound there is 4.95%.
+
+Rule: before a hermetic or offline grader gates a loop, check that it
+accepts a few correct solutions that differ from the reference in
+dependencies or approach, as well as the reference-passes and
+null-fails checks.
+
+## A judge's operating point moves when the generator changes (2026-10-20)
+
+[[literature/papers/iyengar2026sample]] adds a reason why an
+operating point, once stated, does not carry over: it moves when the
+generator changes. It replicates Stroebl et al. 2024 for fixed test
+suites. A generator's single-sample accuracy predicts how often its wrong
+programs pass the tests (Spearman ρ = 0.97 over 17 models on HumanEval+,
+from 1.5% for Vicuna-7B to 31% for GPT-4o; 0.95 over 10 on MBPP+).
+
+For scored verifiers the picture differs. With 19 reward models at one
+fixed threshold, Llama-3.1-70B's wrong MATH-500 answers pass more often
+than 8B's for 16 of 19 (sign test p = 0.004). After the threshold is
+re-tuned so that each generator's correct answers pass at the same 90%
+rate, the effect disappears (9 of 19, p = 1). So the capability effect for
+a scored judge is a shift of the score distribution, which per-generator
+calibration removes. A pass/fail test has no threshold to re-tune.
+
+This extends ray2026what's admissibility point. An operating point is
+specified for a judge *and a generator*. When the executor model is
+upgraded in a loop that uses a scored judge, the old threshold no longer
+gives the stated miss rate. Fixed tests become more permissive as
+generators get stronger, and only a stronger test suite fixes that.
+
+Caveats:
+- Single-shot code and math, not agent trajectories.
+- The re-tuning uses ground-truth labels for each generator, so it needs
+  a labelled pilot whenever the generator changes.
+
+Rule: re-measure a judge's operating point on a labelled sample whenever
+the generator behind it changes.
+
+## A secondary verifier term steers only as hard as its applied weight, and at low weight it is a tie-breaker (2026-10-20)
+
+[[literature/papers/lee2026when]] audits an auxiliary verifier inside an
+ML-pipeline design loop. The search objective is R = Q̂ + λ·RCS, where RCS
+retrains with each of the agent's stated reasons negated and averages the
+accuracy drops. Two measurements bear on this concept's rule that
+aggregation must be explicit:
+
+- **The nominal weight is not the applied weight.** An accuracy gate cut
+  Credit-G's applied λ to 0.030 against a nominal 0.088. The paper's
+  pressure ratio ρ (mean applied λ·RCS over the s.d. of Q̂ in the run) was
+  0.007–0.089 on all six datasets. Nobody chose a low ρ; it came out of the
+  gate.
+- **Low pressure still picks the artifact.** Re-selecting each run's
+  reported pipeline without the verifier term flips it in 5/18 deployed
+  runs, all among accuracy-tied candidates (0.000 validation accuracy
+  conceded). A separate final-selection tie-break also prefers higher RCS
+  within a validation tolerance, and its flip count is not reported. At
+  λ_nom = 5 the term flips 14/18 runs and concedes up to 0.209 validation
+  accuracy.
+
+This is the first measurement in the graph of what
+[[literature/papers/xu2026conflictguide]] left as "diagnostic-gated
+tie-breaking … a separate, still-unisolated lever". The lever is real:
+inside a tolerance band the secondary signal decides the reported candidate
+about a quarter of the time, and neither the primary score nor the band
+shows it. The same applies to any tie-break inside `/iterate`'s noise band
+([[concepts/budget-as-ceiling]]).
+
+Caveats:
+- One loop, one generator (Solar Pro 3), three seeds, 16–19 iterations,
+  toy-scale tasks.
+- The flip rate is post hoc. It re-selects over the trajectory that ran, not
+  a counterfactual run.
+- ρ inflates on low-variance tasks (63.7 on Electricity), so the flip count
+  is the more decision-relevant number.
+
+Rule: for any composite or tie-broken keep rule, log how often the secondary
+term changed the kept candidate. Do not infer its influence from its weight.
 
 ## Open questions
 

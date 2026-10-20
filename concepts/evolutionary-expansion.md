@@ -36,6 +36,7 @@ sources:
   - "[[literature/papers/bobadillasuarez2026audit]]"
   - "[[literature/papers/xu2026conflictguide]]"
   - "[[literature/papers/hu2026winners]]"
+  - "[[literature/papers/he2026does]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -282,6 +283,47 @@ items outside its selection set before it is credited (see
 [[concepts/hce-evaluation]]). Caveat: Qwen3.5-4B task model, 5 seeds, two
 tasks, and the GEPA reported-gain measure was added after eight runs had
 been seen.
+
+## In DGM's logs, edits are not aimed at the failure shown, and selection over zero-mean edits reproduces the curves (2026-10-20)
+
+[[literature/papers/he2026does]] tests the premise every self-modifying
+population here relies on: that an edit written after seeing a failure is
+aimed at that failure. DGM draws the failure shown at random from the
+parent's failures, so the target and the parent's other failures are
+exchangeable under the null, and an e-value stays valid however the archive
+adapts. Over 145 eligible modifications in the six public DGM runs, 12
+repaired their target against 16.4 expected (8.3% vs 11.6%; e-value 0.15,
+where 20 is needed at 5%). Five of six runs point the wrong way. Power is
+0.72 for a 6-point directed boost, so small effects are not excluded.
+
+Two further results change how a population's rising best should be read:
+- **Selection over zero-mean edits is sufficient for DGM's curves.** A
+  simulation with mean-zero edit effects, each run's measured edit spread
+  (about 6.4 points for DGM), its viability and DGM's own parent-sampling
+  and archive rules gives a median best of 0.51 (5–95%: 0.37–0.65) against
+  0.50 observed, 0.44 vs 0.39 for the fixed editor, and 0.24 vs 0.23 with
+  no archive. This is a sufficiency check calibrated on the same runs, not
+  proof that the edits had zero mean.
+- **The editor's measurable contribution is viability, not repair.** Edit
+  gain did not grow with parent quality (slope −0.15, CI −0.35 to +0.02)
+  and fell 2.1 points per 10 generations. What separated self-editing from
+  a fixed editor was how often an edit yielded a working agent: 49% vs 33%
+  on SWE-bench, 75% vs 23% on Polyglot (interaction z = 4.2).
+
+This is the population-level counterpart of hu2026winners' per-decision
+winner's curse, and it gives srikanth2026recursive's inconclusive ignition
+test a mechanism: in the one system with public logs, "self-improvement
+compounding" is a survival-rate effect. Before crediting an evolved best to
+directed search, compare it with a zero-mean-edit simulation under the same
+selection rule, and log per edit whether the failure shown was repaired
+against the parent's other failures.
+
+Caveats:
+- One system (o1 proposer, Claude 3.5 Sonnet implementer that never sees the
+  failure), 80 iterations per run, single evaluations per agent.
+- In the paper's controlled studies, where the editor sees the failed
+  question and its answer, edits *were* directed (+24.5 points on a clean
+  playbook). The null is about this pipeline, not about feedback in general.
 
 ## Open questions
 

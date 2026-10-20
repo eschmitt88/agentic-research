@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/kapner2026scanning]]"
   - "[[literature/papers/piriyakulkij2026subagents]]"
   - "[[literature/papers/taneja2026scan]]"
+  - "[[literature/papers/liu2026lost]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
@@ -143,6 +144,44 @@ following the SKILL.md convention.
   (across time / installations) sharing skill artifacts via files.
   The unifying observation: the filesystem with a shared schema is a
   more robust interop substrate than IPC, RPC, or in-process state.
+
+## A shared global root is a growing list, and skill loading drops steeply between 10 and 100 entries (2026-10-20)
+
+Portability has a cost the definition above does not name. Every
+harness that reads a shared root (`~/.claude/skills/`, `~/.agents/skills/`)
+lists every skill in it, for every task. [[literature/papers/liu2026lost]]
+measures what a growing list does to a progressive-disclosure agent. With
+golden skills always installed, loaded-skill recall falls as random
+distractors are added. Aggregate (3 open-weight models, 82 SkillsBench
+tasks) is 73.6 → 68.2 → 53.3 → 27.4% at 0 / 10 / 100 / 1,000. Claude Opus
+4.6 on 37 tasks is 81.3 → 77.7 → 43.3 → 30.9%. The steep part is between
+10 and 100 entries. Masking the distractors' descriptions restores most
+of the loss, so the cost is in what the entries say, not how long the list
+is.
+
+For this namespace that means portability and scoping pull in opposite
+directions. A skill in the global root is portable to every harness and
+also a distractor in every project that does not need it. This session's
+listing has about 40 entries (13 user skills plus built-in and plugin
+skills), inside the range where the curve steepens. Guidance that follows:
+
+- Keep the global root small. Put specialised skill groups in
+  project-level `.claude/skills/`. The namespace already supports this
+  layer; it is the scope key.
+- Write descriptions that state when *not* to use the skill. Description
+  text is the interference channel, so vague, broad descriptions cost
+  every other skill.
+- Judge a skill by whether it fires, not by task success. Opus 4.6 kept
+  Pass@3 at 64.9 → 62.2 while its loading collapsed. Outcome alone would
+  read "no harm."
+
+Caveats:
+- The harness is a custom terminal agent, not Claude Code. Distractors
+  are random market skills, not a user's own related skills.
+- 37-task, implicit-only validation for the proprietary models; no CIs.
+- Our ~40 are not distractors in the paper's sense. Many are relevant to
+  some task here. The probe is skill-fire telemetry, not this paper's
+  numbers.
 
 ## Open questions
 

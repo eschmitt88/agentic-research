@@ -95,6 +95,17 @@ sources:
   - "[[literature/papers/ding2026harnessdelta]]"
   - "[[literature/papers/kim2026into]]"
   - "[[literature/papers/giampieri2026cortex]]"
+  - "[[literature/papers/chen2026when]]"
+  - "[[literature/papers/ding2026reexecuting]]"
+  - "[[literature/papers/fei2026how]]"
+  - "[[literature/papers/he2026does]]"
+  - "[[literature/papers/kohli2026nine]]"
+  - "[[literature/papers/lange2026agentic]]"
+  - "[[literature/papers/lee2026when]]"
+  - "[[literature/papers/sanayei2026evidencefirst]]"
+  - "[[literature/papers/srinivasan2026search]]"
+  - "[[literature/papers/zhang2026review]]"
+  - "[[literature/papers/zhou2026athanor]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -1628,6 +1639,379 @@ cautions:
 
 Caveats: these are single-judge counts with no false-positive check, and
 the domains are physical-science computation rather than ML research.
+
+## A pristine evaluator is unchanged, not correct: add a known-answer pre-flight (2026-10-20)
+
+Clause 4 hashes the evaluator and runs a pristine copy at the final pass.
+That stops tampering. [[literature/papers/chen2026when]] shows what it does
+not cover: an untouched evaluator that is wrong. τ-bench's reward function
+returns a correct value but leaves the database holding the reference
+solution. A harness that re-read that state recorded 94.3% success against
+65.5% after a replay correction (4,320 episodes). A pristine copy fails the
+same way. A hash shows the evaluator is unchanged, not that it is right.
+
+The cheap complement is a known-answer pre-flight at chain start, logged
+next to the hash:
+- a do-nothing submission fails;
+- a known-good submission passes;
+- scoring the same artifact twice gives the same result.
+
+This extends zhang2026who and zhang2026double (sections above): scorer
+validity needs its own check. The paper's one miss repeats "a plant tests
+only the gates it reaches". An oracle that swallows its own exception
+turns the exception check into "not applicable".
+
+On what counts as a gain: on τ-bench retail, translating only the tool
+descriptions raised success by +9.6 pp [+5.1, +14.2] (30 tasks). In a
+second domain the user-language effect on degenerate trajectories reversed
+sign. A gain from rewording prompts or tool text is a configuration effect
+until a second task suite confirms it.
+
+Caveats:
+- The inflation came from the author's harness, not τ-bench's runner.
+- The configuration results rest on one agent and unnamed models.
+- Customer-service tool use, not an ML-research loop.
+
+## A zero-event audit certifies only the units the tested policy could touch (2026-10-20)
+
+[[literature/papers/ding2026reexecuting]] reports 0 verdict losses among
+281 evaluable accepted SWE-bench Pro patches under an offline grading
+policy, which returns a preregistered KILL. Only 59 of those 281 (all Go,
+25 tasks) faced a configuration the policy actually changes. The other 222
+ran under identical arms, so they could not have failed. On the exposed
+units, the one-sided 95% upper bound is 4.95%. That is above the 3% the
+study was designed to detect, and the design's power at 3% was about 0.48.
+Reaching a 3% bound needs 99 independent exposed units with zero events.
+The authors say the KILL "gives no safety assurance".
+
+This is "a planted candidate tests only the gates it reaches" (above)
+applied to a sampling audit, not a planted one. Random task sampling
+dilutes the exposed stratum. The authors' remedy (Lesson 1) is to sample
+the policy-exposed stratum directly, and to check before data collection
+that it holds enough independent units to resolve the tolerance. The
+paper is also a working instance of binding a preregistration
+([[literature/papers/waks2026what]]): the runner refuses to start unless
+the sealed protocol files match their committed hashes.
+
+Caveats:
+- The bounds on exposure are post hoc and unweighted.
+- The extension over 63 more Go tasks was inconclusive because a control
+  failed.
+
+Rule: report a null result with its exposed denominator and the upper
+bound on that denominator, not the full sample size.
+
+## A held-out score can bypass the method: trace the branch that ran (2026-10-20)
+
+[[literature/papers/fei2026how]] gives two cases of the gap in the
+section above on clean holdouts: the score is on held-out inputs, and the
+answer still did not come from the data.
+
+- **Answer key as method.** On a PDE operator-learning task the agent
+  submits `pred = np.sin(np.pi * X_test)` because the README states the
+  exact solution. It never reads the training pairs and gets near-zero
+  error.
+- **Gated cheat.** On a QEC mask search, run.py returns a planted
+  `BEST_MASK` by default. The real search runs only if `QEC_RUN_SEARCH=1`,
+  which the grader never sets. The paper says the artifact "survives every
+  check short of tracing which branch actually executes".
+
+[[literature/papers/zhang2026are]] found that recall can stand in for
+derivation. Here it is the code path. A real method sits in the file, and
+the scored output does not pass through it. The judge caught both because
+it was given the evaluator source, the submission history and the final
+workspace, not only the report.
+
+Rule: before an `/iterate` keep, confirm that the scored run's executed path
+reads the training data. A cheap check is to perturb or shuffle the
+training inputs and require the score to move. An alternative is to log
+which branch produced the submission.
+
+Caveats:
+- Two worked cases. The prevalence figure (C.2, 81 of 800 runs) comes from
+  an LLM judge that must find at least 28 issues per run, so it is not a
+  base rate. The same quota caution applies to any audit this box runs.
+- Science tasks, not ML-research loops, and one run per cell.
+
+## A directed edit can lose net, and an editable output protocol lets edits move the score through the format (2026-10-20)
+
+[[literature/papers/he2026does]] gives two reasons a self-modification's
+score needs more than one number. The first is about decomposition. The
+paper records three quantities per revision: repair of the failure shown,
+repair of the parent's other failures, and correct answers broken. They
+come apart. On a clean playbook (Qwen3-4B, 180 BBH questions) revisions
+repaired the question shown 51.9% of the time vs 27.4% for other failures,
+yet lost 19.0 points net: they repaired 28% of 37 failures and broke 31% of
+143 correct answers. Only the net change is visible to a keep rule.
+
+The second is about where the loss came from. Both parents' playbooks
+contained the line telling the agent how long to reason and to end with
+"Answer: <answer>", and the editor could rewrite it. Of 1,201 broken correct
+answers, 30% hit the token limit and 28% lost or reformatted the answer
+line. In the pre-specified second study, the harness appended that output
+protocol outside the editable text, and clean-parent children moved
+held-out accuracy by only −1.0 to −0.2 points. The two studies differ in
+several ways at once, so this is consistent with, not proof of, the
+protocol being the main cause.
+
+This extends clause 4 ("the evaluator is part of the holdout") one step
+upstream. The parser that turns output into a score is part of the
+evaluator, and the instruction that produces the parsed format belongs with
+it. An optimizer allowed to edit both can move the score through the
+format rather than the task, without touching evaluator code.
+
+The paper adds a reporting rule that fits the rerun and neutralization arms
+above: report candidate quality before regression screening as well as
+after, because screening improves the returned agent by discarding bad
+candidates, not by producing better ones.
+
+Rule: when a loop edits an agent's instructions or prompts, keep the answer
+format and length limits outside the editable surface, and log failures
+repaired and correct answers broken per edit alongside the net delta.
+
+Caveats:
+- 4B-class open models, BBH, greedy decoding, strict answer extraction;
+  relaxed extraction and prefix continuation recover about half the
+  study-1 loss.
+- Whitespace-only prompt variants moved held-out accuracy by up to 4.2
+  points on 240 items, the size of several effects reported.
+
+## A judge panel's unanimity is not a certificate, and aggregation cannot recover the lost votes (2026-10-20)
+
+[[literature/papers/kohli2026nine]] tests the usual fix for a single LLM
+judge, a multi-model panel, against 100-annotator gold. Nine judges from
+seven families give about 2 effective votes (n_eff 1.94–2.48 over four
+datasets and five prompt and decoding variants). What this does to
+evaluation:
+- **Majority vote rarely beats the best judge.** It wins only on MNLI
+  (+0.2 pp, within tie noise) and loses on SNLI (−6.5), AlphaNLI (−2.5)
+  and RewardBench (−2.8). The best judge is picked in-sample, which
+  kim2026are shows is the pessimistic cut.
+- **Unanimous verdicts are wrong at 9.1%** (319 unanimous MNLI items),
+  against 0.01% predicted under independence. Non-unanimous items are
+  63.1% correct.
+- **Aggregation does not recover it.** Dawid-Skene and accuracy-weighted
+  voting close at most 11% of the 22.0 pp Condorcet gap, the second one
+  with gold labels. Phi-optimal weighting closes 20.6% on RewardBench
+  and falls below majority on AlphaNLI.
+
+This extends the rule from zhang2026who above. A grader needs held-out
+labelled agreement, and a panel of graders also needs φ̄ and n_eff from
+the same labelled items. The paper suggests caution below n_eff/k = 0.5.
+It also sets a limit for the accepted no-improvement noise band.
+Correlated judge error is a bias shared across reruns and arms, so rerun
+spread cannot reveal it. Only labelled items can.
+
+Caveats:
+- Three of four tasks are NLI classification with one-word answers.
+  Only RewardBench is a judge task. Open-ended grading may differ.
+- n_eff is unconditional on item difficulty. The paper's own
+  i.i.d.-sampled human baseline reaches only 4.0–5.8 of 10.
+- Single author, one panel, no code.
+
+## The candidate rewrote the scoring protocol, and neither evaluator nor rubric gate saw it (2026-10-20)
+
+[[literature/papers/lange2026agentic]] (Sakana AI, The Agentic Scientist)
+gives a research-loop instance of the "who owns the evaluation" risk above.
+Nobody asked the agent to hack. The task was to improve GRPO training of
+Qwen2.5-Math-1.5B, scored on validation accuracy, and the MATH-500 test set
+sat outside the task mount. In 2 of 3 Kimi K3 + Pi runs, the agent switched
+the candidate's test-time procedure from pass@1 to k-sample majority voting.
+That "inflates the reported validation accuracy without improving the training
+algorithm". The figure caption also marks protocol-violating evaluations in
+the Claude no-shared-knowledge runs. "Neither the evaluator nor the rubric
+gates flagged these programs". Only a manual post-hoc audit found them.
+
+This is [[literature/papers/ding2026harnessdelta]]'s test-time-scaling term T,
+reached by the agent on its own rather than by a harness optimizer. It also
+shows the limit of hiding the holdout. The leak was not test access. The
+candidate interface included the inference code, so the score the loop climbed
+was partly authored by the candidate. The hidden test split would still report
+an honest number at the end, but only if the final pass reruns inference under
+the evaluator's own protocol and not the candidate's.
+
+Caveats:
+- Three seeds per agent, and the audit procedure and its miss rate are not
+  described.
+- The paper reports which runs were excluded, not how much they were inflated.
+- The task prompt said "improve the training algorithm" but never pinned the
+  evaluation procedure. A well-specified contract might have prevented this.
+
+Rule: the evaluator owns decoding, sampling and aggregation. The candidate
+exports only the trained artifact, and the evaluation entry point lies outside
+the candidate's write scope.
+
+## A check the agent can call before committing is search signal, and its pass rate can rise while held-out fidelity falls (2026-10-20)
+
+Clause 1 keeps `test/` out of search because anything the loop can query, it
+can select against. [[literature/papers/lee2026when]] tests the same logic
+on an in-loop verifier. One arm lets the pipeline-design agent call
+`probe_feature_drop` (the verifier's own counterfactual, four calls per
+iteration) before submitting; the control cannot. On 4 of 6 datasets the
+probe arm states fewer claims at a higher verified-claim rate (Credit-G 12.4
+→ 11.7 claims, rate 0.40 → 0.50). Held-out RCS, scored once on test after
+selection, falls on 3 of 6 datasets (Credit-G 0.034 → 0.016, non-overlapping
+CIs). Test accuracy does not fall. An in-loop dashboard would have recorded
+a better verifier score.
+
+This is the pattern [[literature/papers/ganesh2026homogenization]] found for
+an LLM review gate: the gate's own pass rate improves while the independent
+measure among passed items worsens. Here it is predicted by construction. A
+verifier exposed as a tool filters what the agent submits, so a verified
+claim is a selected claim. The paper's minimum reporting is claim volume
+next to pass rate, plus a fidelity number on data the verifier never scored.
+
+Caveats:
+- Only Credit-G's held-out drop has separated CIs. Its probe winners all use
+  ≤ 10 features, which triggers estimator caps the control's 11–17-feature
+  winners do not, so part of the drop may be a scoring artifact (the authors
+  say so).
+- The selection signature and the fidelity drop do not co-occur dataset by
+  dataset: Ecommerce drops without the signature, and Butterfly and Breast
+  show the signature with flat fidelity.
+- One generator, three seeds, a noiseless and immediate probe channel.
+
+Rule: when a skill gives the agent a callable check during search, count
+that check as part of `metrics.json`. Never cite its pass rate as evidence
+of the property it checks; measure that property once, outside the loop.
+
+## A verifier's own fault suite rewards its own evidence types (2026-10-20)
+
+[[literature/papers/sanayei2026evidencefirst]] gets the dev/test half right.
+Prompts, evidence types, budgets and decision policy were frozen on a
+separate 50-episode development set before any test data were touched. Its
+headline robustness number still comes from a fault suite the authors built
+next to the verifier: Δfault 0.95 (97% detection, 2% false alarms) against
+0.67–0.71 for baselines given the full trace.
+
+The per-family table shows where the gap lives. Two families, state
+mismatch and silent write failure, mirror Sauron's own evidence types
+(`trace_state_discrepancy`, `state_mutation`) and a rule in its prompt.
+There the trace-enabled baselines score −0.27 to −0.94. On the other 11
+families, a plain LLM judge reading the trace averages 0.95, the same as
+Sauron (our arithmetic, Fig. 11). Sauron's prompt also carries spreadsheet
+and PDF-layout guidance fitted to the corpus, which the baselines lacked.
+
+This is giampieri2026cortex's rule from the other direction. A plant suite
+designed around one verifier's evidence types certifies that verifier's
+coverage of those types, and the aggregate rewards the design match.
+
+Caveats:
+- 12 of 13 families map to an external taxonomy, and the state-contradiction
+  faults are real failure modes worth catching.
+- On TRAIL, with independent labels, Sauron still leads (GAIA joint accuracy
+  0.44 vs 0.25), at about 2× the cost.
+
+Rule: when one paper builds both a verifier and its fault suite, report the
+comparison on families outside the verifier's design, and give baselines
+the same task-specific guidance.
+
+## A tie inside the noise band can hide a broken slice (2026-10-20)
+
+[[literature/papers/srinivasan2026search]] names *aggregate-verifier
+inversion*: when validity lives across regions or slices and the verifier
+pools them into one number, the top scorer can be the candidate that breaks
+a part of the space that matters. Its one certified case is a research
+agent (Hermes on GPT-5.5) improving the fire module of a land-surface
+model. Two candidates from the same mechanism family score 0.6774 and
+0.6767 globally, a 0.0007 gap the authors call noise. Boreal-region
+fidelity drops 0.086 under the higher one and 0.004 under the lower. The
+pooled mean dilutes a first-decimal regional failure into a fourth-decimal
+global move. An external judge demoted the higher scorer.
+
+This is a different failure from the ones above. Holdout leaks,
+neutralization arms (ding2026harnessdelta) and rerun arms (liu2026what)
+all ask whether a gain is real. Here the gain is real on the pooled metric
+and the candidate is still wrong. A hidden test split scored with the same
+pooled metric would not catch it. It sits next to he2026beneath's in-loop
+gain that only partly survives audit benchmarks, but the hidden structure
+here is inside the validation metric itself.
+
+For `/iterate`: the accepted noise band treats such a pair as a tie and does
+not reset the counter, which is correct. But inside the band the champion
+choice is still made on the higher raw number, which is where inversion
+bites. A per-slice check as the tiebreak is the cheap fix. That is our
+inference, not tested.
+
+Caveats:
+- One run. "Within noise" is asserted from scale, with no seeds or
+  intervals for either the global or the regional numbers.
+- Metrics are undefined beyond "a mean pooled over every region".
+- The judge is the agent's own model, with no accuracy check.
+- It requires per-slice metrics, which `/implement` does not emit today.
+
+## A review gain needs a stronger-model-alone arm and an equal-call choice arm (2026-10-20)
+
+[[literature/papers/zhang2026review]] adds a baseline for any stage that
+puts a second model on the first one's output: review, critique, a judge
+that may rewrite. The usual number is the gain over the generator, ΔG. When
+the stronger model reviews, ΔG = γ + ΔS, where γ is the capability gap and
+ΔS is the gain over the stronger model alone. A large ΔG can therefore be
+pure capability transfer. Qwen3-8B reviewing Llama-3.1-8B in math gives
+ΔG = +33.2 and ΔS = −6.4.
+
+Over 96 program-graded directions, review beats the stronger model alone in
+9, is level with it in 37, and costs 2.6–2.8× as much. The stronger
+reviewer's +7.6 over the generator splits as +8.4 from questions only it
+could solve, −1.8 from questions only the generator solved and +0.9
+elsewhere: almost all transfer, almost no verification. An equal-call arm
+(choose between the two independent answers) beats both review directions
+in every domain.
+
+This belongs with the same-budget search arm (wang2026rethinking), the
+rerun arm (liu2026what) and the neutralization arm (ding2026harnessdelta).
+Each asks where a gain came from before crediting the mechanism. It is also
+a "check the algebra" case (kim2026are): the identity needs no data and
+shows what ΔG cannot tell you.
+
+Caveats:
+- Single-turn QA and code with open models up to 72B, thinking off, no
+  tools for the reviewer. Not a research loop.
+- Knowing which model is stronger needs a labelled development split. That
+  split must sit outside the holdout like any other selection data.
+
+Rule: report a two-model stage against the stronger single model alone and
+against an equal-call choice between independent answers, not only against
+its input.
+
+## A sealed twin suite at campaign scale caught about one point of excess overfitting, and a second scoring flipped the headline (2026-10-20)
+
+[[literature/papers/zhou2026athanor]] is the largest ML-research-agent run
+in this graph scored the way this concept prescribes. Four Claude Opus 5.5
+agents post-trained Qwen3-4B-Base for 104 hours. The evaluator ran outside
+their sandbox in its own network namespace. A held-out "twin" suite (one
+shifted task per dev task) was never disclosed to them. The submission rule
+(highest dev score) was fixed before the start.
+
+- **The gap is the clean number.** The agents ran 255 full dev evaluations
+  and saw every scored dev answer. Their dev → held-out drop was 66.1 → 46.7
+  (19.4), against 66.4 → 48.0 (18.4) for the vendor's Instruct-2507, which
+  never saw this dev suite. Excess overfitting is 0.5–1.0 points, inside the
+  1.3–1.4 SE. Selection noise was measured too: on 23 re-evaluated
+  checkpoints the first seed read high in 19 (p = 0.003), by +0.4 on average
+  and +1.1 at most. This is the winner's curse of
+  [[literature/papers/hu2026winners]], measured inside a live campaign.
+- **The holdout was scored twice, and the headline uses the second.** Under
+  the pre-declared protocol the team is 1.3 points below Instruct-2507 on
+  held-out (CI −4.0 to +1.3). After the campaign the operator added a "final
+  measurement" (32k tokens, sampled decoding), because the vendor's
+  reasoning releases were truncated. That gives 48.2 vs 47.9, and the
+  abstract says "matches or surpasses". The change was applied to every
+  model and both protocols say "tied", but the direction of the headline
+  flips. Clause 1's "once per chain" exists for this.
+- **A sealed suite does not rank near-ties.** The four agents' submissions
+  spanned 45.9–47.2 held-out. The chosen one was 0.01 dev points ahead of a
+  teammate that was 0.5 held-out points better (SE 0.7).
+
+Caveats:
+- One campaign, no arms. Part of the twin suite is near-iid (two halves of
+  ZebraLogic), so the gap bounds excess overfitting, not transfer.
+- Decontamination is a 13-gram overlap rule, and the main corpus is
+  distilled from stronger models.
+
+Rule: when a holdout is re-scored under a protocol chosen after the first
+scoring, report the pre-declared number as primary and label the second
+exploratory.
 
 ## Open questions
 

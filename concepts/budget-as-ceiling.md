@@ -62,6 +62,10 @@ sources:
   - "[[literature/papers/ding2026harnessdelta]]"
   - "[[literature/papers/rodionov2026improving]]"
   - "[[literature/papers/sun2026scipivot]]"
+  - "[[literature/papers/ding2026reexecuting]]"
+  - "[[literature/papers/jiang2026researchfloweval]]"
+  - "[[literature/papers/srinivasan2026search]]"
+  - "[[literature/papers/zhou2026athanor]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -1350,6 +1354,152 @@ Caveats:
 - Both plans are supplied, so the paper measures recognition, not
   generation.
 - No forced pivot's outcome is measured, and there is still no halt arm.
+
+## Grader re-execution noise is an order below agent-rerun noise, but it is task-clustered and invisible to same-host seeds (2026-10-20)
+
+[[literature/papers/ding2026reexecuting]] measures grader-side noise on
+*fixed* coding-agent patches. It re-ran 1,929 cells from the Darwin Gödel
+Machine archive, each 3× at four CPUs and 3× at a quarter CPU. Only 2 cells
+were unstable, both on one Sphinx task. That gives an upper bound of 0.33%
+per cell. 23 cells (1.19%, on 4 tasks) disagreed with the archived verdict
+in all six runs. A second host undid 7 of those 23, and rebuilt images
+changed 16 majority verdicts (0.83%). Compare
+[[literature/papers/liu2026what]]: about 13% of tasks flip when the *agent*
+is rerun on SWE-bench Verified. So for an agent loop the band's size comes
+from agent and implementation resampling, as
+[[literature/papers/ning2026implementation]] argues. Grader re-execution is
+an order of magnitude smaller (our cross-paper inference; neither paper
+measures both).
+
+The grader term has a different shape, though. It is clustered by task and
+stable under repetition on one host. The 23 drift cells held in 6 of 6
+runs, and only a host or image change moved them. A same-host `--seeds`
+std is blind to it. In a paired champion/candidate comparison on one host
+it mostly cancels: DGM's 22 drift cells on the best-node set netted 0 on
+both the incumbent and the runner-up. It does not cancel when a candidate's
+change touches the broken item, for example a test that fetches a URL in a
+network-isolated grader.
+
+Caveats:
+- The decisions tested had margins of 13 tasks and ≥7 flips, known before
+  the seal. The result says nothing about close calls, which are the
+  calls a band exists to make.
+- Three Python repositories, one contention profile, cgroup v1.
+- Replays fixed patches only, so it cannot show how grader noise would
+  have steered an adaptive search.
+
+Rule: size the band from agent reruns. Then run a periodic cross-host or
+rebuilt-image check on the champion, because seeds cannot see grader
+drift.
+
+## A prompt floor on spending was underrun tenfold: runs stopped with claims unmet and the clock unspent (2026-10-20)
+
+[[literature/papers/jiang2026researchfloweval]] gives each end-to-end run
+72 hours. The instructions say to revise and rerun an unmet claim "until it
+meets its criterion or the run reaches 90% of its budget." This line was
+added because pilot runs "ended after using about 1% of their budget". The
+runner enforces only the timeout and the artifact contract. The 90% line is
+prompt text.
+
+In the scored runs, all nine ended with at least 6 of 10 claims unmet.
+Eight used at most 7.0 h (under 10%), Kimi K3 used 20.56 h (29%), and
+Codex/GPT-5.5 stopped at 0.30 h. Wall-clock time covers all seven stages.
+Attempts did not buy claims: ARIS logged 28 attempts for 1 met claim,
+DeepScientist 34 for 0, and GPT-6 Astra 10 for 4. On the main decoding
+claim, four chains were audited. GPT-5.6 Sol rose from 0.49 to 0.54 R² over
+six attempts, the other three ended within 0.015 of their first attempt,
+and none met the claim.
+
+This is the mirror of [[literature/papers/wang2026clock]]. There a ceiling
+stated in the prompt was overrun. Here a floor stated in the prompt was
+underrun by an order of magnitude. Prompt text did not bind spending in
+either direction. For the redirect-before-halt proposal, the binding stop
+here was the agent's own exit after reporting claims attained (Sol and
+Astra reported 8 and met 3 and 4). It was not a stall. A no-improvement
+counter never fires on a run that declares success and quits. This is the
+same blind spot as he2026beneath's collapse, but reached by stopping
+rather than by micro-gains. The stagewise arm hints that some stalls start
+upstream of execution. Given the paper's own claims and plan, met claims
+rose from 1–3 to 7–8. The proposal's axes (backbone, representation,
+objective, validation) do not include reopening the plan.
+
+Caveats:
+- One task, one run per system, no seeds.
+- Stagewise inputs are the same reference the judge scores against, so part
+  of that rise is alignment with the rubric.
+- Attempt counts are self-logged. There is no redirect arm and no halt arm.
+
+## An external loop that refuses an early stop, and a forced pass that kept the baseline (2026-10-20)
+
+[[literature/papers/srinivasan2026search]] reports the opposite end of a
+chain from the stall halt. Under a strong base prompt, a GPT-5.5 research
+agent tends to settle on the first defensible mechanism and write its report
+after one shallow pass. An external monitor that owns the agent's terminal
+and judges at decision boundaries pushed past this twice. In one run it
+rejected a finished-looking state, forced a pass through untried
+combinations, then certified a conservative outcome that **kept the
+baseline**. In another it blocked a stop at a candidate within noise of
+baseline. Both pushes came after the agent had gone idle, a turn a prompt
+does not have. The run only counts as finished when the loop records a
+terminal status ([[concepts/evidence-gated-completion]]).
+
+Two small points for the redirect-before-halt proposal:
+- **Forced search did not manufacture a gain.** The extra pass ended on the
+  baseline. The proposal's clause "judge the pivot against the chain's best,
+  under the same band" depends on exactly this: a forced move that finds
+  nothing should change nothing.
+- **One more prompt-form nudge that moved the start, not the end.** A
+  reframing paragraph ("draw on mechanisms from other domains") made the
+  agent compose mechanisms earlier, but it still stopped after one shallow
+  pass with the frontier unchanged. Compare cai2026forkandflush's ignored
+  "pick a DIFFERENT approach" and yan2026traceml's prompt self-check.
+
+Caveats:
+- Two logged instances, an unreported number of runs, no outcome
+  comparison between conditions. The paper says so.
+- The judge is the same model as the agent, so the loop bundles position,
+  a rubric, extra turns and a second call. No arm isolates placement.
+- Still no paper runs redirect against halt.
+
+## A one-point stall halt held up, and restart pivots lost to the matured lineage in one round (2026-10-20)
+
+[[literature/papers/zhou2026athanor]] ran a 104-hour, four-agent
+post-training campaign with a stall halt. It closed "because the best
+development score has risen by less than one point in the previous day". The
+record shows how well that band was sized, and how pivots fared against the
+incumbent.
+
+- **The band sat just above measured selection noise.** On 23 checkpoints
+  re-evaluated on more seeds, the first seed was higher than the later mean
+  in 19 (p = 0.003). It was higher by +0.4 on average and +1.1 at most, on a
+  6-task mean. A 1-point band over a day is near one seed's worst excursion.
+  That is an independent calibration point for the accepted noise band. It
+  also shows why a sub-band "new best" should not reset the counter.
+- **Restart pivots lose a one-round comparison.** Two lineages were started
+  from the base on other data to diversify. Each scored below the main line
+  (about 55 vs 62) and was dropped after one round. The redirect-before-halt
+  proposal judges the pivot "against the chain's best, under the same band".
+  A pivot that restarts a component faces an incumbent with a day or more of
+  refinement, so one cycle favours the incumbent whether or not the new axis
+  is better.
+- **The pivot that worked was layered on the incumbent.** Greedy decoding
+  for a quarter of GRPO rollouts changed one axis of the running recipe, and
+  took the dev score 49.7 → 57.3. It came from auditing scored outputs:
+  classifying cut-off answers as repetition loops. That matches
+  [[literature/papers/sun2026scipivot]]'s point that auditing the
+  measurement should come before a backbone change.
+- **Diminishing returns had a price.** The frontier reached about 60 after
+  $2.4k. The last six points cost about $8,000.
+
+Caveats:
+- n = 2 restart pivots, no counterfactual, one campaign. The halt was an
+  operator rule, not an agent's.
+- The band is on a fixed suite with per-item feedback, not a chain's
+  validation split.
+
+Our inference for the proposal: prefer pivot candidates that can apply to
+the chain's best in one cycle. A restart pivot needs more than one cycle to
+be judged fairly.
 
 ## Open questions
 

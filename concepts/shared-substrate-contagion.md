@@ -30,6 +30,10 @@ sources:
   - "[[literature/papers/zhang2026who]]"
   - "[[literature/papers/das2026selfpropagating]]"
   - "[[literature/papers/ganesh2026homogenization]]"
+  - "[[literature/papers/iyengar2026sample]]"
+  - "[[literature/papers/kohli2026nine]]"
+  - "[[literature/papers/zhang2026review]]"
+  - "[[literature/papers/zhou2026athanor]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -632,6 +636,164 @@ Strength: rates come from search-optimized model-organism prompts and the
 cell rate is any-of-8. The abstract's defence numbers do not reconcile
 with the body. Read it as an existence proof of the mechanism, with
 credible controls, not as a prevalence estimate.
+
+## Judges share blind spots, and an exact condition says when more votes hurt (2026-10-20)
+
+[[literature/papers/iyengar2026sample]] measures the shared blind spot
+on a real judge panel and gives an exact test for when adding judges hurts.
+The data are the Weaver release: 100 Llama-3.1-70B-Instruct candidates per
+task, each with verdicts from 8 LLM judges. "k calls" is the majority of k
+draws from that panel.
+- On MATH-500, a third of the 11,015 wrong answers are accepted by at least
+  6 of 8 judges. The fitted acceptance concentration for wrong answers is
+  κ_w ≈ 14. Independent calls would be κ → ∞.
+- Proposition 2: k calls lower the precision ceiling iff F_k/F_1 > T_k/T_1,
+  i.e. the vote inflates false acceptances by a larger factor than true
+  ones. A higher false-positive rate alone is not enough.
+- MATH-500 meets the condition. Going from 1 to 9 calls multiplies
+  wrong-answer acceptance by 1.052 and correct-answer acceptance by 1.026,
+  and the ceiling falls on 61% of tasks. GPQA does not meet it: wrong
+  acceptance falls ×0.75, and 9 calls add +1.2 to +4.8 points of verified
+  success.
+- Generators share blind spots too. Llama-3-8B and Gemma-7B per-problem
+  solve rates correlate at 0.80 on MATH. Independence predicts +5 points
+  from mixing them; the real gain is +1.6.
+
+This is the measurement that [[literature/papers/zhang2026who]]'s
+"detector diversity" defence lacked. Its condition is the test that
+defence needs. Whether a second or ninth reviewer adds independence
+depends on the error correlation, and you can measure that on labelled
+candidates. A different model or more votes do not guarantee it.
+It agrees with shen2026revoked and xu2026dont: independence comes from
+what the reviewers see and how their errors correlate, not from their
+number.
+
+Caveats:
+- The measured cost is small. On MATH-500, verified success moves only
+  −0.3 to +0.1 points even where the ceiling falls.
+- The panel's 8 judges are not identified in the paper, so this does not
+  show whether shared blind spots track shared model families.
+- Panel draws are not one judge re-asked at temperature, which is how most
+  loops re-ask.
+- Single-shot math and science QA, no agent loop. Single-author preprint;
+  code promised, not released.
+
+Rule: before adding a judge or voter, check on a labelled pilot that the
+vote raises true acceptances by a larger factor than false ones.
+
+## A cross-family judge panel with no channel shares most of its errors, and family is not the axis (2026-10-20)
+
+[[literature/papers/kohli2026nine]] measures the independence axis on a
+panel, not a pair. Nine judges from seven families label 1,000 items per
+dataset with no channel between them. On ChaosNLI-MNLI the mean pairwise
+phi of their error vectors is 0.391, which the Kish formula turns into
+n_eff = 2.18 [2.07, 2.31] effective votes out of 9. Across three NLI sets
+and RewardBench, n_eff stays at 1.99–2.48. The curve flattens fast: five
+judges give 90% of the nine-judge value, and the asymptote is 1/φ̄ ≈ 2.6.
+
+**Model family is not where the independence is.** Same-family pairs
+(OpenAI 0.437, Meta 0.435) beat the cross-family mean (0.389) by only
+0.047. The three most correlated pairs are all cross-family (Claude ×
+Gemini 0.603). Keeping the best judge from each family *lowers* n_eff to
+1.93, because the strongest judges fail on the same hard items. That is
+kim2026are's capability mechanism. It agrees with zheng2026engineering
+(model swap 11.3 pp against independent source 40.9 pp). It disagrees in
+direction with chen2026rankevolve's vendor swap (patch error ρ 0.58 →
+0.21), where the harness changed too and the outputs were generated code,
+not one-word labels.
+
+Caveats:
+- n_eff is unconditional, so shared item difficulty inflates it. The
+  paper's own human baseline samples 10 labels i.i.d. per item and still
+  reaches only 4.0–5.8 of 10. Difficulty alone costs about half the
+  nominal independence. The LLM excess beyond that floor is about 2× in
+  n_eff.
+- The difficulty-conditioned Condorcet gap is the cleaner number: 22.0 pp
+  on MNLI, permutation p < 10⁻⁴. It is conditioned on only three entropy
+  bins, and ten bins double the explained share (6.8% → 13.5%).
+- No arm varies training data, so the cause is inferred. Three of four
+  tasks are classification; one panel, no code.
+
+Rule: count an LLM judge panel as n_eff votes measured on labelled items,
+not as k. Buy independence by changing the evidence a judge sees, not
+the vendor.
+
+## A reviewer that reads the first answer adopts it, and a self-review control shows the channel is the shown answer (2026-10-20)
+
+[[literature/papers/zhang2026review]] measures deference without a shared
+store, a logged verdict or a same-model pair. A reviewer simply reads a
+peer's answer. Across 96 review directions (12 open-weight models from four
+families, 3B–72B; math, knowledge, code and reasoning, all graded by
+program), questions that only the reviewer gets right alone end right 40% of
+the time when the stronger model reviews and 17% when the weaker one does.
+53% and 65% of the lost answers become the generator's wrong answer.
+
+The no-channel arm is self-review. Same prompt, same questions, with the
+reviewer's own solo answer shown in place of the generator's. It keeps
+467/468 such answers in math and 449/493 in knowledge, against 306 and 218
+after reading the generator. A commit-first prompt with no "retain if
+correct" instruction keeps 55%, against 61% with the standard prompt. So the
+deference is to what is shown, not to the second pass or the wording.
+
+This is xu2026dont's p = 0.92 and shen2026revoked's 96.3% agreement again,
+one step simpler: no store, no injected verdict line, and a reviewer that is
+often the stronger model. It also explains chen2026rankevolve's
+same-product review netting G ≈ −0.01. The structural fix is the
+no-channel arm used as the design. Let both models answer independently and
+choose between the answers. At the same two calls a trained selector is
++4.2 and +2.7 points above the two review directions and cheaper in every
+pair.
+
+Caveats:
+- Thinking off, greedy, one review pass, no tools. With thinking on (one
+  model, two math directions) deference to a weaker generator mostly goes
+  (93% kept), but deference to a stronger one stays.
+- The selector needs about 1,000 labelled questions per pair. A label-free
+  version is 3.7 points below the stronger model alone.
+- Frontier models are untested.
+
+Rule: a second reader buys independence only if it forms its answer before
+it sees the first. Otherwise score it as a choice between two independent
+answers, not as review.
+
+## Four identical agents converged on one corpus before the channel opened, so the herding was correlated priors (2026-10-20)
+
+[[literature/papers/zhou2026athanor]] contains a natural version of the
+no-channel arm that [[literature/papers/shao2026language]] asks for. Four
+Claude Opus 5.5 agents shared a persistent research record (notes, results,
+checkpoints) while post-training one model. Until hour 15.8 they did not use
+it to share: 37 file reads, no notes written for teammates, no checkpoints
+fetched. At 15.8 an operator notice said the team's best submission counts.
+The first fetch came 56 seconds later.
+
+- **Convergence came first, with no channel.** Within the first hour all
+  four agents made the same public distilled corpus 76–87% of their first
+  SFT mixture. No agent compared it against an alternative. This is
+  shao2026language's reasoner case: identical weights drawing the same
+  answer. Gating visibility, the ArcticSwarm remedy
+  ([[literature/papers/yoon2026arcticswarm]]), would not have prevented it.
+- **After the notice, the channel carried reuse, with numbers.** There were
+  57 checkpoint fetches and 160 note versions. Every new best after hour 21
+  was a cross-agent merge, and 28 of the last 32 checkpoints contain
+  training from all four agents. One agent's rollout fix (greedy share 0.25,
+  49.7 → 57.3) was adopted by all three teammates within hours, with credit.
+- **The monoculture then deepened over the substrate.** Two attempts to
+  diversify (lineages on other data) scored lower than the merged main line
+  and were dropped after one round. By day four all agents refined one
+  model. Gains slowed from about 60 after $2.4k to 66.1 after $10.3k. This
+  matches [[literature/papers/zhang2026agora]]'s stalled single basin, but
+  here the basin was chosen before any sharing.
+- **Defect propagation was not measured.** The paper notes agents rarely
+  checked answer correctness: a planned noise filter never ran, and a
+  converter marked solutions verified without comparing them. Whatever
+  entered the shared corpus went into every merge, but nothing traces it.
+
+Caveats:
+- One campaign, no no-sharing or mixed-model arm (the authors say so). The
+  timing of the 37 pre-notice reads is not given.
+
+Rule: for a team of identical models, diversity has to come from assigned
+sources or different models, not from hiding peers.
 
 ## Open questions
 

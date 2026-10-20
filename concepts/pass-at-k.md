@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/li2026beyond]]"
   - "[[literature/papers/liu2026what]]"
   - "[[literature/papers/ning2026implementation]]"
+  - "[[literature/papers/iyengar2026sample]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -443,6 +444,49 @@ mean-of-5 (0.14 [−0.01, 0.31], 6/11/1). Rule for this project: report the
 positive/tied/negative task counts and the minimum attainable p next to a
 null selection contrast. A sign-flip test over 7 informative tasks cannot
 show that k does not matter.
+
+## Verified success stops at the selector's precision, and pooled verifier rates overstate it (2026-10-20)
+
+[[literature/papers/iyengar2026sample]] makes this concept's
+selector-in-the-specification point exact. Under uniform choice among
+accepted candidates, one generator's verified success is
+S_N = (a/s)(1 − (1 − s)^N). It rises to the verifier's precision a/s and
+stops there, while coverage keeps rising. On MATH, majority vote over
+Llama-3-8B-Instruct samples stays near 43% while coverage reaches 98%.
+
+The paper then fits the selector's error rates from a 32-sample labelled
+pilot on half the tasks and scores the other half. Three findings bear on
+how this project would report or plan k:
+- **Modelling correlation matters.** Assuming independent errors raises
+  allocation regret 1.2–4.8× (e.g. 0.54 → 1.69 points on MATH).
+- **Pooled verifier rates overstate gains.** Per-task judge TPR and FPR
+  correlate with task difficulty (Spearman 0.54 and 0.65 on GPQA). Pooled
+  rates predict +10.0 points from 9 judge calls at N = 64; the real gain is
+  +4.8. Using the calibration tasks' own candidates predicts within 0.2.
+- **A fixed acceptance threshold can make k = 1 worse than no verifier.**
+  On SWE-bench Verified with an LLM patch verifier, a 0.5 threshold at one
+  rollout lowers the resolve rate from 32.5% to 25.1%. It rejects correct
+  patches with nothing to fall back on. The right threshold changes with N.
+
+This adds the mechanism behind kim2026are, zhang2026veriharness and
+bobadillasuarez2026audit. Their selectors capture little of the oracle
+gap. Here the gap is a/s times coverage, and a/s can be estimated
+before the run.
+
+Caveats:
+- The "within 0.02–0.65 points of hindsight-best" headline uses the best
+  SPLIT variant per setting. The automatically chosen variant is
+  significantly behind the better one on two of three datasets.
+- With real CodeContests tests, SPLIT vs "strongest model" is not
+  significant (p = 0.43). Under flat or latency pricing, strongest model
+  wins by about 0.5 points.
+- Agentic selection is one R2E-Gym agent at N ≤ 16. Conditional
+  independence within a task is assumed, and converging agent rollouts
+  break it.
+
+Rule: when k is spent on a selector, report the selector's per-task
+acceptance rates on correct and wrong candidates from a labelled pilot. Do
+not pool them across tasks.
 
 ## Open questions
 
