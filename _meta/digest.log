@@ -703,3 +703,29 @@ The three scenario web searches found nothing in the window. They surfaced three
 Other search results I checked: [2608.15191](https://arxiv.org/pdf/2608.15191), [2609.13073](https://arxiv.org/pdf/2609.13073) (both already in the graph), [2506.07962](https://arxiv.org/html/2506.07962v1), [2605.10039](https://arxiv.org/pdf/2605.10039) (in the graph).
 
 A leftover background watcher, the one waiting for the OAI-PMH harvester's first page, hit its time limit and was stopped. I'm not restarting it: that harvester had already been shut down when I switched to the listing pages. The digest is finished, and all its work is committed and pushed.
+I added a `## 2026-10-19` weekly rollup to `NOTES.md` covering 10-13 → 10-19, then committed and pushed it as `2c2b43b`. The working tree is clean.
+
+The journal files for this window only record session ends, so most of the entry comes from `_meta/log.md`, the curation records in the two digest files, and the commit messages.
+
+**Did**
+- **10-13 curate:** closed the 10-12 backlog. 17 papers ingested, 8 declined; papers went 239 → 256.
+- **10-18 elevate:** wrote one proposal, `iterate-redirect-before-halt`. When the no-improvement counter is one short of its ceiling, the next cycle has to change approach.
+- **10-19 digest:** 20 candidates, and the top 6 were ingested; papers went 256 → 262.
+- **promote-moc:** declined twice.
+
+**Findings**
+- Paper summaries still overstate results.
+- There is still no test that compares redirecting a stalled run against just stopping it.
+- Two new caveats on the redirect and noise-band proposals.
+- One new paper found no link between instruction-following and CLAUDE.md file size. That makes the 80-line cap a readability rule rather than a compliance one.
+
+**Next**
+- Re-run /elevate on redirect-before-halt is done, so it's replaced by deciding that proposal. It's the only one pending.
+- The 10-12 curate item is replaced by the 10-19 leftovers (items 7–20 and the near-misses).
+- The /digest documentation item now covers the fallback too: try OAI-PMH, then the listing pages. `~/.claude/skills/digest/SKILL.md:57` still says WebSearch.
+- The four other long-standing items carry forward unchanged.
+
+Things you should know:
+- **10-19 harvest gap:** arXiv's OAI-PMH feed (its bulk metadata service) returned a 503 error on every request. The digest fell back to arXiv's listing pages, so it saw new submissions only, no revised papers, and only six cs categories.
+- **Overstatement count:** the 10-19 digest record gives the running tally as "52/54". That doesn't add up from last week's corrected 46/48 plus this week's 17 and 6 papers. My count is 71 papers since 09-22: 64 read below their summary, 7 at it, and none above. The entry notes this, but I didn't edit the record.
+- **Separate log commit:** `_meta/digest.log` and `_meta/elevate.log` had uncommitted output from the 10-19 digest and 10-18 elevate runs. I committed them on their own as `dd1cf18`, the same way last week's was handled.
