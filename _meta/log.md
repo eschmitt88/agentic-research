@@ -701,3 +701,4 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-10-20 04:10 ingest raw/papers/fei2026how.pdf
 2026-10-20 04:10 ingest raw/papers/kumar2026turncost.pdf
 2026-10-20 04:10 curate 2026-10-19-digest.md ingested=17 declined=10 dup=0
+2026-10-20 promote-moc declined (graph unchanged since d006d6a, 35/35 concepts mapped)
