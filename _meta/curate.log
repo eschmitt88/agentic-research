@@ -1498,3 +1498,35 @@ The 10-12 candidate file is closed and archived to `raw/_candidates/_done/`, so 
 **Uncommitted change I didn't touch:** `_meta/digest.log` has an uncommitted addition. It looks like the 10-12 NOTES-rollup chat summary was appended to the digest log by mistake. I didn't commit it; you can revert or keep it.
 
 **Not done:** I haven't run `/wrap`, so there is no NOTES.md entry for today yet.
+Waiting for the readers to finish. I'll be notified as each completes.
+
+1 of 17 readers is done (`srinivasan2026search`: at its digest entry). Waiting on the other 16.
+
+2 of 17 done. `kumar2026turncost` reads mildly below its digest entry: the 98.6% cache-hit figure comes from a simulated ideal cache. Waiting on the other 15.
+
+6 of 17 done. 5 of the 6 read at or mildly below their digest entry. `chen2026when` reads moderately below: its 94.3% → 65.5% drop comes from the author's own harness, and τ-bench's own runner is unaffected. Waiting on the other 11.
+
+9 of 17 done. `zhang2026review` reads at its digest entry. `lee2026when` and `xu2026what` read mildly below theirs. Waiting on the other 8.
+
+12 of 17 done. `yang2026approval` reads moderately below its digest entry: only 57% of successes went through the planted rule, and the approval step is assumed rather than measured. Waiting on the last 5: `lange2026agentic`, `jiang2026researchfloweval`, `he2026does`, `sanayei2026evidencefirst`, `fei2026how`.
+
+13 of 17 done. Waiting on `lange2026agentic`, `he2026does`, `sanayei2026evidencefirst` and `fei2026how`.
+
+14 of 17 done. `lange2026agentic` reads below its digest entry: no ablation actually removes the orchestration layer the paper credits. Waiting on `he2026does`, `sanayei2026evidencefirst` and `fei2026how`.
+
+15 of 17 done. `he2026does` reads at its digest entry. Waiting on `sanayei2026evidencefirst` and `fei2026how`.
+
+I've curated the 10-19 digest backlog and archived the file, so there are no uncurated candidate files left in `raw/_candidates/`.
+
+**What happened** (verdict was go/high before and after)
+- **Dedup:** none of the 27 open items (items 7–20 plus 13 near-misses) was already in the graph, checked by arXiv ID and by title.
+- **Ingested 17:** items 7–19, plus four near-misses I promoted: TurnCost and the three older papers web search had surfaced (Nine Judges, Search Discipline, How Do Agents Fail on AutoResearch). Papers went 262 → 279. Each paper got its own reader, and their drafted concept edits were applied one at a time without changing existing text: 40 new sections across 14 concepts, 11 of them in `hce-evaluation`. The concept count stayed at 35. Frontmatter parses, and the batch adds no duplicate sources and no dead wikilinks.
+- **Declined 10, each with a one-line reason in the curation table:** item 20 (SIDERIUS, a single-domain paper whose validity check is the authors' own method) and nine near-misses.
+- **Commits, all pushed:** `d6dc160` (fetch), `79c1dab` (ingest), `801aa27` (curation record and archive to `_done/`), plus `e06e2a3`, which commits last session's leftover `digest.log` output on its own.
+- **`/promote-moc`:** declined. No concepts or tags changed and 35/35 are already mapped. Per that skill's rule, the decline is a single `_meta/log.md` line with no commit of its own, so it's the one uncommitted change; the SessionEnd hook will pick it up.
+
+**What the papers showed**
+- **Digest summaries still overstate.** 12 of the 17 read below their digest summary and 5 matched it; none read better. The running tally since 09-22 is 88 papers: 76 below, 12 at, 0 above. The usual cause is a headline taken from the most favourable cut, a re-score, or a judge that is the same model being judged.
+- **Redirect-before-halt still has no test against simply halting.** One new caution: in Athanor, both restart pivots lost to the established line after one round, so judging a pivot after a single cycle is risky.
+- **Noise band:** re-running the grader adds about ten times less noise than re-running the agent, so the band should be built from agent reruns. Two papers say that whatever breaks a tie inside the band decides which candidate is kept, so that tie-breaker needs its own check.
+- **Evaluator correctness (HCE rule 4):** pinning the evaluator's hash stops tampering but doesn't prove the evaluator is right. In `chen2026when` the score bug was in the author's own harness, and in `lange2026agentic` the agent changed how its scores were computed without either check noticing. A quick check at chain 
