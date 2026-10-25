@@ -29,6 +29,58 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | **accepted** (applied 2026-10-11, claude-system@60f9f4c; used_by kept as a declaration ledger, mle-bench @import lines replaced with a path list) |
 | 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
 | 2026-10-18 | [iterate-redirect-before-halt](2026-10-18-iterate-redirect-before-halt.md) | `skills-experiment/iterate/SKILL.md` | adopt | proposed |
+| 2026-10-25 | [hce-known-bad-preflight](2026-10-25-hce-known-bad-preflight.md) | `rules/evaluation.md` | adopt | proposed |
+
+## Considered and held (2026-10-25 run)
+
+This is the first run over the 10-19 digest (6 papers) and the 10-20
+leftovers (17 papers): papers 256 → 279, 35 concepts. `~/claude-system` is
+unchanged since `60f9f4c` (10-11), apart from an untracked
+`claude/skills/synced/` directory of claude.ai skills that this run did
+not touch. The 10-18 proposal is still undecided. Held:
+
+- **Skill-listing size** (`liu2026lost`, `giampieri2026cortex`, both cred 3
+  with code; earlier sources kim2026why, piriyakulkij2026subagents,
+  cheng2026scope). Gate 1 passes. Loaded recall falls 73.6% → 27.4% at
+  1,000 distractors, and Cortex's always-on skills were opened 0 of 198
+  times. **Held on target.** This box's skills are invoked by slash command
+  or cron, not chosen unprompted, so loaded recall is not what limits them.
+  Experiment skills are already scoped (07-14). The only actionable form,
+  skill-fire telemetry, is net-new. Cortex's "judge an item only on
+  sessions where it loaded" is method input for the accepted ablation
+  program, not a new edit.
+- **Fixed report fields in `/wrap`** (`xu2026what`, cred 3, code). A report
+  keeps 52% of task state against 92.7% for the full context, and a
+  category-targeted rewrite gains +7.7 on non-inferable state. **Held as
+  already enacted in kind.** `/wrap` already has fixed Did / Findings /
+  Next sections. It is one source, and no downstream outcome is measured.
+- **Ceilings in raw vs billed tokens** (`kumar2026turncost`, peer-reviewed
+  POVC '26, Zenodo). Turn count, not observation size, tracks cost
+  (R² 0.844 vs 0.040), and flat pricing overstates cost by about 7×.
+  **Held: there is no simplifying edit.** On a Max plan the quota is
+  counted in tokens, not dollars, so `max_tokens` in raw tokens is the
+  right unit. That follows the 07-26 metering fix.
+- **Redirect-before-halt evidence** (`sun2026scipivot`, `zhou2026athanor`,
+  `ding2026harnessdelta`). This is the same file as the pending 10-18
+  proposal, so it goes in as reviewer input, not a second proposal. In
+  Athanor both restart pivots lost to the established line after one
+  round. That supports the proposal's "fire once, late" form, and it means
+  a pivot judged on one cycle is weak evidence. `ding2026harnessdelta`: a
+  gain that clears the band can still be a split artifact.
+- **Approval-to-abuse escalation** (`yang2026approval`, cred 3, no code).
+  It is a single source that is neither peer-reviewed nor code-released,
+  so it fails Gate 1. Any form would also re-add permission-gate surface
+  that the 06-28 and 08-23 cycles declined.
+- **Correlated judge panels** (`kohli2026nine`, cred 3, no code). Held: no
+  claude-system target. This box runs no judge panel of its own.
+
+Paired control: **lint-consolidation-check (06-28) passes.** Gate 1:
+three code-released sources (pu2026skillops, yang2026skillopt,
+wu2026bayesian) and six attestations at credibility ~3.5. Gate 2: the
+form that was accepted and applied is a one-sentence amendment to check
+#5, which today's gate favours. The 5b detector, the proposal's original
+primary form, would face the higher bar today. The reviewer did not adopt
+it, so the control tests what was applied.
 
 ## Considered and held (2026-10-18 run)
 
