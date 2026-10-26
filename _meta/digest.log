@@ -729,3 +729,28 @@ Things you should know:
 - **10-19 harvest gap:** arXiv's OAI-PMH feed (its bulk metadata service) returned a 503 error on every request. The digest fell back to arXiv's listing pages, so it saw new submissions only, no revised papers, and only six cs categories.
 - **Overstatement count:** the 10-19 digest record gives the running tally as "52/54". That doesn't add up from last week's corrected 46/48 plus this week's 17 and 6 papers. My count is 71 papers since 09-22: 64 read below their summary, 7 at it, and none above. The entry notes this, but I didn't edit the record.
 - **Separate log commit:** `_meta/digest.log` and `_meta/elevate.log` had uncommitted output from the 10-19 digest and 10-18 elevate runs. I committed them on their own as `dd1cf18`, the same way last week's was handled.
+Six readers are running in parallel, one per paper (items 1–6). Each writes its literature note and drafts concept edits into a scratch file. Once they finish, I'll apply the concept edits one at a time, then commit, push, and run `/promote-moc`.
+
+The first reader (`xu2026stale`) is done. Its verdict is below framing (mild): the paper never tests the case where the instruction file is right and the code is stale. I'm waiting on the other five.
+
+Two of six readers are done; `yao2026explicit` also read below framing. Its early-stop headline holds on only one of the two backbones, and runs are stopped by the harness's patience rule, not by the agent. Waiting on the other four.
+
+Three of six readers are done. `vats2026good` read below framing (mild): its "change approach" action is only advice the agent can ignore, so the paper is not the redirect arm. Waiting on `oved2026llm`, `zhong2026automating` and `chen2026auditing`.
+
+Four of six readers are done. `oved2026llm` read below framing: most of the drop comes from the scorer audit rather than token matching, and the third backbone still favors evolution. Waiting on `zhong2026automating` and `chen2026auditing`.
+
+Five of six readers are done. `zhong2026automating` read below framing (mild): each skill arm got one run, and the collapse into tuning sweeps is described, never measured. Waiting on `chen2026auditing`.
+
+The weekly digest ran and is pushed. It found 20 new candidates; the top 6 are fetched and ingested, and the other 14 plus the near misses are left for `/curate`.
+
+**Harvest.** The arXiv bulk feed (OAI-PMH) worked this week, after failing every call on 10-19. It returned 9,044 computer-science records since 10-19 07:46Z, which is broader than last week's six categories. I dropped the Monday 19 Oct batch that the last digest already covered and kept only new submissions; revised versions of older papers were not screened. A keyword filter left 1,658 papers. I read about 880 titles and about 120 abstracts, and kept 20, in `raw/_candidates/2026-10-26-digest.md`. Three web searches found nothing new inside the window. They did turn up one older paper, `2607.22368`, in which a benchmark gave an empty submission a perfect score. That is exactly what the pending `hce-known-bad-preflight` proposal is meant to catch, so it's listed as a near miss.
+
+**Ingest.** The agency check said go/high before and after, so I ingested the top 6. Papers went 279 → 285, with 24 additions across 13 concepts and nothing existing changed. The concept count stayed at 35. `/promote-moc` declined because the concept set hasn't changed since `d006d6a` and all 35 concepts are already mapped. The candidates file stays in place rather than moving to `_done/`, because items 7–20 are still open.
+
+**All 6 papers were weaker than their abstracts suggested.** Two were clearly weaker and four mildly. The running count since 09-22 is now 94 papers: 82 weaker than their digest entry, 12 matching, none stronger.
+- **`yao2026explicit`** (hide the validation score unless a gain clears the noise band): the early-stopping result holds on only one of the two models tested. A fixed patience rule stops the runs in both arms, not the agent, and there are 3 seeds per arm.
+- **`oved2026llm`** (compare search methods by tokens spent): most of the "evolution's advantage vanishes" result comes from removing a scoring exploit, not from matching tokens. On a third model, evolution still wins all 9 comparisons.
+- **`zhong2026automating`** (Agent4Sci): the doubling from added skills rests on one run per arm. Agents still fell back into narrow tuning sweeps over 3-day runs.
+- **`chen2026auditing`**: the "60% evaluate on held-out tasks" figure is about 41–45% once humans recode it.
+- **`vats2026good`**: its "change approach" signal is advice the agent can ignore, and no controller ever stopped a run. So it is not the redirect-versus-halt comparison we've been looking for.
+- **`xu2026stale`**: the one-sentence fix (tell the agent to follow the existing code over a stale `CLAUDE.md`) holds up. But the paper never tests the
