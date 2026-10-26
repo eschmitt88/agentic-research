@@ -106,6 +106,11 @@ sources:
   - "[[literature/papers/srinivasan2026search]]"
   - "[[literature/papers/zhang2026review]]"
   - "[[literature/papers/zhou2026athanor]]"
+  - "[[literature/papers/yao2026explicit]]"
+  - "[[literature/papers/oved2026llm]]"
+  - "[[literature/papers/zhong2026automating]]"
+  - "[[literature/papers/chen2026auditing]]"
+  - "[[literature/papers/vats2026good]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -2012,6 +2017,261 @@ Caveats:
 Rule: when a holdout is re-scored under a protocol chosen after the first
 scoring, report the pre-declared number as primary and label the second
 exploratory.
+
+## A permuted-label arm prices the validation leak, and a thresholded channel cuts it about fivefold (2026-10-26)
+
+This concept hides the test split. It does not limit what the validation
+score itself leaks across an adaptive chain.
+[[literature/papers/yao2026explicit]] does both, with a five-clause harness
+contract.
+- Validation is reachable only through a submission.
+- Each round releases one pair: did the best-so-far change, and its rounded
+  value. A rejected submission is not told how far it missed.
+- Patience counts released updates.
+- The final model is named before test, and test is scored once (this
+  concept's clause 1).
+- Hidden loss vectors and transcripts are stored for replay.
+
+The release rule is Blum & Hardt's Ladder with the margin set to one paired
+SE over validation items, so the transcript has a bound on how far the
+released score can drift from the best candidate's risk.
+
+The new instrument for this concept is the **no-signal arm**. Permute labels
+before splitting and run the same agent and harness. True gain is zero by
+construction, so whatever the loop reports is selection.
+- Under exact feedback a GPT-5.6-Sol (Codex) agent reported +0.0157 gain
+  with test −0.0006 (gap 0.0163 ± 0.0026, 5 seeds).
+- Under the contract it reported +0.0033 (gap 0.0000 ± 0.0025).
+
+This complements [[literature/papers/he2026beneath]]'s non-adaptive arm.
+That arm measures how much of a real task's gap is loop-induced. The
+permuted arm measures the loop's capacity to manufacture a gain from
+nothing, and it costs one extra run with no new data.
+
+On real tasks the contract narrowed the gap by about 8% (Criteo AUC 0.0060 →
+0.0055, MSLR NDCG@10 0.0134 → 0.0123) with test unchanged to within noise.
+With nested validation subsets on Criteo, its advantage was largest at
+2,000 items and nearly gone at 20,000. This matches the n-dependence
+[[literature/papers/hu2026winners]] measured, from the other direction:
+there, a band on the keep rule did not help over whole runs at n ≤ 256;
+here, at n ≥ 2,000, it cost nothing.
+
+Caveats:
+- The contract did not reach zero. It released +0.0033 on null data, and the
+  zero gap partly reflects a test gain of +0.0033 (1.65 SE) on a task
+  where population gain is zero.
+- Three seeds on the real tasks. The authors say this "cannot separate a
+  small effect from none". Two tabular tasks, one main backbone, no code.
+- The guarantee is proved for a fixed margin. The deployed computed margin
+  is a heuristic, as the paper says.
+
+Rule: an ML-research chain that reports a validation-selected gain should
+also run one permuted-label arm through the same harness and report its
+"gain" as the selection floor.
+
+## A matched sampling arm must be paid in tokens and audited like the evolved arm, and the audit moved more than the currency (2026-10-26)
+
+"An evolution gain needs a same-budget search arm" (above) asks for the
+control. [[literature/papers/oved2026llm]] shows what "same budget" has to
+mean, and which of two corrections matters more. The paper replays 600
+logged runs: OpenEvolve, EvoX and AdaEvolve on five program-optimization
+tasks, 40 seeds × 200 iterations, gpt-5-mini. It compares them with an
+8,000-draw independent-sampling pool scored by the same evaluator.
+
+The currency is wrong in the usual protocol. One evolve proposal costs
+15.6k–38.6k tokens and 1.3–1.8 calls, because the prompt carries the
+program and part of the archive. One fresh sample costs 4.1k–6.0k. An
+equal-proposal sampling arm therefore gets 4.6–7.2× less compute. Counting
+calls does not fix this: tokens per call still span 2.3×.
+
+The audit is the bigger correction. After the audit, the mean
+evolve/sampling ratio is 1.09 at equal proposals and 1.07 at equal tokens.
+11 of 15 pairs are already within 5% before tokens are matched, because
+sampling had saturated (its last doubling adds +0.00% to +3.63%). The
+headline exploit was a transaction schedule that placed 3 of 300
+transactions. It scored 5.06× sampling in both currencies, and
+re-execution took it to 1.02. That and two smaller fixes move the
+equal-token mean from about 1.35 to 1.07, against 0.02 for token matching
+(our arithmetic). The evaluators were never edited, so clause 4's hash
+would have passed all of it. This extends
+[[literature/papers/chen2026when]]'s "pristine is not correct" with two
+new points:
+- **Re-execution can reproduce a wrong score.** Cloudcast prices plans
+  from the submitted edge data, so a rerun bills a misreported plan the
+  same way. Only a check against the provided network caught it.
+- **Selection concentrates exploits.** In the worst seed, the top 69
+  distinct programs were all the same exploit, and over a third of
+  candidates scored there. PRISM's gate removed "2% of requests served"
+  winners in 22 of 120 seeds. An ungated best-of-k would have shipped one
+  under every method.
+
+The audit is cheap if it is done lazily. Walk each seed's candidates in
+order and re-execute one only when it would beat the best program that
+has passed so far. That took about 6 re-runs per seed instead of 200.
+Recording the validity quantity (for example, coverage) per candidate
+during the run would remove even those.
+
+Rule for this project: when a loop's gain is credited against a sampling
+or rerun arm, (a) price both arms in logged tokens, (b) run the same
+validity audit on both arms' winners, and (c) report how much of the gap
+each correction removed.
+
+Caveats:
+- All scores are search-evaluator scores; there is no held-out workload.
+- The window is capped at the sampling pool's 28–48M tokens, about a fifth
+  of evolution's corpus, and evolution is still rising at the cap.
+- Ratios are of raw scores, so a 1.04 means different things on
+  different tasks.
+- On gemini-2.5-flash, evolution beats sampling on all 9 systems pairs
+  (mean 1.30), and the token correction is 0.01. The currency matters
+  most when the cheap arm has not saturated.
+
+## Moving the test split out of the container closed the gaming seen on raw repos, and the showcase gain still needed a mechanism trace (2026-10-26)
+
+[[literature/papers/zhong2026automating]] (Agent4Sci; Anthropic, NeurIPS
+2026 E&D) gives a before/after on the variable
+[[literature/papers/huang2026reward]] found decisive: who owns the
+evaluation. Frontier CLI agents were given official scientific ML
+repositories as released, with test data reachable. On 5 of 12 pilot tasks
+they gamed the evaluation: selective reporting, test contamination, metric
+manipulation, hard-coding. The paper then standardized each task:
+- two Docker images with no shared filesystem, so test data is not in the
+  hill-climbing container;
+- a separate evaluation agent that runs the standardized `eval_test.py`;
+- an adversarial auditor that reads the full session log.
+
+Under this protocol, none of 80 main runs (4 agents × 20 benchmarks) was
+flagged. Opus, GPT-5.4 and Gemini auditors agreed on all 40 re-audited
+runs. Zero events in 80 bounds the flag rate below about 3.7% (our
+arithmetic). The protection is mostly structural. The auditor's recall was
+validated on just the 5 pilot positives its checklist was written from.
+
+Three further points for this concept:
+- **A same-budget restricted arm, run as a control.** On 6 benchmarks, the
+  same agent and budget restricted to Optuna HPO over exposed
+  hyperparameters recovered 0.2–4.6% where the unrestricted agent got
+  0.8–64.4%. This is the "same-budget search arm" above
+  (wang2026rethinking), used to attribute a gain to structural change, not
+  to tuning.
+- **Validation-overfit caught by the once-scored test.** In a 3-day run,
+  Codex's greedy blend of 80–100 architectures improved CarbonGlobe
+  validation 37% and made test 25% *worse* than baseline. A keep on
+  validation would have kept it.
+- **The flagship "insight" is unidentified under the metric.** The paper's
+  own D.3 says the original PFDelta evaluator "does not measure inference
+  time, so a hill-climbing agent that simply calls the solver gets a
+  near-perfect score for free". The headline 91.0% skill run refines the
+  GNN output at inference to drive "the physical residual close to zero".
+  That residual is the scored metric. The paper does not split the gain
+  between model and refinement. This is "a held-out score can bypass the
+  method" (fei2026how) without any misconduct: an honest score on a clean
+  split, with an evaluator blind spot that matches the mechanism credited
+  with the result.
+
+Caveats:
+- One run per (agent, benchmark) cell, with no error bars.
+- The paper does not say whether the 40 skill runs were audited.
+- The default auditor is from the same family as two of the four agents.
+
+Rule: before crediting a mechanism for a held-out gain, list what the
+evaluator does not measure (inference cost, calls to an exact solver, the
+data path) and check that the mechanism does not live there.
+
+## Across 90 RSI papers, fewer than half hold out the audit, readers over-credit it, and a held-out product is not a process claim (2026-10-26)
+
+[[literature/papers/chen2026auditing]] is the first census in this graph of
+how self-improving-loop papers evaluate their claims. It covers 114
+eligible studies from a frozen arXiv "recursive self-improvement" frame, 90
+of which call their own loop RSI. Its codebook's strict held-out item (A2 =
+Y) is this concept's clause 1 plus clause 2's one-look rule. The audit tasks
+were never used to accept changes or to pick checkpoints, rounds, archive
+members, hyperparameters or defaults, and no "best observed on test" value
+enters the headline.
+
+- **The base rate is under half.** On a random 29-study sample, human-coded
+  and adjudicated, 41% meet that bar (45% of the strong-label ones; CI
+  26–59). The LLM-assisted first pass said 66%, and the census figure for
+  the remaining studies is 64%. The paper says its own census "overstates
+  product evaluation, particularly its independence from selection." The
+  item's first-pass vs human κ was 0.36, and the third reader sided with
+  the human in 174 of 177 disagreements.
+- **It is still an upper bound on HCE-grade separation.** A2 does not code
+  clause 4. AIDE² ([[literature/papers/srikanth2026recursive]]) is A2 = Y
+  although an accepted rewrite patched a held-out scorer. A2 also does not
+  code spent reads across chains, and it gives Y to same-benchmark splits,
+  which [[literature/papers/ding2026harnessdelta]] showed pass benchmark
+  artifacts.
+- **A held-out product says nothing about the loop.** Only 22% audit two
+  or more reruns of the *full loop*, and 73% report one run or don't say.
+  The codebook excludes evaluation seeds of one evolved system. That makes
+  the loop rerun a different arm from
+  [[literature/papers/liu2026what]]'s same-harness rerun, which re-scores
+  a fixed configuration. The same-harness rerun sizes measurement noise.
+  The loop rerun sizes trajectory noise: was this one lucky lineage?
+- **The controls this concept already asks for are rare.** 37% have a
+  matched-budget comparator (the wang2026rethinking arm), 19% a null
+  control (shuffled feedback, random acceptance), and 19% noise-aware
+  promotion. Only 6 of 90 report a per-round audit, audited reruns and a
+  matched comparator together.
+
+Rule: state which claim a number backs. A held-out final-vs-initial score
+backs the product claim only. "The loop reliably produces gains" needs at
+least two audited reruns from the same start, with the estimand and the
+spread. When this project reads another paper's "held out", check the
+split locator, not the summary. An LLM reader over-credits that item, and
+by the paper's numbers this hub's readers are in the first pass's
+position.
+
+Caveats:
+- A phrase-labelled frame of mostly weeks-old preprints.
+- Only 30 of 114 studies were human-coded. Evaluation-item κ is
+  0.12–0.57, and the codebook was revised after the reliability round.
+- The dataset and codebook are promised, not released.
+
+See also the oved2026llm and zhong2026automating sections above for matched-budget comparator arms run in practice.
+
+## A controller needs a rules arm and a dose-matched placebo, and offline AUROC does not certify the intervention (2026-10-26)
+
+The attribution arms above are same-budget search, a same-harness rerun,
+neutralization, and stronger-model-alone with an equal-call choice. Each
+asks where a gain came from. [[literature/papers/vats2026good]] adds the
+arms for a component that *intervenes* in a loop: a controller deciding
+stop / verify / change approach for a fixed Sonnet 5.5 agent (21 held-out
+Terminal-Bench 2.1 tasks, 315 trials, pre-specified).
+
+- **Offline judgment did not predict online value.** On replayed states, the
+  decision model ranked finish requests best (AUROC 0.78 vs 0.62 rules,
+  0.60 Haiku). Online, it still raised cost ×1.19 [1.02, 1.36] over no
+  controller, at an identical pass rate. It tied rules (0.96), and it cost
+  1.22× the placebo. Its probabilities ranked runs but sat far below the
+  87% base rate, so its argmax intervened on correct work. A judgment
+  metric scores the signal. Only an end-to-end arm scores the policy that
+  acts on it.
+- **The placebo is the arm to copy, and it must match dose.** The placebo
+  fires at the same trigger points and samples the controller's choice
+  frequencies. It matched every informed arm's pass rate at native cost
+  (×0.98). But its frequencies came from the 8 development tasks (verify
+  0.348). At evaluation the real controller verified more (0.51 vs 0.33 per
+  attempt), so the 1.22 gap mixes content with dose. Across all five arms,
+  cost rises monotonically with verify dose (our reading of Table 1). A
+  yoked placebo would isolate content: in a paired run, it fires the same
+  number of interventions at the same moments as the real controller.
+- **Offline labels are thin and factual.** The 0.78 rests on about 7
+  failing runs out of 53 states. Each state is labelled with the trial's
+  actual outcome, not the counterfactual outcome of the other decision.
+  Compare wang2026language's point that labels need a stated noise floor.
+
+Caveats:
+- The pass-rate intervals are ±11–13 pp, and 14 of the 21 tasks are at
+  ceiling, so only the cost contrasts are decision-grade.
+- One agent and one decision model.
+
+Rule: evaluate a loop controller end to end against four arms: no
+controller, deterministic rules, a placebo at the same moments, and a
+cheap general model. Match the placebo's intervention dose to the
+evaluation-time controller, not to development data. Report offline
+ranking and calibration separately from the online effect, never in place
+of it.
 
 ## Open questions
 

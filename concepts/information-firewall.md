@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/chen2026false]]"
   - "[[literature/papers/du2026can]]"
   - "[[literature/papers/farahbakhsh2026agentdiscover]]"
+  - "[[literature/papers/yao2026explicit]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -307,6 +308,32 @@ exception messages are withheld from search feedback. The general rule:
 whatever the candidate prints reaches the proposer.** A firewall drawn
 around the agent's sandbox alone does not hold. It has to cover the
 candidate's runtime and the return path as well.
+
+## A bound on the feedback channel holds only behind a file firewall (2026-10-26)
+
+[[literature/papers/yao2026explicit]] limits the score channel with a Ladder
+release rule, which bounds how far a reused validation score can drift
+under adaptive submissions. The paper points out that the reusable-holdout
+guarantees it builds on (Dwork et al.; Blum & Hardt) assume the submitter
+"cannot access the raw data — an assumption that breaks when the submitter
+is an agent with file-system access". Its admissibility definition makes
+the firewall a precondition of the bound: the next candidate may depend on
+training data, the repository and the released transcript, and not on
+validation labels, per-example losses or validation prediction files.
+
+So the statistical bound and the file boundary are one mechanism. A
+narrowed score channel guarantees nothing if the agent can read
+`val_preds.csv` or the harness's loss vectors. The paper specifies the
+boundary but does not test it. It never says how the harness enforces it,
+whether a submission is predictions, a model artifact or code run on
+validation data, or whether the agent's file access was audited. If the
+harness runs agent-written code on validation data,
+[[literature/papers/farahbakhsh2026agentdiscover]]'s rule applies: the
+candidate sees what the scorer's process sees (our inference).
+
+Rule: when a harness narrows the feedback channel, list the files the
+narrowing assumes are unreadable, and probe them before the scored run, as
+in [[concepts/hce-evaluation]]'s "probe the wall" section.
 
 ## Connections
 

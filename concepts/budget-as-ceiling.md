@@ -66,6 +66,10 @@ sources:
   - "[[literature/papers/jiang2026researchfloweval]]"
   - "[[literature/papers/srinivasan2026search]]"
   - "[[literature/papers/zhou2026athanor]]"
+  - "[[literature/papers/yao2026explicit]]"
+  - "[[literature/papers/oved2026llm]]"
+  - "[[literature/papers/zhong2026automating]]"
+  - "[[literature/papers/vats2026good]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -1500,6 +1504,184 @@ Caveats:
 Our inference for the proposal: prefer pivot candidates that can apply to
 the chain's best in one cycle. A restart pivot needs more than one cycle to
 be judged fairly.
+
+## A thresholded stop counter fires on null data and a bare `>` counter does not, on one backbone (2026-10-26)
+
+[[literature/papers/yao2026explicit]] is the first comparison in this graph
+of the two counter definitions the 09-27 noise-band proposal chose between,
+run inside an ML-agent loop with held-out ground truth. A GPT-5.6-Sol (Codex)
+agent gets 30 submissions. In the *Exact* arm, patience counts observed
+improvements: bare `>`, the pre-10-11 `/iterate` reading. In the contract
+arm, patience counts only updates that beat the champion by one paired
+standard error, computed over per-item validation-loss differences. In both
+arms the harness halts the run after p consecutive non-updates. The agent
+does not choose to stop, and p is not reported.
+
+- **On permuted labels the bare counter never fired.** It ran to 30.0 ± 0.0
+  over 5 seeds and ended reporting +0.0157 gain on a task whose true gain is
+  zero. The thresholded counter halted at 10.4 ± 4.4, having released
+  +0.0033. On Criteo CTR (3 seeds) the halts were 30.0 vs 12.3 ± 4.4; on
+  MSLR ranking, 27.0 vs 4.3 ± 0.7. That is the agora failure the band was
+  written for, now with a control.
+- **Halting early cost nothing on test here.** MSLR test NDCG@10 was 0.4451
+  after 4.3 rounds against 0.4446 after 27. For redirect-before-halt this
+  sets the bar: on these tasks a pivot would have to beat a halt that
+  forfeits about zero. The base learners (hashed LR, HistGB) may simply be
+  saturated, and there is still no redirect arm.
+- **The band term this adds is item noise, not seed noise.** The threshold is
+  e = s/√n over validation items, the term
+  [[literature/papers/hu2026winners]] said a `--seeds` std misses. It
+  ignores the re-implementation noise that
+  [[literature/papers/wiedmann2026agents]] and
+  [[literature/papers/ning2026implementation]] show dominates. Our
+  inference: a band of max(seed std, paired item SE) covers both, and the
+  item term is free from the validation predictions `/implement` already
+  writes.
+
+Caveats:
+- The stopping effect does not hold on the second backbone. Under Claude
+  Sonnet 4.6 on Criteo the arms stop at 23.4 vs 22.6. The paper says those
+  rows predate the current protocol, and it does not explain them.
+- The arms differ in three things at once: what is released, the keep rule
+  and the counter. No arm pairs exact feedback with a thresholded counter,
+  which is what `/iterate` runs after 10-11.
+- A one-SE one-sided bar admits about 16% of equal-quality candidates per
+  round (our arithmetic), and each admission resets patience. The contract
+  still released a false gain on null data. The paper's η_min floor guards
+  against this, but its constant is unreported.
+- 3–5 seeds, two tabular tasks, no code.
+
+Rule unchanged; evidence added. A counter gated on a band fires where a
+bare `>` counter does not. When per-item predictions exist, build the band
+from them as well as from seeds.
+
+## A cycle is not a unit of spend: compute-neutral means equal tokens, and context-carrying cycles get dearer (2026-10-26)
+
+The redirect-before-halt proposal is meant to be compute-neutral, and
+[[literature/papers/cai2026forkandflush]] matched its flush and fork arms
+on model tokens. [[literature/papers/oved2026llm]] measures why that unit
+is needed and why proposals or calls are not enough. These numbers are
+from LLM evolutionary search on gpt-5-mini:
+- One proposal that carries the current program and part of the archive
+  costs 15.6k–38.6k tokens.
+- One fresh sample from the task description costs 4.1k–6.0k, a ratio of
+  4.6–7.2×.
+- Within one task, three strategies differ by up to 1.9× per proposal.
+- A proposal takes 1.3–1.8 calls, because retries and steering meta-calls
+  are invisible in a proposal count.
+- Tokens per call still span 2.3×, so equal calls recover only about an
+  eighth of the correction that equal tokens give.
+- On gemini-2.5-flash, per-proposal cost spans 3.9× (16.8k–65.4k).
+
+Three consequences for this concept (our inference; the paper tests no
+halt or redirect):
+- **Equal cycles favour the arm that carries context.** A redirect that
+  starts a fresh-context candidate is cheaper per cycle than continuing a
+  chain whose prompt carries history. Comparing them at equal cycles
+  under-funds the redirect. Neutrality should be checked in logged
+  tokens, retries included.
+- **A cycle counter is a rising token spend.** Prompts grow as a run
+  proceeds, so `max_consecutive_no_improvement` = 3 costs more tokens late
+  in a chain than early. `max_tokens` is the ceiling in the right unit;
+  the stall counter is not a spend control.
+- **The currency error matters only before the cheap arm saturates.** On
+  gpt-5-mini, matching tokens moved the mean evolve/sampling ratio from
+  1.09 to 1.07, because sampling's last doubling added at most 3.63%. A
+  scorer audit moved it far more (see [[concepts/hce-evaluation]]). Equal
+  tokens is a cheap correctness requirement, not something that is likely
+  to flip a result by itself.
+
+Caveats:
+- The paper's evaluators take seconds. In `/iterate`, a cycle's spend is
+  dominated by GPU training, which token counts do not price. A
+  compute-neutral arm comparison here has to match GPU-hours as well.
+- Program-optimization tasks only, and no released logs.
+
+## An hourly anti-collapse checklist rode along in a bundle that doubled 12-hour gains, and the collapse came back over 3 days (2026-10-26)
+
+[[literature/papers/zhong2026automating]] (Agent4Sci; 8 H200s, 12 h, 20
+scientific ML benchmarks) names exploration collapse as a limitation of
+frontier agents: after an early win, the rest of the run tunes seeds and
+LRs around it. Among its fixes is a **scheduled checklist**. A tool-call
+hook fires it hourly, asking "Am I designing creative experiments ... or
+just tweaking hyperparameters?" and "is my front-runner truly my best
+possible candidate?". This is the same scheduled, prompt-form ask as
+li2026beyond's five-commit hook (above). It is again bundled: it ships
+with an up-front ideation skill (four parallel literature-review
+subagents, tiered plans) and a GPU-saturation skill, and nothing is
+ablated.
+
+What it adds for the redirect-before-halt proposal:
+- **The bundle helps at 12 h, but the ask's share is unknown.** Opus goes
+  from 10.4 to 20.1% mean held-out gain (18/20 benchmarks) and Codex from
+  4.4 to 8.1% (12/20), one run per cell. Whether this comes from the
+  ideation at the start or the hourly ask cannot be told apart.
+- **Over 3 days, the ask did not stop the collapse it targets.** With
+  skills on, Opus on PFDelta 2000 got almost all of its 88% in the first
+  12 h, then spent the remaining 60 h on six rounds of LR tuning. On
+  CarbonGlobe, Codex made no validation progress for about 40 h, then
+  over-ensembled (validation −37% error, test +25% worse). The hook would
+  have fired about 60 times in that stretch (our inference; firings are not
+  logged).
+- **A fixed clock hides the stop decision.** Runs end at the time limit,
+  and the instruction is to hill-climb "until the time limit". As with
+  jiang2026researchfloweval and wang2026clock, wall-clock spent is not
+  compute used. Opus is "active" all 12 h with GPUs "frequently idle"
+  (never quantified). Codex is active for 1.0 h and then waits on a
+  script.
+
+This is one more source in which the prompt form moved the start of a run
+and not its end (srinivasan2026search, yan2026traceml). It is weak
+support for the proposal's choice to force the axis change in the
+controller. There is still no halt arm and no redirect arm. The paper's
+own reading of the 3-day runs is that "breakthroughs do not scale with
+time alone". The one 3-day breakthrough (Codex: learned warm start for a
+GPU Newton–Raphson solver) arrived after about 24 h of loss and
+architecture search, not out of a stall.
+
+## A controller-owned stall trigger with advisory redirect text bought nothing, and no controller ever chose to stop (2026-10-26)
+
+[[literature/papers/vats2026good]] puts a controller on a fixed Sonnet 5.5
+terminal loop (Terminal-Bench 2.1, 21 held-out tasks, 315 trials). It bears
+on both halves of redirect-before-halt.
+
+- **The trigger was the controller's; the redirect was prompt text.** The
+  rules arm answers "recover" at every deterministic stall trigger (≥2
+  consecutive failing commands, or a repeated command or output). Recover
+  appends "Step back, identify why it is failing, and try a different
+  approach." The pass rate equalled no controller (73.0%), and cost rose
+  ×1.24 [1.12, 1.38]. Jev chose investigate or recover at 30 of 92
+  progress decisions and its runs were 2.7 steps longer. Neither arm's
+  pass rate moved. yan2026traceml, cai2026forkandflush and
+  srinivasan2026search had already found prompt-form redirects inert. Here
+  the *trigger* was moved into the controller and the *action* was not,
+  with a placebo arm, and the redirect was still inert. Owning the trigger
+  is not enough. The axis change itself has to be forced, which is what
+  the proposal specifies. The paper does not report how often the rules
+  arm fired recover or what followed.
+- **Nobody chose to stop.** Each controller could abandon, including a
+  deterministic rule: four consecutive failures once 40% of steps were
+  used. None did, in any of 315 trials. 10 of native's 17 failures ended at
+  a timeout or the cap with no finish request. All 15 runs of one hopeless
+  task ran to the limit. This is the fork-and-flush trigger problem in
+  another form. The failing runs never produced the signal the stop rule
+  waited for, so the ceilings did all the stopping. That supports keeping
+  the hard ceiling as the binding stop. It also suggests that a
+  ceiling − 1 redirect hung on a failure-streak trigger might never fire
+  on the runs that need it. That second point is our inference.
+- **Advice costs money even when it changes nothing.** Every informed
+  controller raised cost, and the placebo did not (×0.98). If a redirect
+  fires and does not win, it should cost no more than the cycle it
+  replaces.
+
+Caveats:
+- Terminal tasks with about 13–18-step runs and a 60-step cap, not
+  `/iterate` cycles.
+- The pass-rate intervals are ±11–13 pp.
+- The stop condition never fired, so a halt was never executed. There is
+  still no redirect-vs-halt arm.
+
+See also the zhong2026automating section above: a scheduled prompt-form checklist likewise moved the start of a run and not its end.
 
 ## Open questions
 

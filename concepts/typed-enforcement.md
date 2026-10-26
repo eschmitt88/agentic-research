@@ -39,6 +39,7 @@ sources:
   - "[[literature/papers/wang2026research]]"
   - "[[literature/papers/tiwari2026assay]]"
   - "[[literature/papers/mcmillan2026instruction]]"
+  - "[[literature/papers/xu2026stale]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -540,6 +541,43 @@ pass rate once task is controlled). That makes it the plainest case in this
 cluster for the division of labour: state the rule in prose for intent, and
 enforce it with a hook, linter or CI check. Limits: a toy marker that may
 fight a style prior, single-turn `--print`, no released artifacts.
+
+## Instruction files mix rules with descriptions, and only descriptions can go stale against the code (2026-10-26)
+
+The open question below proposes static analysis of this project's own
+`CLAUDE.md` and `.claude/rules/` for contradiction, redundancy and vacuity.
+[[literature/papers/xu2026stale]] shows that the contradiction which costs
+the most is not inside the rule set. It is between the rule set and the
+code. It also gives a typing that makes this checkable. Its model-maker
+recommendation separates two kinds of line:
+
+- **Rules**, e.g. "Run the tests before you commit", which bind the agent.
+- **Descriptions**, e.g. "We use print for progress messages", which record
+  the code and "can be checked against it".
+
+Current agents treat both as instructions. With 40 synthetic projects whose
+file describes the opposite of the code on 16 conventions, 90.1% of
+choices followed the stale description. Claude Code reported the mismatch
+in 79/80 runs and followed the description anyway. One prose sentence in
+the user-level file gave the code precedence and moved code-following to
+91.4%.
+
+For this concept, the prose fix works because it is a prose rule *about*
+precedence. It is not a checker. The typed version would tag
+description-lines with the code predicate they assert (an AST or grep
+check, the same class as mcmillan2026instruction's marker). A linter then
+flags a description whose predicate the code no longer satisfies, and that
+fails the line, not the agent. That is the [[concepts/skill-library-lifecycle]]
+removal gate run as a deterministic check. It is our extension; the paper
+proposes model training and a system-prompt rule, not a checker. It also
+notes that existing consistency checkers (Treude & Baltes 2026) help "when
+someone runs it", while the sentence acts on every task.
+
+Limits:
+- The paper never builds or measures the typed split. Whether a model can
+  classify lines as rule vs description reliably is open.
+- The precedence sentence is untested where the description is correct and
+  the code is legacy.
 
 ## Connections
 

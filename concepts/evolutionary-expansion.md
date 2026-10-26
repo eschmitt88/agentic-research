@@ -37,6 +37,8 @@ sources:
   - "[[literature/papers/xu2026conflictguide]]"
   - "[[literature/papers/hu2026winners]]"
   - "[[literature/papers/he2026does]]"
+  - "[[literature/papers/oved2026llm]]"
+  - "[[literature/papers/chen2026auditing]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -324,6 +326,106 @@ Caveats:
 - In the paper's controlled studies, where the editor sees the failed
   question and its answer, edits *were* directed (+24.5 points on a clean
   playbook). The null is about this pipeline, not about feedback in general.
+
+## Against fresh sampling at equal tokens, evolution paid on one of five tasks for one model and on all three for another (2026-10-26)
+
+The definition's "losing alternative" is flat single-proposal search. The
+cheapest version of it is independent sampling: draw programs from the
+task description alone, with no archive, and keep the best.
+[[literature/papers/oved2026llm]] compares OpenEvolve, EvoX and AdaEvolve
+with that baseline at equal tokens: 40 seeds × 200 iterations per cell,
+exact order statistics, and exploited winners removed by re-execution.
+
+On gpt-5-mini, only Heilbronn rewards search, and it does so for all three
+strategies (equal-token ratio 1.23–1.28, CI lower bounds ≥ 1.17). Circle
+packing, Cloudcast and transaction scheduling sit at 0.99–1.05, and all
+three PRISM pairs are at 1.00. Haiku 4.5 on the two math tasks gives the
+same ordering (Heilbronn 1.17–1.26, circle packing 1.01–1.07). On
+gemini-2.5-flash, the three systems tasks all reward search: Cloudcast
+1.53–1.59, transaction scheduling 1.15–1.25, PRISM 1.06–1.15. So whether
+the population machinery pays depends on the task, as
+[[literature/papers/zou2026fmlbench]] found for topology, and the size of
+the payoff depends on the model. The authors' advice, "check whether a
+task rewards search before choosing a searcher", has a cheap form: a
+fresh-sample arm at the same token budget, priced from the run's own logs.
+
+This bears on guidance 6–7. [[literature/papers/xing2026compute]] budgets
+C = T·N in LLM calls. Here a call costs 12.4k–28.1k tokens, and the cost
+rises with the archive carried in the prompt. A depth-heavy split is
+therefore dearer per call than a breadth-heavy one, so a call-budget
+optimum may shift once it is priced in tokens (our inference).
+
+Caveats:
+- The window is capped at about a fifth of each evolution run's tokens
+  (28–48M), and evolution is still rising at the cap. The margins are
+  lower bounds on what full runs would show.
+- Ratios are of raw scores. On circle packing, a ratio of 1.037 is the gap
+  between OpenEvolve and past the human record in
+  [[literature/papers/ishibashi2026effective]].
+- The operators are stateless single-call proposals. Search scores only,
+  with no held-out workload.
+
+## An evolving-vs-frozen arm cannot show the improver got better; a same-start swap can, and 4 of 26 RSI papers ran one (2026-10-26)
+
+he2026does found, in DGM's logs, that the self-edit vs fixed-editor gap
+is a viability effect. [[literature/papers/chen2026auditing]] gives the
+design reason a gap of that kind could not show more.
+
+- **Proposition 3, diagonal non-identification.** Suppose the improver is
+  a function of the solver state it acts on, as when a loop edits its
+  improver only through its own retained changes. Then any number of runs,
+  from any starting states, observes each state with only one improver.
+  The data are equally well explained by a kernel in which the improver
+  has no effect, so "the later improver is better" is not identified.
+- **A two-state example.** Two states both score zero. Any improver gains
+  0.1 from A and 0.8 from B. An earlier improver seen at A and a later one
+  seen at B differ by 0.7, while the true improver contrast is 0 at each
+  state. Matching scores does not match states.
+- **What identifies the gain.** An off-diagonal observation, most directly
+  a swap test. Run the earlier and the later improver from *identical
+  starting artifacts* (or paired over a declared set of starts), at the
+  same budget, and audit the successors.
+- **Evolving-vs-frozen answers a different question.** It compares a run
+  where the improver may change with one where it is fixed, as in DGM and
+  Hyperagents. Its arms visit different states, so it measures the value
+  of letting the improver change over a run. It does not show that a
+  later improver beats an earlier one.
+
+The census counts how often the design is used. Of 26 strong-label studies
+claiming a better improver:
+- 23 report some related comparison, and 22 of those favour the proposal;
+- 4 are same-start at a matched budget (STOP, MetaRSI, Sivia, MASS);
+- 3 are same-start without a stated budget match;
+- 7 are evolving-vs-frozen; 9 other; 3 none.
+
+A strict rule moved two comparisons out of same-start, because their arms
+carried solver artifacts across: SwarmRSI's inherited research state, and
+Hyperagents' transfer, which moves the task agent with the meta agent.
+Results depend on conditions: STOP's improved improver helps with GPT-4
+but not GPT-3.5 or Mixtral.
+
+For this concept's own sources:
+- srikanth2026recursive's ignition test is coded same-start and matched,
+  one of the four correctly designed tests in the census. It returned
+  0.780 vs 0.782, inconclusive.
+- The paper's null-loop proposition gives the acceptance count to expect
+  from noise alone. With no true gain, i.i.d. errors and accept-if-better,
+  N proposals yield Σ_{i=2}^{N+1} 1/i acceptances: 2.9 at N = 25, 4.2 at
+  N = 99. AIDE² accepted 7 rewrites in 100 nodes. Its argmax-on-mean rule
+  does not meet those assumptions, so this is a scale reference, not a
+  test (our arithmetic).
+
+Rule: an evolving-vs-frozen win may be reported as "letting the improver
+change helped this run". "The improver improved" needs a same-start swap
+at matched budget, with successors audited on held-out tasks and the
+contrast's sign and uncertainty reported. An inconclusive swap is a tested
+claim, not a missing one.
+
+Caveats:
+- Prop. 3 assumes a deterministic, separable improver. Random updates or
+  different histories that reach the same state supply some overlap.
+- Census counts come from an independent blind coder, but the claimant
+  group is small (4/26, CI 6–34%).
 
 ## Open questions
 

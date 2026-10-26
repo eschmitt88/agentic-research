@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/li2026humanize]]"
   - "[[literature/papers/ganesh2026homogenization]]"
   - "[[literature/papers/kumar2026turncost]]"
+  - "[[literature/papers/vats2026good]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -231,6 +232,51 @@ Caveats:
 
 Rule: when comparing backends for a role inside one running context, use
 the incumbent's cached-read price as the bar.
+
+## A cheap structured controller is priced by the steps its advice causes, not by its own calls (2026-10-26)
+
+The open questions below end on "route structured sub-decisions to
+structured specialists" (zhao2026generative).
+[[literature/papers/vats2026good]] tests that routing end to end on cost.
+A Claude Sonnet 5.5 terminal agent runs a fixed loop on 21 held-out
+Terminal-Bench 2.1 tasks (315 trials). At four deterministic decision points
+it consults one of four controllers on stop / verify / change approach:
+deterministic rules, Haiku 5.5, the typed decision model Jev 1.13, or a
+placebo.
+
+The specialist won every comparison the routing argument predicts:
+- It cost 0.81× the Haiku controller.
+- It answered about 3× faster.
+- It ranked finish requests better offline (AUROC 0.78 vs 0.60).
+- Its own calls were 0.11% of spend, about $0.00008 a decision.
+
+It still raised cost per attempt ×1.19 [1.02, 1.36] over no controller,
+at an identical 73.0% pass rate. Rules (×1.24) and Haiku (×1.47) also
+raised cost, and a placebo at the same moments did not (×0.98). The bill
+was the reasoning model's extra steps after each piece of advice: 16.0 vs
+13.3 steps, plus verify rounds on work that was already correct. A cheap
+model on a decision is priced by what the expensive model does next.
+kumar2026turncost makes the same point for caching: list price is the
+wrong bar.
+
+The cause was the policy, not the model. Jev's mean P(finish) was 0.50 when
+87% of finish requests passed, so acting on its argmax sent correct runs
+back to verify. A threshold set from the base rate would intervene far
+less. Even Jev's least confident group passed 79%, though, so on this
+agent no threshold obviously pays.
+
+Caveats:
+- One strong agent whose finish requests are 87% precise. On a weaker
+  agent, verification may pay.
+- The pass-rate intervals are ±11–13 pp, so "no gain" means none
+  detectable.
+- Terminal tasks, not research cycles.
+- The controller can only advise or abandon, and it never abandoned.
+
+Rule: before putting a small model in charge of a loop decision, run it
+against no controller and a placebo at the same decision points, with
+total main-model spend as the outcome. Map its probabilities to actions
+with a threshold set from the agent's base rate, not its argmax.
 
 ## Open questions
 

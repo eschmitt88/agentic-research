@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/ludwig2026shortcutting]]"
   - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/mcmillan2026instruction]]"
+  - "[[literature/papers/xu2026stale]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -196,6 +197,39 @@ better than the same rule that was never evicted.
 
 Limits: a toy marker that plausibly fights a style prior, one CLI, three
 Anthropic models, two TypeScript repos, no released code.
+
+## A pinned description keeps its authority after it stops being true (2026-10-26)
+
+"Pinning guarantees presence, not authority" (below) is about an attacker
+out-ranking a pinned rule. [[literature/papers/xu2026stale]] measures the
+opposite hazard. Pinned text keeps its instruction-tier authority after the
+world it describes has changed, and nothing in the pinning mechanism
+notices. CLAUDE.md, which this concept's Connections already calls de-facto
+pinning, was set up in 40 synthetic Python projects to ask for one
+convention while every module used the other.
+
+- 90.1% of the agents' choices followed the pinned file and 4.2% followed
+  the code.
+- Claude Code named the conflict in 79 of 80 replies and followed the file
+  anyway.
+- Codex CLI rewrote working code toward the file in 20 of 80 runs, breaking
+  the original tests in 17.
+
+The fix the paper measures does not unpin anything. It pins a second line
+at the same tier, a user-level rule that existing code wins when the two
+disagree. That moved code-following to 91.4%. Pinning therefore needs an
+expiry or a precedence rule as well as a write path (the open question
+below). A re-injected line is re-asserted every session, so a stale one
+recurs in every task until a human edits it, which the paper's own Fig. 2
+cases put at 2–24 days in Supabase and openai/codex.
+
+Limits:
+- The file is always the stale side. A pinned rule that is *right* about
+  an intended migration would be overridden by the same sentence, and that
+  arm is not run.
+- Single-turn runs with no compaction, so this is about authority, not
+  survival.
+- Synthetic projects, Sonnet 5.5 and GPT-6 Sol only.
 
 ## The known limit
 

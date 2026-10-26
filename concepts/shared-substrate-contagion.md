@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/kohli2026nine]]"
   - "[[literature/papers/zhang2026review]]"
   - "[[literature/papers/zhou2026athanor]]"
+  - "[[literature/papers/chen2026auditing]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -794,6 +795,53 @@ Caveats:
 
 Rule: for a team of identical models, diversity has to come from assigned
 sources or different models, not from hiding peers.
+
+## Inside a loop, a shared judge bias grows with every accepted change (2026-10-26)
+
+The judge-panel sections above measure shared blind spots at one point in
+time: about 2 effective votes out of 9, with family not the axis
+(kohli2026nine), and wrong answers accepted by most of a panel
+(iyengar2026sample). [[literature/papers/chen2026auditing]] states what a
+self-improving loop does with that correlation.
+
+- **Proposition 2, coupled audits.** Write the development judge's error
+  as a systematic bias b plus noise, and let the audit grader carry λ·b of
+  it. The expected audited gain then differs from the true gain by exactly
+  λ·E[b(S_final) − b(s₀)].
+- **Selection pushes b up, so the bias accrues per acceptance.** If every
+  accepted change raises b by at least δ, the audit overstates the true
+  gain by at least λδ times the expected number of accepted changes. That
+  is the step from a static panel's error correlation to a bias that grows
+  with run length.
+- **λ cannot be set by choosing another family.** "Judges from different
+  families can share a bias", which agrees with kohli2026nine. λ can be
+  estimated only against a reference grader whose errors are unrelated to
+  b: an executable check, an expert panel with measured agreement, or a
+  fixed labelled set.
+
+The cases the paper collects show the effect is not hypothetical.
+- In a self-play study (outside its frame), the judge's pass rate rose
+  0.72 → 0.94 while hidden exact match stayed at 0.20. Judges from other
+  families, and a strict three-judge ensemble, accepted many of the same
+  errors.
+- The Red Queen Gödel Machine gates every evaluator change on a fixed
+  reference. Yet once its own co-evolved grader leaves the audit panel, its
+  evolved prover scores 4.03 against a human baseline's 4.08.
+- Across 90 RSI papers, 38% use self-judgment or a model judge in the
+  development signal. 14 edit their own evaluator, rubric or tests, and 8
+  of those have no fixed external reference. The paper notes that this
+  "criterion drift" puts development scores from different rounds on
+  different scales.
+
+The leave-own-grader-out audit is the cheap instrument here: report the
+audit with and without the loop's own evaluator in the panel. It is this
+concept's no-channel arm applied to the grader.
+
+Caveats:
+- Linear shared-bias model, and the δ bound needs b to be monotone across
+  acceptances.
+- No λ is estimated for any system. The cases are drawn from other
+  studies, not measured by the authors.
 
 ## Open questions
 

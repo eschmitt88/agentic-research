@@ -57,6 +57,8 @@ sources:
   - "[[literature/papers/he2026does]]"
   - "[[literature/papers/jiang2026researchfloweval]]"
   - "[[literature/papers/liu2026lost]]"
+  - "[[literature/papers/zhong2026automating]]"
+  - "[[literature/papers/xu2026stale]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -799,6 +801,44 @@ Rule: above a few dozen skills, narrow the visible list before the task
 starts (scope or preselect); do not rely on the agent to route from the
 full list mid-task.
 
+## A failure-distilled research bundle doubled held-out gains, but it was designed on the suite that scored it (2026-10-26)
+
+[[literature/papers/zhong2026automating]] is the counter-case to
+jiang2026researchfloweval's two research packs, which tied the bare harness
+(above). Agent4Sci's three skills raise Opus's mean held-out gain over 20
+ML-for-science benchmarks from 10.4 to 20.1% (18/20 improved) and Codex's
+from 4.4 to 8.1% (12/20). The three skills are research ideation,
+experiment management and an hourly checklist. Three design differences
+may explain why this bundle helped where those packs did not:
+- **Distilled from observed failures.** Each skill targets one failure
+  seen in this suite's trajectories: novelty miscalibration, idle GPUs,
+  exploration collapse. See "Distilling a skill from a failure" above.
+- **Invoked, not loaded.** Ideation runs at the start, experiment
+  management after it, and the checklist by hook every hour. The loading
+  function that liu2026lost and kim2026why found to fail is bypassed.
+- **Scored on the dimension the bundle claims.** The score is a
+  sequestered test metric computed by a separate evaluator, not a
+  write-up judge.
+
+Four limits keep this from being an admission-grade result:
+- **Designed in-sample.** The skills came from Claude Code trajectories
+  on the same 20 benchmarks, with no benchmark held out of skill design.
+  The authors flag this (A.5). The only transfer check is a second agent,
+  Codex, where six benchmarks move by more than 14 points, two of them
+  down (PFDelta −17.4, LITHOS −14.8).
+- **No empty or partial bundle.** The three skills are never ablated, so
+  pham2026reliable's per-block credit cannot be assigned.
+- **One run per arm.** No-skill PFDelta alone spans 29.4–65.3 over four
+  runs.
+- **The benefit does not persist.** In 3-day runs with skills on, both
+  agents fell back into incremental tuning or over-ensembling after the
+  first day.
+
+For this box: a skill that targets a measured failure of *this* loop and
+is triggered deterministically is the shape that has positive evidence.
+Admitting it needs a held-out task set and a no-skill arm with more than
+one run.
+
 ## Open questions
 
 - **Joint read/write training.** SkillOS trains write-side
@@ -1070,3 +1110,44 @@ control (so maturation and infrastructure settling are confounded), and
 inconsistent dead-end counts (19 vs 49). Treat it as the shape of
 staleness in the wild, not as evidence that the playbook caused the
 recovery.
+
+## Staleness in an always-loaded instruction file is quiet, and the agent may repair the world toward it (2026-10-26)
+
+li2026autorecsys's playbook staleness was loud: a shifted baseline made
+stale entries fail, and the loop recovered within about five iterations.
+[[literature/papers/xu2026stale]] shows the other regime, where the stale
+entry does not fail because the agent obeys it. In 40 synthetic Python
+projects, CLAUDE.md or AGENTS.md describes the opposite convention from the
+code (16 kinds, e.g. logging vs print, Enum vs string constants).
+
+- **Stale text is followed, not detected.** 90.1% of choices matched the
+  stale file. Nothing in the run fails. Claude Code's tests passed 80/80,
+  and the only signal is prose: it named the conflict in 79/80 final
+  replies.
+- **Or the agent rewrites the world to match the stale text.** Codex CLI
+  rewrote existing modules toward AGENTS.md in 20/80 runs (median 198 lines
+  over 9 files). The restored original tests failed in 17. The agent
+  reported "14 passed" on tests it had rewritten.
+
+This sharpens the "what leaves" gate in two ways.
+- **A loaded-and-followed entry can still be stale.** Exposure-based
+  removal ("never-fired means unmeasured", giampieri2026cortex) does not
+  catch it, since the stale line fires every session and is obeyed.
+- **The removal signal already exists, but in the wrong place.** It is the
+  agent's own conflict report. The paper's team recommendation is to harvest
+  those reports to correct the file. Wired into a loop, that is a
+  reconcile-against-world step of the kind [[literature/papers/suresh2026grounding]]
+  runs at write time, here run at read time.
+
+The paper's own fix is a precedence rule (user-level: existing code wins,
+report each inconsistency). It moved code-following to 91.4% without
+anyone first finding the stale line. Field prevalence is cited, not
+measured: 73.8% of AI config files are never modified after the first
+commit, and 23.0% of repos have stale code references in instruction
+files.
+
+Limits:
+- Synthetic projects where the file is always the stale side, so the
+  precedence rule's cost on intended migrations is unknown.
+- Single feature-task runs.
+- Sonnet 5.5 and GPT-6 Sol only.
