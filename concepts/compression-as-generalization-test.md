@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/ning2026scores]]"
   - "[[literature/papers/xia2026rrsi]]"
   - "[[literature/papers/wang2026rethinking]]"
+  - "[[literature/papers/yao2026explicit]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/pass-at-k]]"
@@ -97,6 +98,33 @@ memory-only evolution "can only accumulate prose about a misperception it
 cannot correct". The gains came from agent-written executable tools (a
 ~20-line pixel-mask tool, BFS solvers). What transfers is checkable code;
 accumulated prose does not.
+
+## A second ladder-feedback instance: a computed margin, a stop rule and a null control (2026-10-26)
+
+Mechanism 2 (ladder feedback) had one source,
+[[literature/papers/bertran2026fits]]: a one-bit channel matched scalar
+validation feedback on holdout across 8 tasks with Claude Opus agents.
+[[literature/papers/yao2026explicit]] is an independent second instance
+(Walmart Global Tech; it does not cite bertran2026fits) that changes three
+things.
+- **The margin is computed, not fixed.** A score is released only if the
+  candidate beats the champion by one paired SE over per-item validation
+  losses, with a floor η_min. On Criteo the computed margin matched or beat
+  three fixed margins: test AUC 0.7840 vs 0.7684–0.7831, gap 0.0053 vs
+  0.0054–0.0066. The larger fixed margins lost test AUC.
+- **The channel ends the run.** Patience counts released updates, so the
+  bounded transcript also bounds run length (at most p(⌈1/η⌉ + 2) rounds for
+  a fixed margin). Under exact feedback the same patience rule ran to the
+  30-submission cap on 2 of 3 tasks.
+- **There is a null control.** On permuted labels, exact feedback reported
+  +0.0157 gain and the ladder +0.0033.
+
+What it does not add: the reproducer audit (mechanism 1) is untouched and
+still single-source. On real tasks the ladder's effects were small (about 8%
+gap narrowing, test within noise over 3 seeds). The stopping difference did
+not appear under a second backbone (Claude Sonnet 4.6: 23.4 vs 22.6
+rounds), and the paper sets those rows aside as an older protocol.
+Promotion past seedling should wait for mechanism 1.
 
 ## Connections
 

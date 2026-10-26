@@ -44,6 +44,7 @@ sources:
   - "[[literature/papers/lange2026agentic]]"
   - "[[literature/papers/sanayei2026evidencefirst]]"
   - "[[literature/papers/xu2026what]]"
+  - "[[literature/papers/vats2026good]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1290,6 +1291,59 @@ Caveats:
 Rule: a completion check that reads the final report must be able to
 follow each claim to a trajectory event; a mention in the report is not
 the event.
+
+## A generic verify nudge on a mostly-right agent is pure cost, and a better-ranking judge does not rescue it (2026-10-26)
+
+[[literature/papers/agarwal2026fire]] showed on Terminal-Bench 2.1 that a
+stop refusal with generic text is worth about zero. Its active ingredient
+is naming the missing evidence. [[literature/papers/vats2026good]] runs
+the generic form on the same benchmark with a stronger agent (Sonnet 5.5,
+21 held-out tasks, 315 trials) and prices it.
+
+At each finish request a controller reads a compact transcript state (never
+tests or verifier output) and answers finish or verify. Verify appends
+"verify each explicit requirement … then finish only if they are met". A
+guard accepts the third finish request after two verifies. The agent's own
+finish requests were right 87% of the time.
+
+- **Cost follows verify dose; pass rate does not move.** Verify messages
+  per attempt, against cost ratio vs no controller:
+
+  | Arm | Verifies/attempt | Cost ratio |
+  |---|---|---|
+  | placebo | 0.33 | 0.98 |
+  | Jev | 0.51 | 1.19 |
+  | rules | 0.92 | 1.24 |
+  | Haiku | 1.30 | 1.47 |
+
+  Pass rates were 71.4–76.2%, with no detectable difference.
+- **A better judge did not fix it.** Offline, Jev ranked finish requests
+  well (AUROC 0.78; rules 0.62, Haiku 0.60). Its P(finish) averaged 0.50,
+  so it sent 29 of 53 finish requests back. Runs it scored ≥ 0.5 passed
+  23/24 and runs below passed 23/29. When the claim is usually right, a
+  transcript-reading judge has no threshold at which a generic re-check
+  pays.
+- **The rules arm's instrument failed quietly.** Its "did a
+  verification-like command run after the last edit?" feature missed
+  agents that check work by running their own programs. It drove 0.92
+  verifies per attempt, the second-highest dose. Compare "The gate's own
+  instruments fail quietly" above.
+
+This fits the page's existing rule from the cost side. Fire a completion
+check only when it can name a missing requirement, or when the state it
+reads contradicts the claim (sanayei2026evidencefirst). A "please verify"
+on an agent whose finish requests are already 87% precise spends money for
+nothing. The hold is unchanged: there is no named-evidence arm and no
+outcome delta.
+
+Caveats:
+- One agent; the 87% finish precision is what drives the result.
+- The pass-rate intervals are ±11–13 pp.
+- The offline AUROC rests on about 7 failing runs.
+
+Rule: report the agent's finish-request precision before adding a
+completion check. Log verify messages per attempt and spend after the
+first one. If the check cannot name what is missing, do not refuse.
 
 ## Open questions
 

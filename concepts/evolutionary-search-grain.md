@@ -33,6 +33,9 @@ sources:
   - "[[literature/papers/farahbakhsh2026agentdiscover]]"
   - "[[literature/papers/he2026beneath]]"
   - "[[literature/papers/wei2026scale]]"
+  - "[[literature/papers/oved2026llm]]"
+  - "[[literature/papers/zhong2026automating]]"
+  - "[[literature/papers/chen2026auditing]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -269,6 +272,47 @@ cost. Temperature 1.2 did nothing. Reading for this concept: profile the
 operator by category, not by diff, and widen it in the controller.
 Caveats: three seeds, ML-specific taxonomy, 124M–3B targets.
 
+## The gain is in the structural moves, and the insight is a per-run draw (2026-10-26)
+
+[[literature/papers/zhong2026automating]] reproduces the lr/epochs attractor
+(min2026autonomous, he2026beneath) on 20 ML-for-science codebases with
+off-the-shelf CLI agents. Opus's interventions are 56% hyperparameter
+tuning; Codex sweeps "over a hundred experiments" from one script. The
+paper adds two controls that this concept lacked.
+
+- **An HPO-only arm separates the attractor from the gain.** Same agent,
+  same budget, restricted to Optuna over the exposed hyperparameters, on
+  6 benchmarks:
+
+  | Benchmark | HPO-only | Unrestricted |
+  |---|---|---|
+  | CheMixHub | 1.4 | 11.9 |
+  | Mars-Bench | 4.3 | 46.4 |
+  | PFDelta | 4.6 | 64.4 |
+  | DART-Eval | 2.7 | 6.1 |
+  | TIDMAD | 3.5 | 7.4 |
+
+  About half the gain survives on DART-Eval and TIDMAD. Elsewhere the gain
+  comes from a few structural moves: a backbone or detector swap, or a loss
+  reformulation. The sweep that fills the rest of the run is mostly
+  residual. So the attractor is a waste of budget, not where the gain comes
+  from.
+- **Run-to-run variance separates kinds of move.** Over four Opus runs,
+  engineering gains reproduce (SD 0.3–1.5 points). The PFDelta objective
+  reformulation appears in 2 of 4 runs (29.4–65.3, SD 19.6).
+
+The 3-day runs fit this: the extra time went to sweeps and found no
+insight that the 12-hour runs had missed. Our inference for grain: insight
+behaves like a low-probability draw per independent trajectory, not like
+progress per hour. Extra budget is better spent on more independent starts
+(or flushed forks, cai2026forkandflush) than on extending one run. Not
+tested at matched compute; n = 4 runs on one insight benchmark.
+
+The skill bundle widened what was proposed (persona, tiered plan, a
+calibration pass that demotes "a hyperparameter change ... in disguise").
+That is a prompt-side widening, unlike he2026beneath's controller
+reweighting. In the 3-day runs it did not hold past about hour 12.
+
 ## Open questions
 
 - **Where does grain actually matter empirically?** No paper isolates
@@ -396,3 +440,71 @@ meta agent all travel together. The authors say they have not checked
 whether the agents rediscover MAP-Elites or UCT. Main results are single
 runs. Treat "let the agent own selection" as compatible with the data, and
 "go deeper per candidate" as the better-supported reading.
+
+## The context an evolve prompt carries is a price, and on circle packing single-call evolution barely beats fresh samples (2026-10-26)
+
+This concept says a larger grain needs "richer prompt construction".
+[[literature/papers/oved2026llm]] puts a price on the prompt. An evolve
+proposal carries the program being edited and part of the archive, and
+both grow as the run proceeds. On gpt-5-mini one proposal costs
+15.6k–38.6k tokens, and a fresh sample from the task description costs
+4.1k–6.0k (4.6–7.2× less). The prompt's context is the main cost of a
+proposal, and it rises with depth.
+
+Read beside the per-individual-effort section above, circle packing gives
+a three-way comparison across two papers:
+- Single-call OpenEvolve on gpt-5-mini costs 22.8k tokens/proposal. That
+  matches the 26.5k ishibashi2026effective logged on gpt-5.2-codex. Its
+  equal-token ratio against independent sampling is 1.01 (EvoX and
+  AdaEvolve 1.04).
+- [[literature/papers/ishibashi2026effective]]'s Vesper spends 54K–465K
+  tokens per individual through a stateful coding agent. At 40M tokens it
+  scored 2.636 against OpenEvolve's 2.541 (×1.037).
+
+So on this task, the population over cheap single-call proposals added
+about 1–4% over having no population. A deeper operator added a further
+3.7% on top of OpenEvolve. That supports spending the budget on depth per
+individual rather than on more stateless generations, at least where a
+fresh sample is nearly as good as an edit. Heilbronn is the exception in
+the same paper: there, editing a good program keeps paying (1.23–1.28 over
+sampling).
+
+Caveats:
+- Different models and harnesses across the two papers, so the 1–4% and
+  3.7% are not additive or directly comparable.
+- The oved2026llm window is capped at about a fifth of each run's tokens.
+- The grain itself (function vs file) is not varied by either paper.
+
+## Selection inflation scales with candidates scored, so breadth-vs-depth wins read on the dev score lean toward breadth (2026-10-26)
+
+The two spend-per-individual sections above compare few deep candidates
+with many shallow ones. [[literature/papers/chen2026auditing]]'s
+Proposition 1 prices one side of that comparison. Take a loop that scores
+N proposals with no true gain, with i.i.d. development errors of SD σ,
+accepting whenever a candidate beats the incumbent. Then:
+- the reported development gain has expectation σ·m_{N+1} (Gaussian
+  errors), where m_n is the expected maximum of n standard normals;
+- the audited gain is zero;
+- the inflation "grows with the number of candidates scored, not with the
+  number of rounds."
+
+Our arithmetic for the counts in this concept: m ≈ 2.46 at 88 candidates
+and ≈ 3.36 at 1,500. On a noisy dev score, the 1,500-candidate arm starts
+about 0.9σ ahead of the 88-candidate arm before either finds anything.
+
+- **ishibashi2026effective is unaffected.** Circle Packing is scored
+  deterministically, so σ = 0. Its fewer-deeper result stands as measured.
+- **wei2026scale's B cuts σ itself.** Scoring each candidate on more
+  rollouts shrinks the noise, which is one plausible part of why B = 100
+  was the only setting that transferred. The paper did not separate this.
+- **hu2026winners is the measured case.** GEPA's small validation set
+  bought a 91-program pool against 9 and a larger reported gain, but not
+  a larger held-out one.
+
+Rule: when a comparison of candidate counts or per-candidate spend is read
+on the selection score and the evaluator is noisy, a win for fewer, deeper
+candidates is conservative. A win for more, shallower ones needs a
+re-score outside the selection set. The paper does not discuss grain; this
+is our application of its Prop. 1. Real loops have correlated errors on
+shared dev items, which shrinks the effect, so treat these as upper-end
+reference values.

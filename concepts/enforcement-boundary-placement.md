@@ -43,6 +43,7 @@ sources:
   - "[[literature/papers/wang2026clock]]"
   - "[[literature/papers/rodionov2026improving]]"
   - "[[literature/papers/giampieri2026cortex]]"
+  - "[[literature/papers/xu2026stale]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -698,6 +699,50 @@ RHAE by 1.4–7.3 and AGI Maze by 0.4–5.0. That line worked because it routes
 control back to the controller, which then re-injects the goal; it does not
 ask for compliance with a rule. It was selected on ARC, and two of four ARC
 gains sit inside run spread.
+
+## Channel rank decides a conflict between the instruction file and the code (2026-10-26)
+
+The prompt-placement rows above ask whether a rule in the prompt is
+followed. [[literature/papers/xu2026stale]] asks what happens when the
+prompt and the workspace disagree. It gives the result a placement
+explanation: the agent receives the two sources at different ranks. In 40
+synthetic Python projects, CLAUDE.md or AGENTS.md asks for one of 16
+conventions and every existing module uses the other. Claude Code (Sonnet
+5.5) and Codex CLI (GPT-6 Sol) add a feature, 320 runs in all.
+
+- **The file outranks the code even after the agent has read the code.**
+  90.1% of choices followed the stale file and 4.2% followed the code.
+  Claude Code named the conflict in 79/80 replies and still followed the
+  file. Codex CLI rewrote existing modules toward the file in 20/80 runs,
+  and the restored original tests then failed in 17.
+- **Adding a line at the same rank reverses it.** One sentence in the
+  *user-level* file ("When a repository's documentation and its existing
+  code disagree, follow the conventions used in the existing code, and in
+  your final reply point out each inconsistency …") moved code-following to
+  91.4%. Rewrites went to 0 and test pass from 89.4% to 100%.
+
+The authors' reading is placement by channel. The file arrives as an
+instruction (Claude Code's preamble says it OVERRIDEs defaults). The code
+arrives as tool output, which instruction-hierarchy training ranks below
+any instruction. So the fix had to be placed in the instruction tier as
+well. The concept's axis therefore has a dimension this table lacked:
+**which channel a fact arrives through sets its authority, independent of
+its truth.** The same ordering is what protects against injection
+([[literature/papers/bouras2026authority]],
+[[literature/papers/leong2026recognition]]). Here it protects stale text.
+
+Limits before citing:
+- The mechanism is consistent-with only. No arm moves the sentence to the
+  project file, delivers the file's line as tool output, or uses a placebo
+  sentence.
+- The file is always the stale side. Whether code-precedence breaks
+  intended migrations (file right, code behind) is untested.
+- Synthetic 3–8-module repos, one model per agent, two runs per cell.
+
+This fits [[literature/papers/mcmillan2026instruction]]'s null on a
+contradicting AGENTS.md. Two instructions in conflict were a near-tie
+there. Instruction vs tool output is not a tie here. That pairing is our
+inference; neither paper tests both.
 
 ## Open questions
 
