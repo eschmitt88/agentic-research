@@ -453,3 +453,24 @@ This was the closest miss in the last two runs. It was held only because the 09-
 
 One thing I didn't touch: `_meta/curate.log` already had uncommitted changes when the session started, so I left it out of the commit.
 {"id":"SnjhMeaaqG0q","time":1792299830,"expires":1792343030,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• iterate-redirect-before-halt\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
+This week's `/elevate` run produced **one proposal**. I weighed seven ideas and held six. The paired control passed, so the gates aren't drifting stricter. The proposal is committed and pushed in this repo as `14d5bb0`. I didn't write anything in `~/claude-system`.
+
+**Proposed: `hce-known-bad-preflight`** (`docs/system-proposals/2026-10-25-hce-known-bad-preflight.md`)
+- **The change:** one new bullet in HCE clause 4 of `rules/evaluation.md`. At chain start, the search evaluator scores a do-nothing submission (the sample submission, a constant prediction, or an empty output) and the score goes in `log.md` next to the evaluator's hash. If that score is clearly above the task's floor, the evaluator must be fixed before the chain starts.
+- **Why:** the hash only shows the evaluator hasn't been edited, not that it's right. In `chen2026when`, the τ-bench grader was untouched but still pushed success from 65.5% to 94.3%, and a do-nothing run passed when it should have failed. In `zhang2026double`, an empty submission scored 0.648 out of 1.
+- **Evidence:** four sources from four different groups, three with released code, credibility about 3.
+- **Kept minimal:** it adds no new file, setting or skill step, and it only uses the validation split, so it never touches `test/`. I left out the other checks the papers suggest: requiring a known-good submission to pass, scoring the same output twice, a set of deliberately bad submissions, and repeating the check at the final pass.
+- **Main caveat:** passing this check doesn't make an evaluator trustworthy. `ding2026reexecuting` shows a grader that passes "empty fails" can still reject correct work. Also, none of the evidence comes from ML-research loops, and no project on this box has been seen shipping a wrong evaluator.
+
+**Held:**
+- **Skill-list size** (`liu2026lost`, `giampieri2026cortex`): the evidence is strong, but skills here are started by slash command or cron, so the model choosing the wrong skill isn't the bottleneck.
+- **Fixed report fields in `/wrap`** (`xu2026what`): `/wrap` already has fixed Did / Findings / Next sections.
+- **Raw vs billed tokens** (`kumar2026turncost`): on a Max plan the quota is counted in raw tokens, so the token ceiling already uses the right unit and there's nothing to edit.
+- **New redirect-before-halt evidence** (`zhou2026athanor` and two others): added to the index as reviewer notes on the pending 10-18 proposal rather than a second proposal on the same file. Athanor's pivots lost after one round, which supports that proposal's "fire once, late" design.
+- **Two more:** `yang2026approval` fails the evidence gate (one source, no code, not peer-reviewed), and `kohli2026nine` has nothing in `claude-system` to apply to.
+
+**For you:**
+- Two proposals are waiting on you: redirect-before-halt from 10-18 and this one. They change different files, so you can decide them independently.
+- `_meta/curate.log` has an uncommitted change left over from the 10-20 curate session. I left it alone, as earlier runs did.
+- `~/claude-system` has an untracked `claude/skills/synced/` folder of claude.ai skills. I didn't touch it.
+{"id":"8qUxFDarhsNp","time":1792904600,"expires":1792947800,"event":"message","topic":"gen-cddae5580f2aebe1","title":"/elevate: 1 new system-proposal(s) to review","message":"• hce-known-bad-preflight\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
