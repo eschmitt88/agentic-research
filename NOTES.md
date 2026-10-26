@@ -794,3 +794,39 @@ Weekly rollup for 2026-10-13 → 10-19 (sourced from journal/ + _meta/log.md).
 - Document the /digest harvest order: OAI-PMH, then listing-page fallback. SKILL.md still says WebSearch.
 - Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
   sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
+
+## 2026-10-26
+
+Weekly rollup for 2026-10-20 → 10-26 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 10-20 /curate closed the 10-19 backlog: 27 items (7–20 + 13 near-misses) → 17 ingested
+  (4 near-misses promoted, 3 of them outside the window), 10 declined, archived to `_done/`.
+  Papers 262 → 279, 40 edits / 14 concepts.
+- 10-25 /elevate: 1 proposal from 7 considered, control passed. **hce-known-bad-preflight**
+  (evaluation.md §4: score a do-nothing submission at chain start; above the floor means the
+  evaluator is wrong). Held 6, incl. skill-listing scope, /wrap fields, billed-vs-raw tokens.
+- 10-26 digest → auto-ingest (go/high). OAI-PMH answered this time. 20 candidates; top 6
+  ingested, 24 edits / 13 concepts. Papers 279 → 285.
+- /promote-moc declined 10-20 and 10-26. Concepts held at 35, 35/35 mapped.
+
+### Findings
+- Abstracts still overstate: 94 PDFs since 09-22, 82 below their digest entry, 12 at, none above.
+- Redirect-before-halt: still no redirect-vs-halt arm. `vats2026good` (advisory redirect at a
+  controller stall trigger bought nothing) and `zhong2026automating` (a prompt checklist didn't
+  hold over 3 days) both say the redirect has to be enforced, not suggested. `oved2026llm`:
+  "compute-neutral" should mean equal tokens, not equal cycles. `zhou2026athanor`: don't judge
+  a pivot against the chain's best after one round.
+- Evaluator integrity: `chen2026when` and `lange2026agentic` show an unchanged evaluator can
+  still be wrong or get bypassed, the basis for the preflight proposal. `chen2026auditing`: ~41–45%
+  of self-improvement papers use held-out evaluation (human-coded), the base rate for Gate 1 evidence.
+- `xu2026stale`: "code wins over a stale CLAUDE.md" holds, but only the stale-file case was
+  tested. A conditional /elevate input.
+
+### Next
+- Decide the two pending proposals: 10-18 redirect-before-halt (fold in this week's points:
+  the redirect is enforced, compute is matched on tokens) and 10-25 hce-known-bad-preflight.
+- Curate items 7–20 + near-misses in `raw/_candidates/2026-10-26-digest.md`.
+- Document the /digest harvest order (OAI-PMH, then listing-page fallback); SKILL.md says WebSearch.
+- Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
+  sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
