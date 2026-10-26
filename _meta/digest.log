@@ -753,4 +753,12 @@ The weekly digest ran and is pushed. It found 20 new candidates; the top 6 are f
 - **`zhong2026automating`** (Agent4Sci): the doubling from added skills rests on one run per arm. Agents still fell back into narrow tuning sweeps over 3-day runs.
 - **`chen2026auditing`**: the "60% evaluate on held-out tasks" figure is about 41–45% once humans recode it.
 - **`vats2026good`**: its "change approach" signal is advice the agent can ignore, and no controller ever stopped a run. So it is not the redirect-versus-halt comparison we've been looking for.
-- **`xu2026stale`**: the one-sentence fix (tell the agent to follow the existing code over a stale `CLAUDE.md`) holds up. But the paper never tests the
+- **`xu2026stale`**: the one-sentence fix (tell the agent to follow the existing code over a stale `CLAUDE.md`) holds up. But the paper never tests the case where the instruction file is right and the code is out of date. It's a possible `/elevate` input once that case is tested.
+
+**What this means for the pending proposals:**
+- **Redirect-before-halt** still has no direct redirect-versus-halt comparison. This week's evidence says a redirect has to be enforced by the loop, not suggested in the prompt.
+- **"Compute-neutral"** in that proposal should mean equal tokens, not equal cycles.
+
+I also committed the leftover `_meta/elevate.log` output from 10-25 as its own commit, as was done last week.
+
+Commits: `6332471`, `a224722`, `c61978c`, `182931b`, `3867db7`.
