@@ -34,6 +34,7 @@ sources:
   - "[[literature/papers/das2026selfpropagating]]"
   - "[[literature/papers/xu2026replaylens]]"
   - "[[literature/papers/pham2026reliable]]"
+  - "[[literature/papers/khezresmaeilzadeh2026claim]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -762,3 +763,36 @@ Caveats: the actors did not cite lessons, so the Reflector tagged the
 whole playbook. That departs from ACE's own design and may make tags
 noisier. On 9B the harmful rules were mostly tagged harmful, so the
 failure is ranking by tags, not tags that always point the wrong way.
+
+## Records written from intent: the falsehood enters before any adversary, at the moment of logging (2026-10-27)
+
+This concept's write gates assume the entry describes something that
+happened. [[literature/papers/khezresmaeilzadeh2026claim]] measures how
+often an agent's own step record says a step worked when it did not, with no
+adversary. Qwen3.5-9B, using the Android agent T3A's own step-summary prompt
+("be critical"), was shown the before and after screens of 200 steps that
+had no effect. It still wrote a summary claiming success for 78 of them
+(39%; labelled by the same model, not by humans). Downstream, a decision
+model given such a summary declared the task done 77–94% of the time,
+against 26–48% with an honest one.
+
+The paper's diagnosis is that records are written from the action's intent,
+"often before its effect can be checked". This is
+[[literature/papers/suresh2026grounding]]'s "faithful to the evidence is
+not true", one step earlier. The writer had the contradicting observation
+in hand and wrote the intended outcome anyway. [[literature/papers/qin2026llm]]
+showed that the record is agent-writable. This shows that an honest writer
+is enough to corrupt it.
+
+For this concept the write-time rule is to log an action as *attempted*,
+and upgrade it to *done* only on a re-observed effect. That makes the
+attempt/effect split (see [[concepts/typed-claim-partition]]) a property of
+the entry at write time, not something a reader has to recover.
+
+Our inference, for this box: `NOTES.md` "Did" lines, experiment `log.md`
+entries and subagent "done" reports are intent-written records of this
+kind. A step that ends a run or marks an experiment done should cite the
+effect (a passing check, an existing file, a commit hash), not the entry.
+
+Caveats: one 9B summarizer on constructed phone failures; 39% measures
+summarizer behaviour on that set, not prevalence in deployed agents.

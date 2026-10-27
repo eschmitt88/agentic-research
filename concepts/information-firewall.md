@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/du2026can]]"
   - "[[literature/papers/farahbakhsh2026agentdiscover]]"
   - "[[literature/papers/yao2026explicit]]"
+  - "[[literature/papers/zhu2026who]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -334,6 +335,32 @@ candidate sees what the scorer's process sees (our inference).
 Rule: when a harness narrows the feedback channel, list the files the
 narrowing assumes are unreadable, and probe them before the scored run, as
 in [[concepts/hce-evaluation]]'s "probe the wall" section.
+
+## A sixth boundary: the claim must not reach its own verifier (2026-10-27)
+
+The five boundaries above keep something away from the *agent*: the method,
+retrieved answers, future data, protocol, the evaluator's ancestry, or
+feedback. [[literature/papers/zhu2026who]] measures one drawn around the
+*verifier*. The agent's success report should define the claim under audit,
+and it must not reach the judge that checks it. Their formal requirement is
+that the trace-state estimator's input excludes the report, so changing the
+report "may change C(m), but cannot change T(x, τ)".
+
+On 465 GUI-agent records, letting the report through cost the judge 13–43 pp
+of misreport recall, and the flips were almost all in the accepting direction
+(79 : 1 for the smaller judge). This repeats
+[[literature/papers/xu2026dont]] with a cleaner single-factor design.
+
+The firewall is enforced in structure, not in the prompt. One call reads only
+the report, another reads only task and trace, and a fixed table combines
+them. The gold labels follow the same split, with completion annotated blind
+to the report and claim intent blind to the trace, so the measurement cannot
+leak either.
+
+Our inference: in this box the leaking channel is any orchestrator or skill
+step that judges a worker's output while reading the worker's summary of it.
+The firewall line goes between the summary and the judge, the same way HCE
+draws it between `test/` and the loop.
 
 ## Connections
 

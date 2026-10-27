@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/ganesh2026homogenization]]"
   - "[[literature/papers/kumar2026turncost]]"
   - "[[literature/papers/vats2026good]]"
+  - "[[literature/papers/khezresmaeilzadeh2026claim]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -277,6 +278,40 @@ Rule: before putting a small model in charge of a loop decision, run it
 against no controller and a placebo at the same decision points, with
 total main-model spend as the outcome. Map its probabilities to actions
 with a threshold set from the agent's base rate, not its argmax.
+
+## A cheap decision model inherits its base LLM's trust in the agent's record (2026-10-27)
+
+The 2026-10-26 section above priced a typed decision model (Jev) as a
+controller by the steps its advice caused.
+[[literature/papers/khezresmaeilzadeh2026claim]] measures a different cost
+of routing terminal decisions (stop / proceed / buy) to such models. For the
+four models run in all three domains (decider-4b, Kev-4B, decider-12b and
+hosted `jev-1.13`), a failed step whose record claims success still ended in
+the terminal choice 53–100% of the time, and in 11 of the 12 cells it was at
+least 80%. The other phone models (0.8B–9B, including the encoder Laya) show
+the same preference. The paper offers this as the mechanism behind an
+earlier end-to-end result: swapping an LLM action selector for Jev cut
+AndroidWorld success by 13–18 points, with premature completion among the
+leading causes (Ling et al. 2026b, cited, not in the graph).
+
+Three points bear on choosing such a backend:
+- **The bias comes from the base model.** Qwen3.5-4B base already weighted
+  the claim at +0.51 against +0.02 for the observation, and decision tuning
+  did not remove it. One variant's logged-action effect went from +0.15 to
+  +1.12.
+- **Scale helps a little.** Kev-9B weighted the screen most, and it still
+  completed after more than 65% of claimed failures.
+- **The fixes need weights.** A middle-layer probe veto and LoRA
+  fine-tuning both worked in-domain. Hosted Jev can only be measured, and
+  fine-tuning on phones did not transfer to ALFWorld or WebShop.
+
+Rule: a cheap decision model on a terminal decision should not see the
+agent's unverified success claims. Failing that, it needs a check against
+the environment, fit on states from the deployed agent. A version fit on
+offline contrast sets vetoed 95% of live WebShop purchases.
+
+Caveats: the live results use one 4B decision model with injected silent
+failures. The decision models are not the Claude models this box runs.
 
 ## Open questions
 

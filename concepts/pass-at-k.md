@@ -35,6 +35,12 @@ sources:
   - "[[literature/papers/liu2026what]]"
   - "[[literature/papers/ning2026implementation]]"
   - "[[literature/papers/iyengar2026sample]]"
+  - "[[literature/papers/karim2026explore]]"
+  - "[[literature/papers/mang2026frontiercs]]"
+  - "[[literature/papers/wang2026beyond]]"
+  - "[[literature/papers/kim2026elicitation]]"
+  - "[[literature/papers/lyu2026where]]"
+  - "[[literature/papers/shi2026weight]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -487,6 +493,211 @@ Caveats:
 Rule: when k is spent on a selector, report the selector's per-task
 acceptance rates on correct and wrong candidates from a labelled pilot. Do
 not pool them across tasks.
+
+## Split the shortfall into exploration loss and selection loss; under noise, repeats trade one for the other (2026-10-27)
+
+The oracle-vs-selector gap above has a clean measured form when true values
+are known. [[literature/papers/karim2026explore]] splits each campaign's
+shortfall from the global best into two additive parts:
+- **exploration loss** = global best − best candidate measured (the
+  "oracle" ceiling of what was tried);
+- **selection loss** = best measured − nominated pick (what the selector
+  threw away).
+
+Repeats shrink selection loss by averaging noise. Each repeat also takes a
+slot from a new candidate and can raise exploration loss.
+
+On the grid, a scripted rule loses 0.67 / 0.23 to exploration / selection.
+Over-confirming models (75–94% repeats) lose 0.94–1.04 / 0.02–0.12; an
+under-confirmer (14% repeats, single-read pick in 78% of campaigns) loses
+0.70 / 0.38. The totals are similar and the causes are opposite. A single
+final-score number hides which fix applies.
+
+Our inference for reporting: when a loop's final pick is scored on a
+held-out or true value, report the split alongside it. The split needs only
+the held-out score of every candidate the run measured. The selection term
+is the measured form of [[literature/papers/chen2026auditing]]'s winner's
+curse. It is also the complement of the capture ratio in
+[[literature/papers/zhang2026veriharness]]: selection loss over (oracle −
+mean) = 1 − capture. Caveat: the paper's setting is a simulator with
+i.i.d. noise and one nominee.
+
+## A k = 1 benchmark that fits a run effect: the noise it estimates is four times the top gap (2026-10-27)
+
+[[literature/papers/mang2026frontiercs]] (FrontierCS 2) runs each of 12
+model+harness agents once on each of 48 tasks. It does not ignore
+run-to-run noise, though. Its IRT model (FCI, adapted from Epoch's
+Capabilities Index) gives each run a random effect shared by its metric
+outcomes and score margin. The fitted σu is 2.04 logits, or 20.4 FCI
+points (Table 5).
+- The Opus 5.5 vs GPT-6 Astra gap is 5.0 FCI points (55.7 vs 50.7). Every
+  adjacent gap in the top five is under 9.
+- In pass terms: 28/48 vs 21/48. Wilson 95% intervals are about 44–71% and
+  31–58% (our arithmetic). The FCI whiskers overlap, and the paper says its
+  intervals "separate only agents that sit far apart".
+
+So a k = 1 benchmark can estimate the noise scale it does not resample. On
+this one, that scale is larger than the headline ranking. The 90% intervals
+come from a task bootstrap with hyperparameters held fixed, so they do not
+add run resampling on top. This is the same k = 1 situation as
+[[literature/papers/wang2026naturebench]] (Open questions below), with a
+model-based noise estimate added.
+
+The benchmark also puts the selector inside the spec. The agent names its
+own final patch, and the judge does not pick the best development
+submission, because "choosing the patch is part of a researcher's work".
+Pass rate is then generation × selection, and the paper does not split
+them. Our inference: best-dev-patch pass rate next to named-final pass rate
+would measure each agent's selection loss, as
+[[literature/papers/iyengar2026sample]] frames it. The logs needed for that
+already exist.
+
+Caveats:
+- σu comes from a parametric model fit to 624 runs, not from reruns.
+- Each model runs in a different harness at a different effort setting, so
+  the ranking is of bundles.
+
+## Tasks buy more than runs, and an all-items pass rate collapses to zero gain when nobody passes (2026-10-27)
+
+[[literature/papers/wang2026beyond]] gives a variance decomposition for a
+per-skill verdict. It is the clearest measured case in this graph of "k
+bounds stochastic error, not systematic error" (above).
+
+- **Facets.** Over runs of one task, test–retest is 0.90 at three runs.
+  Over a second synthesized task for the same skill, parallel-forms is 0.41
+  (0.364 on a second library). Components: skill 0.046, task 0.053, run
+  0.036. So the task drawn is the largest error source, and at fixed task
+  count the error cannot fall below σ_t²/n_t however many runs are made.
+- **Allocation.** The optimal runs per task is √(σ_r² c_t / σ_t² c_r) ≈
+  0.83 √(c_t/c_r). One run per task is optimal unless a task costs more than
+  about three runs to make. At three runs per skill, three tasks × one run
+  misclassify 11.4% against a threshold, one task × three runs 16.1%, and
+  tripling runs of one task 15.2%.
+- **Spend near the cut.** Classifying against a threshold is mastery
+  testing. A skill 0.2 from τ needs about four tasks, one 0.3 away at most
+  two (α = 0.1). Adding tasks only within 0.2 of τ (41% of skills) reached
+  11.1% at three quarters the cost of tripling tasks everywhere.
+- **Batch effects.** Extra tasks must come from one generation batch:
+  same-batch pairs correlate 0.549, cross-batch 0.285.
+- **Binary collapse.** With an all-items-pass criterion, a run passes only if
+  every rubric item passes. If no run in either arm passes, both rates are 0
+  and any difference is 0. The chance is (1−q₁)^k (1−q₀)^k, where q is at
+  most the pass rate on the hardest item. On SkillsBench probes full passes
+  were 10% unaided and 37% aided, and 28 of 59 probes never had one.
+  Elsewhere in the paper, 83% of with/without task pairs had zero gain,
+  nearly all double failures.
+
+Caveats: synthesized tasks with Qwen3.6-27B as target and judge. The
+normal approximation overstates the cross-task flip rate (28% predicted vs
+25% observed), so the authors use it to compare allocations, not to predict
+error rates.
+
+Rule for this project: when a verdict is a threshold call (keep or retire,
+promote or not, inside or outside a noise band), replicate over **tasks or
+inputs** before runs, and spend the extra ones on items near the threshold.
+When the metric is all-tests-pass, report the share of items with no pass in
+any arm. A zero difference on those items is a floor, not a null.
+
+## A harness gain at pass@1 can be elicitation: report it at the intended k, by difficulty, with the success-set churn (2026-10-27)
+
+[[literature/papers/kim2026elicitation]] is a third pass@1-vs-pass@k
+separation, after li2026acm and agarwal2026fire, and the first applied to
+harness optimization. It compares Meta-Harness's selected harness with the
+initial one at k = 64 or 128, on held-out test sets.
+- **LawBench (GPT-OSS-20B, 100 tasks).** pass@1 rises from 18.86 to 44.00.
+  21.02 of the +25.14 pp comes from tasks the baseline already solved at
+  least once in 64 tries. At pass@64 the gain is +3 (53 → 56 tasks: 7
+  gained, 4 lost).
+- **Stronger reference.** The harness's 16.05 pp pass@1 lead over
+  GPT-OSS-120B on that baseline reverses at k = 11 and ends 56 vs 60.
+- **Selection.** In one HotpotQA run (300 tasks, k = 128) the candidate
+  with the highest pass@1 is not the one with the highest pass@128.
+
+Two rules follow for this project:
+- State the k a claim is about. For a loop that feeds its own successes
+  forward, that k is the coverage budget, not 1.
+- Report the baseline-by-treatment success-set table (gained / lost /
+  kept) and the share of the gain that came from already-reachable tasks.
+
+Stratify by difficulty when hard tasks are the point. Pooled curves near
+the reference hid that no selected harness beat it on hard subsets. Those
+subsets are 41 HotpotQA and 63 AppWorld tasks, so the gaps are 0–2 tasks.
+
+Caveats:
+- No interval on any pass@k value. Three optimization runs per benchmark,
+  shown as ±1 SD bands.
+- The static tasks run at temperature 0, so attempt variety comes from the
+  harness's own context resampling. Our inference: a more consistent
+  harness loses pass@k there by construction, and H0 with frozen
+  demonstrations, the control that would separate the two, is not run.
+- The paper's lead figure (a hard-subset coverage *loss*) comes from a
+  relaxed-cap run. The main setting shows flat hard coverage.
+
+## Choosing the next input: own choice captured 10–27% of the oracle gain and lost to a random pick (2026-10-27)
+
+[[literature/papers/lyu2026where]] gives a capture ratio for a different
+selection: which single resource (a planning pass, a specification, an
+execution report, or nothing) a stuck coding agent asks for before one
+revision. Each choice is scored on that checkpoint's fully measured 2³
+surface. At function level (194 checkpoints, 3 probe rollouts), the three
+models that asked for feedback 95–100% of the time realised 10–27% of the
+per-checkpoint oracle gain and were below a uniform random pick. GPT-5.6
+did better (0.071 against random 0.050, n.s.). The fixed rule "always the
+population-best resource" still left gain unused, because for 28–45% of
+checkpoints a different resource was best. The oracle-to-own gap was
+0.05–0.22 at function level and 0.08–0.17 on SWE-bench Verified.
+
+Read beside [[literature/papers/zhang2026veriharness]] (an agentic output
+selector captured 28–30% of the oracle gap), this is the same shape one
+step earlier: a selector picking an *input*. Two cautions carry over from
+this concept. The per-checkpoint oracle and the 28–45% heterogeneity figure
+are computed from k = 3 rollout means at T = 0.7, so part of the oracle gap
+is the oracle picking after the noise is seen. Bootstrap CIs resample
+checkpoints, not rollouts. And the best option in the menu is
+oracle-derived (written from the reference solution), so the capture ratio
+is against a menu no deployed agent has.
+
+## On frozen archives, changing only the selector moves an architecture ranking (2026-10-27)
+
+[[literature/papers/shi2026weight]] moves this concept's selector point up
+from pass@k to architecture comparisons. Five-agent LLM teams (Independent,
+Ring, Star, Complete) each generated a frozen candidate archive per problem
+(qwen2.5:7b, 100 symbolic-regression problems, 50 calls each). Six fixed
+selection rules were then applied to the same archives, and the pick was
+scored on held-out data. Complete minus Independent, in mean ΔQ:
+
+| Rule | Complete − Independent |
+|---|---|
+| archive minimum training error | +0.10 [−0.08, +0.34] |
+| final-round minimum training error | −0.75 [−1.56, −0.25] |
+| final-round plurality | −0.78 [−1.59, −0.28] |
+| archive-wide plurality | −0.59 [−1.40, −0.10] |
+
+- 9 of 20 prespecified architecture × rule interactions passed Holm in this
+  layer (Complete's final-round interaction p = 1.05e−7). On the 41-problem
+  gpt-5.6-terra layer, 0 of 20 passed, and the authors call those estimates
+  too imprecise to separate small interactions from none.
+- The paper's rules: state the selector beside the architecture, report the
+  archive and the returned answer as separate endpoints, and either fix the
+  selector across arms or cross arm with selector.
+
+Our inference: the archive-minimum rule is close to an oracle here. The
+expressions have no fitted constants, and training (25k–80k rows) and
+held-out ID come from one generator. So the first row compares archive
+quality, and the others compare what weaker rules return. This is
+[[literature/papers/kim2026are]]'s oracle-vs-vote gap turning into a
+ranking flip. The arms that concentrate (Complete and Star: a single
+skeleton is ≥ 80% of outputs in 46 and 56 problems, against 0 for
+Independent) lose most under plurality and final-round rules. The paper
+names no mechanism, and its post-hoc test of distinct-candidate count did
+not support one.
+
+Rule for this project: an arm comparison whose winner is picked by a
+different rule than the one used in deployment is not a deployment
+estimate. Log the archive best and the delivered pick as two numbers.
+
+Caveats: one run per cell, and the selection family's focal rules are
+exploratory.
 
 ## Open questions
 

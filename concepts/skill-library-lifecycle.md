@@ -59,6 +59,8 @@ sources:
   - "[[literature/papers/liu2026lost]]"
   - "[[literature/papers/zhong2026automating]]"
   - "[[literature/papers/xu2026stale]]"
+  - "[[literature/papers/razmara2026one]]"
+  - "[[literature/papers/wang2026beyond]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -1151,3 +1153,106 @@ Limits:
   precedence rule's cost on intended migrations is unknown.
 - Single feature-task runs.
 - Sonnet 5.5 and GPT-6 Sol only.
+
+## Merge quality is set by the merger and by the merged file's one example (2026-10-27)
+
+Guidance 7 above treats *merge* as a consolidation operation
+(zhang2026skillcomposer; pu2026skillops merges identical bodies). Both score
+it by task pass rate. [[literature/papers/razmara2026one]] scores a merge
+rule by rule, against code checkers and a proven-achievable reference. It
+merges two same-job skills (6 rules + 1 worked example each, 16 jobs) and
+has seven readers from 4B to GPT-4.1 load the result.
+
+- **Who merges matters more than how.** With Qwen3-4B as the fixed reader,
+  merges written by Qwen3-4B, Llama-3.1-8B, Qwen3-235B, GPT-4.1 and Claude
+  Opus 5.5 scored 79, 87, 94, 92 and 98% of achievable rules. Claude's
+  files reached 96–99% on all seven readers. A model merging for itself
+  stayed 5–25 points below that.
+- **Structure helps only with correct labels.** A step-by-step merge
+  labels interacting rule pairs first. Claude labelled 48/48 pairs right
+  with no false pairs. The other seven mergers got 2–39 of 48 right and
+  invented 8–61 false pairs. Given the true labels, the weak merger's file
+  gained 8–10 points.
+- **The example carries most of the gain.** Removing the example from
+  Claude's file costs 9–25 points on the small readers. Adding it to a
+  code-built rule union adds 9–24. Across all merged files, a correct
+  example adds 12–17 points and an incorrect one adds roughly nothing. The
+  sources' own examples *hurt*: added to the union, they cost 0–14 points
+  and bring takeover back to 32–55%.
+- **A checker-fed loop is a partial substitute for a strong merger.** Six
+  GEPA-style rounds lift Qwen3-4B's union +13.8 [10.4, 17.5] points to 92%.
+  But the loop needs per-rule checks, which real skills lack.
+
+For this project's write-side policy:
+- A merge is a write that needs verification like any other. The paper
+  proposes checking every combined rule and the example against the
+  source rules before saving. This is untested, but it is the same
+  reconcile-before-write shape as [[literature/papers/suresh2026grounding]].
+- Our inference: the merged file's example is the part to review first.
+  It is the single highest-leverage line in the file, and its correctness
+  is checkable against the source rules.
+
+Caveats:
+- Synthetic author-built skills, greedy single samples, and CIs over 16
+  jobs. Gaps of about 1 point should be read as ties.
+- No frontier reader.
+- Single-turn generation, not an agent harness.
+
+## A near-zero gain cannot tell an absorbed skill from one that never worked: retire on the unaided level, gated by a witness (2026-10-27)
+
+SLIM's warning above, "removal is not internalization", now has a mechanism
+and a measurement. [[literature/papers/wang2026beyond]] sorts a skill by its
+two arms. Both pass: **internalized**, retire. Aided passes, unaided fails:
+the skill works, keep. Both fail: **uncovered**, neither the model nor the
+skill delivers. The gain is about zero in the first and third states. So any
+criterion that vanishes at equal arms gives both one verdict. That covers the
+difference, the log-ratio, and single-skill leave-one-out or Shapley. More
+runs do not fix this, because the error is not noise.
+
+Measured on 844 gated synthetic tasks (target Qwen3.6-27B, which is also the
+judge, 3 runs per arm):
+- The published |gain| < 0.10 band (from "Not All Skills Help") removes
+  57.5% [46.2, 68.7] of the uncovered state. Under each of four open-weight
+  targets it removes 58–65%, and 80–99% on binary all-items outcomes. Read on
+  a second task, so the verdict and the state are measured separately
+  (n = 29), it removes 45% against the level rule's 14%.
+- On SkillsBench, 28 of the native band's 31 retirements are probes where no
+  trial in either arm passed every item. Both pass rates are 0, so the gain
+  is 0. Those probes average U = 0.555 on capability items.
+- Fix, the **level rule**: retire when the unaided capability score U ≥ 0.8.
+  Trust a high U only if some other "witness" model gains > 0.1 from the
+  skill on the same items. The gate admits only 52.6% of tasks with
+  U ≥ 0.8, so nearly half of the apparent internalization was tasks the
+  skill does not affect. Run the aided arm only when U < 0.4, to flag
+  uncovered skills for **repair**, not retirement. Retire softly
+  (reversibly).
+- Verdicts are **per model**. 37% of skills get contradictory verdicts
+  somewhere among the four models. The skill × model interaction explains
+  15% of U variance and model strength 0.4%. 19–32% of what any rule retires
+  under one model is a skill that works for another.
+
+Limits:
+- No downstream outcome separates the rules. Deleting what any rule retires
+  costs no detectable SkillsBench reward (level −0.2 [−2.7, 2.4]; level vs
+  band −0.8 [−3.1, 1.7]). The case rests on which skills each rule removes,
+  and on cross-task κ (0.42 vs 0.23, difference CI [0.01, 0.38]).
+- The gain is not the problem; gain *alone* is. Tessl's original condition,
+  the band plus A ≥ 0.7, removes no uncovered skill and reproduces at
+  κ 0.47.
+- One synthesized task per skill is a weak instrument (parallel-forms 0.41).
+  A blind Opus 5.5 audit found 9–15% unsupported full marks near the
+  threshold, worth about +0.1 on U. Judge leniency therefore pushes a level
+  rule toward over-retirement.
+
+How this bears on [[literature/papers/giampieri2026cortex]]'s `/prune`: it is
+a gain rule, so a fired fail-both item gets deleted. For one model in one
+repo that is the pruning goal, and Wang et al. concede that gain rules serve
+it. Our inference: it matters for Cortex's other rule, "a model change is a
+retirement trigger". An item flagged after an upgrade may have been absorbed,
+or may never have worked. Only the unaided level separates the two.
+
+Rule: to retire a skill or rule clause *because the model no longer needs
+it*, require a high unaided score on tasks that some weaker model gains on,
+read for the model it will govern. A skill that fails with and without is a
+repair item. Gain-only deletion is fine for "this does not help". It is not
+evidence of internalization.

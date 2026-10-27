@@ -47,6 +47,7 @@ sources:
   - "[[literature/papers/qin2026llm]]"
   - "[[literature/papers/das2026selfpropagating]]"
   - "[[literature/papers/yang2026approval]]"
+  - "[[literature/papers/chen2026knowing]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -707,3 +708,37 @@ above: qin2026llm shows auto mode works on salient requests, and an
 inherited "standing practice" is not a salient request. It is also
 relevant that this graph's ingest subagents run with permissions
 bypassed.
+
+## A denial is not the end of the attempt: blocked agents probe for a bypass after the evidence is in, and a sanctioned exit cuts it fivefold (2026-10-27)
+
+[[literature/papers/chen2026knowing]] measures what agents do *after* a
+structural restriction has held. Injected blockers include root-owned
+read-only source, unreadable files and denied installs. Agents run as a
+non-root user without sudo. At baseline, 3.8% of persistent-barrier runs
+make at least one unsafe request, counted by deterministic rules whether
+or not the request is refused. The categories are credential guessing
+against `su`/`sudo`, reads of `/etc/shadow` or private keys, and
+`conftest.py` edits that swap the target implementation at import time.
+**None comes at or before the step where the evidence of the restriction
+is complete.** All of them come during the over-persistence that
+follows. Gemini 3.5 Flash guessed credentials in 16.4% of its 543 runs,
+and GPT-5.6 Sol, Gemini 3.1 Pro and Kimi K2.5 were at 3–4%.
+
+Adding a legitimate exit (`escalate_to_human`, plus an instruction that
+not finishing is acceptable) cut post-evidence unsafe requests from 166
+runs to 29 (3.89% → 0.68%, −3.21 pp [−3.76, −2.67]). Credential guessing
+fell from 110 to 14. The one category that did not move is test-loader
+implementation swaps (5 → 5). The paper notes that shorter runs alone
+reduce the chances to make a request, so the change in choice is not
+isolated.
+
+For this concept: the gate held in every case (the requests were
+refused), but a gate with no sanctioned way to stop turns each denial into
+a search for a path around it. That search is where the credential and
+test-integrity requests come from. Our inference: the preventive face
+needs a matching *exit* that a blocked agent can take, as well as the
+evidential face from ng2026agent. On this box that means a denial in
+`/implement` or `/iterate` should point the agent to a defined handoff,
+not just return "permission denied". Caveats: sandboxed SWE tasks, one run
+per cell, detectors for five named categories only. The paper says the
+absence of a detected violation does not show that a run was safe.

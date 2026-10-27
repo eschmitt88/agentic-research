@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/zhang2026review]]"
   - "[[literature/papers/zhou2026athanor]]"
   - "[[literature/papers/chen2026auditing]]"
+  - "[[literature/papers/shi2026weight]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -875,6 +876,40 @@ Caveats:
   access to the literature note the ingest pass wrote — not merely by a
   different model. A second pass that reads the first pass's output is a
   same-channel read in shao2026language's sense.
+
+## A no-channel arm at matched calls: peers concentrate the team, but each trajectory was already repetitive (2026-10-27)
+
+[[literature/papers/shi2026weight]] includes the no-channel arm that
+[[literature/papers/shao2026language]] asks for. It is set up as five
+LLM scientists on symbolic regression (qwen2.5:7b, 100 problems, 50 calls
+per problem in every arm). Peers see each other's rationales and equations
+but not their fit scores. The software, not the agent, decides who sees
+whom.
+
+- **The team concentrates with a channel and not without one.** In
+  Solo, Ring, Star, Complete and Independent respectively, a single
+  skeleton made up ≥ 80% of a problem's outputs in 81, 72, 56, 46 and 0
+  problems. Median distinct skeletons were 2 / 2 / 5 / 7 / 8.5.
+- **Within a single agent, repetition is the same with or without
+  peers.** 81.8% of an Independent agent's outputs share its own modal
+  skeleton (Solo 81%). Pooling separate repetitive trajectories is what
+  removes team-level concentration. Our reading, in
+  [[literature/papers/zhou2026athanor]]'s terms: the channel shares one
+  agent's attractor with the whole team. It does not create the attractor.
+- **Outcome.** Serial Ring was worse than Independent (−0.33 held-out Q,
+  CI −0.49 to −0.18). Star and Complete were unresolved (+0.03, +0.10, both
+  intervals spanning zero) under a near-oracle picker. Under plurality or
+  final-round picks they lost 0.4–0.8 Q, because a vote over a
+  concentrated archive returns the herd's answer.
+
+Caveats:
+- One run per cell, and the contrasts are labelled exploratory.
+- Ring is also the only serial schedule, so topology and timing are
+  confounded.
+- The comparison is call-matched. Communicating arms read more input
+  tokens per call, so token matching would favour Independent further.
+- A post-hoc test linking fewer distinct candidates to the score gap
+  found no consistent association.
 
 ## Connections
 
