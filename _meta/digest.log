@@ -762,3 +762,25 @@ The weekly digest ran and is pushed. It found 20 new candidates; the top 6 are f
 I also committed the leftover `_meta/elevate.log` output from 10-25 as its own commit, as was done last week.
 
 Commits: `6332471`, `a224722`, `c61978c`, `182931b`, `3867db7`.
+I added the weekly rollup for 10-20 → 10-26 to `NOTES.md` under `## 2026-10-26`, committed it, and pushed. The branch is in sync with `origin/main`.
+
+**What it covers:**
+- **Did:**
+  - On 10-20, `/curate` cleared the rest of the 10-19 digest: 17 papers ingested, 10 declined, papers 262 → 279.
+  - On 10-25, `/elevate` raised one proposal, **hce-known-bad-preflight**.
+  - On 10-26, the digest ran over OAI-PMH, which worked this time, and auto-ingested its top 6 (papers 279 → 285).
+  - `/promote-moc` declined twice; the concept count stayed at 35.
+- **Findings:**
+  - Abstracts still overstate: 82 of 94 PDFs read below their digest entry, none above.
+  - Redirect-before-halt still has no paper comparing redirect against halt. This week's papers say the redirect has to be enforced by the loop, not suggested in the prompt, and that "compute-neutral" should mean equal tokens.
+  - Two findings on evaluator integrity back the preflight proposal.
+  - `xu2026stale` is a possible `/elevate` input, but only the case where `CLAUDE.md` is the stale side was tested.
+- **Next (still open only):**
+  - Decide the two pending proposals (10-18 and 10-25).
+  - Curate items 7–20 and the near-misses in the 10-26 digest.
+  - Document the `/digest` harvest order. I checked the skill file and it still describes WebSearch.
+  - The four long-running items carried over from last week.
+
+The entry is 36 lines with headings and blank lines, about 28 of content, so slightly over your ~30 if you count every line. It doesn't repeat the 10-19 entry.
+
+There was also an uncommitted tail of the 10-26 digest session transcript in `_meta/digest.log`. I committed it on its own (`e436a9d`), the same way last week's leftover log was handled. The rollup itself is `59d2b6a`.
