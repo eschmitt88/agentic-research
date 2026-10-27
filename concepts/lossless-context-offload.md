@@ -19,6 +19,8 @@ sources:
   - "[[literature/papers/shen2026what]]"
   - "[[literature/papers/zhang2026correct]]"
   - "[[literature/papers/nguyen2026cliffcompaction]]"
+  - "[[literature/papers/lencevicius2026when]]"
+  - "[[literature/papers/salle2026benchmarks]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -319,6 +321,70 @@ the address is known.
 
 Caveat: four source pairs in that family, synthetic generator, pilot scale.
 Directionally supporting, not decisive.
+
+## Re-observability, manipulated directly: a dropped fact costs success only when it cannot be looked up again (2026-10-27)
+
+[[literature/papers/fan2026empirical]]'s null led to this page's scope
+condition, that an address only earns its keep where the environment cannot
+regenerate the evicted content. That condition was an inference from a coding
+workspace. [[literature/papers/lencevicius2026when]] tests it head-on in a
+synthetic probe (PersistGym-lite). The episode, model and window are fixed,
+and the only thing that varies is whether a lookup action can re-show the
+needed fact. With a 24k-token window that has dropped the evidence,
+gpt-6-luna succeeds in 200/200 episodes when it can look the fact up (201
+lookups in 200 episodes) and in 15/200 when it cannot, against 10% chance.
+The penalty gap is +92.5 points (90% CI 89.5–95.5, 200 templates,
+pre-registered, Holm across two tests). A replication on claude-haiku-5-5,
+registered after the first model's results and outside the confirmatory
+family, gives 200/200 against 0/200.
+
+The not-recoverable collapse is expected by construction, and the paper
+says so. The informative half is the recoverable arm. When re-observation
+is available, one step away and exact, the model uses it and loses nothing in
+success. It costs 1.31× the need-phase tokens. Read with fan2026empirical
+and [[literature/papers/nguyen2026cliffcompaction]], the contrast is now
+measured from both sides: an address is redundant where the environment
+re-shows the content, and decisive where it does not.
+
+Caveats:
+- The lookup is an ideal address. It re-shows exactly the needed fact at a
+  one-step cost, and the agent does not have to notice that something is
+  missing first. Partial, costly or noisy re-observation is untested.
+- One window size, a K = 10 forced choice, one model per provider, and the
+  probe ran below its registered power (T = 200 against the 290 the power
+  rule set).
+
+Our inference for this project: `raw/` web captures, completed runs'
+stdout and anything else that cannot be re-fetched in the same form are the
+not-recoverable cell. A compaction summary in a long chain should point at
+them by path rather than paraphrase them.
+
+## A second null for the explicit archive in a workspace-backed task, this time with frontier models (2026-10-27)
+
+[[literature/papers/salle2026benchmarks]] runs the offload as a designed
+arm inside OpenCode. It keeps default self-summarization and also
+serializes the full pre-compaction history to a JSON file whose path the
+summary states. On PaperBench it is near baseline for Opus 4.6 and
+GPT-5.4. It *lowers* GPT-5.3-Codex from 0.38 to about 0.24. On
+ProgramBench it does not move any model. It is the second matched null
+after [[literature/papers/fan2026empirical]], and the authors' reason is
+this page's scope condition: the objective is fixed and progress lives on
+disk, so "most of what compaction discards can be recovered" by re-reading
+the workspace.
+
+The paper does not report whether agents ever opened the archive, so the
+null cannot be split into "unused" and "used, no help". Small n: 2 runs
+per task × configuration, 3 PaperBench papers, accuracy conditional on a
+valid submission.
+
+The same paper names what the archive would have to carry to pay off:
+user constraints that exist nowhere but the context. In Claude Code
+sessions, process and scope instructions are dropped by the summary about
+36% of the time, against about 6% for specs (see
+[[concepts/constraint-pinning]]). Our inference: the re-derivability
+question should be asked per item type, not per task. Specs and progress
+are re-derivable from the workspace. Chat-only instructions are not, and
+those are the content an archive, or better a pinned file, is for.
 
 ## Open questions
 

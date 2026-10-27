@@ -36,6 +36,9 @@ sources:
   - "[[literature/papers/oved2026llm]]"
   - "[[literature/papers/zhong2026automating]]"
   - "[[literature/papers/chen2026auditing]]"
+  - "[[literature/papers/karim2026explore]]"
+  - "[[literature/papers/shi2026weight]]"
+  - "[[literature/papers/lehmann2026can]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -508,3 +511,108 @@ re-score outside the selection set. The paper does not discuss grain; this
 is our application of its Prop. 1. Real loops have correlated errors on
 shared dev items, which shrinks the effect, so treat these as upper-end
 reference values.
+
+## Left to split a noisy budget, LLM agents buy depth they do not need, and a supplied candidate list moves them where advice does not (2026-10-27)
+
+[[literature/papers/karim2026explore]] lets the agent choose breadth vs
+depth per slot: 60 measurements, each a new candidate or a repeat. Opus 4.7,
+Gemini 2.5 Flash and DeepSeek V3.1 were run with reasoning off as minimal
+agents (no tools, full history per call, temperature 0, 60–120 campaigns
+each on the grid). They spent 75–94% of slots on repeats, against a scripted
+band of 24–38%. They measured 2.6–11.3 distinct candidates, against 28.9
+for the scripted rule. Their shortfall is 88.9–99.2% *exploration* loss:
+they pick well among what they tested and test too little. On GB1, Flash
+and DeepSeek measured 3.9 and 2.4 distinct candidates out of 60 slots.
+
+The habit is not a response to noise. At σ = 0 the median post-first-repeat
+re-testing is still 90.6% across 15 prompt cells. Free rejections leave
+every cell at ≥74.8%.
+
+What moved it, all against the same model's control on the same seeds:
+- A ledger (per-candidate n, mean, SE) and a landscape note: ≤5 points,
+  three of the six changes upward.
+- Explaining noise and √n: *raised* Opus's re-testing (75.4% → 85.8%) and
+  cut its distinct candidates (11.3 → 7.0).
+- A stated decision rule: the one contrast that survived Holm failed
+  pre-registered replication (+0.008 [−0.036, +0.052] on 120 seeds).
+- A "Menu" of 10 untried neighbours of the top three, ranked by a fitted
+  model: −18 to −31 points. It still left about 57–68% re-testing on the
+  grid and worsened selection. On GB1 it lifted Flash's and DeepSeek's
+  picks by more than three units.
+- Reasoning at medium effort: −7.5 to −12.4 points, but the pick fell by
+  0.10–0.26 because the extra candidates were worse.
+
+The Menu is the scripted rule's own proposal step handed to the agent. So
+"supply candidates" here partly means "outsource proposal". Our inference:
+this is the same shape as [[literature/papers/yan2026traceml]] and
+[[literature/papers/vats2026good]]. Changing the choice set the controller
+offers moves an agent's allocation; telling it more, in a prompt, does not
+or backfires. For the redirect-before-halt work, the over-confirmers' stall
+is a candidate-supply stall. A redirect that hands the agent concrete new
+candidates is the form with evidence behind it. A redirect that only asks
+for something different has none.
+
+## At a fixed call budget, more independent trajectories beat one long one when the trajectory never sees its score (2026-10-27)
+
+[[literature/papers/zhong2026automating]] led us to infer that insight is a
+per-trajectory draw, but we had not tested that at matched compute.
+[[literature/papers/shi2026weight]] runs the matched-call version on
+symbolic regression (LLM-SRBench, qwen2.5:7b-instruct, 100 problems). It
+spends 50 calls per problem as N independent trajectories of 50/N calls,
+and the archive-wide pick is scored on held-out ID data.
+- N 1 → 10 gained +0.70 mean Q (Q = −log10 NMSE; 95% CI 0.41–1.03; median
+  +0.11; 86/11/3 wins/losses/ties). Every adjacent step (1→2, 2→5, 5→10)
+  had a positive interval.
+- Within one trajectory, best-so-far Q rose by only 0.01 between call 10
+  and call 50. 81–82% of a trajectory's outputs share its modal skeleton.
+  That is [[literature/papers/gurkan2026mutation]]'s operator attractor at
+  expression grain.
+
+This does not contradict [[literature/papers/ishibashi2026effective]]'s
+"more depth per individual". Here agents never saw a fit score, so depth
+meant blind re-proposal. In ishibashi2026effective it meant iterating
+against the evaluator. Our inference: breadth beats feedback-free depth.
+The comparison that matters for `/iterate`, breadth against
+feedback-driven depth at matched calls, has not been run.
+
+Caveats:
+- One run per condition; the intervals cover problems, not reruns.
+- The comparison is call-matched, not token-matched.
+- Trajectory length and context resets change together with N.
+- The 7B backbone mostly fails the task: at N = 10, mean Q is +0.17
+  [−0.08, 0.49], and 38/100 problems beat the constant-mean predictor.
+- The sweep is scored only under the archive-minimum-training-error
+  selector. Our inference is that this selector is near-oracle, because
+  training and held-out ID arrays are large draws from one generator. So
+  part of the gain is best-of-more-distinct-draws (15.5 distinct skeletons
+  at N = 10 vs 2 for Solo), and it may shrink under a weaker picker.
+
+## An updater allowed to keep its parent never did: acceptance must sit outside the proposer (2026-10-27)
+
+In [[literature/papers/lehmann2026can]] each revision stage could "change
+any generated file or preserve the parent". Across 54 revisions by nine
+frontier model–effort profiles (GPT-6 Astra to Claude Sonnet 5; 3 lineages
+each), none preserved it. The grain they chose was coarse:
+- First revisions: 22/27 reoriented the operating strategy (context
+  persistence, replay, model-consultation cadence, batching, budget), 4
+  extended it, 1 preserved.
+- Second revisions: 12 / 12 / 3.
+- Every lineage grew, median 2,161 → 2,912 Python lines.
+- Broad rewrites averaged +3.75 immediate held-out change and contained
+  ones −0.20, a contrast with a CI spanning zero.
+- Within one condition, three Sol-high replicates took the identical
+  R → E strategy path and landed at +33.18 to −15.18.
+
+Since no acceptance step existed, the held-out mean (+2.80, CI −1.44 to
+7.35) is the raw proposal distribution. A post hoc best-dev-snapshot rule,
+which in effect adds the missing "none" option, moved it to +4.53 (0.81 to
+8.68), and it chose H0 in 9 of 27 lineages.
+
+Our inference: a proposer told it may abstain does not abstain. Keeping
+the parent has to be a scored candidate in a separate acceptance step, as
+in skill-library-lifecycle's "keep 'none' as a candidate"
+([[literature/papers/pham2026reliable]]) and RRSI's noise-band selector
+([[literature/papers/xia2026rrsi]]). It should not be an option offered
+inside the proposer's prompt. This applies to `/elevate`'s self-application
+as much as to harness loops. The paper's strategy labels are post hoc and
+outcome-visible, and the dev-selection rule was not run prospectively.

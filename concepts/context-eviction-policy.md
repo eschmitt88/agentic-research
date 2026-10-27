@@ -61,6 +61,8 @@ sources:
   - "[[literature/papers/sun2026scipivot]]"
   - "[[literature/papers/kumar2026turncost]]"
   - "[[literature/papers/xu2026what]]"
+  - "[[literature/papers/lencevicius2026when]]"
+  - "[[literature/papers/salle2026benchmarks]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -863,6 +865,103 @@ Caveats:
 Rule: when a long chain carries state forward as a summary, give it fixed
 fields for failures and rejected options and keep the raw logs
 addressable; do not rely on prose to carry them.
+
+## Dropping turns saves tokens and costs 3-4x in dollars, and a summary carries derived facts far better than observed ones (2026-10-27)
+
+[[literature/papers/lencevicius2026when]] gives two measurements this page
+has so far argued without matched arms.
+
+**The cache break, priced.** In a synthetic probe where every episode is
+played under every harness, a 24k-token sliding window used 0.84–0.90× the
+tokens of full history and cost 2.9–4.0× as much in dollars in every task
+cell (gpt-6-luna). 94% of full history's input was served from cache,
+against 48% for the window, and cached input is a tenth of the price. On
+claude-haiku-5-5 the ratio was 3.3–3.7×, because that provider bills the
+rewritten prompt as cache writes at 1.25× input. This is the matched-arm
+version of bai2026how's "cache reads dominate" and mason2026missing's
+batch-your-mutations rule. A drop-oldest window rewrites the prefix on
+every turn, so it pays the invalidation every turn.
+
+**What a lossy harness carries.** In the cells where the fact had left the
+window and could not be looked up again:
+
+| Harness | Observed fact | Derived fact |
+|---|---|---|
+| Full history | 100% | 99.5% |
+| Window, drop oldest | 7.5% | 8.0% |
+| Window + one-line notes instruction | 28.5% | 26.5% |
+| Summary + notes (exploratory) | 43.0% | 92.0% |
+
+When the notes held the fact (21.5% of observed episodes), the model used it
+every time, so the loss comes from what gets carried, not from using what was
+carried. On ARC-AGI-3 (Gemini 3.8 Flash, four games picked for a large
+published gap, one run per cell), replacing drop-oldest with summary
+compaction while keeping the notes line took the mean score from 9.2 to
+63.1, against 71.8 for the provider's native-replay harness.
+
+Our inference: a fact the agent derived sits in its own reasoning and
+replies, so a summarizer treats it as task state. A fact shown once in an
+observation does not look like task state until it is needed. That is the
+same direction as [[literature/papers/xu2026what]] (fixed fields keep more
+non-inferable state) and the 2026-10-26 digest's item 18 (compaction drops
+rules first). A constraint stated once at session start is the observed-fact
+case.
+
+Caveats:
+- The summary arm is exploratory. The ARC shares come from single runs, and
+  a same-configuration rerun moved one game by 40 points (see
+  [[concepts/hce-evaluation]]).
+- One more failure mode for the implementation list: at high thinking an
+  8,192-token output budget for the summary call was used up by reasoning.
+  The summary came back empty four times in a row and the run died. The
+  upstream harness fixed it by letting compaction inherit the model's
+  output limit. A compaction call to a reasoning model needs a budget that
+  covers reasoning plus summary.
+
+Rule: evaluate a context policy on billed cost with caching on, not on
+tokens. When compacting, carry stated-once observations (constraints,
+one-off measurements) in explicit fields, because a summary keeps derived
+conclusions by default and drops them.
+
+## Default self-summarization was not beaten, and discarding more costs some models 16–20 points (2026-10-27)
+
+[[literature/papers/salle2026benchmarks]] fixes one scaffold (OpenCode).
+It compares five compaction strategies on PaperBench, ProgramBench and
+PostTrainBench with Opus 4.6, GPT-5.4 and GPT-5.3-Codex. There are three
+results for this page.
+
+1. **For 1M-window models the threshold does not matter in the range
+   tested.** Opus and GPT-5.4 are flat from 160K to 380K. That range is
+   only 16–38% of their window, so the near-full regime where Claude Code
+   compacts is untested. GPT-5.3-Codex (400K) drops from about 0.60 to
+   0.38 on PaperBench at 160K, where it averages 27.7 compactions per run.
+   Its accuracy declines from about 8 compactions onward. Opus and GPT-5.4
+   show no relationship with compaction count.
+2. **No strategy beats self-summarization beyond the CIs.** Tool-output
+   pruning ties it. This is consistent with
+   [[literature/papers/nguyen2026cliffcompaction]] and
+   [[literature/papers/kumar2026turncost]] (cheap rule-based dropping ≈
+   summary).
+3. **Discarding more does not transfer across models.** On PaperBench:
+   - Clear thinking takes GPT-5.4 from 0.59 to 0.43 and leaves Opus and
+     Codex unchanged.
+   - A Haiku 4.5 summarizer leaves Opus within CI, but takes GPT-5.4 from
+     0.59 to 0.43 and Codex from 0.38 to 0.18.
+
+   The authors suspect a same-provider effect. That means a cheap
+   summarizer validated on one backbone is not validated for another,
+   which is the same point as chen2026governance's summarizer-dominates
+   crossing.
+
+Caveats: 2 runs per task × configuration, 3 PaperBench papers judged by
+gpt-4o-mini on the Code-Dev variant, and accuracy conditional on a valid
+submission with failed runs relaunched. The nulls are low-powered, and
+only the 16–20 point drops are clearly outside the noise.
+
+Rule: validate a compaction change on the backbone that will run it. If
+the summarizer is a different model, test it against the task model on
+the same tasks first. The paper only shows a same-provider cheap
+summarizer to be safe, and only for Opus.
 
 ## Open questions
 

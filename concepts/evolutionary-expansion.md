@@ -39,6 +39,9 @@ sources:
   - "[[literature/papers/he2026does]]"
   - "[[literature/papers/oved2026llm]]"
   - "[[literature/papers/chen2026auditing]]"
+  - "[[literature/papers/chen2026cads]]"
+  - "[[literature/papers/kim2026elicitation]]"
+  - "[[literature/papers/wang2026rsihub]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -426,6 +429,123 @@ Caveats:
   different histories that reach the same state supply some overlap.
 - Census counts come from an independent blind coder, but the claimant
   group is small (4/26, CI 6–34%).
+
+## The baseline to beat is a competent non-LLM prior, and a random fallback both flatters the LLM and is displaced by it (2026-10-27)
+
+oved2026llm's fresh-sample arm asks whether a task rewards *search*.
+[[literature/papers/chen2026cads]] asks the matching question about the
+*proposer*: is it worth more than a cheap non-LLM rule in the same loop?
+The setting is a simulated gene screen with 12 rounds of 40 reads, 7–8B
+open-weight proposers and 20 paired seeds. Results are certified true hits
+per campaign:
+
+| Proposer | Certified hits (20 seeds) | Net over random fill |
+|---|---|---|
+| Random fill | 2.60 | – |
+| LLMs | 2.95–5.65 | +0.35 to +3.05 |
+| Pan-essentiality prior | 12.65 | +10.05 [8.69, 11.41] |
+
+The prior is each gene's mean effect across other cell lines, fixed before
+any read. On 50 fresh seeds at a matched quota, it certified 16.12 against
+the best LLM row's 5.08.
+
+Two consequences for the losing-alternative arm in the definition:
+- **Random is the floor, not the baseline.** Every LLM arm beat random
+  fill at matched quota (+1.84 to +2.70, unadjusted). A report that
+  compared only with random would have credited the LLM. A domain
+  heuristic of the kind a practitioner would write first beat all of them
+  by about 3×. The concurrent Gupta et al. 2025 result, which the paper
+  cites, reaches the same conclusion for LLM-guided Bayesian optimization.
+- **An LLM that fills some slots displaces the fallback that fills the
+  rest.** With the thin prompt, Qwen filled 58 of 260 slots and originated
+  2.15 hits. The fallback, squeezed to 202 slots, found 0.80 instead of
+  2.60. Counting "LLM-originated winners" in an archive therefore
+  overstates the LLM by whatever the mutation or random-restart path would
+  have found in those slots.
+
+Our inference: in an ML-research search, the analogue of the prior is the
+obvious strong default, such as a tuned GBDT, the published recipe, or
+the last champion re-run with a standard sweep. It belongs in the
+comparison next to oved2026llm's fresh-sample arm, at equal reads or
+tokens.
+
+Caveats:
+- Semi-synthetic, one simulator, small open models.
+- Pretraining leakage is untested. A frontier model's proposals here could
+  be recall of the same essentiality that the prior encodes.
+- The prior uses other cell lines from the same reference resource. It is
+  truth-isolated for the target line, not domain-naive.
+
+## Fitness on validation pass@1 selects reliability, and re-weighting the task mixture did not buy reach (2026-10-27)
+
+Guidance 2 and 5 rank candidates on the validation metric.
+[[literature/papers/kim2026elicitation]] shows what that metric selects
+when it is pass@1. The setting is Meta-Harness with an Opus 5 proposer,
+20 iterations × ≤2 proposals, and solver weights fixed.
+- **All 40 candidates of one HotpotQA run (Qwen3-8B)** stay below the
+  Qwen3-32B baseline on hard questions at every k up to 128. The selected
+  harness has the best hard pass@1 of the 40 but not the best hard
+  pass@128.
+- **Re-optimizing on a hard-focused task mixture** raised hard pass@1 from
+  56.88% to 59.28%, against 32B's 59.51%. Hard pass@128 stayed at 73.17%
+  (30/41 questions), against 78.05% for 32B. It was one run.
+- **Static tasks.** The gain concentrates where the baseline already
+  succeeds: 84% of LawBench's pass@1 gain is on tasks H0 already reached.
+  The authors liken this to RL's Matthew effect.
+- **Interactive tasks** did gain reach over the initial harness: AppWorld
+  hard went from 52/63 to 56–58/63 at k = 128. So the loop is not purely
+  eliciting. It just did not pass the stronger reference's reach.
+
+For a population loop whose purpose is reach, a pass@1 fitness is the
+wrong selection target. The paper proposes rewarding "validated successes
+on previously uncovered hard tasks" and retaining "candidates with
+complementary successes", but does not test either. Our inference: the
+cheap version is a selection score that counts validation tasks a
+candidate solves which no archived candidate solves, at a stated k. That is
+a coverage-novelty term next to the mean, as in quality-diversity
+archives. It has no measured evidence in this graph yet.
+
+Caveats:
+- One optimizer, two solver families.
+- The main runs were selected under scorers the paper later replaced. The
+  aligned-scorer rerun keeps the hard-task pattern.
+- Hard-subset gaps are 1–2 questions with no intervals.
+- QA, classification and app tasks, not ML-research loops.
+
+## Four evolution policies from one seed under one evaluator: no ranking holds across agent or benchmark, at one run per cell (2026-10-27)
+
+[[literature/papers/wang2026rsihub]] writes AHE, Hyperagents, A-Evolve and
+GEPA as recipes over shared operators. The seed artifact, target and
+mutator model (GPT-5.4), evaluator, splits and generation cap (≤10, one
+child per generation) are all held fixed. That makes it a same-start
+comparison of *methods*. [[literature/papers/chen2026auditing]]'s swap
+test compares earlier and later *improvers*, which is a different
+question, but it needs the same infrastructure.
+
+- The best method changes in every cell. On Terminal Bench 2 it is
+  Hyperagents and A-Evolve for MiniSWE (+13.5 overall) and AHE for Codex
+  (+2.2). On τ³ Banking it is Hyperagents for MiniSWE (+5.2, with a sealed
+  regression) and AHE for Codex (+9.3).
+- The only cell where all four methods clearly gain held-out is TB2
+  MiniSWE, at +4 to +5 sealed tasks of 20. There the seed draw is near its
+  own mean. Codex TB2 sealed moves 0 to +2.
+- Budget is matched by generation count only. GEPA adds a minibatch
+  Validate, Mutate may trial on train tasks, and no token or dollar totals
+  are reported. By [[literature/papers/oved2026llm]]'s standard the arms
+  are not compute-matched. There is also no fresh-sampling arm on the seed
+  ([[literature/papers/wang2026rethinking]]).
+
+Our inference: with one run per cell and a single-draw baseline (see
+[[concepts/hce-evaluation]]), "rankings vary" cannot be separated from
+"the cells are inside the noise". The value here is the harness: a
+one-operator swap at a fixed seed and evaluator is a config change. The
+evidence about which policy expands better is close to nil.
+
+Caveats:
+- The four recipes are adaptations of "selected policies", not
+  reproductions of the original systems.
+- The agent-driven mode (an outer agent rewriting the recipe) is described
+  but not evaluated.
 
 ## Open questions
 

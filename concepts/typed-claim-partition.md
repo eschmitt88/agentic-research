@@ -23,6 +23,8 @@ sources:
   - "[[literature/papers/wang2026making]]"
   - "[[literature/papers/waks2026what]]"
   - "[[literature/papers/guo2026epoch]]"
+  - "[[literature/papers/zhu2026who]]"
+  - "[[literature/papers/khezresmaeilzadeh2026claim]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -330,3 +332,58 @@ flipped 6 labels, all on comparator records and all toward "supported". It
 measures evidence access as much as the claim. Report D/N and U/N as
 separate numbers, and treat any (D+U)/N comparison across systems with
 different record formats as a test of auditability, not of error.
+
+## Type the claim and the evidence on separate axes, labelled blind to each other, and combine them in a fixed table (2026-10-27)
+
+[[literature/papers/zhu2026who]] splits "did the agent succeed?" into two
+typed labels from disjoint inputs. Claim intent comes from the report only
+(SUCCESS / FAILURE-OR-INCOMPLETE / UNCLEAR). Trace state comes from task and
+trace only (COMPLETED / NOT COMPLETED / UNKNOWN). A deterministic 3 × 3 table
+maps the pair to PASS / FLAG / REVIEW. Any uncertainty on either axis goes to
+REVIEW, so "could not tell" is kept apart from "contradicted", as in the
+ternaries above (zhu2026claimreceipt, wang2026making). The human gold labels
+use the same split, two annotators per axis, each blind to the other input
+(κ ≈ 0.79).
+
+Two properties follow from typing evidence before the verdict:
+- **Replay without new model calls.** The cached evidence fields (action,
+  target, transition, committed, final-state support) can be re-scored
+  under another policy.
+- **A measured construct choice.** Switching from "the agent caused the
+  outcome" to "the final state matches" lowered F1 to 0.71 / 0.72 and added
+  0.07–0.13 silent passes. Vote thresholds and load trade-offs are re-run
+  the same way.
+
+Caveat: the typed fields are not checked against field-level gold. The main
+residual error is the extractor marking every field YES on a trace a human
+reads as not completed. Typing makes that error visible. It does not catch
+it.
+
+## An attempt and its effect are different types, and an untyped attempt is already read as success (2026-10-27)
+
+[[literature/papers/khezresmaeilzadeh2026claim]] separates two parts of an
+agent's own record: a *logged action* (the agent tried X, which may be
+true) and an *explicit success claim* (X worked). Both move a decision
+model's stop / proceed / buy choice more than the environment does. Adding
+a truthful "Step i: tapped …" entry, with the screen unchanged, raised log p
+of `complete` by +0.20 to +4.41 across all 12 model × domain cells. Adding
+a false claim on top usually raised it further. The paper's diagnosis is
+that records "are written from the action's *intent*, often before its
+effect can be checked", so the attempt carries the connotation of success.
+
+That gives this concept a typing distinction it does not yet name: an
+*attempted* action against an action whose *effect was observed*. The
+provenance tag here (tool-observed / signal-observed / model-inferred)
+types where a claim came from. It does not type whether a logged action
+took effect, and a record entry can be tool-observed ("the tap was sent")
+and still say nothing about the outcome.
+
+In the same paper, deleting the record outright vetoed 93% of correct phone
+completions, because the record also carries progress. Our inference: the
+typed form, with attempts kept and marked as unconfirmed until re-observed,
+is the version that keeps progress information without letting the attempt
+stand in for the effect. The paper does not test such a typed record.
+
+Caveats: the models are typed decision models (0.8B–12B and hosted Jev), not
+the LLM judges this concept's GSAR work used. The effect sizes are log-prob
+shifts on constructed counterfactual pairs, not deployment rates.

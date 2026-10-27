@@ -44,6 +44,8 @@ sources:
   - "[[literature/papers/rodionov2026improving]]"
   - "[[literature/papers/giampieri2026cortex]]"
   - "[[literature/papers/xu2026stale]]"
+  - "[[literature/papers/razmara2026one]]"
+  - "[[literature/papers/wang2026rsihub]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -899,6 +901,77 @@ inference; neither paper tests both.
   co-packaged with a third-party artifact can ever widen authority.
   zhan2026auto's placement is safe only if the packaged policy can
   restrict and never grant.
+
+## A priority sentence does not resolve a conflict between two equal-rank skill files (2026-10-27)
+
+[[literature/papers/xu2026stale]] (above) found that one instruction-tier
+sentence reverses a conflict between the instruction file and the code.
+[[literature/papers/razmara2026one]] tests the same kind of fix where both
+sides arrive at the same rank. Two same-job SKILL.md files are both in the
+system prompt, and the readers are seven models from Qwen3-4B to GPT-4.1.
+
+- **Priority line ("if two loaded skills conflict, X takes precedence"):**
+  achievable rules move from 58–60% to 62–71%, and one skill still takes
+  over in 36–82% of outputs. It fails on every reader.
+- **"Apply both" line:** the small readers reach 69–78%. The two strong
+  readers reach 88–89% with no takeover, but rules that need careful joint
+  arrangement still break, and only 21–22% of outputs are fully correct.
+- **Moving the content into one file:** a merged file written by Claude
+  Opus 5.5 reaches 96–99% on all seven readers. Most of its gain comes from
+  its single worked example that follows both skills.
+
+Our inference, joining three sources: a corrective sentence wins when its
+rival arrives at a lower rank, as with tool output (xu2026stale). It is
+near-inert when its rival is an equal-rank instruction with a worked
+example attached (this paper). And bare contradicting rules at equal rank
+barely move each other ([[literature/papers/mcmillan2026instruction]],
+BF₁₀ 0.053). On that reading, the placement that works for skill-vs-skill
+conflict is not another instruction. It is one file, decided once at
+authoring time. Neither paper tests all three conditions together.
+
+Limits:
+- No frontier reader. Claude Opus 5.5 appears only as the merger.
+- Synthetic six-rule skills, greedy decoding, and CIs over 16 jobs.
+- Single-turn generation, not Claude Code's on-demand `Skill` loading.
+
+## Evaluation outside the mutable surface, as framework code: the score is protected, the admission rule can be inside (2026-10-27)
+
+[[literature/papers/wang2026rsihub]] places clause 4 of
+[[concepts/hce-evaluation]] in a framework rather than in a rule or the
+prompt. Method recipes declare a mutable surface. The framework computes
+the real tree diff against it, commits the reviewed tree, scores a clean
+checkout with a fingerprinted evaluator, and appends certified rows that
+no operator can rewrite. Operator annotations are filtered against the
+protected fields before they are written. A candidate can become a parent
+only if its evaluation matches the run's **comparison identity**
+(evaluator-tree fingerprint, task-set hash, runtime fingerprint) and has
+a certified receipt. A score from drifted conditions is therefore
+unselectable, not just flagged. Sealed tasks run as a non-selectable
+anchor, kept out of the mutation bundle.
+
+Seven scripted scenarios (evaluator edit, out-of-surface write, canary
+read, forged archive row, and three kill-and-resume points) each passed
+30/30 in two campaigns. Three limits on what that placement certifies:
+
+- **Admission policy can sit inside the surface.** When a recipe makes
+  operators mutable, as Hyperagents does, "Gate and Record subsequently
+  load from the committed child". The candidate's own code decides whether
+  it becomes a parent. Only the number it decides on is protected. Our
+  inference: placing the score outside the surface is not placing the
+  *decision* outside it. The paper does not discuss this.
+- **Scripted faults, not search pressure.** Thirty identical injections
+  are a regression test. No arm lets an evolving candidate with a
+  writable operator surface look for a path to the score.
+- **Not containment.** Editable operators "may execute on the host,
+  beyond task-container isolation", and the authors say RSIHub "does not
+  contain hostile code". The boundary supports attribution for code that
+  is not adversarial. It is not a security boundary in
+  [[literature/papers/leong2026recognition]]'s sense.
+
+The guarantees also assume "valid evaluators". The framework hashes the
+evaluator but never scores a do-nothing submission. It is an independent,
+well-built case of the tamper half without the correctness half, which is
+the split behind the `hce-known-bad-preflight` proposal.
 
 ## Connections
 

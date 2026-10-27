@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/ishibashi2026effective]]"
   - "[[literature/papers/li2026autorecsys]]"
   - "[[literature/papers/lange2026agentic]]"
+  - "[[literature/papers/shi2026weight]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -223,6 +224,27 @@ Caveats:
 Rule: for a GPU-bound loop on this box, size the pool for wall-clock, at two
 workers rather than four. Do not count on parallelism or sharing to raise the
 final best above seed noise.
+
+## A second source: sharing among parallel workers did not raise the best, and a serial ring lowered it (2026-10-27)
+
+[[literature/papers/shi2026weight]] is a second matched-budget check of this
+page's rule, after [[literature/papers/lange2026agentic]]. It runs five
+LLM workers on 100 symbolic-regression problems at 50 calls each
+(qwen2.5:7b), all scored by the same archive-best picker on held-out data.
+- With no channel (Independent), workers matched or beat every sharing
+  policy.
+- Hub-and-leaves (Star: +0.03 Q, CI −0.08 to +0.13) and all-to-all
+  previous-round sharing (Complete: +0.10, CI −0.08 to +0.34) were
+  unresolved against Independent.
+- A serial ring where each worker reads its predecessor's latest output was
+  worse (−0.33, CI −0.49 to −0.18), and was worse in both task families.
+- Spreading the same 50 calls over 10 independent workers instead of 1 was
+  the largest effect (+0.70).
+
+Here the shared channel carried proposals without scores. In lange2026agentic
+it carried distilled results. Neither raised the final best. Caveats: one
+run per cell, contrasts labelled exploratory, a 7B backbone, and
+call-matched rather than token-matched budgets.
 
 ## Open questions
 

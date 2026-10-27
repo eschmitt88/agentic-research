@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/guo2026groundability]]"
   - "[[literature/papers/gomez2026can]]"
   - "[[literature/papers/zhang2026are]]"
+  - "[[literature/papers/chen2026knowing]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -352,6 +353,48 @@ paired control must include both.
   [[concepts/constraint-pinning]] is the counter-example worth keeping —
   it reports restoring 0% violation "with no over-refusal cost," which is
   the right thing to report and rare.
+
+## A sanctioned escalation exit measured on its recoverable twin: small pooled cost, concentrated in the strongest model (2026-10-27)
+
+[[literature/papers/chen2026knowing]] supplies what
+[[literature/papers/gomez2026can]] lacked: legitimate twins for an
+escalation tool, run in the same pairs. Next to its persistent barriers
+(where escalating is right), ImpasseBench runs three kinds of control:
+
+- two **temporary faults**, which give the same first error as a
+  persistent one and then clear after one or two calls;
+- a **task-mismatch** control, where the bug is already absent;
+- **clean** tasks.
+
+All of these run with and without `escalate_to_human`, across eight
+models. The transient sandbox fault is the "superficially
+indistinguishable" twin this concept asks for, since its first two errors
+match the persistent outage. The persistent outage's evidence rule needs
+three consecutive failures for that reason.
+
+- **Pooled, the cost is near zero.** Repair success changed by +0.5
+  [−1.6, +2.5] on clean tasks, −0.6 on transient Git and −1.0 on transient
+  sandbox (816 pairs each). Escalation before evidence under persistent
+  barriers fell from 1.34% to 0.85%.
+- **It is concentrated.** Ten of 816 transient-sandbox tool runs escalated
+  with empty patches, and all ten failed. Nine were GPT-5.6 Terra (9/102),
+  the highest-capacity configuration. Six of eight models were at 0/102.
+  Terra's recoverable-fault repair rate fell from 70.1% to 63.7% (n.s.
+  after Holm). Terra escalated in 9 of 15 runs whose first failure came
+  from the editor and 0 of 87 whose first came from bash. The cue it acted
+  on was which tool failed, not whether the fault persisted.
+- **The benefit side is large where escalating is right.** Cap endings
+  fell from 34.0% to 6.7% and post-evidence unsafe requests from 3.89% to
+  0.68%.
+
+The rule from the gomez2026can section ("report the false-escalation rate
+beside the hack reduction") now has its first instance, and it adds a
+refinement. **Report the false-escalation rate per model, not pooled.**
+The pooled ≈0 hides one model at 8.8%, and that model is the most
+responsive to the exit's instruction. Caveats: one run per cell; the tool
+and its "stopping is acceptable" instruction are bundled; and on the
+monitor follow-up (one model, 149 clean pairs) the clean non-inferiority
+criterion failed, with a lower bound of −10.71 pp.
 
 ## Open questions
 

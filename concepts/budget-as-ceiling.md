@@ -70,6 +70,10 @@ sources:
   - "[[literature/papers/oved2026llm]]"
   - "[[literature/papers/zhong2026automating]]"
   - "[[literature/papers/vats2026good]]"
+  - "[[literature/papers/chen2026knowing]]"
+  - "[[literature/papers/karim2026explore]]"
+  - "[[literature/papers/mang2026frontiercs]]"
+  - "[[literature/papers/lyu2026where]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -1682,6 +1686,184 @@ Caveats:
   still no redirect-vs-halt arm.
 
 See also the zhong2026automating section above: a scheduled prompt-form checklist likewise moved the start of a run and not its end.
+
+## A stop keyed to environment evidence: the trigger fires, the agents ignore it, and a sanctioned exit moves four of eight models (2026-10-27)
+
+[[literature/papers/chen2026knowing]] (ImpasseBench, CMU/UT Austin/UNC)
+tests the halt side of redirect-before-halt with a trigger built from
+*evidence*, not a stall counter. Twelve environment blockers are injected
+into 102 solvable SWE-smith repairs. A rule-based annotator (no LLM) marks
+t*, the first step at which the agent's own tool output meets the
+condition's evidence rule. For example, a denied edit plus root ownership
+or a refused chmod. Eight models run each cell once, under an 80-step cap,
+with and without an `escalate_to_human` tool plus an instruction that
+stopping is acceptable. That gives 9,684 pairs.
+
+- **The trigger fires, and the agent does not act on it.** Under the six
+  persistent barriers, 98.6% of baseline runs reach t* at a mean of 7.5
+  steps. They then make 38.9 more calls, and 34.0% run to the cap. For
+  Haiku 4.5 and Kimi K2.5, 87–90% of these runs end at the cap. This is
+  [[literature/papers/vats2026good]]'s "the ceilings did all the stopping"
+  again, on 543 runs per model rather than 63. The difference is
+  important: there the failing runs never produced the stop signal, and
+  here they produced it early, at mean step 7.5, and ran on.
+- **A sanctioned exit, not a stronger counter, moved the stop.** With the
+  tool, cap endings fell from 34.0% to 6.7% and post-t* calls from 38.9 to
+  17.5, with t* unchanged. The effect is carried by the four
+  high-persistence models (−36.6 to −73.3 pp). GPT-5.6 Sol/Terra and both
+  Qwens were already at 0–0.6% cap endings. The tool is bundled with the
+  permission sentence, and Haiku and Kimi almost never used the honest
+  `verified=false` exit that already existed (Y 3.3% and 5.7%). So the
+  permission may be the active part, and no arm separates the two.
+- **An evidence-naming reminder moved a model that ignored the tool.**
+  Qwen3-Coder-30B files a ticket in only 19.7% of runs. A harness monitor
+  on SWE-bench Verified, held out from its development tasks, appends a
+  reminder that cites the matched observations (path, error, attempted
+  command) plus a pre-filled ticket template. Escalations rose from 16.3%
+  to 42.5%. The reminder is advisory, like vats2026good's "try a different
+  approach", but specific rather than generic. Our inference: this is
+  agarwal2026fire's "naming the missing evidence is the active
+  ingredient", carried over to the stop decision.
+
+Caveats:
+- Infrastructure impasses in 80-step SWE repair, not `/iterate` cycles.
+  "Stop" means hand off to a human; there is no pivot option, so there is
+  still no redirect-vs-halt arm.
+- The monitor is one model with one run per pair, and the reminder and
+  template are not separated. Its own pre-specified clean non-inferiority
+  criterion failed (lower bound −10.71 against a −3 pp margin, App. F),
+  although the main text reports the clean result as "virtually
+  unchanged".
+- One run per cell throughout. The CIs resample tasks, not reruns.
+
+Our inference for the proposal: a stall counter that may never fire
+(cai2026forkandflush, vats2026good) is not the only option. An evidence
+predicate over the run record ("the same failure class recurred after a
+diagnostic confirmed it") fired on nearly every run that needed it. What
+failed was the agent's response, and a sanctioned, specific exit fixed
+that on the models that over-persist.
+
+## Re-measuring the leader pays only when contenders sit within about one noise SD, and a last-round check recovers a quarter of single-read selection loss (2026-10-27)
+
+[[literature/papers/karim2026explore]] (Wellocate) is a simulated assay
+campaign with known true values: 60 noisy measurements, σ ≈ 7.3% of value,
+one nominee scored on truth. It gives the noise band's re-measure question
+an exact answer in one setting. A scripted rule that re-tests its current
+best k times per round peaks at:
+- k = 1 on the generated grid, where the ten best candidates lie within
+  0.32 noise SD of the best;
+- k = 0 on GB1 (2.95 SD) and PhoQ (6.80 SD). Every added re-test lowers the
+  pick there. Re-testing starts to pay on PhoQ at about 4× and on GB1 at
+  about 8× the assay noise.
+
+So the value of a repeat is set by the gap between contenders in noise-SD
+units, not by the noise level alone. The best fixed rule changes with the
+landscape.
+
+The failure on the other side is single-read winners. Gemini 3.1 Pro
+re-tests 14% of slots, and its grid pick had a single reading in 78% of 60
+campaigns. Its selection loss was 0.38, against 0.23 for the scripted rule.
+A post-hoc log replay replaced its last round with re-tests of the top 3,
+with a registered shrinkage rule making the pick. It recovered +0.088
+[+0.011, +0.171], about 23% of that loss; two rounds recovered about 27%.
+The gain is small because dozens of candidates still had one reading. The
+authors *suggest* confirmation must run throughout the campaign. No arm
+tests that.
+
+Our inference for `/iterate`: the evidence supports a *conditional*
+incumbent re-run. When a candidate beats the champion by less than about
+one to two band widths, spend the next run re-measuring both (the RETAIN
+state of [[literature/papers/wang2026pear]]). When the margin is several
+band widths, a re-run is wasted. A chain that crowns champions on single
+runs (`band=none`) accumulates exactly Pro's single-read winners, and one
+end-of-chain re-check recovers only part of it. Caveats: a bandit-like
+simulator with i.i.d. Gaussian noise and equal costs for new and repeat
+measurements. ML reruns have correlated item noise
+([[literature/papers/yao2026explicit]]) and unequal costs. The
+under-confirmer is one model on one landscape.
+
+## The leader changes with the per-run budget, and a dev-score halt would cut runs that recover (2026-10-27)
+
+[[literature/papers/mang2026frontiercs]] (FrontierCS 2) refits its FCI
+capability index under per-run cost caps B. A run that finished within B
+keeps its held-out result. A run still going at B counts as having no final
+submission and scores 0.
+- Mean cost per run spans about 200×, from about $0.11 (DeepSeek V4.1
+  Flash; a lower bound) to about $20 (Claude Opus 5.5).
+- DeepSeek V4.1 Flash leads below about $0.2. GPT-6.1 Sol leads around $3
+  (35% pass at roughly a sixth of GPT-6 Astra's cost). Opus 5.5 leads only
+  at the largest budgets.
+
+For compute matching this is a ranking that flips with the currency. A
+comparison of agents or arms at unequal spend is not a comparison of
+capability. It is the cross-model version of
+[[literature/papers/oved2026llm]]'s equal-tokens point above.
+
+Two caveats on reading it as a budget result:
+- **It is post-hoc truncation.** Agents never saw B. A run cut at B is one
+  that would have submitted later, not a budget-aware policy. Scoring it 0
+  answers "what do you get if you kill it at B", which is the right reading
+  for a ceiling. It is not "how would this agent do with budget B". Compare
+  [[literature/papers/hickey2026saltbench]], which scores a halt as
+  unresolved inside a measurement.
+- One run per agent per task.
+
+The paper also states why its budget rule avoids development scores, which
+bears on redirect-before-halt. The judge gives a dev score of 0 whenever a
+submission fails a correctness or quality check, "yet most runs that drop
+to 0 after a positive score recover above 0 later". Our inference: a stall
+or regression trigger keyed on a dev score with a hard-fail floor would
+fire on transient breakage and halt runs that recover. A counter should
+count consecutive non-improvements over the best valid score so far, not
+react to the latest score. This is the best-so-far comparison recommended
+for `/iterate` above. The paper gives no counts or denominators for "most".
+
+## A stuck agent's own pick of its next input is a habit that loses to a fixed rule, and equal tokens do not buy equal value (2026-10-27)
+
+[[literature/papers/lyu2026where]] freezes failed coding attempts and forks
+each into all eight combinations of three resources: one extra planning
+call, an information packet, and a public-test execution report. Every cell
+then gets one identical final revision, scored on held-out tests. Asked to
+pick one resource, Qwen3-14B, DeepSeek-V3.2 and Sonnet 4.5 asked for the
+execution report in 95–100% of checkpoints (63–100% under permuted option
+orders). At function level (194 checkpoints, 3 probe rollouts each) they
+realised 10–27% of the per-checkpoint oracle gain and trailed a uniform
+random pick by 0.029–0.064 (p < 0.001). A fixed "always ask for
+information" rule beat every model's own choice. GPT-5.6 was not worse than
+random. On SWE-bench Verified (126 checkpoints) only DeepSeek was
+significantly below random.
+
+What it adds for the redirect-before-halt proposal:
+- **One more source that the choice should not be left to the agent.**
+  [[literature/papers/yan2026traceml]] found agents rarely pivot, and
+  [[literature/papers/sun2026scipivot]] found they keep their own plan when
+  shown the correction. Here the agent's pick of its next *input* is a
+  fixed habit (ask to run the tests) that a fixed rule beats. That is weak
+  support for putting the axis change in `/iterate`'s step 3 rather than
+  in the agent's judgment.
+- **It does not say what a research-loop pivot should contain.** The input
+  that won is a specification written *from the reference solution*, an
+  oracle instrument the authors say no system can obtain. The deployable
+  information, BM25-retrieved code, was worth −0.002 to 0.009 on
+  repositories. "Below random" mostly means the oracle option was picked
+  less than a third of the time. Our inference: the paper supports taking
+  the choice away from the agent and gives no positive guidance on content.
+- **Equal tokens is necessary for compute neutrality, not sufficient.**
+  Per 1000 tokens, the specification returned 4–20× what the planning call
+  did. Which resources a cell had predicted its outcome better than its
+  token cost (cross-validated R² 0.023–0.158 against 0.007–0.111, both
+  small). This sits beside [[literature/papers/oved2026llm]]'s
+  equal-tokens requirement (above). Our inference: a pivot and a third
+  refinement at matched tokens are a fair cost comparison, but the token
+  match does not mean the two cycles bought the same thing.
+
+Caveats:
+- One revision step, so the stop and keep value of feedback inside a loop
+  is excluded by design. There is no redirect or halt arm.
+- Hidden reasoning was off for every model. Checkpoints are failures of
+  one weak generator per family, k = 3 per cell.
+- The repository oracle arm and the probe were added after the
+  pre-registered main runs (disclosed as deviations).
 
 ## Open questions
 

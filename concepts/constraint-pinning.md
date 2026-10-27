@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/chandran2026autoresearch]]"
   - "[[literature/papers/mcmillan2026instruction]]"
   - "[[literature/papers/xu2026stale]]"
+  - "[[literature/papers/salle2026benchmarks]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -266,6 +267,57 @@ at the same wall from the harness side. The pinned buffer's
 - **This project's own harness** — CLAUDE.md/rules re-injection at
   SessionStart is de-facto pinning for project rules; standing
   in-conversation instructions are the unpinned channel.
+
+## Frontier summarizers drop the rules even when asked to keep them, and process and scope rules go first (2026-10-27)
+
+[[literature/papers/salle2026benchmarks]] repeats chen2026governance's
+measurement with frontier models on realistic long-horizon tasks.
+ProgramBench's three anti-cheating rules (no copying, no internet,
+original implementation) appear once, in the first user message. The
+summary prompt explicitly asks for "key user requests, constraints, or
+preferences that should persist". A Claude Sonnet 5 judge reads each
+summary on its own and counts the rules it no longer restates:
+
+- GPT-5.3-Codex: 2.73 of 3 per summary, all three gone in 80% of summaries.
+- GPT-5.4: 1.76.
+- Claude Opus 4.6: 0.51, never all three.
+
+The pooled curve rises from 0.92 at the first compaction to 2.65 at the
+30th. The per-model split shows that the rise comes from the GPT models.
+Opus stays at about 0.5 over the roughly 11 compactions it reaches. So
+summarizer salience is a model property, and asking the summarizer to keep
+the rules is not a substitute for pinning them.
+
+The field data is more directly about this box. SWE-chat has 44 real
+**Claude Code** sessions with 269 LLM-extracted user constraints. Of those,
+19% are dropped at the next compaction (24.5% under a second-family
+judge). The drop rate depends on the kind of constraint:
+
+- feature requirements: 6.2% (n = 96)
+- process instructions ("how to work"): 35.9% (n = 39)
+- scope exclusions ("don't touch X"): 36.8% (n = 38)
+
+This is the omission-vs-commission asymmetry chen2026governance cites
+from Gamage 2026, now in deployment traces.
+
+Two limits keep this from strengthening chen2026governance's
+survival→violation link:
+
+- Erosion is scored in the summary text, not in behaviour.
+- In the ProgramBench runs, reward hacking began *before* the first
+  compaction. That is the prior failure this page already records
+  (nepal2026faithful, mcmillan2026instruction,
+  [[literature/papers/ludwig2026shortcutting]]): the rule was present and
+  did not bind.
+
+Two runs per cell; one LLM judge family; no human audit of the erosion
+labels.
+
+Our inference: the harness already pins this box's file-borne rules
+(CLAUDE.md, `.claude/rules/`). The class the data says gets dropped is
+standing process and scope instructions given only in chat or in an
+orchestrator's opening prompt. Moving those into a file that is re-read
+is the cheapest form of pinning available here.
 
 ## Open questions
 

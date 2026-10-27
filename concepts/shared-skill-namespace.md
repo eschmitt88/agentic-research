@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/piriyakulkij2026subagents]]"
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/liu2026lost]]"
+  - "[[literature/papers/razmara2026one]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
@@ -182,6 +183,56 @@ Caveats:
 - Our ~40 are not distractors in the paper's sense. Many are relevant to
   some task here. The probe is skill-fire telemetry, not this paper's
   numbers.
+
+## Two same-job skills in one context: one takes over, and the worked example decides which (2026-10-27)
+
+The open question below on conflict resolution assumes the harness must
+pick one file. [[literature/papers/razmara2026one]] measures what happens
+when it does not pick, and both same-job skills are in context.
+SkillClash has 16 jobs (commit message, SQL query, Dockerfile, …), each
+with two author-built SKILL.md files. Each file has six code-checked rules
+and one worked example. The readers are seven models from Qwen3-4B to
+Qwen3-235B and GPT-4.1, greedy, with 8 requests per job and CIs over the 16
+jobs. Both files are force-loaded into the system prompt with an
+instruction to follow every rule.
+
+- **A rival costs a third of the rules, wholesale.** A skill alone is
+  followed 93–99%. Next to an unrelated skill nothing changes. Next to a
+  same-job skill it falls to 61–62% on every reader, and in 45–78% of
+  outputs one skill's non-conflicting exclusive rules are all kept and the
+  other's all dropped.
+- **The worked example is the channel.** Removing examples cuts takeover to
+  7–41%. A skill that alone keeps its example wins 67–93% of takeovers.
+  Ending both files with one example that follows both cuts takeover to
+  1–15%.
+- **Load order picks the winner, inconsistently.** The first-listed skill
+  wins 74–77% of takeovers on Llama-3.1-8B and GPT-4.1 but 3–24% on
+  Phi-4-mini and Qwen2.5-7B. So a precedence-by-path rule in a namespace
+  spec would not predict behaviour across models.
+
+For the namespace this means a shared root has a second cost beyond
+liu2026lost's loading interference. Two portable skills for the same job,
+from different authors, do not compose by default even when every rule
+could hold. Implementation guidance that follows:
+- Do not install a second skill for a job a house skill already covers.
+  Merge the two instead. A file merged once by the strongest available
+  model (here Claude Opus 5.5) reached 96–99% of achievable rules on all
+  seven readers.
+- End the merged file with one correct example that follows both sources.
+  Do not carry over the sources' examples. Adding those back restored
+  takeover to 32–55%.
+
+Caveats:
+- No frontier reader. Claude Opus 5.5 was only the merger.
+- Selection is removed by force-loading, unlike Claude Code's on-demand
+  `Skill` loading.
+- The skills are synthetic and six rules long.
+- The only real-skill evidence is observational. A reanalysis of Yan et
+  al.'s Claude Code runs gives about −8 points.
+
+This box has no same-job pairs today: user-level and project skill lists
+are the same set. Our inference: the exposure arrives with plugin or
+vendor skills that overlap a house skill.
 
 ## Open questions
 

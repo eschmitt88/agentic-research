@@ -45,6 +45,10 @@ sources:
   - "[[literature/papers/sanayei2026evidencefirst]]"
   - "[[literature/papers/xu2026what]]"
   - "[[literature/papers/vats2026good]]"
+  - "[[literature/papers/chen2026knowing]]"
+  - "[[literature/papers/zhu2026who]]"
+  - "[[literature/papers/khezresmaeilzadeh2026claim]]"
+  - "[[literature/papers/lehmann2026can]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1344,6 +1348,167 @@ Caveats:
 Rule: report the agent's finish-request precision before adding a
 completion check. Log verify messages per attempt and spend after the
 first one. If the check cannot name what is missing, do not refuse.
+
+## The evidence was in the record by step 7.5 and the run went on for 39 more calls; the success claims went unaudited (2026-10-27)
+
+[[literature/papers/chen2026knowing]] measures the gap that the
+"Noticing without acting" section above found in one biology setting,
+here across eight coding models and 4,344 paired persistent-barrier runs.
+A deterministic annotator over tool calls and outputs, with no LLM and an
+evaluator-only blocker card, marks the step at which the evidence that
+only outside help can unblock the task is complete. 98.6% of baseline runs
+reach it, at a mean of 7.5 steps. They then make a mean of 38.9 more tool
+calls, and 34.0% run to the 80-step cap. Every capped run had already
+reached the evidence point. The trajectory held the evidence, and the
+action did not use it.
+
+Two points for this page:
+
+- **The evidence predicate was cheap and deterministic, and it worked as
+  a trigger.** Cards specify the expected failure, the diagnostic, and the
+  repeat count needed to tell a lasting fault from a transient one (three
+  for sandbox loss, one for a read-only filesystem). A harness monitor
+  that runs the same kind of predicate over runtime outputs alone, with no
+  privileged labels, and cites the matched lines back to the agent raised
+  escalations on a model that ignored the tool (16.3% → 42.5%, one model,
+  held-out tasks). This supports the page's rule from the side of the stop
+  rather than the finish. The gate reads trajectory events, and the
+  message names them.
+- **The completion claims were not checked.** The basic interface
+  requires `verified` and an `unverified_reason`. 5,674 trajectories
+  claim `verified=true`. The audit supports 37, contradicts 17 and leaves
+  5,620 unresolved, which bounds the false share at 0.30–99.35%. The
+  paper reports that bound instead of a rate, which is correct. It also
+  means the abstract's "claim success the record does not support" is
+  unquantified. On the monitor follow-up, unsupported claims over the full
+  trajectory went *up* (22 → 32/510, n.s.). Under the missing-dependency
+  condition, 27 of 33 response-rule losses were runs that switched to
+  `verified=true` once the escalation tool existed.
+
+The ticket finding (progress fully specified in 64.3% of tickets, versus
+≥99.6% for blocker, request and resume) matches
+[[literature/papers/xu2026what]]. It has a confound: the
+`escalate_to_human` schema has no progress or verification-status field,
+and the judge is GPT-5.6 Terra, one of the evaluated models, with no human
+agreement. Our inference: a handoff schema gets the fields it asks for, so
+a box-side escalation record should carry `saved_changes` and
+`verification_status` as required fields rather than relying on prose.
+
+## Withholding the agent's report from the judge recovers the misreports it hid, and the model should fill evidence fields, not the verdict (2026-10-27)
+
+[[literature/papers/zhu2026who]] is the controlled, single-factor version of
+[[literature/papers/xu2026dont]] in a second domain (Android GUI agents),
+from an independent group. The same judge reads the same task and serialized
+trace of screen states. Only the agent's self-report (final report plus
+per-step claims) is added (AWARE) or withheld (BLIND). The data are 465
+human-labelled records, 180 of them "dangerous misreports" (unhedged success
+claim, no causal accomplishment in the trace). Gold completion was labelled
+without the report, and gold claim intent without the trace.
+
+- **The account bends the judge one way.** Withholding it raises trace-only
+  non-completion recall by 43 pp (Qwen3.5-35B-A3B) and 13 pp
+  (DeepSeek-284B-A13B). Harmful vs recovery flips are 79 : 1 and 31 : 7. On
+  the claim-gated detector a pipeline would use, the gain is 26 / 8 pp. On the
+  held-out batch it is 22 / 6 pp, and the DeepSeek flip test there is not
+  significant (9 vs 2, p = 0.065).
+- **Claim-blind prompting is the cheap half.** A judge that never sees the
+  report (PROMPT-BLIND) already beats a matched claim-aware judge on recall.
+- **Typed fields plus code are the other half.** In the structured
+  auditor, the model reads only task and trace and fills five typed evidence
+  fields with cited steps. It "is not allowed to output COMPLETED or
+  NOT COMPLETED". A per-task-class required-field rule in code decides (any
+  required NO means not completed, any UNKNOWN means review). F1 rises to
+  0.75 / 0.78 vs 0.62 / 0.64 for PROMPT-BLIND, and to 0.77 / 0.81 on the
+  held-out batch. The gain is recall bought with a little precision (0.76 vs
+  0.82 for DeepSeek).
+
+Caveats:
+- Two open-weight judges. The leak shrinks with judge size, and xu2026dont
+  found frontier judges nearly flat, so this box's Claude judges are probably
+  less exposed. Isolation still costs nothing.
+- AWARE bundles the final report and per-step claims, so which channel leaks
+  is not separated.
+- Part of the structured gain may be construct alignment: the required
+  fields encode the gold label's "agent caused it" rule. The paper does not
+  say whether PROMPT-BLIND's prompt stated it.
+- Fixed traces, no live gate, so the hold on a refusal-driven outcome delta
+  is untouched. The trace is assumed honest (contrast qin2026llm).
+
+Rule: a model judging completion gets the artifact and the trace, never the
+worker's own "done". Where the task type allows, the model fills a fixed
+required-evidence list and code decides.
+
+## Deleting the account is not free: where the observation does not carry progress, the record is the only place it lives (2026-10-27)
+
+[[literature/papers/xu2026dont]] concluded that "the account has to be
+absent" from the verifier's view. [[literature/papers/khezresmaeilzadeh2026claim]]
+measures the same failure in small typed decision models (decider, Kev,
+hosted Jev) that choose stop / proceed / buy. It also prices the obvious
+fix. The setup is paired states that change only the observation, the logged
+action or an explicit success claim (6,175 states across Android screens,
+ALFWorld and WebShop). In all 12 model × domain cells the record moves the
+terminal decision more than the observation, with paired 95% CIs. After a
+claimed-but-failed step the models still commit 80–100% of the time in 11
+of 12 cells. That includes ALFWorld, where the observation reads "Nothing
+happens." Once the claim is present, flipping the observation from failed
+to successful moves log p by at most +0.24.
+
+Deleting the record from the decision model's input is the result that
+qualifies xu2026dont:
+- On phones the record is where progress lives, and the screen alone barely
+  separates success from failure (a text-only classifier gets 0.59).
+  Without the record, the model vetoed 93% of *correct* completions.
+- In ALFWorld and WebShop, where the screen states the failure, deletion
+  worked: 9.5% / 6.0% of failed steps still passed and 13% / 7.5% of good
+  ones were blocked. A middle-layer probe gate did better (0.5% / 0%
+  passed).
+
+So least-privilege routing holds where the requirement's evidence is in the
+observation. Where the observation does not encode progress, removing the
+account removes information the gate needs.
+
+Our inference: the fix that survives both cases is to type the record,
+keeping attempts apart from observed effects (see
+[[concepts/typed-claim-partition]]), not to delete it.
+
+Caveats:
+- The phone failure states are constructed by pairing a record with the
+  earlier screen.
+- Decision models are 0.8B–12B plus hosted Jev, not frontier LLM judges.
+- The live gate results use one 4B decision model with injected failures,
+  one run per task in ALFWorld and WebShop.
+- In ALFWorld the gate's +18.7 over no gate is only +3.0 [−1.5, 7.5] over a
+  random veto at the same rate. A second yes/no question tied the gate in
+  ALFWorld and the phone simulator.
+
+## Every revision passed the process checks, and the checks did not predict transfer (2026-10-27)
+
+[[literature/papers/lehmann2026can]] coded all 54 self-revision episodes of
+27 ARC-AGI-3 harness lineages. The coding was outcome-blind, two passes by
+GPT-5.6 Sol under a frozen codebook, with no human validation. All 54
+episodes inspected item-level dev evidence and made a final diff that
+targeted at least one evidence-backed issue. Every selected descendant
+passed its operational checks (local tests, smoke qualification). Those
+items were invariant, so they could not discriminate, and held-out
+outcomes went both ways: 15 gains and 12 losses, pooled +2.80 (CI −1.44 to
+7.35). In the paper's words, "completing an evidence-guided revision does
+not ensure a better agent."
+
+The one result-reactive signal points the wrong way, if at all. Episodes
+where a post-edit result triggered further edits or reverts averaged −0.76
+immediate held-out change, against +2.48 for clean hand-offs (contrast
+−3.24, CI −8.54 to 2.38). The reactive episodes started from stronger
+parents.
+
+Our inference: a gate that checks *that* the agent consulted evidence,
+edited toward it and ran tests certifies diligence, not improvement. For a
+change whose claim is "better", the evidence the gate must consume is a
+paired outcome against the preserved parent on tasks outside the feedback.
+This matches the "A kept artifact certifies its code, not its idea" section
+of [[concepts/hce-evaluation]], here at the process layer. The caveats
+are LLM-only coding and that diagnosis-quality items (κw 0.35) failed the
+reliability bar, so finer process features remain unmeasured rather than
+shown useless.
 
 ## Open questions
 

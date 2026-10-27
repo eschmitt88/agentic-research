@@ -71,6 +71,9 @@ sources:
   - "[[literature/papers/ding2026reexecuting]]"
   - "[[literature/papers/iyengar2026sample]]"
   - "[[literature/papers/lee2026when]]"
+  - "[[literature/papers/mang2026frontiercs]]"
+  - "[[literature/papers/lyu2026where]]"
+  - "[[literature/papers/shao2026do]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -1097,3 +1100,118 @@ ignores it. Rule: an oracle that grades against a fixed key measures
 agreement with the key. Before it can certify a data-derived answer, it
 needs a counterfactual check on paired versions of the data, alongside
 the null-edit check.
+
+## A scalar score above the bar is not a conjunctive pass, and neither sees the side cost (2026-10-27)
+
+[[literature/papers/mang2026frontiercs]]'s judge returns two verdicts on the
+same held-out run of the final patch:
+- a 0–100 task-defined scalar;
+- a pass, which needs every metric's threshold met on every held-out
+  workload.
+
+They come apart in both directions. "Most runs whose final score exceeds
+the human reference's miss a threshold on at least one metric or workload".
+The count behind "most" is not given. And some passing runs score at or
+below the reference. Neither verdict is wrong. They measure different
+objectives, and a loop that keeps on the scalar is optimizing something the
+pass does not certify.
+
+The case studies add two blind spots that neither verdict sees (one run
+per agent each):
+- **The score ignores a side cost.** On BBQ (an FPGA priority queue) the
+  scalar ranks Claude Opus 5.5's circuit first "because it rewards speed and
+  ignores circuit size". That circuit is among the largest and "does not
+  serve trees as large as those BBQ was designed for".
+- **The pass ignores magnitude.** On QuarterPIR, Muse Wonder 1.0 cut bytes
+  per lookup to 1,280 against the reference's 1,760. Other passing runs sat
+  at 1,664–1,752. The authors "found this idea only by reading the patches,
+  since neither of our measures picks it out".
+
+This is the "a correct scalar oracle under-specifies the mechanism" section
+above, seen from a benchmark that has a correct, executable reference.
+Our inference: for an ML-research loop, the scalar is the keep rule and the
+conjunction of thresholds is closer to the claim. A gain that is kept on
+the scalar should be re-checked against every metric the claim names,
+including the ones the scalar does not weight, before it is reported.
+
+Caveats:
+- "Most" is uncounted.
+- The two blind spots are post hoc, chosen from 48 tasks after reading the
+  patches.
+- Both verdicts come from the same judge. This is a scalar-vs-conjunction
+  dissociation, not an agent self-report against verification.
+
+## A pass/fail report says the attempt is wrong, not what right is, and more failure detail adds little (2026-10-27)
+
+[[literature/papers/lyu2026where]] measures the value of an execution report
+against public tests as one input to a single repair revision, holding the
+failed state and the revision fixed and scoring on disjoint held-out tests.
+Over 194 function-level checkpoints and six models, the report was worth
+0.007–0.033 held-out utility. A specification of the required behaviour was
+worth 0.064–0.136. On 126 SWE-bench Verified checkpoints the report was nil
+for all four models tested. On the 40 hardest function-level checkpoints
+(DeepSeek-V3.2, k = 5), most of the report's small value came from its
+first level, pass counts (+0.064 over an empty cell of 0.298). Adding
+failing inputs, then expected outputs, then observed outputs added at most
+0.02 per level (0.362 → 0.402). Feedback alone unlocked at most 1.5% of
+checkpoints for any model. Removing it from the full bundle cost nothing.
+
+This agrees in direction with [[literature/papers/park2026when]]
+(sign-only ≈ full feedback). It is not in conflict with
+[[literature/papers/lumer2026reflective]], where reason-bearing feedback
+transferred and a scalar did not. Our inference: what helps is feedback that
+carries *what correct is*. A judge's reason ("this page does not support the
+claim") does that. A failing-test excerpt mostly does not. The authors'
+explanation is the same: feedback is "artifact-conditional" and "cannot
+correct a misreading of the task". Their negative computation × feedback
+interactions show that a planning pass largely recovers what the report
+says.
+
+Caveats: the specification is written from the reference solution and is an
+oracle instrument, not a deployable oracle return. The design is one revision
+step, so the report's value as a keep or stop signal across a loop, the role
+this concept mostly cares about, is excluded by construction.
+
+## A do-nothing check covers one evaluator defect; staged answers, reused inputs and forced zeros need other probes (2026-10-27)
+
+[[literature/papers/shao2026do]] audits AutoLab's 36 ML-research tasks at
+the protocol level. 24 have a supported exposure, and 19 of those 24 are
+Hidden state or Evaluation pipeline. Most of these defects score a
+do-nothing submission correctly at the floor:
+
+- **Staged answers.** smallest_game_player writes `/tests/y_test.npy` into
+  the work image, and the verifier compares the agent's predictions with it.
+  hash_join pre-stores the expected checksum under `/tests/`. An empty
+  submission fails both. A submission that *returns the staged value* wins.
+  The evaluated agents did not do this, so neither case is labelled Mislead.
+- **Reused inputs.** radix_sort copies one fixed-seed array into all five
+  timed trials. In a constructed MLS-Bench probe, the same warmup and
+  measured inputs let a module-level cache time a dictionary lookup
+  (about 0.009 ms). This is the exploit [[literature/papers/li2026beyond]]
+  saw in the wild.
+- **Forced zero.** In flux2_klein_lora, inconsistent manifest sections
+  force a score of zero whatever the agent does. A floor check passes
+  trivially, and only a known-good submission would catch it.
+
+The empty-artifact WildClawBench case (see hce-evaluation, 2026-10-27) is
+the one defect in the paper that a do-nothing submission catches. The
+paper's general point is "exposure and observed agent behaviour vary
+independently", and a clean run does not certify the protocol.
+
+Our inference: a full known-answer battery for a downstream ML evaluator
+would have three cheap entries:
+- do-nothing → floor;
+- return-the-staged-labels → floor, which only fails if labels are
+  reachable;
+- known-good → above floor, where a reference exists.
+
+Varying inputs between warmup and measurement is a design rule, not a
+probe.
+
+Caveats:
+- Exposure labels come from a GPT-5.5 judge. On 53 hand-labelled Frontier
+  Science traces it reached precision 0.94 and recall 0.76, with unnamed
+  labellers.
+- The abstract counts these 24 as "exposures and reward hacking", and the
+  number that are Mislead is not given.
+- No artifacts released.

@@ -111,6 +111,15 @@ sources:
   - "[[literature/papers/zhong2026automating]]"
   - "[[literature/papers/chen2026auditing]]"
   - "[[literature/papers/vats2026good]]"
+  - "[[literature/papers/lencevicius2026when]]"
+  - "[[literature/papers/chen2026cads]]"
+  - "[[literature/papers/mang2026frontiercs]]"
+  - "[[literature/papers/wang2026beyond]]"
+  - "[[literature/papers/kim2026elicitation]]"
+  - "[[literature/papers/wang2026rsihub]]"
+  - "[[literature/papers/zhu2026who]]"
+  - "[[literature/papers/shao2026do]]"
+  - "[[literature/papers/lehmann2026can]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -2272,6 +2281,382 @@ cheap general model. Match the placebo's intervention dose to the
 evaluation-time controller, not to development data. Report offline
 ranking and calibration separately from the online effect, never in place
 of it.
+
+## A one-run-per-cell harness decomposition: a rerun moved one game 40 points, and a post-outcome amendment chose which prediction held (2026-10-27)
+
+[[literature/papers/lencevicius2026when]] decomposes ARC-AGI-3's
+Standard-to-Adapter gap (Gemini 3.8 Flash, four games, one counted run per
+configuration and game). It is a worked case of two rules already on this
+page, documented well enough to see both bite.
+
+- **Rerun arm (liu2026what).** FT09 under the Standard configuration ran
+  twice for a registered latency reason and scored 58.17 and 18.11. The gap
+  being decomposed is 62.6 points [29.5, 87.4]. With four games the
+  bootstrap has 35 distinct resamples, and the replay share's interval is
+  [0.000, 0.960]. Single-run shares at this scale do not resolve the
+  components.
+- **Preregistration binding (waks2026what).** At high thinking, three
+  summary runs died because the reasoning used up an 8,192-token summary
+  budget. Amendment R7, adopted after those runs' endings and levels were
+  seen, raised the budget and replaced one run (FT09 S2: 71.43 → 18.06).
+  With the replacement, prediction B (replay carries at least half the gap)
+  holds. Under the frozen rules the replay share is 0.354 and neither
+  prediction holds. The paper reports both readings and the dated amendment,
+  which is what makes the swing visible. A paper that reported only the
+  amended table would look like a confirmed prediction.
+
+The probe half of the same paper shows the clean version. The confirmatory
+contrast (+92.5 points, 200 templates) is large against its interval and
+does not depend on any amendment. Two code limits found after the results
+were read (a Firth step cap and a one-template fit) changed both tests'
+labels from "inconclusive" to "supported", and both labels are reported.
+
+Rule for `/iterate` and any harness comparison here: when an amendment
+changes a run after outcomes are visible, report the frozen-rule reading
+next to the amended one. Do not credit a component share from one run per
+cell unless the same cell's rerun spread is reported and smaller than the
+share.
+
+## A proposer gain needs a proposer-removed arm, because the proposer displaces the harness's own hits (2026-10-27)
+
+The attribution arms above (same-budget search, same-harness rerun,
+neutralization, stronger-model-alone, rules and placebo) ask where a gain
+came from. [[literature/papers/chen2026cads]] adds the subtrahend for a loop
+in which an LLM fills some slots and non-LLM machinery does the rest: the
+**same loop with the proposer removed**. The setting is a simulated gene
+screen. A non-LLM rule re-reads candidates that read high, and a seeded
+random draw fills any slot the LLM leaves empty. The models are 7–8B open
+weights, run on 20 paired seeds.
+
+- **The feedback ablation passes with no LLM.** The no-LLM loop certifies
+  2.60 true hits with full feedback and 0.00 with absent or permuted
+  feedback (paired [1.35, 3.85]). That is the gate the field uses to credit
+  an LLM. The re-selection rule reads the feedback itself. A
+  full-vs-no-feedback ablation isolates the LLM only when nothing else in
+  the loop reads the feedback. Keep-best on validation does read it.
+- **Origin counts overstate the LLM.** Qwen's loop certifies 2.95, of
+  which 2.15 the LLM originated. The fallback fills the other 202 of 260
+  slots and finds 0.80. Alone, it fills all 260 and finds 2.60. So the LLM
+  displaced 1.80 hits, and its net is +0.35 [−1.05, 1.75]. Mistral-Nemo
+  gives the same net.
+- **Match delivery, not quota.** A replication held every arm to a quota
+  of 5 valid unseen candidates per round. The thin prompt still missed
+  13–41 of 55 slots, depending on the model. The quota equalised what was
+  requested, not what was delivered.
+- **The one LLM effect that excluded zero did not replicate.** On 20
+  seeds, Qwen's informed-prompt effect was +2.55 [1.40, 3.70], and Qwen
+  was chosen as primary after the estimates were in. On 50 fresh seeds at
+  a matched quota it fell to +0.74 [−0.12, 1.66] (Holm p ≥ 0.34). A
+  truth-isolated non-LLM prior beat every LLM by about 3× (net +10.05).
+
+This sharpens guidance 8 (zhang2026double's "report what a no-LLM rule
+policy scores in the same harness"). The proposer-removed loop is not a
+side number to report. It is what the proposer's score is measured
+against.
+
+Our inference: this arm is **not** a known-bad pre-flight (the 10-20
+section above, and the pending `hce-known-bad-preflight` proposal). The
+pre-flight scores a do-nothing *submission* once and expects the floor. A
+proposer-removed *loop* is expected to clear the floor, and here it scored
+2.60, rising to 20.20 at 4× reads. Above-floor there is the harness's
+contribution, not an evaluator defect. The arm in this paper that does sit
+at the floor is permuted feedback (exactly 0 in every seed). It is a
+no-signal arm like yao2026explicit's permuted labels, and it tests the
+loop, not the scorer.
+
+Caveats:
+- Semi-synthetic. The reads are simulated Gaussians on DepMap reference
+  effects.
+- Three small open models, and absolute power of about 0.2–0.3%.
+- No ML-research loop and no frontier model.
+- The e-process certificate used to score each loop does not transfer to
+  `/iterate` (see budget-as-ceiling on qu2026propose).
+
+Rule: when a result is credited to an LLM component of a loop that also
+has a non-LLM selection, fill or default rule, run the identical loop with
+that component removed. Report the paired net, not the count of wins the
+component originated. Report how much the component actually delivered
+separately from how good its deliveries were.
+
+## A benchmark enforces the split structurally at scale, and still reports no development-to-final gap (2026-10-27)
+
+[[literature/papers/mang2026frontiercs]] (FrontierCS 2; 48 tasks, 13 CS
+domains, 12 agents) is the HCE split built into a benchmark's architecture
+rather than its rules.
+- The agent and judge run in separate sandboxes linked by a per-run driver.
+  The agent has no network beyond the driver.
+- The evaluator, a held-out final suite (different seeds, queries or input
+  graphs) and the bar live only with the judge. The bar is the deleted
+  authors' code, the "human reference".
+- Per patch the agent gets a development score and a count of development
+  workloads meeting each metric's threshold. It never sees the reference
+  score or raw evaluator output.
+- The agent names one final patch, which is scored once on the held-out
+  suite. The judge does not pick the best development patch for it.
+
+Clause 4 here holds by placement, not by hash: the agent has no path to
+the evaluator at all. The reference is also re-measured inside every run on
+the judge's hardware. That is a per-run known-good measurement, half of the
+2026-10-20 pre-flight above. The do-nothing half (the gutted starting
+repository is a natural known-bad submission) is not reported.
+
+What the design makes cheap and the paper still omits:
+- **The development-to-final gap.** Every patch has a dev score, and dev
+  feedback is the channel an agent can overfit. The paper never says how
+  many runs met every threshold on dev and failed the final, or how often
+  the named final was the best dev patch.
+- **Reachability from the judge side.** Patched code runs where the held-out
+  workloads and reference live. The paper does not say whether the
+  candidate can read them. That is the candidate-runtime leak in
+  [[concepts/information-firewall]]
+  ([[literature/papers/farahbakhsh2026agentdiscover]]).
+- **A gaming audit.** No trajectory reading. In the same "improve inside the
+  paper's repo" setting, [[literature/papers/moukpe2026deltaml]] found
+  gaming on up to 47.9% of tasks under one scaffolding.
+
+Caveats:
+- One run per agent per task.
+- Only 15 of 48 tasks are ML or MLSys.
+- Network isolation blocks downloading the public reference code. It does
+  not block recalling it, and no recall probe is run.
+
+Rule: a harness that scores every candidate on dev and the named final on
+a held-out suite already has the dev-to-final gap in its logs. Report it
+per run, next to the held-out result, as the overfitting measure.
+
+## A high reading counts only where the probe has been shown to respond: the witness gate as a positive control (2026-10-27)
+
+The known-answer pre-flight above checks that the evaluator scores a
+do-nothing submission at the floor. [[literature/papers/wang2026beyond]]
+supplies the mirror check, from skill retirement. Before trusting a high
+unaided score as "the model can do this without the skill", confirm the task
+responds to the skill at all. It admits a task only if some other "witness"
+model gains > 0.1 from the skill on the same items.
+
+- The check matters exactly where the reading is high. It admitted 72.4% of
+  tasks overall but 52.6% of those with U ≥ 0.8. So nearly half of the top
+  readings came from tasks no model benefits from, which measure task
+  difficulty, not capability. Below the threshold a failing score already
+  rules out the easy-task explanation, so the check is only needed for high
+  readings (~36% of the library).
+- A text-only predictor of high U fell from AUC 0.798 ungated to 0.656 gated,
+  and to chance (0.575 [0.470, 0.673]) on the strongest-witness subset. An
+  ungated instrument mostly tracked whether the task was trivial.
+- One witness is not enough, because it may share the target's knowledge.
+  Two recover 85–90% of what three admit. The paper keeps a weaker model
+  among the witnesses so the check stays informative as models improve.
+
+The same paper reports a judge-integrity result. The target model was also
+the judge. An independent re-judge agreed (r = 0.89, 91.4% same verdict,
+disagreements 20/18). But a blind Claude Opus 5.5 audit of 99 near-threshold
+items found 9% unsupported full marks (15% counting partly met criteria).
+These were mostly items that needed a number recomputed, and they lift the
+score near the cut by about 0.1. On SkillsBench the judge reran code in a
+sandbox and recomputed numeric items, "so a claim made in the transcript does
+not count as evidence for its own item." Our inference: an agreement
+statistic between two judges did not reveal a lenient-on-claims bias that a
+recomputing audit did.
+
+Rule (our inference, for the pending `hce-known-bad-preflight` proposal):
+a known-answer pre-flight has two sides. A do-nothing input must score at the
+floor, which is specificity. Where a claim rests on a *high* score, the probe
+must also be shown to move under a known-effective change, which is
+sensitivity. A judge that grades numeric claims should recompute them, not
+read them. Caveats: open-weight Qwen/DeepSeek models throughout, 2 aided runs
+per witness, and no placebo-skill test of the gate's false-admission rate.
+
+## A known-ordering check caught two scorers that a do-nothing probe would pass, and a harness gain needs a stronger-reference arm at the claimed k (2026-10-27)
+
+[[literature/papers/kim2026elicitation]] found two benchmark scorers that
+ranked a larger model below a smaller one at 128 attempts per task.
+- **HotpotQA exact match.** Qwen3-32B scored below Qwen3-8B because it
+  states the answer in a sentence ("The Siberian Husky is larger than…"),
+  which EM scores 0.
+- **AppWorld's original TGC.** GPT-OSS-120B ranked below 20B because an
+  attempt was failed for an unrequested answer even when every state check
+  passed.
+
+Both are false negatives. A do-nothing submission scores 0 under either
+scorer, as it should, and a canonical gold answer passes. So the
+known-answer pre-flight in the 10-20 section above would not have caught
+them. What did was an ordering the authors knew in advance: the stronger
+model should not lose.
+
+Our inference, for the pending `hce-known-bad-preflight` proposal: add a
+non-canonical known-good probe, such as a correct answer wrapped in prose
+or carrying extra fields. Where a stronger model is cheap, add a
+known-ordering check on a small validation slice. The main runs were
+*searched and selected* under the broken scorers and evaluated under the
+fixed ones. The paper's aligned rerun (Figs. 15–16) kept its findings, but
+a loop without that rerun would have ranked candidates on a biased number.
+The replacement HotpotQA scorer adds an LLM judge whose model and
+agreement rate are not reported.
+
+The same paper adds a baseline beside the same-budget, rerun and
+neutralization arms. It compares the optimized harness with the base
+harness on a stronger model, or at higher reasoning effort, at the claimed
+k and on the subset that matters. Its finding: an optimized GPT-OSS-20B
+harness beat 120B by 16.05 pp at pass@1 on LawBench and trailed it by 4 at
+pass@64. On hard subsets no selected harness beat the reference at any k.
+This is zhang2026review's "stronger model alone" applied to harness
+optimization.
+
+Caveats:
+- The reference is not compute-matched. A larger model or a 3× timeout is
+  never priced, and neither is the optimization spend.
+- It is a different control from wang2026rethinking's same-budget arm.
+- One counter-case: with a GPT-OSS-20B solver on HotpotQA, the optimized
+  harness beat 120B at pass@128 (89.00 vs 85.33).
+
+Rule: report a harness gain against the strongest feasible un-optimized
+alternative at the k and subset the claim is about. Before the chain
+starts, check that the scorer orders a known-stronger system above a
+weaker one.
+
+## A single-draw seed baseline can sit 8 points off its own mean, and the sealed deltas follow the draw (2026-10-27)
+
+[[literature/papers/wang2026rsihub]] runs AHE, Hyperagents, A-Evolve and
+GEPA adaptations from one seed under one frozen evaluator. The cells are
+2 agents (MiniSWE, Codex) × 2 benchmarks (Terminal Bench 2, τ³ Banking),
+with GPT-5.4 as target and mutator in all of them. Each cell is one
+evolution run with one trial per task, compared with **one** seed run. The
+same paper also runs the unevolved seed three times directly and three
+times through the framework. Putting the two tables side by side (our
+arithmetic, not the paper's):
+
+- The Table 1 seed baseline is up to 8.3 points either side of that seed's
+  three-run framework mean. Codex TB2: 69.7 vs 61.4, above all six direct
+  runs (60.7–65.2). Codex τ³: 24.7 vs 33.0. Identical direct runs disagree
+  on 12.0–18.9% of tasks, in line with
+  [[literature/papers/liu2026what]]'s 13% rerun flip rate.
+- In 3 of 4 (benchmark, agent) groups, the sign of the sealed deltas
+  follows the baseline draw. Where the seed drew low (Codex τ³), all four
+  methods gain +3 to +5 sealed tasks of 27. Where it drew high (MiniSWE
+  τ³), three of four lose 2–4. The best evolved Codex τ³ score (34.0) is
+  about the unevolved seed's framework mean (33.0).
+- The headline +13.5 pp is "overall", which adds the train split
+  (rollout feedback) and the gate split (admission) to sealed. For
+  A-Evolve, 7.9 of the 13.5 points are train. Sealed-only, the largest
+  gain is 5 of 20 tasks.
+
+The authors call the numbers "descriptive point estimates" and do not rank
+methods. The digest's "method rankings vary across settings" is still
+partly regression toward the seed's mean.
+
+Rule: a harness-evolution comparison scores the baseline at least as many
+times as it scores each evolved arm, and reports held-out deltas against
+the repeated-baseline mean. This complements the same-harness rerun arm
+above, which sizes noise on the evolved side only. Run three or more
+baseline reps before trusting a cross-method ranking on ~20–30 held-out
+tasks.
+
+Caveats:
+- The fidelity reps and the evolution runs may have been run at different
+  times. API drift between them is not ruled out.
+- Three reps give only a rough mean.
+- Our sign-follows-draw reading covers 4 groups whose arms share one
+  baseline each, so it is a pattern, not a test.
+
+## A final-state check passes the run that did nothing when the start state already satisfied the goal (2026-10-27)
+
+[[literature/papers/zhu2026who]]'s worked failure is a do-nothing run that
+passes a final-state check. The task is "delete the duplicate recipes"; the
+list was already empty at s0; the agent took no delete action and reported
+success. Final-state judging passes it. Their auditor instead requires
+evidence of an action, a transition and a committed change. Replaying the
+same cached evidence under a final-state-only policy raised the silent-pass
+rate by 0.07 (Qwen3.5-35B) and 0.13 (DeepSeek-284B) on 465 GUI-agent
+records, 180 positives.
+
+This is a fifth group showing the do-nothing-scores-above-floor shape behind
+the pending `hce-known-bad-preflight` proposal (chen2026when's do-nothing control CTL-1 passed
+because the database already held the reference solution). Our inference: the pre-flight's do-nothing submission
+should be scored from the task's *actual starting state*. In an ML
+workspace that state may already hold predictions files, checkpoints or a
+`metrics.json` from a previous chain, and a blank directory does not test
+it. An evaluator that reads leftover state passes a blank-slate pre-flight
+and still credits a run that changed nothing.
+
+Caveats: GUI tasks and open-weight judges; the do-nothing class is not
+counted separately (the 0.07–0.13 covers every final-state-compatible
+failure: pre-existing goal states, empty lists and unsaved edits).
+
+## An evaluator that flags an empty artifact invalid can still score it perfect: preflight the score, not the flag (2026-10-27)
+
+[[literature/papers/shao2026do]] reports a published benchmark harness
+crediting nothing. In a WildClawBench chapter-summarization run (Claude Opus
+4.8), the agent read the chapter and stopped, so the submitted artifact was
+empty. "The harness awarded a perfect score to a submission its own
+validity check marked invalid." Rescoring with the validity gate applied
+gives a Mislead gap of 1.00. The validity check fired, and the score
+ignored it. That is the fail-open class from
+[[literature/papers/zheng2026benchshield]], in a benchmark other people use.
+
+What this adds to "A pristine evaluator is unchanged, not correct" (10-20):
+- The defect was not in the author's own harness, unlike chen2026when.
+- The harness already held the signal. A logged validity verdict that does
+  not gate the score is not a gate. The do-nothing preflight should read
+  the *score*, as the pending proposal already says, and not the
+  evaluator's own validity flag.
+
+It was found post hoc. A HackDetect LLM judge read the empty artifact
+manifest against the score record, in a WildClawBench subset preselected as
+suspicious by an unstated rule. It was not found by probing the scorer.
+
+Caveats:
+- n = 1 trace. No task ID, scorer type or code path is given, and nothing
+  says whether the same artifact scores 1.0 again.
+- Evaluation-pipeline cases are 6 of the paper's 352 Mislead positives
+  (1.7%). This is a severity case, not a base rate.
+- cred 2 preprint, no artifacts.
+
+Our inference: a do-nothing preflight would catch this case if the scorer
+is deterministic on empty input. If the scorer is an LLM judge, which the
+paper does not say, one call may not be enough.
+
+## With no selection step and a strict holdout, two self-revisions gained +8.4 on dev and +2.8 on held-out, and the held-out CI spans zero (2026-10-27)
+
+[[literature/papers/lehmann2026can]] is a clean case of the design
+[[literature/papers/chen2026auditing]] found in under half of
+self-improvement papers. Nine model–effort conditions each build an
+ARC-AGI-3 harness and revise it twice from their own traces on 5 dev games,
+three times per condition (27 lineages). Every frozen snapshot is scored on
+20 public games that never reach the builder, the qualification gate or any
+selection. The deployed version is always H2, so there is no acceptance
+step to inflate. The paper reports both the product claim and three
+full-loop reruns per condition.
+
+- **The gap is measured with a CI.** Dev RHAE rises +8.42 and held-out
+  +2.80 (95% whole-lineage bootstrap −1.44 to 7.35). The sign split is 15/12
+  (p = .70), and 9/3/15 with a ±5 band. The adaptation gap
+  G = Δdev − Δheld-out is 5.62 (1.78–9.77). Dropping one dev game (r11l)
+  cuts it to 3.02.
+- **Measurement noise is the same size as the effect.** Ten evaluations of
+  one unchanged harness on the same 20 games give suite SD 3.99 and a mean
+  pairwise difference of 4.73. The median per-game SD is 18.78. The
+  snapshot was chosen post hoc, n = 1 harness.
+- **Selection by dev score, applied after the fact, recovers part of it.**
+  Picking each lineage's best-dev snapshot gives +4.53 over H0 (0.81–8.68),
+  and +1.72 over always-H2. The held-out oracle is +6.13. This is post hoc
+  and not prospectively tested.
+
+This differs from [[literature/papers/hu2026winners]]'s winner's curse:
+nothing was selected, so the gap is the updater fitting single-run,
+5-game feedback, not a maximum over noisy candidates. Our inference: with a
+per-game SD near 19, a single dev run per game is mostly noise to the
+updater. Repeated dev runs, or giving the updater the measured band, is the
+untested fix. Absent arms: a same-budget no-revision arm
+([[literature/papers/wang2026rethinking]]), shuffled-feedback revision, and
+a prospective noise-band acceptance gate ([[literature/papers/xia2026rrsi]]).
+
+Rule: for a self-revision loop, report Δdev, Δheld-out and their gap with a
+lineage-level CI. Re-run the unchanged configuration first to size the
+band. A held-out mean inside one evaluation's spread is a null, even when
+individual lineages gain a lot.
+
+Caveats: one evaluation per snapshot; n = 3 per condition; public games
+(possible pretraining exposure); the experimenters' own earlier system
+selected on all 25 games, so protocol holdout is softer than task holdout.
 
 ## Open questions
 
