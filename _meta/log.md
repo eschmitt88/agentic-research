@@ -718,3 +718,19 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-10-26 07:14 ingest raw/papers/xu2026stale.pdf
 2026-10-26 07:14 digest-autoingest n=6 verdict=go/high
 2026-10-26 promote-moc declined (graph unchanged since d006d6a, 35/35 concepts mapped)
+2026-10-27 04:02 fetch-paper arXiv:2610.25064 → raw/papers/razmara2026one.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.31895 → raw/papers/chen2026knowing.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.25111 → raw/papers/karim2026explore.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.26632 → raw/papers/lencevicius2026when.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.24597 → raw/papers/chen2026cads.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.29932 → raw/papers/mang2026frontiercs.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.32322 → raw/papers/wang2026beyond.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.27889 → raw/papers/kim2026elicitation.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.32253 → raw/papers/wang2026rsihub.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.28834 → raw/papers/lyu2026where.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.29609 → raw/papers/zhu2026who.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.31778 → raw/papers/salle2026benchmarks.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.25947 → raw/papers/khezresmaeilzadeh2026claim.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.24131 → raw/papers/shi2026weight.pdf
+2026-10-27 04:02 fetch-paper arXiv:2607.22368 → raw/papers/shao2026do.pdf
+2026-10-27 04:02 fetch-paper arXiv:2610.30499 → raw/papers/lehmann2026can.pdf
