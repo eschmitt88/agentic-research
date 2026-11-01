@@ -30,6 +30,59 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
 | 2026-10-18 | [iterate-redirect-before-halt](2026-10-18-iterate-redirect-before-halt.md) | `skills-experiment/iterate/SKILL.md` | adopt | proposed |
 | 2026-10-25 | [hce-known-bad-preflight](2026-10-25-hce-known-bad-preflight.md) | `rules/evaluation.md` | adopt | proposed |
+| 2026-11-01 | [precompact-chat-only-constraints](2026-11-01-precompact-chat-only-constraints.md) | `hooks/pre-compact.sh` | adopt | proposed |
+
+## Considered and held (2026-11-01 run)
+
+This is the first run over the 10-26 digest (6 papers) and the 10-27
+leftovers (16 papers): papers 279 → 301, 35 concepts. In `~/claude-system`,
+the commits since `60f9f4c` (2403475, 17f58ca, c802197) touch quota,
+statusline, headroom, the redaction pass and rc units. None touches a
+pending target. The 10-18 and 10-25 proposals are still undecided.
+**Proposed** precompact-chat-only-constraints. Held:
+
+- **"Existing code wins over a stale CLAUDE.md"** (`xu2026stale`, cred 3,
+  code). Gate 1 passes on the code arm, single source. **Held on fit.**
+  The arm that decides adoption was not run: in every project the file is
+  the stale side. This box's `CLAUDE.md` and rules are mostly process
+  rules and forward conventions, and a blanket precedence sentence would
+  invert them for legacy folders. The report-only variant buys little,
+  since Claude Code already named the conflict in 79/80 runs.
+- **Skill retirement on level, not gain** (`wang2026beyond`, cred 4,
+  code). **Held: no target.** Nothing in `~/claude-system` retires a
+  skill on a gain rule. The accepted ablation program is not codified as
+  one. Method input for any future retire-after-upgrade pass: unaided
+  level, a witness model that gains, tasks rather than runs as the unit,
+  per model.
+- **Claim-blind completion judging / "attempted" vs "took effect"**
+  (`zhu2026who`, `khezresmaeilzadeh2026claim`, both cred 3; with
+  xu2026dont). **Held: no file target.** No skill has a model judge
+  completion from a worker's own report. The orchestrator-reads-subagent
+  case is session behaviour, not a file. The 09-06 session-start reading
+  rule already covers re-checking NOTES limits against the repo.
+- **Escalation field for `/implement`** (`gomez2026can` held 10-18; now a
+  second source, `chen2026knowing`, cred 3). This answers the "false
+  escalation cost unmeasured" half of that hold: ≈0 pooled, 9/102 on the
+  strongest model. **Still held.** It does not separate the tool from the
+  instruction, and it adds a schema field.
+- **Same-job skill clash** (`razmara2026one`, cred 3, code). **Held: no
+  target.** No same-job skill pairs are installed. Watch item if plugin or
+  vendor skills overlap a house skill.
+- **Ladder feedback contract** (`yao2026explicit`). **Fails Gate 1**
+  (cred 2, no code).
+- **Self-revision acceptance outside the proposer** (`lehmann2026can`,
+  cred 4; `kim2026elicitation`). **No edit.** `/elevate` already puts
+  adoption in a separate human step.
+- **Reviewer input for pending `hce-known-bad-preflight`:**
+  `kim2026elicitation` found two broken scorers that fail the other way,
+  scoring correct answers 0, which a do-nothing probe passes. The
+  candidate third probe is a known-correct answer in a non-canonical
+  form. `zhu2026who`: score the do-nothing submission from the task's
+  actual starting state, not a blank workspace.
+
+Control: **hce-spent-test-reads passes.** chan2024mle is peer-reviewed
+with code (cred 5); there are 4 attestations at cred ~3.75; the change
+appends sentences to an existing rule and strengthens the holdout.
 
 ## Considered and held (2026-10-25 run)
 
