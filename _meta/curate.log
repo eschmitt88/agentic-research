@@ -1535,3 +1535,45 @@ I've curated the 10-19 digest backlog and archived the file, so there are no unc
 **For you to decide**
 - `raw/papers/lange2026agentic.pdf` is 35 MB, well above the 10 MB rule for DVC. I committed it to git because other PDFs over 10 MB (up to 14.5 MB) already live there and DVC has no remote set up. If you'd rather move large PDFs to DVC, that's a separate change.
 - In NOTES.md, the "curate items 7–20" Next item is now done. I didn't run `/wrap`.
+All 16 PDFs are fetched and pushed (`d3f31de`). Sixteen readers are now writing literature notes and drafting concept edits. When they finish I'll apply the edits one at a time, write the curation record, and archive the file.
+
+1 of 16 readers is done (`lencevicius2026when`, below framing, mild). Waiting on the other 15.
+
+6 of 16 readers are done. Each result goes into the curation table as it arrives, and the concept edits get applied once all 16 are in.
+
+7 of 16 readers are done.
+
+8 of 16 readers are done.
+
+11 of 16 readers are done.
+
+I've closed the 10-26 digest: all 29 leftover items now have a recorded disposition, and the file is archived to `raw/_candidates/_done/`. Nothing uncurated is left in `raw/_candidates/`. Everything is committed and pushed, and `main` matches `origin/main`.
+
+**What happened**
+- **Already in the graph:** none of the 29 arXiv IDs had a literature note. 2610.32578 is only mentioned in `xu2026stale`'s follow-up.
+- **Ingested 16:** items 7–20, plus two promoted near-misses:
+  - 2610.30499 (`lehmann2026can`), a held-out test of a harness improving itself;
+  - 2607.22368 (`shao2026do`), the empty submission that scored perfect.
+- **Notes and concepts:** sixteen parallel readers wrote the notes and drafted 51 concept edits across 21 concepts. I applied them one at a time, adding text only. Papers went 285 → 301 and the concept count stayed at 35. Frontmatter parses, there are no duplicate sources and no dead wikilinks.
+- **Declined 13:** each has a one-line reason in the `## Curation` table, e.g. off-mission, thin validation, or covered better by this batch.
+- **`/promote-moc`:** declined. There are no new concepts and all 35 are already in a Map of Content.
+- **Commits:** `d3f31de` (fetch), `0889af8` (ingest), `5d55a49` (curate and archive), plus two log-only commits.
+
+**Findings**
+- **How the papers compare to their digest entries:** four read at their entry, twelve mildly below, none above. That makes 110 PDFs since 09-22: 94 below, 16 at, 0 above.
+- **The 10-25 `hce-known-bad-preflight` proposal** has the most new input, worth reading before you decide it:
+  - `shao2026do` supports it, but it is one trace, so it shouldn't raise the evidence-strength rating.
+  - `kim2026elicitation` found two scorers that wrongly failed correct answers. A do-nothing probe can't catch that. Together with `shao2026do`'s bug that forced every score to zero, it argues for restoring the known-good check the proposal dropped.
+  - `zhu2026who` says to score the do-nothing submission from the task's real starting state, not an empty workspace.
+  - `chen2026cads` is *not* support, although the digest framed it that way.
+- **The 10-18 redirect-before-halt proposal:** there is still no paper comparing a redirect against a halt. Three papers (`lyu2026where`, `karim2026explore`, `chen2026knowing`) weakly support having the loop force the change of approach rather than suggest it.
+
+The two pending proposals (10-18 and 10-25) are still waiting on your decision.
+
+All 16 readers had already finished when this check ran. Their edits are applied and `/curate` is complete, so there is nothing left to do.
+
+- **Notes and edits:** all 16 literature notes are written, and the 51 concept edits are applied across 21 concepts.
+- **Candidate file:** `2026-10-26-digest.md` now has a disposition for every item and is archived to `raw/_candidates/_done/`.
+- **Git:** everything is pushed, and `main` matches `origin/main`.
+
+The only open items are your decisions on the two pending proposals: 10-18 redirect-before-halt and 10-25 hce-known-bad-preflight.

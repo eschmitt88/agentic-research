@@ -474,3 +474,22 @@ This week's `/elevate` run produced **one proposal**. I weighed seven ideas and 
 - `_meta/curate.log` has an uncommitted change left over from the 10-20 curate session. I left it alone, as earlier runs did.
 - `~/claude-system` has an untracked `claude/skills/synced/` folder of claude.ai skills. I didn't touch it.
 {"id":"8qUxFDarhsNp","time":1792904600,"expires":1792947800,"event":"message","topic":"<ntfy-topic>","title":"/elevate: 1 new system-proposal(s) to review","message":"• hce-known-bad-preflight\nRead + accept/reject in the agentic-research review queue.","tags":["robot","memo"],"click":"https://eschmitt88.github.io/agentic-research/#/proposals"}
+This week's /elevate run wrote one proposal from nine ideas considered, and the paired control passed. It's committed and pushed as `99deb3d`. I made no changes to `~/claude-system`; the untracked `claude/skills/synced/` folder there was already present.
+
+**Proposed: `precompact-chat-only-constraints`** (`docs/system-proposals/2026-11-01-precompact-chat-only-constraints.md`)
+- **The change:** swap one bullet in `hooks/pre-compact.sh`. The new bullet tells the compaction summary to quote, word for word, any standing instructions the user gave only in chat (how to commit, what not to touch, what not to run). The old bullet's auto-memory reminder is shortened, since `CLAUDE.md` already says it. Nothing new is added to maintain.
+- **Why:** salle2026benchmarks measured Claude Code's own compaction on 44 real sessions. It dropped about 36% of process and scope instructions but only 6% of feature requirements. chen2026governance shows a dropped constraint gets violated about 38% of the time, against 0% when it survives. lencevicius2026when and nakayashiki2026when explain why the transcript path the hook already prints doesn't help: an agent rarely looks up a rule it no longer knows it was given. That gives four independent groups at credibility ~3, three of them with released code. This is the evidence bar that held constraint-pinning back in August.
+- **The hook does reach the summarizer.** Partway through I suspected it was invisible to the model, because no transcript contained its text. Two compaction summaries on this box do quote it ("per PreCompact"), so it's live. I haven't checked whether that holds for automatic compaction and subagents as well as manual `/compact`.
+- **Main risk:** no source tests this kind of specific request. salle shows a generic "keep constraints" request in the summary prompt still loses them. The upside may be small, but the edit costs nothing to keep.
+
+**Control:** `hce-spent-test-reads` (accepted 07-12) still passes both tests. Its main evidence is peer-reviewed with released code, its four sources average credibility ~3.75, and it adds nothing new.
+
+**Held:**
+- **xu2026stale** ("existing code wins over a stale CLAUDE.md"): the decisive test, where the file is right and the code is out of date, wasn't run. A blanket rule would also override this box's forward-looking conventions in older folders.
+- **wang2026beyond** (when to retire a skill): nothing on the box retires skills on a measured-gain rule, so there's nothing to edit.
+- **zhu2026who / khezresmaeilzadeh2026claim** (don't let a judge read the worker's own "done" report): no skill has that shape.
+- **chen2026knowing**: a second source for the held `/implement` escalation field, but the field would still add surface area.
+- **razmara2026one, yao2026explicit, lehmann2026can**: no target, credibility 2, and already human-gated, respectively.
+- **Input for the pending 10-25 proposal (`hce-known-bad-preflight`):** kim2026elicitation suggests also scoring a known-correct answer in a non-standard form. zhu2026who suggests scoring the do-nothing submission from the task's real starting state rather than an empty workspace.
+
+Three proposals now await your decision, each on a different file: 10-18 redirect-before-halt, 10-25 hce-known-bad-preflight, and today's. I left the uncommitted `_meta/curate.log` change alone, as previous runs did.
