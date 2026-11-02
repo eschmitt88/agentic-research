@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/wang2026making]]"
   - "[[literature/papers/lumer2026reflective]]"
   - "[[literature/papers/kim2026into]]"
+  - "[[literature/papers/alfaqeeh2026beyond]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -288,6 +289,49 @@ Anchors into immutable `raw/` are a tier stronger.
 Caveats: the counts come from a single LLM judge (the top agent's own
 model) with no false-positive audit. They are per submission, not per
 claim.
+
+## A value that resolves is not a value that belongs: presence accepts most misattributed numbers (2026-11-02)
+
+[[literature/papers/alfaqeeh2026beyond]] re-audits the
+[[literature/papers/kim2026into]] release claim by claim. That section above
+ended with "single LLM judge … per submission, not per claim". Here two
+annotators labelled 256 numeric claims from 18 submissions against the
+agents' own result files. Of 53 unsupported claims, 47 were *wrong source*:
+the value is in the files, but for a different arm, seed, metric or
+statistic. Only 6 were absent (81% wrong source after reweighting). Typical
+cases: a standard deviation reported as a mean, the baseline's number
+reported for the proposed method, one seed reported as the mean over seeds,
+a timer print that happens to match.
+
+So the anchor check that guidance #8 imports (a numeric literal has a witness
+in some tool output) is the weak one. Value matching accepted 87–95% of
+unsupported claims and 88% of decoy values that are wrong by construction.
+What separated them was the *key*. The paper's deterministic checker scores
+token overlap between the claim's sentence or table cell and the evidence
+entry's key path, line and file name. It then requires the true value to
+outscore ten nearby decoys (±2…±10 in the last digit). With the operating
+point frozen before labelling, it certified 78 of 85 claims correctly (0.92,
+exact CI 0.84–0.97), and 27 of 29 on held-out submissions. The context score
+alone did most of it (precision 0.77 → 0.92). The decoys mainly guard
+against coincidence (decoy acceptance 18.9% → 1.3%). Sentence embeddings did
+worse than token overlap, because keys like `rel_l2_std` mean their exact
+tokens.
+
+For this box: an anchor to `metrics.json` is only as good as the key name.
+`metrics.json:val_auc_seed_mean` can be checked against the sentence that
+cites it. `metrics.json:result_3` cannot. A `/lint` anchor check should test
+key–context overlap, not only that the value or field exists.
+
+Limits:
+- One benchmark (physical-science computation), nine agents, LaTeX papers
+  with machine-readable result files.
+- Integers and one-significant-digit values are out of scope. So are the
+  judge's own canonical failures ("400 epochs where the logs show 320").
+- Coverage is 23% of claims and recall about a third. Most claims stay
+  unsettled.
+- Annotators are two co-authors. The held-out set is 60 real claims.
+- It certifies provenance, not that the run was sound or ran the described
+  code.
 
 ## Open questions
 

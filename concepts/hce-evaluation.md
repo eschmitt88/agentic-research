@@ -120,6 +120,9 @@ sources:
   - "[[literature/papers/zhu2026who]]"
   - "[[literature/papers/shao2026do]]"
   - "[[literature/papers/lehmann2026can]]"
+  - "[[literature/papers/alfaqeeh2026beyond]]"
+  - "[[literature/papers/so2026masked]]"
+  - "[[literature/papers/zhou2026does]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -2657,6 +2660,129 @@ individual lineages gain a lot.
 Caveats: one evaluation per snapshot; n = 3 per condition; public games
 (possible pretraining exposure); the experimenters' own earlier system
 selected on all 25 games, so protocol holdout is softer than task holdout.
+
+## A second-vendor judge kept the group order and doubled the pass count; a few headline-number nodes missed most numbers (2026-11-02)
+
+[[literature/papers/alfaqeeh2026beyond]] tests two of the cautions in the
+kim2026into section above ("the judge must not be a contestant"). It reruns
+the benchmark's own grading code with Claude Opus 5.5 in place of
+GPT-6-Astra on 30 stratified submissions.
+- **No self-preference found, at low power.** Both judges put the OpenAI
+  agents cleanest by a wide margin. The second judge's leniency was smallest
+  for OpenAI agents (−2.2 points of G1 nodes) and largest for Anthropic
+  agents (−8.6). The vendor interaction is not significant (GEE p = 0.075).
+  The paper says the hint "can be neither confirmed nor ruled out".
+- **Pass counts follow the judge.** The second judge passed 12 of 30 on
+  integrity, against the official 6, and failed 5.4 fewer G1 nodes per
+  submission (Wilcoxon p = 0.014). Each judge is self-consistent (93–100%
+  across repeats). Cross-judge G1-node κ is 0.38, so a rerun spread on one
+  judge says nothing about this gap. Report the judge with every pass rate.
+- **Few graded nodes miss most of the content.** The judge has about 2.4
+  number-traceability nodes per submission. It rates opus-5.5 at 92.9%
+  integrity, close to sol-5.6. A deterministic claim checker certifies only
+  13.8% of opus-5.5's numbers (sol-5.6 62.8%), although 99% of them occur
+  somewhere in its files. The authors' hypothesis, untested, is that the
+  judge checks headline numbers that opus-5.5 gets right. This is the
+  rubric-binds-what-it-names failure at the number level.
+
+The claim checker also gives the integrity verdicts their first partial
+external check. Across 99 submissions its certified share correlates with
+the judge's integrity score (ρ = 0.22) and against its number-traceability
+failure rate (ρ = −0.32), using different evidence.
+
+Limits:
+- 30 submissions, 26 graded once against a 4-repeat official consensus,
+  which scores ties as fails. Some of the "leniency" may come from that
+  asymmetry.
+- The 438 disagreeing nodes were not adjudicated. So it shows pass rates
+  depend on the judge, not which judge is right.
+- Agents ran under different harnesses. The second-judge sample excludes
+  working directories over 5 GB.
+
+## A significance gate certifies a real gain, not that the harness kept its safety margin (2026-11-02)
+
+[[literature/papers/so2026masked]] adds a failure that no gain-validity
+control in this concept can see. When two written safeguards block the
+same harm, deleting one adds almost no observable harm (child-only harm
+0.016, upper bound 0.028, against 0.422 when the deletion exposes the
+harm). The gate then decides on task success alone. What is lost is
+**margin**: how many further safeguard failures the harness can absorb.
+Margin is a property of the child's ablations, not of the child, so no
+check of the child under the current model measures it.
+
+The paper separates two regimes, and the paired test behaves differently
+in each:
+- **Drift** (the deletion buys nothing). A paired exact McNemar gate,
+  the gate [[literature/papers/hu2026winners]] recommends against the
+  winner's curse, kept all 6 AppWorld loops protected. Greedy
+  keep-if-better lost 5 of 6, and its "gains" did not transfer
+  (0.358 vs 0.400 for the start harness on the final split).
+- **Selection** (the deletion truly raises success). The paired gate
+  accepted deleting the only sufficient safeguard in 15 of 20 proposals
+  and lost protection in 3–6 of 6 loops per model. A larger batch makes
+  it worse: at a fixed safeguard cost of 0.15, 20-task loops kept all 6
+  protected and 40-task loops lost all 6 (p = .001). More data detects a
+  smaller real gain, and the gain is the deletion.
+
+Lost margin became harm when protected finals were reused with a weaker
+model: non-paired minus paired misuse +0.30 under Qwen3-30B, +0.025
+under GPT-6 Luna and Sol.
+
+Rule for any loop that edits instructions with safety content: a
+held-out score and a noise band answer "is the gain real?". They do not
+answer "did the harness keep its redundancy?". That needs either safety
+text outside the mutable surface, or a one-layer ablation audit before
+acceptance (the paper's margin-aware gate: 0 of 6 loops unprotected, at
+a cost). Re-audit after a model change.
+
+Limits:
+- Two environments, one harm each, four safeguards; OpsSim is
+  synthetic, and the selection regime is constructed by a tight step
+  budget.
+- Most loops are planted deletions; 6 loops per arm.
+- The consequential swap harm comes from models that solve about 5% of
+  clean AppWorld tasks.
+- The frozen simulator held on 7 of 14 main-claim tests and does no
+  better than a per-gate constant on single AppWorld decisions.
+
+## The selection-only null, computed from the logs: unchanged candidates reach the reported skill gains, and the baseline was the seed's worst dev run (2026-11-02)
+
+[[literature/papers/zhou2026does]] (BiPA) runs GEPA, SkillOpt and SkillAdam
+once each from one hand-written seed skill. The setting is two models ×
+three agentic benchmarks, with a 30-task dev set (9 on TB2), and every
+skill is tested three times. Over the 16 learned skills, test success is
++0.1 points (one-sided 95% upper bound +1.6). The method is what this
+concept can reuse. Fit a Beta prior on per-task solve rates from the
+seed's own episodes. Simulate K candidates *identical to the seed*. Apply
+the optimizer's real acceptance rule. P(G₀ ≥ G) is the chance that nothing
+changing still reports the gain. It was 0.25–0.94 for the nine DeepSeek
+dev gains and 0.21–0.99 under GPT-6-Luna. Across nine skills, test
+difference vs reported dev gain has slope 0.02 and correlation 0.05.
+
+The mechanism is partly hu2026winners' best-of-K, and partly a baseline
+choice. Every DeepSeek SkillOpt and GEPA run measured gains from the
+seed's *lowest-scoring* stored dev run. Its other runs scored 1–5 tasks
+higher, about the size of the reported gains. With a randomly drawn
+baseline, the null gain falls to 0.6–2.3 tasks, and the τ³ gains become
+unlikely under the null (P 0.02–0.17).
+
+Rules:
+- A loop's reported gain is compared with the gain its own acceptance rule
+  reports on the unchanged configuration. This is the gate-side twin of
+  the do-nothing pre-flight in the pending `hce-known-bad-preflight`
+  proposal: that one checks the evaluator; this one checks the gate.
+- The starting score is a mean or a fresh draw of the baseline. It is
+  never the min (or max) of stored runs.
+- Report task-level churn against the baseline's own rerun churn. Here
+  test was 8.9% newly solved vs 6.9% newly failed, against 1.9–7.8% between
+  two seed runs.
+
+Limits:
+- The null candidates are simulated from a fitted task model (independent
+  episodes, exchangeable difficulties), not re-run. It is checked against
+  observed solve shares and four task models.
+- One optimizer run per cell; 18-task TB2 test set; one seed skill.
+- A model update partway through moved the τ³ seed rerun 5.8 points.
 
 ## Open questions
 

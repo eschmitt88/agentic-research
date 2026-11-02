@@ -74,6 +74,8 @@ sources:
   - "[[literature/papers/karim2026explore]]"
   - "[[literature/papers/mang2026frontiercs]]"
   - "[[literature/papers/lyu2026where]]"
+  - "[[literature/papers/srinivasan2026continue]]"
+  - "[[literature/papers/zhou2026does]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -1058,6 +1060,45 @@ differently or not at all (our inference). The stored-incumbent score is
 never re-measured (Alg. 1), which is Hu's lock-in mechanism. The paper does
 not discuss it.
 
+## Repeat-the-win keeps most real gains at a modest false-accept rate; a significance cut keeps few (2026-11-02)
+
+The two sections above leave the keep rule open. Bare `>` inflates
+(hu2026winners) and a fixed-level band rarely commits.
+[[literature/papers/zhou2026does]] compares four keep rules on a task model
+fitted to real agent episodes (30-task dev sets, binary success). Each rule
+decides between one candidate and its parent:
+
+| Rule | Unchanged accepted | True two-task gains kept |
+|---|---|---|
+| one dev win (bare `>`) | 24 / 41 / 39% | — |
+| win ≥ critical value (α = 5%) | 2.7–3.2% | 14–21% |
+| win repeated on a second dev run | 6.4 / 17.1 / 15.2% | 94 / 55 / 62% |
+| higher total over three runs | 34–45% | — |
+
+Summing three runs does worse than one run (ties get rarer). The
+critical-value rule would have refused 29 of the 30 edits the optimizers
+kept. This matches hu2026winners: a significance cut mostly stops
+committing. Repeat-the-win is the first rule in this graph with both a low
+null rate and most of the power.
+
+Our inference for `/iterate`: when a candidate beats the champion by less
+than the band, re-run it once and keep it only if it wins again. This is
+karim2026explore's conditional re-measure, here at the keep step. The
+accepted noise band still governs the stop counter.
+
+The same paper adds a per-task cost line to "An unbounded per-task
+inference budget" above. In a multi-turn harness, a skill-only edit does
+scale compute (contrast ding2026harnessdelta's one-call T = 0). Learned
+skills read 1.08–1.43× the seed's input tokens through extra turns. Kept
+and rejected edits added tokens alike (p = 0.46).
+
+Limits:
+- Simulation on a Beta-Binomial task model, not a re-run optimizer. No
+  rule was deployed in a real loop.
+- "True two-task gains" are planted in the model; real edit effects may be
+  smaller or rarer.
+- Three benchmarks, two cheap models, OpenCode without compaction.
+
 ## A run-length counter must act through the harness, and its action here is a stop (2026-10-12)
 
 [[literature/papers/zhang2026judged]] tests the exact shape of
@@ -1864,6 +1905,53 @@ Caveats:
   one weak generator per family, k = 3 per cell.
 - The repository oracle arm and the probe were added after the
   pre-registered main runs (disclosed as deviations).
+
+## Against a matched-random restart and plain continuation, a cold restart under a shared cap loses everywhere (2026-11-02)
+
+[[literature/papers/srinivasan2026continue]] (NC State) replays stopping
+policies over 147,002 recorded coding-agent runs in four open-weight
+model–framework settings. At 20k tokens a policy may stop a run and start
+one cold replacement: another recorded attempt on the same issue, which
+must fit in what is left of a hard cap B on both runs together.
+- **A learned stop beats a random one only as a task filter.** At B = 75k,
+  learned minus matched-random restart is +1.98 and +0.77 pp in two
+  settings and −0.46 and −0.66 pp in the other two (CIs exclude 0). An
+  exact decomposition puts it almost all between tasks: the learned score
+  stops hard issues more often. The within-task part is −0.11 to +0.24 pp.
+  Within-task AUC at 20k is 0.50 for every predictor tried.
+- **Continuing beats both.** At 75k, continuation has a higher solve rate
+  and lower mean token cost than all 56 restart configurations, 4.6–8.1 pp
+  above the median learned restart. Over four caps it Pareto-dominates 216
+  of 224. Most of this is budget arithmetic. Nearly every run is past 20k,
+  so a replacement must fit its whole run in B − 20k and re-pays the setup
+  the stopped run had done.
+- **Abort-only at chance is a delayed screen.** With no within-task
+  signal, stopping at 20k only filters tasks. A pre-execution screen does
+  that for zero tokens (compare the 10-13 section above on a cheap
+  pre-execution screen).
+
+What it adds for redirect-before-halt. It runs no redirect and no halt. Its
+restart is a cold resample of the same policy, and the trigger is a
+prediction from a partial run, not `/iterate`'s count of measured
+non-improvements. Two things carry over (our inference):
+- **The evaluation bar.** Compare a stall trigger with a matched-random
+  trigger and with continuing, and split the gain into between- and
+  within-task parts. Across projects, a counter that fires more on hard
+  problems can look useful because it filters.
+- **The pivot must keep state.** A pivot that drops the chain's best and
+  re-pays setup is a cold restart under a shared cap, which lost in every
+  setting here. This agrees with [[literature/papers/zhou2026athanor]],
+  where restart pivots lost to the matured lineage.
+
+Limits:
+- Offline replay of runs whose agents never saw a cap. One landmark (20k)
+  and one restart, with the replacement from the same model and scaffold.
+- Cost is transcript length, not billed tokens. A long continuation
+  re-reads its context each turn, so under billed cost its "lower cost"
+  edge may narrow ([[literature/papers/kumar2026turncost]]).
+- SWE-rebench-style Python issues, not ML research cycles. The paper
+  cites a state-preserving restart that did pay (66.6% → 71.8%) but does
+  not reproduce it.
 
 ## Open questions
 

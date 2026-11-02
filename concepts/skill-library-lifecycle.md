@@ -61,6 +61,8 @@ sources:
   - "[[literature/papers/xu2026stale]]"
   - "[[literature/papers/razmara2026one]]"
   - "[[literature/papers/wang2026beyond]]"
+  - "[[literature/papers/so2026masked]]"
+  - "[[literature/papers/zhou2026does]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -721,6 +723,44 @@ Caveats:
   which may have protected the number-words rule; the small control (11
   per arm) does not estimate that effect precisely.
 
+## Skill optimizers only add rules, and a rule's cost is the turns it causes, not its length (2026-11-02)
+
+The section above found that failure-driven revision rarely removes a rule.
+[[literature/papers/zhou2026does]] measures the same thing at optimizer
+scale, and prices it. GEPA, SkillOpt and SkillAdam were run from one
+580-word seed. 58 of 59 DeepSeek edits lengthened the skill (33 of 38
+under Luna), and one shortened it. Skills grew to 654–2.4k words. Of 337
+added rules, 52% ask the agent to verify, 18 serialize calls, and none
+limits reading. SkillOpt can delete and replace, and it still grew.
+
+The cost lands in turns:
+- Across 59 edits, the change in turns explains 93% of the variance in
+  token change. Tool calls explain 79%, and skill length 10%.
+- Turn terms carry 73% of the extra input tokens; skill text 21%.
+- Each turn re-sends the history, so 10% more turns read 14–16% more
+  tokens.
+- Loading on demand did not help (ρ 1.230 vs 1.226 resident).
+
+This reframes pham2026reliable's 40% token cap. A cap on a skill's *length*
+prices the smaller term. What should be charged is the turns the rule
+induces, measured per task against the unaided run. Learned skills
+"sharpened" the agent (agreement rose where success rose) but covered 57
+new tasks and lost 62. Their cost went with them to other models and
+benchmarks, and their gains did not (8 of 9 transfers below the seed).
+
+Rules:
+- Admission charges a candidate rule for the turns and tokens it adds per
+  task. Only 5 of 59 edits kept success without adding tokens.
+- The editor is shown earlier rules' costs and may delete and merge. This
+  is the paper's Principle 3–4, untested.
+
+Limits:
+- One seed, itself a verification skill, which may bias edits toward
+  "verify".
+- One optimizer run per cell; SkillOpt at one pass of its upstream four.
+- The 93% figure is across edits of one model (DeepSeek-V4.1-Flash).
+- No-compaction harness. Under re-billed compaction, ρ is still 1.05–1.36.
+
 ## Two research skill packs tied the bare harness by trading evidence for write-up (2026-10-20)
 
 [[literature/papers/jiang2026researchfloweval]] gives a no-skill arm for
@@ -840,6 +880,52 @@ For this box: a skill that targets a measured failure of *this* loop and
 is triggered deterministically is the shape that has positive evidence.
 Admitting it needs a held-out task set and a no-skill arm with more than
 one run.
+
+## Removal judged on success alone strips redundant safeguards; retention needs a one-layer ablation on harm (2026-11-02)
+
+The retention gates in this concept ask whether a member still earns
+its place: [[literature/papers/hu2026skillbrew]]'s counterfactual
+leave-one-out and the randomized-inclusion and paired with/without
+checks all score *utility*. [[literature/papers/so2026masked]] shows
+what that criterion does to safety clauses that back each other up. A
+clause whose harm is also blocked by another clause has near-zero
+leave-one-out harm (0.016 vs 0.422 when the deletion exposes the harm)
+and may cost task success. Judged on utility, it looks like dead weight.
+Removing it is the masked deletion, and the library's margin falls by
+one without any signal.
+
+What the paper measured, on harnesses of four written safeguards:
+- Success-gated loops removed redundant clauses until protection was
+  gone (greedy, 5 of 6 loops). A paired significance test stopped
+  removals that only looked good by chance, but not removals that truly
+  raised success (paired loops lost protection in 3–6 of 6 when the
+  clause had a cost).
+- Natural proposers asked to make the harness cheaper mostly *rewrote*
+  clauses rather than deleting them. 7 of the 10 accepted rewrites
+  relaxed a check, and rewritten clauses let through 0.19 more harm.
+- The **margin-aware gate** is the retention rule that held: accept a
+  child only if every one-layer ablation of it stays protected on a
+  harm suite. 0 of 6 loops ended unprotected (greedy 5 of 6), with no
+  loss of clean success in AppWorld, but 0.35 lost in OpsSim, where it
+  kept three costly layers.
+
+This extends the existing "verdicts are per model" point
+([[literature/papers/wang2026beyond]]): which clauses are redundant
+depends on the executor. Layers interchangeable for DeepSeek were not
+for Qwen3-30B, which relied mainly on one, so a library pruned under
+one model can be unsafe under the next.
+
+Rule (our inference): for clauses that carry safety or governance, do
+not use utility leave-one-out as the removal criterion. Score removal
+on harm with the clause's siblings also ablated, or exempt such clauses
+from automatic removal.
+
+Limits:
+- Four safeguards per environment, two environments, one harm each; the
+  clauses are prompt rules, not callable skills.
+- The margin-aware gate checks clause removal, not wording; it let a
+  rewrite weaken VERIFY in all three natural loops it gated.
+- 6 loops per arm; the cross-model harm is large only for weak models.
 
 ## Open questions
 

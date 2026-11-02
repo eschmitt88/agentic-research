@@ -11,6 +11,7 @@ sources:
   - "[[literature/papers/liu2026what]]"
   - "[[literature/papers/wang2026clock]]"
   - "[[literature/papers/kumar2026turncost]]"
+  - "[[literature/papers/srinivasan2026continue]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -256,6 +257,43 @@ that result says self-estimates of cost are poorly correlated with actual
 cost, which is fatal for admission and irrelevant to a controller reading a
 counter. Where this repo needs budget-sensitive behaviour, prefer the meter
 over the estimate.
+
+## Outcomes split the same way: task difficulty forecasts before the run, attempt outcome does not until late (2026-11-02)
+
+The admission/allocation split above is about cost.
+[[literature/papers/srinivasan2026continue]] finds the same split for
+*outcomes*, on 147,002 coding-agent runs in four settings.
+- **Task-level outcome is forecastable before execution.** Outcomes
+  cluster strongly by issue (intraclass correlation 0.71–0.82). A held-out
+  task solve rate alone gives pooled AUC 0.97. Pre-execution issue
+  features give 0.51–0.57, and early prefix counts add only 0.02–0.04.
+- **Attempt-level outcome is not, until most of the budget is gone.**
+  Within the same issue, every predictor sits at AUC 0.50 at 20k tokens.
+  That includes a task-conditional model and a fine-tuned 0.6B monitor
+  (three seeds, 32,406 attempts). Signal reaches 0.54 at 40k and 0.56 at
+  60k, when 23% of runs are still active.
+- **Mid-run reallocation gained only what admission could have.** The one
+  setting-dependent gain of a learned restart over a random one (≤ 1.98 pp)
+  is between-task. It comes from stopping hard issues, which a
+  pre-execution screen does for zero tokens.
+
+For this concept: put outcome-aware spending at admission and routing
+time, where the forecast exists. The paper's own example is scaffold choice
+(14.06 pp on shared tasks, against ≤ 1.98 pp for restarts). Mid-run, read a
+meter, not a prediction. This is the same rule as above, now for outcomes.
+
+The paper also shows the unit point again. It counts cost as transcript
+length, and says so, which ignores caching and context re-reads. A
+restart-vs-continue cost comparison in transcript tokens is not one in
+billed tokens ([[literature/papers/kumar2026turncost]]).
+
+Limits:
+- External monitors over recorded runs. No agent self-forecast was tested.
+- Coding issues with binary resolve labels and open-weight models. Whether
+  ML research cycles (one training run per cycle) show the same task
+  dominance is untested.
+- "Forecastable before execution" is shown as pooled AUC with a task-rate
+  oracle. Deployable pre-execution features reached only 0.51–0.57.
 
 ## A harness bill is three numbers, and the harness sets two of them (2026-10-13)
 

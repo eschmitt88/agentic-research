@@ -9,6 +9,7 @@ sources:
   - "[[literature/papers/mason2026missing]]"
   - "[[literature/papers/zhang2026judged]]"
   - "[[literature/papers/wang2026clock]]"
+  - "[[literature/papers/srinivasan2026continue]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -197,6 +198,39 @@ rather than a resource it used well: quality was flat across 10–25 minute
 budgets. Pair the clock with a launch-time clamp
 ([[concepts/enforcement-boundary-placement]]) rather than relying on it
 alone.
+
+## Reading the whole prefix does not predict which attempt will succeed (2026-11-02)
+
+"Perception is not prediction" above is about cost.
+[[literature/papers/srinivasan2026continue]] tests it for *outcome*, with
+external monitors that see more than any dashboard would show. At 20k
+tokens on 147,002 coding-agent runs (four settings), the monitors tried
+were: 18 behaviour counts (files read, tests run, edits, errors), frozen
+embeddings of the first turn, a task-conditional model, and a Qwen3-0.6B
+monitor fine-tuned on the transcript. None ranked a successful attempt
+above a failed one on the same issue: within-task AUC 0.48–0.51, with
+equivalence to 0.50 shown by TOST in three of four settings. By 20k on
+the primary corpus, 87.51% of runs had already run a test and 32.80% had
+edited code, so the prefix was not empty.
+Signal appears late (0.56 at 60k, 0.62 at run end).
+
+What the state did predict was the task: how hard the issue is. That is
+known before the run starts.
+
+For this concept (our inference): a legible trajectory state is useful
+for keep/archive/recover decisions, as the earlier sections show. It is
+weak grounds for an early "abandon this attempt" decision, whether the
+agent or a monitor makes it. That matches
+[[literature/papers/zhang2026judged]] above, where legible state did not
+produce a good stop. Any stop keyed on that state should be checked
+against a random stop of the same frequency.
+
+Limits:
+- No agent was asked to judge its own run. The monitors are external and
+  small (≤ 0.6B), and the neural one is miscalibrated (log loss above a
+  constant predictor).
+- Coding issues only, early landmarks only. Late-run state does carry
+  signal.
 
 ## Open questions
 

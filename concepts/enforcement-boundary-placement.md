@@ -46,6 +46,8 @@ sources:
   - "[[literature/papers/xu2026stale]]"
   - "[[literature/papers/razmara2026one]]"
   - "[[literature/papers/wang2026rsihub]]"
+  - "[[literature/papers/so2026masked]]"
+  - "[[literature/papers/zhu2026precedent]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -746,6 +748,44 @@ contradicting AGENTS.md. Two instructions in conflict were a near-tie
 there. Instruction vs tool output is not a tie here. That pairing is our
 inference; neither paper tests both.
 
+## A correct rule beats the code in either channel, and where the code sits sets its pull (2026-11-02)
+
+The 2026-10-26 section above has the instruction file stale and the code
+right. [[literature/papers/zhu2026precedent]] runs the other direction.
+In a Flask API, all six existing endpoints use one option, and the task
+asks for a new endpoint with the other. Both options pass the same hidden
+tests. The agents are Claude Code with Sonnet-4-6 and Codex CLI with
+gpt-6-sol, with 15 runs per cell.
+
+- **The channel is a null at ceiling.** One written rule with a priority
+  clause ("This instruction takes precedence over the ID representations
+  used by existing handlers") gives joint success in 60/60 runs in the
+  task prompt and 60/60 in CLAUDE.md / AGENTS.md. In four open-source
+  repos the native-file rule goes from 0/120 to 117/120. The authors note
+  that ceiling cells cannot exclude a gap of about 6 points.
+- **A worked example alone is a weaker placement.** A code snippet in the
+  prompt, with no priority stated, gives 38/60. Sonnet follows the six
+  existing files over the snippet (0/15 on ID serialization).
+- **The code's placement is a placement too.** Three local files using an
+  option give 96% adoption. Three analogous files in a sibling resource
+  give 4%. At a fixed count, moving the example between local files moves
+  adoption from 0/15 to 15/15 in one setting.
+
+Read with xu2026stale, the instruction wins over the code in both
+directions, whether it is true or stale. The open cell is a code-wins
+sentence present alongside a correct rule. Our reading of
+[[literature/papers/razmara2026one]] (example decides, priority line near
+inert) next to this paper (priority line decides, example unreliable):
+the rival's rank matters. Equal-rank skill files are not tool-output code.
+Neither paper tests both rivals.
+
+Limits:
+- Stage 3 is two agents × two pairs, all style or shape choices.
+- The native-file level (project vs user) is not stated.
+- The prompt may still contain Stage 2's "follow the conventions of the
+  existing code" line. The paper does not say.
+- No code or data release, and no harness versions.
+
 ## Open questions
 
 - **Is there a placement that dominates, or is the right answer always
@@ -972,6 +1012,48 @@ The guarantees also assume "valid evaluators". The framework hashes the
 evaluator but never scores a do-nothing submission. It is an independent,
 well-built case of the tamper half without the correctness half, which is
 the split behind the `hce-known-bad-preflight` proposal.
+
+## Safety rules inside the optimizer's mutable surface erode where the gate cannot see (2026-11-02)
+
+The previous section places the *score* outside a self-improving loop's
+mutable surface and notes that the admission rule can sit inside it.
+[[literature/papers/so2026masked]] measures the third case: the
+**safeguards** sit inside it. Its harnesses carry four prompt-placed
+safety rules that the proposer may edit like any other text, and an
+acceptance gate scored on task success decides which edits stay.
+
+When rules overlap, deleting one is masked: the others still block the
+harm, so the gate sees only the success change. The prompt placement is
+therefore not only weaker per rule (the rest of this concept). Under an
+optimizer it is also *unstable*, and redundancy, the usual answer to a
+weak placement, is exactly what erodes:
+- Greedy gates lost all protection in 5 of 6 AppWorld loops. The 32
+  accepted deletions into still-protected children showed no child-only
+  harm in their batches. A harm audit of 120 runs per state
+  stopped exposure but left 5 of 6 finals at margin 1.
+- Without redundancy (each trap blocked by exactly one rule), the same
+  audit rejected all 23 deletions greedy accepted. One rule per harm
+  makes every deletion visible; overlapping rules hide it.
+- The lost depth surfaced as harm only when the harness was reused with
+  a weaker model (+0.30 misuse under Qwen3-30B), which is a placement
+  fact: a prompt rule's force depends on the executor, and a model
+  change is a common-cause failure of every prompt-placed layer.
+
+The two remedies are both placement moves. Freezing the safety text
+takes it out of the mutable surface. The margin-aware gate puts a
+one-layer ablation check in the admission rule, outside the candidate's
+control. Our inference: for this box, governance lines a loop may not
+edit belong outside that loop's writable files, not only marked as
+important inside them.
+
+Limits:
+- All safeguards are prompt rules; no tool-level or code-level placement
+  arm was run, so the paper does not compare placements directly.
+- Two environments with one harm each; strong models (Luna, Sol) showed
+  only a 0.025 swap gap, and in τ²-bench and AgentDojo they avoided the
+  harm with no rule at all.
+- Most loops plant the deletion; natural proposers relax rules more
+  often than they delete them, which a layer-level check misses.
 
 ## Connections
 

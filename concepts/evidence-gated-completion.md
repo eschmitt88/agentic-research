@@ -49,6 +49,8 @@ sources:
   - "[[literature/papers/zhu2026who]]"
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
   - "[[literature/papers/lehmann2026can]]"
+  - "[[literature/papers/alfaqeeh2026beyond]]"
+  - "[[literature/papers/zhou2026does]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1509,6 +1511,79 @@ of [[concepts/hce-evaluation]], here at the process layer. The caveats
 are LLM-only coding and that diagnosis-quality items (κw 0.35) failed the
 reliability bar, so finer process features remain unmeasured rather than
 shown useless.
+
+## A deterministic claim certifier with a measured false-rejection rate: certify or route, never reject (2026-11-02)
+
+[[literature/papers/alfaqeeh2026beyond]] supplies the number this page's
+second open question asks for, for a claim-level check. Its deterministic
+checker certifies a numeric claim when the evidence key matches the claim's
+context and beats ten nearby decoy values. The operating point was frozen
+before any human label. Precision against blinded labels is 0.92 (78/85,
+exact CI 0.84–0.97). The false-rejection side is large. Recall is about a
+third, and among claims it did not certify, 57% (held-out) and 72%
+(development) were traceable. Used as a refusing gate, it would block more
+valid claims than invalid ones. The authors' rule is asymmetric: a
+certification passes the claim, and a non-certification sends it to review,
+never to "false".
+
+Two further results set the evidence type a gate should accept:
+- **A presence check is accept-all for this failure.** "Is the value
+  somewhere in the outputs?" accepted 87–95% of unsupported claims, because
+  most are real values from the wrong run. If kim2026into's agent-written
+  `trace_numbers.py` ("68/68 ALL TRACEABLE") matched values, it was this
+  check. kim2026into does not show the script.
+- **An LLM verifier is not a substitute for the deterministic layer.**
+  Claude Opus 5.5, shown the same three evidence entries, matched the
+  checker's precision on untuned claims (0.89 vs 0.89) at recall 0.97. But
+  it called 36% of non-traceable claims traceable (checker 13%), and its κ
+  with humans was 0.55. Where both agreed, precision was 0.98 (51/52). The
+  usable stack is: checker certifies, LLM triages the rest, humans decide
+  the rest.
+
+The paper's remedy is upstream of any gate: generate report numbers from
+result files instead of retyping them. It is not tested.
+
+Limits:
+- Post-hoc audit. No gate ran in-loop and nothing was refused, so the hold
+  on a refusal-driven outcome delta is untouched.
+- One benchmark; integers excluded; coverage 23% of claims.
+- The LLM verifier only sees the checker's top-3 entries, so it is not an
+  independent arm.
+- The 36% vs 13% contrast pools development claims. On untuned claims
+  alone it is 11 vs 6 false accepts.
+
+## One verify-before-claim skill paid; stacking more verify rules on it bought turns and nothing else (2026-11-02)
+
+[[literature/papers/zhou2026does]] gives a dose curve for prompt-level
+verification, as a side result. Its seed is Superpowers'
+`verification-before-completion`: an "Iron Law" of no completion claim
+without fresh evidence, plus a five-step gate. It is placed in the first
+user message. Against no skill (three test runs each, OpenCode):
+- The seed raised success in 5 of 6 model–benchmark cells (+2.7 to +9.7
+  points; −2.0 on Luna TB2).
+- Pooled, it covered 36 tasks the bare agent missed and lost 13 (sign
+  test p = 0.001).
+- It read 1.02–1.22× the bare agent's input tokens.
+
+The optimizers then added more. About half of their added rules ask the
+agent to verify again (52% of 337 under DeepSeek, 41% of 81 under Luna).
+The result was +0.1 points over the seed and 1.16× its input tokens,
+mostly as extra turns.
+
+This is the dose-response that vats2026good's controller arms implied.
+The first, specific verification rule paid, and more generic re-checks on
+top were pure cost. It supports this page's existing rule: add a check
+where it can name what is missing, and log spend after the first one.
+Our reading: the seed names evidence types per claim (test output, exit
+code, VCS diff). The added rules are mostly generic re-check orders.
+
+Limits:
+- Per cell, only the AutoBench gains clearly exceed the seed's own
+  run-to-run spread (5.8–8.4 points). The pooled sign test is the real
+  evidence.
+- A prompt-level skill, not an enforced gate. Nothing refuses a claim.
+- No arm separates the verification content from any 580-word procedure.
+- Two cheap models, three benchmarks, single optimizer runs.
 
 ## Open questions
 

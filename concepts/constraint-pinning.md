@@ -17,6 +17,9 @@ sources:
   - "[[literature/papers/mcmillan2026instruction]]"
   - "[[literature/papers/xu2026stale]]"
   - "[[literature/papers/salle2026benchmarks]]"
+  - "[[literature/papers/busch2026ctxagent]]"
+  - "[[literature/papers/so2026masked]]"
+  - "[[literature/papers/zhu2026precedent]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -232,6 +235,40 @@ Limits:
   survival.
 - Synthetic projects, Sonnet 5.5 and GPT-6 Sol only.
 
+## A correct pinned rule also beats the code, so the cost of a code-wins rule is still unmeasured (2026-11-02)
+
+The 2026-10-26 section above ends with a missing arm: a pinned rule that
+is *right* about an intended change, against code that has not caught up.
+[[literature/papers/zhu2026precedent]] supplies half of it. All six
+endpoints of a Flask API use one option. A rule asks for the other in the
+new endpoint and says it "takes precedence over … existing handlers".
+Delivered in CLAUDE.md (Sonnet-4-6) or AGENTS.md (gpt-6-sol), the rule
+gives joint success (tests pass and the target option is used) in 60/60
+controlled runs. In four open-source repos it gives 117/120, against 0/120
+without it. The same rule in the task prompt also gives 60/60.
+
+So, with no meta-rule, pinned text wins against the code whether it is
+true (this paper) or stale ([[literature/papers/xu2026stale]], 90.1% of
+choices). Pinning confers authority without checking truth, in both
+directions. The fix xu2026stale measured pins a second, generic line
+saying existing code wins. Whether that line silences a correct, specific
+rule like this one is the cell neither paper runs. This paper suggests
+part of the answer. Its winning rule states its own precedence and is
+scoped to new code, which gives a generic code-wins line a specific rival.
+There is no arm without the priority clause. A bare forward convention
+("use logging"), the usual CLAUDE.md form, remains the case most at risk.
+
+For this box: forward-looking lines in `CLAUDE.md` and `.claude/rules/`
+that should hold against older files may need to say so in the line
+itself. That is our inference, and it is untested.
+
+Limits:
+- No condition combines a code-wins rule with a correct rule.
+- The existing code is not stale. It stays correct and is not touched; the
+  rule applies only to new code. No migration arm.
+- Single-turn runs, no compaction: authority, not survival.
+- Two agents, two pairs; Sonnet-4-6 and gpt-6-sol, not this box's models.
+
 ## The known limit
 
 Pinning guarantees *presence*, not *authority*. The residual attack
@@ -318,6 +355,92 @@ Our inference: the harness already pins this box's file-borne rules
 standing process and scope instructions given only in chat or in an
 orchestrator's opening prompt. Moving those into a file that is re-read
 is the cheapest form of pinning available here.
+
+## A rule the agent applies in every reply survived Claude Code's compaction at ceiling, which narrows the exposed class (2026-11-02)
+
+[[literature/papers/busch2026ctxagent]] plants two standing rules in chat
+at the start of each session, of the form "end every reply with a line
+`REF: <token>`", and checks every later reply by regex. Compactions are
+detected on the wire, so each probe is labelled with whether a cut lay
+between the instruction and the check. Arms ran Opus 5.5 through Claude
+Code and through a self-managed harness whose prompt says "standing
+instructions must survive", and Sol 6.1 through Codex, OpenCode and the
+same self-managed harness.
+
+- Mixed sessions (101–115 turns, 3 seeds): rules followed in >99% of
+  replies in every harness and every model except Muse Wonder (83%, 78%).
+  Planted facts and deleted-file observations were retained 1.000 in
+  every distance × compaction cell.
+- Claude Code at 200k compacted once per mixed session and five times on
+  the marathon. The rule held through all 8 of its summaries. At the
+  default window Claude Code never compacted.
+- Hard sessions (35–36 turns of long container tasks): 74–99% adherence,
+  not split by harness or by before vs after a cut.
+
+This does not contradict salle2026benchmarks' 35.9% / 36.8% drop rates
+for process and scope instructions. The probe differs in kind. A rule
+exercised in every reply leaves a fresh copy in the transcript each turn,
+so the summarizer always sees it in recent context. Our reading: the
+class compaction drops is narrower than "chat-only instructions". It is
+chat-only instructions that apply intermittently ("how to commit",
+"don't touch X") and so may have no recent copy at the cut. That is the
+class a pin, or a summary-time quote, is for.
+
+Limits:
+- The instrument is at ceiling, which the authors say bounds retention
+  from below and cannot rank harnesses.
+- The Claude Code result rests on 8 compaction events.
+- The paper's tables count rules inside a "memory" score of 1.000 while
+  the text gives lower adherence for some cells; the released rows have
+  not been checked.
+- The self-managed harness's "standing instructions must survive" line
+  has no arm without it, so its effect is not identified.
+
+## Pinning against the optimizer: frozen safety text keeps its depth, but harm can enter through text outside the pin (2026-11-02)
+
+This concept has so far pinned rules against the compactor. In a
+self-improving loop the threat to a rule is the optimizer itself: a
+proposer edits the harness, and an acceptance gate keeps the edit if it
+scores higher. [[literature/papers/so2026masked]] shows that redundant
+safeguards erode under such a gate without any observable harm, because
+the remaining rules still block it. Freezing the safety text is pinning
+in this second sense.
+
+What freezing bought:
+- Four natural loops with credential rules and the notes' owner line
+  reset to the parent's kept the start harness's safety text, reached the
+  best clean success of any natural arm (0.725), and harmed 0 under the
+  loop's model and 0.019 under the weaker Qwen3-30B.
+- In OpsSim at a tight step budget, freezing only the one sufficient
+  layer (CONFIRM) kept all 6 loops protected while the costly layers
+  around it were deleted, for 0.05 clean success.
+- Unfrozen natural proposers mostly *rewrite* a check rather than delete
+  it: 7 of 10 accepted safety-text edits relaxed one, and the rewritten
+  layers let through 0.19 more harm when run alone.
+
+The limit is the one this concept already names, moved to a new place.
+Pinning guarantees the pinned text, not the behaviour:
+- One frozen-arm final added an unfrozen tip discouraging "extra
+  profile/account checks", which undercuts the PROFILE rule in effect.
+- In the GEPA runs every credential rule survived verbatim. Two of
+  three finals instead rewrote the note template into an instruction to
+  log in with stored credentials, and misused credentials under
+  Qwen3-30B in 2 and 5 of 40 runs (0 of 80 for the start harness).
+- Freezing requires knowing which text is safety text. The authors
+  suggest locking every instruction about credentials, accounts or
+  identity rather than one section.
+
+For this box (our inference): rules in CLAUDE.md and `.claude/rules/`
+that carry governance are already pinned against compaction by
+SessionStart re-injection. Any loop allowed to edit them should also
+treat them as read-only, and should check *added* text for
+contradictions with them.
+
+Limits:
+- Four frozen natural loops and three GEPA seeds; both are case studies.
+- The natural-loop freezing result is AppWorld only; the OpsSim one
+  freezes a single known-sufficient layer. Harm under freezing was
+  measured only under DeepSeek and Qwen3-30B.
 
 ## Open questions
 

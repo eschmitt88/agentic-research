@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/guo2026epoch]]"
   - "[[literature/papers/zhu2026who]]"
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
+  - "[[literature/papers/alfaqeeh2026beyond]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -269,6 +270,45 @@ This is waks2026what's "admissible at narrower scope" applied per result.
 The table is also a check on the paper itself: the final bridge is partial
 or open for all ten headline cases, while the contributions list still says
 "record-setting". The typing works only if the summary is held to it.
+
+## Wrong source is its own type, between grounded and absent (2026-11-02)
+
+[[literature/papers/alfaqeeh2026beyond]] labels numeric claims in
+agent-written papers against the agent's own result files with four types:
+- *traceable*: an entry gives this value for the quantity the sentence
+  describes;
+- *wrong source*: the value occurs only for another experiment, metric,
+  run, dataset or statistic;
+- *not found*: no entry supports it (explicitly not a finding of
+  fabrication);
+- *not a claim*: a setting (grid value, tolerance, threshold) or an
+  extraction error.
+
+Two of these are missing from this concept's partition. **Wrong source** is
+the dominant failure: 47 of 53 unsupported claims, 81% after reweighting.
+A presence-typed partition files it as *grounded*, since the value has a
+tool-observed witness. That is the (evidence, claim) pair point from the
+xu2026dont section above, now with a base rate. The witness is real, but it
+is evidence for another claim. **Not a claim** is 45 of 256 extracted
+numbers (18%). Settings typed as results inflate either the grounded or the
+ungrounded count, depending on whether the setting happens to appear in a
+config file.
+
+The automatic checker uses a matching ternary: *certified* / *unattributed*
+(value found, no source identified) / *untraced* (value absent). It shows why
+the middle outcome must stay out of the error rate. Among uncertified claims,
+57% (held-out) and 72% (development) were labelled traceable. This is the
+same rule as wang2026making's unverifiable and zhu2026claimreceipt's
+INCONCLUSIVE, from a third group and with human labels behind it.
+
+Limits:
+- 256 claims from 18 submissions on one benchmark. Two co-author annotators.
+  Development labels come from one annotator with blind-relabel
+  κ = 0.56.
+- Annotators saw the checker's top-3 retrieved entries. So the
+  wrong-source vs not-found split partly depends on that retrieval.
+- Wrong source is a provenance type, not intent. The artifacts cannot tell
+  drift from a motivated misreport.
 
 ## Open questions
 

@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/nguyen2026cliffcompaction]]"
   - "[[literature/papers/lencevicius2026when]]"
   - "[[literature/papers/salle2026benchmarks]]"
+  - "[[literature/papers/busch2026ctxagent]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -385,6 +386,40 @@ sessions, process and scope instructions are dropped by the summary about
 question should be asked per item type, not per task. Specs and progress
 are re-derivable from the workspace. Chat-only instructions are not, and
 those are the content an archive, or better a pinned file, is for.
+
+## Recall offered and almost never used, while non-re-observable values the agent had repeated survived every summary (2026-11-02)
+
+[[literature/papers/busch2026ctxagent]] gives the agent a `recall` handle
+for every tool result it compacts or curates away, and plants values that
+cannot be re-read: the bench writes a file with a random id, the agent
+prints it, and the file is deleted before the next turn. Seven models ran
+three 101–115-turn sessions each with the tools enabled.
+
+- `recall` was called 3 times by Opus 5.5, 2 by Haiku 5.5 and never by
+  the other five models on the mixed sessions. On the hard sessions it
+  was called once each by Haiku, Opus and Fable.
+- The deleted-file values were still answered correctly in every
+  distance × compaction cell of every arm, including Claude Code's own
+  summary (301 observations with a cut between) and Opus's hand-offs
+  (507).
+
+This is the third time an address goes unused in a workspace-backed task,
+after [[literature/papers/fan2026empirical]] (56% of settings never
+recalled) and salle2026benchmarks (archive use not reported). The
+non-re-observable values are the case this page says an address is for,
+and here the summary carried them without it. Our reading, consistent
+with [[literature/papers/lencevicius2026when]]: the agent had printed each
+value in its own reply, which makes it look like task state to a
+summarizer. The value existed in the agent's output, not only in an
+observation, so this is not lencevicius's observed-only case.
+
+Limits:
+- Recall use is from three sessions per model, and the instrument was at
+  ceiling, so "unused" cannot be split into "not needed" and "not
+  noticed".
+- The planted values are short tokens; long or structured outputs that
+  cannot be re-read (a run's stdout) are untested.
+- Claude Code's 301 observations rest on 3 compaction events.
 
 ## Open questions
 

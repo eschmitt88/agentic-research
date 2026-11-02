@@ -40,6 +40,7 @@ sources:
   - "[[literature/papers/tiwari2026assay]]"
   - "[[literature/papers/mcmillan2026instruction]]"
   - "[[literature/papers/xu2026stale]]"
+  - "[[literature/papers/zhu2026precedent]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -578,6 +579,40 @@ Limits:
   classify lines as rule vs description reliably is open.
 - The precedence sentence is untested where the description is correct and
   the code is legacy.
+
+## Tests cannot see which valid option was chosen, and only a stated priority reliably beats the code (2026-11-02)
+
+The section above splits instruction-file lines into rules and
+descriptions, and proposes typing descriptions with a code predicate.
+[[literature/papers/zhu2026precedent]] adds two points for the rule side.
+
+First, a passing test suite carries no information about intent when both
+options are valid. All 5,625 runs use pairs (int vs string IDs, flat vs
+enveloped responses, return-404 vs raise) that the same hidden tests
+accept. The paper therefore scores "joint success", meaning tests pass
+**and** a pair-specific classifier finds the target option. Without the
+rule, 0/60 runs used the target, yet 238 of all 240 guidance runs passed
+the tests. A gate that checks only tests would pass every one of those
+0/60 runs. The classifier is exactly the kind of deterministic predicate
+the typed-description proposal needs (an AST or grep check on the choice),
+applied to the new code rather than to the file.
+
+Second, the form of the rule matters. Against six opposite files, a rule
+that states the target and its priority gives 59/60. A worked code example
+without a stated priority gives 38/60, because the example is "one more
+precedent that competes with the repository". On this evidence, a typed
+rule line would carry a priority field ("over existing code: yes/no"), not
+only a target. That is our extension. The paper proposes "design-decision
+traceability" and builds no mechanism.
+
+Limits:
+- The classifiers are per pair and hand-built for six style or shape
+  choices. Whether such predicates generalise to real conventions is
+  untested.
+- The rule-vs-example gap is entirely Sonnet-4-6; gpt-6-sol followed the
+  example 30/30.
+- There is no arm stating the target without the priority clause, so the
+  clause's own contribution is not isolated.
 
 ## Connections
 

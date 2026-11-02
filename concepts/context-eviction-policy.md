@@ -63,6 +63,7 @@ sources:
   - "[[literature/papers/xu2026what]]"
   - "[[literature/papers/lencevicius2026when]]"
   - "[[literature/papers/salle2026benchmarks]]"
+  - "[[literature/papers/busch2026ctxagent]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -962,6 +963,53 @@ Rule: validate a compaction change on the backbone that will run it. If
 the summarizer is a different model, test it against the task model on
 the same tasks first. The paper only shows a same-provider cheap
 summarizer to be safe, and only for Opus.
+
+## A prompt alone moves the compaction decision to the model, for some models only, and the saving is in the cache bill (2026-11-02)
+
+The 2026-08-10 note below records li2026acm's finding that untrained
+GPT-5.5 barely used its context tools, so the agent locus seemed to need
+training. [[literature/papers/busch2026ctxagent]] tests the untrained,
+prompt-only version on seven current models. Each gets two tools
+(`compact_context` writes a hand-off summary, `curate_context` swaps
+acted-on tool results for one-line notes) and one paragraph of guidance.
+Sessions run 101–115 turns, 3 seeds, at a 1M window. Arm B removes the
+tools.
+
+- Opus 5.5, Sol 6.1 and Astra 6 compact every ~10 turns at task
+  boundaries and keep context near 50–80k. Opus cost ratio A/B 0.57, Sol
+  0.69, with SciCode steps 77 vs 80 and 71 vs 72 of 80.
+- Haiku 5.5 and Muse Wonder never called `compact_context`. Sonnet 5.5
+  compacted in one session of three and lost 8 of 80 steps (65 vs 73).
+- Sol under no context pressure still cut 7 times in clean chains and
+  passed 62/86 against Codex's 68/86. Opus made 0 cuts there.
+
+Against Claude Code on the same Opus 5.5 sessions, the self-managed arm
+cost $4.80 per session against $7.31 at an explicit 200k window (1 cut at
+~168k) and $9.35 at the default window, where Claude Code never compacted
+and the context reached 277k. Success was 0.969 vs 0.979 (McNemar 3/0,
+p = 0.25). With Sol the order reversed: long hand-offs made CTXAgent 16%
+dearer than Codex at 200k and 2.2× on the 212-turn marathon. The saving
+also depends on the price list: the same behaviour saves about 50% where
+cache reads cost a tenth of input and about 0% where they cost a
+fortieth.
+
+So the three-way locus question below now has a fourth data point. A
+prompt-only agent locus works for the strongest models, and whether it
+pays depends on the model's hand-off length and the provider's cache-read
+ratio. This is the dollar side of bai2026how's "cache reads dominate".
+
+Limits:
+- 3 seeds per cell, one marathon session; success differences not
+  significant; no test reported for the seven-model comparison.
+- Each vendor CLI ran only its own vendor's model, so harness and model
+  are confounded across vendors.
+- The memory probes were at ceiling in every arm, so the comparison is on
+  cost and task score, not on what was lost.
+- The 49% figure is against a Claude Code arm that never compacted.
+
+Rule: if the backbone is Opus-class, a hand-off tool plus one paragraph
+is a credible alternative to a threshold. Validate it per model on billed
+cost, since the same prompt made Sol more expensive.
 
 ## Open questions
 
