@@ -830,3 +830,39 @@ Weekly rollup for 2026-10-20 → 10-26 (sourced from journal/ + _meta/log.md).
 - Document the /digest harvest order (OAI-PMH, then listing-page fallback); SKILL.md says WebSearch.
 - Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
   sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
+
+## 2026-11-02
+
+Weekly rollup for 2026-10-27 → 11-02 (sourced from journal/ + _meta/log.md).
+
+### Did
+- 10-27 /curate closed the 10-26 backlog: 29 items (7–20 + near-misses) → 16 ingested (2 near-misses
+  promoted: `lehmann2026can`, `shao2026do`), 13 declined, archived to `_done/`. Papers 285 → 301,
+  51 edits / 21 concepts.
+- 11-01 /elevate: 1 proposal from 9 considered, control passed. **precompact-chat-only-constraints**
+  (one bullet in `hooks/pre-compact.sh`: quote chat-only process/scope instructions verbatim in the
+  compaction summary). Gate 1: `salle2026benchmarks`, `chen2026governance`, `lencevicius2026when`, +1. Held 8.
+- 11-02 digest → auto-ingest (go/high). OAI-PMH 503'd again; arXiv API by date + listing fallback.
+  20 candidates; top 6 ingested, 21 edits / 13 concepts. Papers 301 → 307.
+- /promote-moc declined 10-27 and 11-02 (concepts held at 35, all mapped).
+
+### Findings
+- Abstracts still overstate: 116 PDFs since 09-22, 98 below their digest entry, 18 at, none above.
+  (The 11-02 digest log says 100/86/14 because it left out the 10-27 batch of 16.)
+- Redirect-before-halt: still no redirect-vs-halt arm. `lyu2026where`, `karim2026explore`,
+  `chen2026knowing` weakly support an enforced pivot. `srinivasan2026continue` gives the test
+  design (stall trigger vs random trigger at a matched rate vs just continuing). A cold restart
+  lost in every setting, so a forced pivot should keep the chain's state.
+- Known-bad preflight: `shao2026do` supports it (one trace). `kim2026elicitation` (scorers failing
+  correct answers) argues for restoring the dropped known-good check. `zhu2026who`: score the do-nothing
+  submission from the task's real start state. `zhou2026does`: also compare a gain to best-of-N unchanged.
+- `zhu2026precedent` half-closes the `xu2026stale` gap. `busch2026ctxagent` retention probes hit
+  the ceiling, so they're neutral on the precompact proposal.
+
+### Next
+- Decide the three pending proposals: 10-18 redirect-before-halt, 10-25 hce-known-bad-preflight
+  (fold in the known-good check and real start state), 11-01 precompact-chat-only-constraints.
+- Curate items 7–20 + near-misses in `raw/_candidates/2026-11-02-digest.md`.
+- Document the /digest harvest order (OAI-PMH → arXiv API by date → listing pages); SKILL.md says WebSearch.
+- Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
+  sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
