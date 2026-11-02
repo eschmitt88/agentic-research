@@ -823,3 +823,15 @@ Three web searches found nothing new inside the window, and again no paper that 
 Commits: `7221892`, `8ab23b4`, `90dcf26`, `029373e`, `b5b9a58`. The branch is in sync with `origin/main`.
 
 The "Next" item to document the fallback order in `/digest` is still open, and the skill file still says it searches with WebSearch. This run's order was OAI-PMH, then the arXiv search API by date, then the listing pages. That differs from the 10-19 run, which went straight to the listing pages.
+I added a `## 2026-11-02` weekly rollup covering 10-27 → 11-02 to the end of `NOTES.md`. It's committed as `1f608cf` and pushed, and `main` matches `origin/main`. The entry is 31 non-blank lines.
+
+**What it covers**
+- **Did:**
+  - **10-27 /curate** closed the 10-26 backlog: 16 ingested, 13 declined. Papers went 285 → 301.
+  - **11-01 /elevate** raised one proposal, `precompact-chat-only-constraints`.
+  - **11-02 digest** auto-ingested its top 6. The bulk arXiv feed returned errors again, so it used the fallback sources. Papers went 301 → 307.
+  - **/promote-moc** declined twice. The concept count stayed at 35, all of them already in a map of content.
+- **Findings:** the running "abstracts overstate" count, plus what this week's papers add to the redirect-before-halt and known-bad-preflight proposals. It also notes `zhu2026precedent` and `busch2026ctxagent` against the `xu2026stale` gap and the precompact proposal.
+- **Next:** three proposals are now waiting on you (10-18, 10-25 and 11-01). The 11-02 digest items 7–20 still need curating. The other open items carry forward unchanged, including documenting the /digest harvest order.
+
+**Count discrepancy:** the 11-02 digest log reports 100 papers checked against their digest entries (86 below, 14 at). That total leaves out the 16 papers from the 10-27 curate. The correct running total is 116: 98 below their digest entry, 18 at, none above. The rollup uses 116 and notes the gap. I didn't edit the digest log, so the wrong number is still in `_meta/digest.log` if you want it fixed there too.
