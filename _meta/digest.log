@@ -784,3 +784,42 @@ I added the weekly rollup for 10-20 → 10-26 to `NOTES.md` under `## 2026-10-26
 The entry is 36 lines with headings and blank lines, about 28 of content, so slightly over your ~30 if you count every line. It doesn't repeat the 10-19 entry.
 
 There was also an uncommitted tail of the 10-26 digest session transcript in `_meta/digest.log`. I committed it on its own (`e436a9d`), the same way last week's leftover log was handled. The rollup itself is `59d2b6a`.
+Six readers are running, one per paper (items 1–6). The candidates file and fetched PDFs are already committed and pushed (`7221892`, `8ab23b4`). When the readers finish I'll apply their concept edits one at a time, commit, push, run `/promote-moc`, and record the curation.
+
+One of six readers is done. `zhu2026precedent` reads mildly below its framing. Its numbers are accurate, but the code is never actually stale, and the rule ships with an explicit priority clause. So it closes only half of the `xu2026stale` gap: no condition pits an "existing code wins" rule against a correct instruction. I'm waiting on the other five.
+
+Two of six readers are done. `busch2026ctxagent` reads below its framing. The cost saving holds, but only on Opus: 3 seeds per cell, and the success difference isn't significant. Its retention probes hit the ceiling, every one kept and rules followed over 99% of the time in every harness. That makes them useless for the precompact proposal: they neither support nor weaken it. I'm waiting on the other four.
+
+Three of six readers are done. `so2026masked` reads moderately below its framing. Its counts are right, and the core masking mechanism holds. But the frozen model's predictions held in only 7 of 14 tests. The "equal cost" result comes from one setting with 6 loops per arm, and the cost is measured in task success, not compute. The GEPA result is 3 seeds, which the authors themselves call a case study. Waiting on `zhou2026does`, `srinivasan2026continue` and `alfaqeeh2026beyond`.
+
+Four of six readers are done. `srinivasan2026continue` reads mildly below its framing:
+- **Not compute-matched.** The two arms share a token cap, not equal spend, and continuation actually spends less.
+- **Learned restart loses.** It is significantly worse than random restart in 2 of the 4 settings.
+- **The headline is mostly arithmetic.** Continuation wins largely because of the budget split, as the paper itself says.
+
+For redirect-before-halt, it gives an evaluation template rather than the missing arm. It also shows a cold restart lost in every setting, which suggests a pivot has to keep the chain's state. Waiting on `zhou2026does` and `alfaqeeh2026beyond`.
+
+The weekly digest ran and is pushed. It found 20 new candidates, and the top 6 are fetched and ingested. The other 14 and the near misses are left for `/curate`, so the candidates file stays out of `_done/`.
+
+**Harvest.** arXiv's bulk feed (OAI-PMH) failed again. It timed out with a 503 error after about 3 minutes, even for a single day. I fell back to the arXiv search API by submission date: 2,698 records across 11 categories, plus 130 more found only on the listing pages, for 2,858 in total. None were already in the graph. Revised versions of older papers were not screened. A keyword filter left 632 papers. I read all 632 titles and 93 abstracts, and kept 20 in `raw/_candidates/2026-11-02-digest.md`.
+
+Three web searches found nothing new inside the window, and again no paper that compares redirecting the agent against halting it. Two older on-topic papers are listed as near misses: [Fail-Fast, Restart-Smart](https://arxiv.org/pdf/2608.03222) and [LLM-as-a-Judge Is Not an Oracle](https://arxiv.org/pdf/2609.02246). The other hits were already in the graph: [chen2026knowing](https://papers.cool/arxiv/2610.31895), [xu2026stale](https://www.emergentmind.com/papers/2610.30571.md) and [mcmillan2026instruction](https://arxiv.org/abs/2605.10039).
+
+**Ingest.** The agency check said go/high before and after, so I ingested the top 6. Papers went 301 → 307, with 21 additions across 13 concepts and no existing text changed. The concept count stayed at 35. `/promote-moc` declined because no concepts were added and all 35 are already in a map of content. The lint check found only the 4 dead links that were already there.
+
+**Four of the 6 papers were weaker than their abstracts suggested, and two matched.** The running count since 09-22 is now 100 papers: 86 weaker than their digest entry, 14 matching, none stronger.
+- **`zhou2026does`** (skill optimizers vs selection alone; matches): learned skills beat their hand-written starting skill by +0.1 points. Gains on the development tasks of that size show up even when nothing changed. But the "nothing changed" baseline is simulated from a statistical model, not re-run. Each optimizer ran once per setting.
+- **`alfaqeeh2026beyond`** (wrong numbers in agent-written papers; matches, one point weaker): the checker certifies only 23% of claims. Both annotators are co-authors. The headline "3×" drops to about 1.8× on claims that weren't used to tune it.
+- **`srinivasan2026continue`** (continue vs restart): learned restarts lost to random restarts in 2 of 4 settings. Continuing wins mostly because of how the budget is split, and the two arms share a cap rather than equal spend. A cold restart lost in every setting.
+- **`zhu2026precedent`** (follow the code or the instruction?): this half-closes the gap in `xu2026stale`. A correct instruction beats the existing code, but no test pits an "existing code wins" rule against a correct instruction.
+- **`so2026masked`** (acceptance gates quietly deleting backup safeguards): the mechanism holds. But the authors' own pre-registered predictions held in only 7 of 14 tests, and the GEPA result rests on 3 runs.
+- **`busch2026ctxagent`** (model manages its own context): every rule survived in every harness, so the test can't tell harnesses apart. The cost saving holds only on Opus, and the success difference isn't significant.
+
+**What this means for the pending proposals:**
+- **Redirect-before-halt** still has no redirect-versus-halt comparison. `srinivasan2026continue` gives a test design: compare the stall trigger against a random trigger at matched rate and against simply continuing. Its cold-restart losses suggest a forced pivot should keep the chain's state.
+- **Precompact (11-01)**: `busch2026ctxagent` neither helps nor hurts it. Its one rule was repeated every turn, while the proposal targets instructions given once.
+- **Known-bad preflight (10-25)** gains a related check from `zhou2026does`: before accepting a change, compare its gain with what picking the best of several unchanged candidates would report.
+
+Commits: `7221892`, `8ab23b4`, `90dcf26`, `029373e`, `b5b9a58`. The branch is in sync with `origin/main`.
+
+The "Next" item to document the fallback order in `/digest` is still open, and the skill file still says it searches with WebSearch. This run's order was OAI-PMH, then the arXiv search API by date, then the listing pages. That differs from the 10-19 run, which went straight to the listing pages.
