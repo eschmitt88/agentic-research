@@ -768,3 +768,20 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-11-02 07:30 ingest raw/papers/alfaqeeh2026beyond.pdf
 2026-11-02 promote-moc declined (graph unchanged since d006d6a, 35/35 concepts mapped)
 2026-11-02 07:30 digest-autoingest n=6 verdict=go/high
+2026-11-03 04:02 fetch-paper 2610.36544 → raw/papers/jain2026monitor.pdf
+2026-11-03 04:02 fetch-paper 2610.33281 → raw/papers/ren2026coral.pdf
+2026-11-03 04:02 fetch-paper 2610.34577 → raw/papers/zhang2026rethinking.pdf
+2026-11-03 04:02 fetch-paper 2610.35793 → raw/papers/singharoy2026quantifying.pdf
+2026-11-03 04:02 fetch-paper 2610.41014 → raw/papers/deeb2026towards.pdf
+2026-11-03 04:02 fetch-paper 2610.32986 → raw/papers/zhang2026llmasajudge.pdf
+2026-11-03 04:02 fetch-paper 2610.40700 → raw/papers/ellington2026automatic.pdf
+2026-11-03 04:02 fetch-paper 2610.35866 → raw/papers/chen2026autoresearch.pdf
+2026-11-03 04:02 fetch-paper 2610.35579 → raw/papers/ganesan2026infinity.pdf
+2026-11-03 04:02 fetch-paper 2610.33029 → raw/papers/nakayashiki2026lessons.pdf
+2026-11-03 04:02 fetch-paper 2610.33201 → raw/papers/laddha2026position.pdf
+2026-11-03 04:02 fetch-paper 2610.34938 → raw/papers/treude2026how.pdf
+2026-11-03 04:02 fetch-paper 2610.37734 → raw/papers/sanko2026when.pdf
+2026-11-03 04:02 fetch-paper 2610.40488 → raw/papers/kanke2026rtaste.pdf
+2026-11-03 04:02 fetch-paper 2610.37739 → raw/papers/yao2026openfrontiers.pdf
+2026-11-03 04:02 fetch-paper 2610.34386 → raw/papers/wang2026paretorsigym.pdf
+2026-11-03 04:02 fetch-paper 2610.38882 → raw/papers/li2026aligning.pdf
