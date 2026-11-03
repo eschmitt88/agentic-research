@@ -79,6 +79,7 @@ sources:
   - "[[literature/papers/jain2026monitor]]"
   - "[[literature/papers/ren2026coral]]"
   - "[[literature/papers/chen2026autoresearch]]"
+  - "[[literature/papers/wang2026paretorsigym]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -2086,6 +2087,51 @@ Limits:
 - No halt rule was tested. Sequential stops only when the budget runs out.
 - Launches cover a 10-minute training run. Per-launch GPU-hours vary by
   track, since time-to-quality runs end early.
+
+## The ceiling's unit is part of the objective: a token cap on training data bought short answers and cost 20 points of math (2026-11-03)
+
+Sections above treat the unit of a ceiling as an accounting question:
+tokens vs cycles vs launches, and whether arms are matched in it.
+[[literature/papers/wang2026paretorsigym]] (ParetoRSI-Gym) shows the unit
+also steering *what* the agent buys. Each curation round caps the training
+pool at 15M tokens and 40k entries. Training and evaluation compute are
+harness-paid and identical across agents. Agent spend is capped at about
+$3 and 30 minutes per round, with a 12-minute plan-before-read deadline
+that the harness enforces by refusing reads.
+- **The unit selected the content.** In a Claude Code + Opus-5 run on
+  Olmo-3-7B (App. D.1–D.2), round 1 filtered NuminaMath to "concise math CoT (≤5k chars)
+  to finish solutions within budget". Math fell 20.1 points. Every domain
+  but finance lost its long-reasoning style (answers of 65–718 tokens
+  against 2,279). Round 2 switched to long `<think>` traces and recovered
+  math "with a seventh of the entries". A cap in tokens favors short items,
+  and here short items were the wrong ones. The agent read the ceiling as a
+  price signal.
+- **A prompt floor on spending was underrun again.** The prompt says "Aim
+  to use the full budget: tokens you do not schedule are simply lost." In
+  the one transcribed round, Codex scheduled 10.0M of 15M. This is a
+  smaller miss than jiang2026researchfloweval's tenfold underrun, but in the
+  same direction: a spending floor in prompt text did not bind.
+- **The harness-enforced deadline did bind.** Codex used all 12 planning
+  minutes, and the plan gate is a refusal, not a reminder. This is a
+  wall-clock ceiling enforced at the tool boundary, as wang2026clock
+  recommends.
+- **Dollar-matched is not token-matched across vendors.** $3 per round buys
+  far more deepseek-v4-flash tokens than Opus-5 tokens. Realized agent
+  spend is not reported, so the cross-agent ranking is matched only on the
+  training side.
+
+For `/iterate` (our inference): when a ceiling is denominated in a unit the
+agent's choices trade against (tokens per example, wall-clock per run), log
+what the agent gave up to fit it. Check whether a quality axis moved with
+the unit before crediting or blaming the arm.
+
+Limits:
+- The short-answer episode is one run, with the agent's stated reason and
+  the authors' reading. There is no arm with an entry-count or uncapped
+  budget.
+- The 10.0M/15M figure is one round of one run. Pool-fill rates across runs
+  are not reported.
+- The plan deadline's effect on outcomes is not ablated.
 
 ## Open questions
 

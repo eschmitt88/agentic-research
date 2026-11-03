@@ -16,6 +16,7 @@ sources:
   - "[[literature/papers/chen2026evigraph]]"
   - "[[literature/papers/xiao2026search]]"
   - "[[literature/papers/singharoy2026quantifying]]"
+  - "[[literature/papers/yao2026openfrontiers]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -223,6 +224,45 @@ Limits:
   better retrieval.
 - Claude systems' search results are encrypted, so their 2% "opened" is a
   lower bound on what the model saw.
+
+## "Pin retrieval to a frozen corpus" takes more than a date filter (2026-11-03)
+
+The contamination section above tells a downstream project to disable
+search during scored runs or pin retrieval to a frozen corpus.
+[[literature/papers/yao2026openfrontiers]] built such a corpus for agents
+on research-math problems solved in 2026, and the build shows what the
+pin needs. The corpus is search and fetch over arXiv, Wikipedia,
+MathOverflow and OpenAlex, as of one week before the earliest solution.
+- **Search indexes today's text.** A date-restricted query can still
+  surface a page whose current text includes the answer. Every hit is
+  therefore re-verified against the historical version it displays.
+- **Serve the last pre-cutoff version, not the latest.** arXiv returns
+  the latest version submitted before the cutoff. Wikipedia and Stack
+  Exchange return the last pre-cutoff revision. Stack Exchange shows only
+  questions, answers and comments posted before the cutoff.
+- **Merged metadata records leak.** OpenAlex merges preprint and journal
+  records, and a merged record can carry a post-cutoff abstract. The
+  authors expose only journal or proceedings records. Other sites are
+  refused.
+
+What it bought: against the same items, the frozen arm scored about the
+same as closed-book (B beat A in two of 14 runs and trailed in others).
+Live web scored 1–27 of 40, and 167 of 181 live-web solves came from
+attempts that fetched a located solution source. So on this task the pin
+removed the lookup route without adding a technique gain.
+
+This qualifies wang2026search's Valyu point above. A curated source list
+is unsafe relative to a task's provenance, and a dated one is safe only
+if the serving layer, not just the query, is dated. For this project,
+nothing is scored, so `/digest` and `/discover` stay on live web.
+
+Limits:
+- One attempt per item and condition. 40 items. Mathematics, where the
+  missing step is a new idea that pre-solution literature would not
+  contain. The B ≈ A null may not carry to tasks where technique lookup
+  matters.
+- The paper does not report how many re-verification checks failed, so
+  the leak rate of a date filter alone is not measured.
 
 ## Open questions
 

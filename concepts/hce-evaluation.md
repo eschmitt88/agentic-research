@@ -129,6 +129,8 @@ sources:
   - "[[literature/papers/ellington2026automatic]]"
   - "[[literature/papers/chen2026autoresearch]]"
   - "[[literature/papers/ganesan2026infinity]]"
+  - "[[literature/papers/yao2026openfrontiers]]"
+  - "[[literature/papers/wang2026paretorsigym]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3109,6 +3111,116 @@ Limits:
 - The tasks are exact-verifier math tasks with a hand-written linear score
   map. A learned or LLM scorer can be wrong about order in ways a two-point
   check would not catch.
+
+## Clause 1's retrieval route, measured on the same items: closed-book 0–7 of 40, live web up to 27, and a URL-fetch audit to log it (2026-11-03)
+
+Clause 1 says that retrieving the task's own published solution is
+holdout access by another route. wang2026search (above) measured that
+route on QA benchmarks by tiering what agents fetched.
+[[literature/papers/yao2026openfrontiers]] measures it as an arm gap on a
+rediscovery task: 40 research-math problems first solved in 2026, Lean 4
+statements, two independent proof checkers, no LLM judge. Seven agents
+(Claude Code and Codex) ran one 3-hour attempt per item under three
+conditions that differ only in retrieval:
+- **A, closed-book:** 0–3 solved natively, 0–7 when the session is
+  resumed to the full budget. 44 of all 53 A and B solves are on three
+  short, human-solved items.
+- **B, frozen retrieval** (arXiv, Wikipedia, MathOverflow, OpenAlex, as of
+  one week before the earliest solution): no systematic change from A.
+- **C, live web:** 1–27 solved. 167 of 181 C solves came from attempts
+  that fetched a located solution source.
+
+Three points for this concept:
+- **The score moves by an order of magnitude through the retrieval route
+  alone.** Pooled over models, solves go 9 → 69 natively and 19 → 112
+  under continuation from A to C. The sandbox, items and grader do not
+  change. This is the clause's "the score stops measuring search and
+  starts measuring lookup", measured.
+- **Technique-level retrieval did no harm, and also no good, here.** B
+  served the pre-solution literature and matched A. That fits the clause's
+  exemption for technique queries. It is weak support, since closed-book
+  scores sit near the floor.
+- **The fetch audit is implementable as written.** In C, every fetched
+  URL is normalized (arXiv ID, DOI, repository, problem page) and matched
+  against the item's known solution sources. For a downstream project
+  that is the "record it in `log.md`" step: keep a list of the task's
+  known solution URLs (leaderboard, discussion threads, published
+  write-ups) and match the trajectory's fetches against it.
+
+Grader preflight in both directions. The benchmark's checker validation
+adds to the known-answer pre-flight sections above (10-20, 10-27). It
+replays public proofs for 50 items (known-good). It probes each statement
+with a wrong answer and with stock automation (known-bad), and self-tests
+the grader with reject cases including a compile-time file write. It also
+runs the comparator's 16 official regression attacks. After porting, the
+stock comparator let one of its own attacks (a projection attack) pass.
+The authors patched it. A do-nothing submission would not have caught
+this: the adversarial reject set did. The agent's own pre-check tool
+applies the static rules without consulting the reference answer, so
+unlike lee2026when's probe it carries no answer signal.
+
+Limits:
+- "Came from attempts that fetched a source" is URL co-occurrence, not
+  trace-proven copying. It is wang2026search's exposure tier, which that
+  paper found over-reports. The paper does not give the count of C
+  attempts that fetched a source and still failed.
+- One attempt per item, condition and protocol. No seeds. 40 scored
+  items, and per-model clean subsets of 5–33.
+- Mathematics with formal proof, not ML research. The arm gap may be
+  smaller where solutions are scores rather than proofs to adapt.
+- Three open items were accepted by both checkers under live web. Their
+  review outcome is not reported.
+
+## In a weight-updating curation loop, a same-benchmark held-out split passed a format gain the authors named, and the proxy-to-held-out gap was never tabulated (2026-11-03)
+
+The 10-19 section above showed, on harness evolution, that a held-out split
+drawn from the search benchmark passes a benchmark-specific artifact.
+[[literature/papers/wang2026paretorsigym]] (ParetoRSI-Gym) shows the same
+thing in a loop that changes model weights. An agent curates Hugging Face
+data over five rounds, LoRA-trains a 3–7B base model, and reads per-item
+results on five proxy sets. Reported scores come from a "generalization" set
+it never sees.
+- **The split is structural, and checkpoint selection is clean.** Training
+  and evaluation are harness-owned. Every registered row is 13-gram
+  decontaminated against proxy and held-out items. The proxy-best checkpoint
+  is the argmax of the proxy mean, and the held-out set is scored after the
+  run. So the reported number has no held-out winner's curse. That is
+  cleaner than AIDE²'s selection on its "private" score (10-29 section).
+- **Four of five held-out sets are disjoint items of the proxy's own
+  benchmark** (MATH500, GPQA, MedBullets and SuperGPQA, each split ID/OOD).
+  Only code changes benchmark (MBPP+ → HumanEval+). The headline cell,
+  +63% relative on Ministral medicine, is partly "the model learning the
+  answer format", in the authors' words. It passed the held-out check
+  because the held-out set shares the format. The agent's prompt says such a
+  gain will "buy nothing where the run is decided". For 4 of 5 axes, the
+  split cannot back that sentence.
+- **The overfitting detector was never read out.** The design's stated
+  purpose is to separate gains from proxy overfitting. Yet the main table
+  has no proxy columns, so no system has a reported proxy-to-held-out gap.
+  In the one plotted run, code's held-out gain (~+11) is *larger* than its
+  proxy gain (≤ 3). This is the mang2026frontiercs omission (10-27 section)
+  in a second benchmark: the logs hold the gap and the paper does not
+  report it.
+- **An oracle row spends the holdout.** "Domain Best" picks each domain's
+  best round on the held-out set. It is labeled non-deployable, but its
+  "2.0-point cost" is a max over five noisy reads, uncorrected.
+
+Rule (our inference): when the held-out split comes from the search
+benchmark, also report a different-benchmark transfer score per domain, and
+tabulate the proxy-to-held-out gap per run. A known-format probe (gold
+answers written in the base model's own style) tells how much of the
+do-nothing floor is extraction rather than knowledge. That probe is the
+known-good half of the pending preflight proposal.
+
+Limits:
+- Three seeds for two systems, one run for the third, no CIs. The +2.3-point
+  headline is about 1.5 SE from zero across the three base models (our
+  arithmetic).
+- The format share of the medicine gain is the authors' qualitative call.
+- No planted-overfit arm, and no audit of agent-written rows. Paraphrased
+  proxy items would pass a 13-gram filter.
+- Fig. 2 and Table 3 disagree on the one cell they share (Qwen3-4B, Codex,
+  code).
 
 ## Open questions
 

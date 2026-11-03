@@ -46,6 +46,7 @@ sources:
   - "[[literature/papers/ellington2026automatic]]"
   - "[[literature/papers/chen2026autoresearch]]"
   - "[[literature/papers/kanke2026rtaste]]"
+  - "[[literature/papers/wang2026paretorsigym]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -728,6 +729,50 @@ Limits:
   executors). Auditors saw outcomes and ranked event-occurred MVEs higher,
   so "most valued" partly rewards passing.
 - Five siblings per batch, one generation. Nothing on later generations.
+
+## In a five-round data-curation loop with a checkpoint archive, the last checkpoint trailed the proxy-best one, agents rarely branched back, and new sources dried up (2026-11-03)
+
+[[literature/papers/wang2026paretorsigym]] (ParetoRSI-Gym) gives the agent
+an archive: every round's checkpoint stays in a model pool, and the next
+round may train from any of them or from the base. The fitness signal is a
+five-domain proxy vector. Three agents × three base models, five rounds,
+three seeds for two of the agents. Four observations bear on this concept:
+- **Return the best, not the last.** In 7 of 9 configurations the
+  proxy-best round is not the final one. On held-out scores, returning the
+  proxy-best round instead of the final one moves the 15-cell mean from
+  +1.0 to +2.3 for Claude Code and from +0.3 to +0.6 for Codex (our
+  arithmetic from Table 3). This is the cheapest selection rule in the
+  concept, and it uses only the feedback split.
+- **The archive is barely used as an archive.** Claude Code trains 46% of
+  later rounds from the previous one, 36% from the base and 18% from an
+  older round. CheetahClaw restarts from the base in 67% and never branches
+  back. The one run where branching back mattered (Ministral: round 3
+  rebuilt on round 1 after round 2 lost 7.8 on medicine) produced that
+  run's only round at or above the base on every domain. One run, no arm.
+- **Diversity collapses on its own.** New datasets entering the pool fall
+  from about 5–6 in round 1 to about 0 in round 5 for all three agents.
+  Pools are agent-specific: Jaccard 0.24 between runs of one agent and 0.07
+  across agents, with no rise when the base model is shared (0.23 vs 0.25).
+  The mutation distribution is the agent's habit, not a response to the
+  target. Loosely, this echoes the DGM section above: edits not aimed at
+  what the feedback shows.
+- **Pareto in name, scalar at selection.** The agent is told to push the
+  whole vector, and sees the non-dominated set. But t* is the argmax of the
+  proxy mean, and in 43 of 45 domain cells the best round for that domain
+  is a different one. A multi-objective loop that hands back one model
+  needs a stated scalarization, or an archive that hands back the front.
+
+What it does not show: that iteration beats one round. In the fixed-
+backbone harness ablation, the two stronger harnesses peaked at round 1.
+No one-round or non-agent curation arm is run at the same 15M-token budget
+(cf. ellington2026automatic's one-shot arm above).
+
+Limits:
+- No CIs. Seed SDs (Qwen3-4B only) are 1–3 points per domain, up to 6.9.
+- The final-vs-best gap includes the 2 of 9 configurations where they
+  coincide. The per-run t* is not tabulated.
+- Restart shares and dataset counts are averaged over runs, and the run
+  count is stated inconsistently (9, ~21, or 10 logged runs).
 
 ## Open questions
 

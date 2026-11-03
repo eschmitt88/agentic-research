@@ -30,6 +30,7 @@ sources:
   - "[[literature/papers/deeb2026towards]]"
   - "[[literature/papers/ellington2026automatic]]"
   - "[[literature/papers/ganesan2026infinity]]"
+  - "[[literature/papers/yao2026openfrontiers]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -505,6 +506,53 @@ Limits:
   two are not independent in the sense of [[concepts/hce-evaluation]]'s
   "the judge must not be a contestant" (10-19).
 - Single-author preprint, cred 2.
+
+## The time boundary needs a lineage clause: a post-cutoff solution is not clean if the evaluated model's vendor produced it (2026-11-03)
+
+The time boundary above (wang2026evobrowsecomp, qu2026propose) counts an
+item as clean when its answer appeared after the model's training cutoff.
+[[literature/papers/yao2026openfrontiers]] shows that the date is
+necessary and not sufficient. Of 110 research-math problems first solved
+in 2026, the solution materials credit an AI system with the key
+mathematics in 55 (OpenAI 46, Anthropic 5, Google 4, Harmonic 3). A model
+whose lineage produced a solution "has in effect seen it". So the
+benchmark scores each model on a clean subset. The subset drops items
+whose key mathematics came from that model's lineage and items with
+solution evidence on or before its cutoff.
+
+The cut is large and model-specific. On the 40-item evaluation set, it
+leaves 15 items for the OpenAI models, 30 for Claude Sonnet 5.5, and 5
+for DeepSeek-V4.1-Flash (because of its late release date). Scores move
+with it. GPT-6.1-sol's live-web score goes from 27/40 to 12/15, and
+DeepSeek's native live-web score from 13/40 to 0/5. This is the fifth
+boundary's grain point (chen2026false), applied to the agent rather than
+the evaluator: a holdout cut by date leaks when items share an upstream
+author with the model.
+
+The same paper also draws the time boundary *inside retrieval*, which
+neither the retrieval-space nor the time sections above did. Its
+frozen-retrieval arm serves arXiv, Wikipedia, MathOverflow and OpenAlex
+as of a fixed date. A date filter alone is not enough: search indexes
+today's text, so every hit is re-checked against the historical revision.
+OpenAlex is limited to journal records, because merged preprint records
+carry later abstracts. With that boundary held, retrieval did not raise
+the score over closed-book. With live web it rose from 9 to 69 solves
+pooled, and 167 of 181 live-web solves came from attempts that fetched a
+located solution source. That is ludwig2026shortcutting's pass-rate gap
+again, now on a rediscovery task rather than SWE.
+
+For a downstream project on public tasks: when dating the holdout, also
+record who produced each answer. Drop items produced by the evaluated
+model's vendor, and report clean-subset sizes per model.
+
+Limits:
+- The lineage labels come from disclosures in the solution materials. An
+  item marked "no AI disclosed" (19 of 110) may still have used AI.
+- One attempt per cell, 40 items. Clean subsets differ by model, so clean
+  scores are not on a common item set.
+- Mathematics, not ML research. The domain gap in Connections stays open.
+- The 167/181 attribution is URL co-occurrence (exposure tier), not
+  trace-proven copying.
 
 ## Connections
 
