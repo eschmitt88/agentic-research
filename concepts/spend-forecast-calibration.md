@@ -12,6 +12,7 @@ sources:
   - "[[literature/papers/wang2026clock]]"
   - "[[literature/papers/kumar2026turncost]]"
   - "[[literature/papers/srinivasan2026continue]]"
+  - "[[literature/papers/jain2026monitor]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -332,3 +333,38 @@ carries with it. It extends the section above: admission needs a cost
 estimate, unless the action can be made to carry a hard upper bound that
 the harness enforces. The cost is lost work. A clamped training run ends
 early, and quality fell slightly (46.8 vs 49.4 percentile, within noise).
+
+## A completion-time cutoff calibrated on one model inverted on another (2026-11-03)
+
+This concept asks for "measured history plus an explicit uncertainty
+margin". [[literature/papers/jain2026monitor]] shows how narrowly the
+history has to match. A restart cutoff is a forecast of spend-to-success:
+it bets that runs that have not finished by call c will not finish soon.
+
+- **Same tasks, same harness, other model.** On 7 SymPy issues with
+  5 runs each, Luna finishes mostly by call 16, so a 16-call cutoff gains
+  +2.29 pp [0.00, 6.86] in-sample. DeepSeek finishes mostly at calls
+  21–30. The same cutoff takes it from 68.57% to 26.29%: −42.29 pp
+  [−69.14, −17.71]. Its best cutoff is no cutoff.
+- **Same model, other tasks.** Leave-one-task-out selection gives −7.31 pp
+  on Luna. On 12 new tasks the 16-call cutoff ties (one cohort is solved
+  by call 15 every time) or loses (0% vs 4%). Pooled: −0.21 pp
+  [−4.21, 2.53].
+- **No schedule escapes this (Prop. 3.3).** For any fixed cutoff there are
+  completion-time distributions where it beats running to the budget and
+  others where it loses. Luby schedules scored zero on DeepSeek, because
+  no episode was long enough.
+
+For this concept: a forecast used to cut work short must be calibrated on
+the same model, harness and task population, and checked held out by
+task. A model swap is a recalibration event. The paper notes that a
+hosted model ID plus a date does not fully identify the runtime. This
+matches the admission/allocation split above: the cutoff is a forecast
+used mid-run, and it failed to transfer.
+
+Limits:
+- 7 tasks × 5 runs per model for the cross-model result. The interval is
+  wide, though it excludes zero.
+- Model calls are the budget unit; cost in tokens or dollars is not
+  modelled.
+- Fixed cutoffs only. No adaptive or learned schedule was tested.

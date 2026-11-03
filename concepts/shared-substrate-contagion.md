@@ -36,6 +36,7 @@ sources:
   - "[[literature/papers/zhou2026athanor]]"
   - "[[literature/papers/chen2026auditing]]"
   - "[[literature/papers/shi2026weight]]"
+  - "[[literature/papers/ren2026coral]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -910,6 +911,48 @@ Caveats:
   tokens per call, so token matching would favour Independent further.
 - A post-hoc test linking fewer distinct candidates to the score gap
   found no consistent association.
+
+## A board that prices directions de-concentrated a leaderboard community, in a bundle with hard claim caps (2026-11-03)
+
+The Agora section above records a diversity-aware UCB over semantic
+clusters as an *untested* remedy for herding.
+[[literature/papers/ren2026coral]] (Coral Discovery) tests a close
+relative against a re-run no-remedy arm. The no-remedy arm is MIT CORAL
+([[literature/papers/qu2026coral]]): four Opus 4.6 agents sharing a
+repository and a leaderboard, under the same eval cap, with no web access
+and no grader reading. The remedy arm removes the leaderboard and adds:
+- a per-direction board (windowed yield, a UCB bonus, and a priced option
+  to open a new direction);
+- credit measured against each direction's own best;
+- binding claim rules: ≤2 agents per direction, 1 per direction in
+  round 1, and no duplicate mechanisms.
+
+What it measured (best of 3 runs per arm, directions re-labelled for both
+arms by an Opus 4.6 reading of each diff):
+- **Concentration.** Window HHI over the last third of the run was 1.00 vs
+  0.66 (Signal), 1.00 vs 0.36 (Circle-Pack) and 0.82 vs 0.29 (Erdős). The
+  baseline put all four agents in one direction. The board arm did not.
+- **Coverage.** 68 directions opened against 41 over six tasks, and 34 vs
+  15 after the first third. Lagging directions set 9 / 4 / 15 local
+  records, against the baseline's 0 / 0 / 4.
+- **Outcome.** The board arm had clear leads on four tasks. On 6 of 7
+  tasks it led, the winning lineage ran through a direction the baseline
+  never entered.
+
+This is consistent with the 10-20 Athanor rule: for identical models,
+diversity has to be assigned, not hoped for. Here the assignment is the
+claim cap and the forced-distinct first round. Those are binding choice-set
+constraints. The board's head-count suggestion is advisory.
+
+Limits:
+- No ablation separates the claim caps from the board statistics or the
+  credit rule. The caps alone could produce most of the HHI gap.
+- The labels come from one LLM labeller with no human audit. Discovery's
+  submissions carry declared directions into the labeller's context, and
+  the baseline's do not.
+- Best of 3, no spread. Which run the HHI figures use is not stated.
+- Spreading has a price. On LLM-SQL and Txn Sched the concentrated arms or
+  the single agent won.
 
 ## Connections
 

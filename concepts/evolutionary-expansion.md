@@ -42,6 +42,7 @@ sources:
   - "[[literature/papers/chen2026cads]]"
   - "[[literature/papers/kim2026elicitation]]"
   - "[[literature/papers/wang2026rsihub]]"
+  - "[[literature/papers/ren2026coral]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -546,6 +547,46 @@ Caveats:
   reproductions of the original systems.
 - The agent-driven mode (an outer agent rewriting the recipe) is described
   but not evaluated.
+
+## Diversity at the level of mechanism, with a priced option to open a new one: four clear leads, two losses, no ablation (2026-11-03)
+
+The Why-it-matters section says the population machinery (islands,
+MAP-Elites, novelty archives) supplies the variation the LLM operator does
+not. [[literature/papers/ren2026coral]] (Coral Discovery) moves that
+machinery into an autonomous multi-agent loop and changes the unit. Four
+Opus 4.6 agents choose their own parents. Instead of a behaviour
+descriptor, an LLM verifier labels every candidate with a **direction**
+(the mechanism that earns the score). A board then treats directions as
+bandit arms: windowed yield, a UCB bonus, and a NEW arm valued from past
+openings' first 3 evals. The comparison is against MIT CORAL
+([[literature/papers/qu2026coral]]) re-run under the same conditions and
+eval cap, best of 3 runs each:
+- **Clear leads on four tasks:** Kernel 1095 vs 1138 cycles, Polyominoes
+  91.78 vs 80.55, Signal 0.7904 vs 0.7718, and Erdős 0.380984 vs 0.381264.
+- **Effective ties on three:** Circle-Pack +6e-6, EPLB +3e-6 (the authors
+  call this noise), and Cloudcast tied.
+- **Losses on two**, both to the single agent: LLM-SQL and Txn Sched.
+- **More agents alone did not help.** The 4-agent leaderboard arm beat
+  the 1-agent arm on only 3 of 9 tasks.
+
+What carries over for this concept:
+- **Breadth bought by labelling, not by sampling.** The gain shows up as
+  directions opened (68 vs 41) and kept alive. Lagging lines set local
+  records that the late champions borrowed from. This is the
+  islands/archive effect, implemented with a mechanism label and a credit
+  rule instead of a fixed topology.
+- **The cost is explicit.** On LLM-SQL, 15% of evals went to directions
+  that never set a record (1% for the baseline). The board's own credit
+  rule kept agents in a low-headroom line. When one direction decides a
+  task (Txn Sched), the single agent that held the whole line won.
+
+Limits:
+- No component ablation. The verifier, board, NEW arm, credit rule and the
+  binding ≤2-per-direction cap are tested together.
+- Best of 3, no spread. The budget is an eval cap, not tokens, and it
+  excludes the verifier's per-eval calls.
+- Deterministic graders on program-search tasks. Only Signal has a
+  held-out split, and its score is visible to the agents.
 
 ## Open questions
 

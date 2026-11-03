@@ -333,7 +333,7 @@ state-preserving restart, and no halt-vs-redirect arm is run.
   - EsfandyariDoulabi et al. 2026, "Disentangling task difficulty from
     run-level failure in agent failure prediction" (arXiv 2610.05572). Same
     group, same corpus, abort-only stopping.
-  - Lyu et al. 2026, "Fail-fast, restart-smart" (arXiv 2608.03222). The
+  - Wang, Lyu et al. 2026, "Fail-fast, restart-smart" (arXiv 2608.03222). The
     state-preserving recovery result (66.6% → 71.8%) that this paper
     leans on and does not reproduce.
   - Mehtiyev & Assunção 2026, "Beyond resolution rates" (arXiv

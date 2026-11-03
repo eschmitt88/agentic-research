@@ -39,6 +39,7 @@ sources:
   - "[[literature/papers/karim2026explore]]"
   - "[[literature/papers/shi2026weight]]"
   - "[[literature/papers/lehmann2026can]]"
+  - "[[literature/papers/ren2026coral]]"
 used_by: []
 related_concepts:
   - "[[concepts/evolutionary-expansion]]"
@@ -616,3 +617,43 @@ in skill-library-lifecycle's "keep 'none' as a candidate"
 inside the proposer's prompt. This applies to `/elevate`'s self-application
 as much as to harness loops. The paper's strategy labels are post hoc and
 outcome-visible, and the dev-selection rule was not run prospectively.
+
+## Two grains at once: the agent writes the method, a separate verifier assigns the direction from the diff (2026-11-03)
+
+The sections above treat the grain as one unit: a span of code, a plan, or
+a count of edits. [[literature/papers/ren2026coral]] (Coral Discovery)
+labels every candidate at two grains and gives them different owners.
+- **Direction** (coarse): the mechanism by which the program earns its
+  score. That means the objective or proxy, the solution object, or the
+  search/construction principle. A tool-less, single-turn model call
+  assigns it at every eval by asking one question: does the diff keep the
+  parent's mechanism? When unsure, it keeps the parent's label. Labels
+  attach to nodes, not subtrees, so a child can change direction without
+  its lineage changing.
+- **Method** (fine): the parameter, variant, reordering or speed-up the
+  agent says it made. The agent writes this label itself.
+
+The direction is the unit of budget and credit, and the method is the
+working record. Credit is the gain over the best of the parent, any
+declared borrowed-from nodes, and the direction's own best. So copying a
+better program earns nothing, and a direction is scored on what it adds.
+
+This connects to two sections above:
+- **AgentDiscover's selection rule as an optional query**
+  ([[literature/papers/farahbakhsh2026agentdiscover]]). Coral's board is
+  likewise advisory. Its binding parts are choice-set rules: ≤2 agents per
+  direction, distinct directions in round 1, no duplicate mechanisms.
+  karim2026explore (10-27 section) found that changing the choice set
+  moves agents where advice does not. Coral is compatible with that, but
+  it does not separate the two.
+- **The operator attractor**
+  ([[literature/papers/gurkan2026mutation]]). A direction label read from
+  the diff is a cheap, per-candidate measure of whether the operator is
+  still inside one attractor. Coral's window HHI over directions is
+  he2026beneath's mechanism-entropy instrument computed online.
+
+Limits:
+- The labeller is Opus 4.6 with no human check and no agreement
+  statistic. Its inputs include the agent's declared direction.
+- The two-grain split is not ablated against a single grain.
+- Program-search tasks with deterministic graders.

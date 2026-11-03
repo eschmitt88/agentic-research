@@ -64,6 +64,7 @@ sources:
   - "[[literature/papers/lencevicius2026when]]"
   - "[[literature/papers/salle2026benchmarks]]"
   - "[[literature/papers/busch2026ctxagent]]"
+  - "[[literature/papers/jain2026monitor]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -1010,6 +1011,41 @@ Limits:
 Rule: if the backbone is Opus-class, a hand-off tool plus one paragraph
 is a credible alternative to a threshold. Validate it per model on billed
 cost, since the same prompt made Sol more expensive.
+
+## A flush triggered by protocol collapse replaced the failure label, not the failure (2026-11-03)
+
+The flush sections above (cai2026forkandflush, li2026humanize,
+farahbakhsh2026agentdiscover) lean the same way: dropping the chat
+and keeping the workspace can help a stalled run, though the evidence is
+weak or observational in two of three. Those flushes run on a
+schedule or a cost trigger. [[literature/papers/jain2026monitor]] tests a
+flush on a *failure* trigger, same model, at matched call budget, with a
+frozen success bar.
+
+- **The design.** mini-swe-agent with `gpt-5.6-luna` on four hard SymPy
+  issues, 5 baseline and 5 treated runs each, a shared 60-call cap. After
+  three consecutive invalid tool responses, the treatment keeps the
+  repository, drops the conversation, opens a fresh client, and supplies
+  the issue plus a deterministic `git status` and diff-stat. It fired in
+  18 of 20 runs.
+- **The result.** Success 0/20 against 1/20 for the baseline.
+  Repeated-format terminals went from 90% to 0%, and limit terminals from
+  5% to 100%. Mean cost rose 56.7% and wall time 65.7%, because treated
+  runs spent all 60 calls. The frozen bar (+5 pp or +2 successes, at most
+  +20% cost) was not met.
+
+For this concept: a flush can fix the symptom that triggered it and leave
+the task where it was. It also inherits any wrong edits in the kept
+workspace. Judge a flush policy on verified outcome and cost, not on
+whether the run's failure mode changed. This does not contradict the
+scheduled-flush gains: these four tasks had near-zero recoverable value
+(1 of 20 baseline runs solved one), so no intervention had much to win.
+
+Limits:
+- 4 tasks, 40 runs, one cheap model. Too small to rule out a modest gain.
+- The trigger is a format collapse, not a search plateau, and the tasks
+  were picked because the baseline failed them.
+- No arm separates "drop the chat" from "keep possibly wrong edits".
 
 ## Open questions
 

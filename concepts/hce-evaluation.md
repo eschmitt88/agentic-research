@@ -123,6 +123,7 @@ sources:
   - "[[literature/papers/alfaqeeh2026beyond]]"
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhou2026does]]"
+  - "[[literature/papers/jain2026monitor]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -2783,6 +2784,52 @@ Limits:
   observed solve shares and four task models.
 - One optimizer run per cell; 18-task TB2 test set; one seed skill.
 - A model update partway through moved the τ³ seed rerun 5.8 points.
+
+## A per-decision certificate with an abstain option needs at least 7 runs per arm, and a moved failure label is not progress (2026-11-03)
+
+The 10-26 section above says a controller is judged end to end, never by
+offline AUROC. [[literature/papers/jain2026monitor]] gives the decision
+version of that rule, and shows what it costs in samples.
+
+- **Score the action, not the alarm.** A stop/restart rule's regret is the
+  value gap between the two actions, summed over the decisions it gets
+  wrong. A detector can be accurate on near-ties and still lose most of
+  the value on the few decisions where the gap is large.
+- **Measure opportunity first.** Before testing a trigger, estimate what a
+  perfect alarm could gain: (1 − q)p, where q is the default action's
+  success and p the alternative's in the budget left. A hard cohort can
+  have many failures and no recoverable ones. In the paper's stress
+  cohort the perfect-alarm gain is 0.00. This is a preflight in the sense
+  of the known-bad proposal, applied to an intervention.
+- **The certificate.** For each task and decision time, put Clopper–Pearson
+  intervals on both arms' success rates, at α/(2M) each over M
+  comparisons. Return restart or continue only if the intervals separate;
+  otherwise abstain. Abstaining does not mean "continue is right".
+- **Its sample floor.** With 5 runs per cell, the paper's audit abstained
+  on all 103 live comparisons of 156. That was certain in advance. At
+  M = 156, 5/5 vs 0/5 gives bounds 0.152 and 0.848. Perfect separation
+  needs at least 14 runs per arm, 12 at M = 26, and 7 for a single
+  decision (our computation from Eq. 17). The continuation arm holds only
+  runs still live at the decision time, so it is smaller still. Like the
+  significance-cut keep rules above (hu2026winners, zhou2026does), an
+  interval-separation rule at small n does not act.
+- **A failure label can move without the outcome moving.** A fresh-context
+  reset cut repeated-format terminals from 90% to 0% and raised limit
+  terminals from 5% to 100%. Success went from 1/20 to 0/20 and cost rose
+  57%. Report verified outcome and cost next to any harness diagnostic.
+
+The paper also gates every task the way the known-bad proposal and its
+reviewers suggest: the start state must fail the evaluator and the
+reference patch must pass it.
+
+Limits:
+- The audit is retrospective, designed after the data, and not
+  preregistered. No monitor was evaluated with it.
+- The guarantee needs IID replicate attempts per task in both arms. A
+  single `/iterate` chain per project does not supply them; pooling across
+  tasks would need its own validation, which the paper names and does
+  not do.
+- 19 SymPy tasks, two cheap models, 5 runs per cell.
 
 ## Open questions
 

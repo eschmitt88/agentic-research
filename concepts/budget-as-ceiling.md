@@ -76,6 +76,8 @@ sources:
   - "[[literature/papers/lyu2026where]]"
   - "[[literature/papers/srinivasan2026continue]]"
   - "[[literature/papers/zhou2026does]]"
+  - "[[literature/papers/jain2026monitor]]"
+  - "[[literature/papers/ren2026coral]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -1952,6 +1954,93 @@ Limits:
 - SWE-rebench-style Python issues, not ML research cycles. The paper
   cites a state-preserving restart that did pay (66.6% → 71.8%) but does
   not reproduce it.
+
+## A pivot is worth what it can win in the budget left, not how well the counter spots a stall (2026-11-03)
+
+The section above sets the evaluation bar for a stall trigger: compare it
+with a matched-random trigger and with continuing.
+[[literature/papers/jain2026monitor]] (Intuit) adds the quantity that sets
+the size of any gain. For one clean restart on alarm, the success change is
+G = (1 − q)τp − qφ(1 − p). Here q is the chance that continuing succeeds,
+p the chance the replacement succeeds in the residual budget, and τ, φ the
+alarm's hit and false-alarm rates. A 90%-accurate alarm moves success
+anywhere from −5 to +35 pp as p goes from 0 to 0.8. No alarm can gain more
+than (1 − q)p.
+
+For redirect-before-halt (our inference): the counter at ceiling − 1 is
+the alarm, and the pivot cycle is the action. Its value depends on p for
+a pivot cycle, which nothing in this graph measures, more than on whether
+the counter is a good stall detector. The proposal's `redirect=<axis>` log
+field would start to estimate p. Past `/iterate` logs already give q: the
+share of cycles at ceiling − 1 that improved anyway.
+
+The study's own runs (mini-swe-agent, 19 SymPy issues, 194 runs) agree
+with srinivasan2026continue that cutting a live run does not pay:
+- **The one in-sample restart gain is one run.** Luna's best cutoff gains
+  +2.29 pp [0.00, 6.86]. All of it is one still-live run on one task.
+  Leave-one-task-out turns it into −7.31 pp. Prospectively, pooled over 19
+  tasks, it is −0.21 pp [−4.21, 2.53].
+- **Budget recycled after a visible failure did pay; a cut live run did
+  not.** At 60 calls, repeated 30-call runs scored 9% vs 5% for one 60-call
+  run. A policy that runs to 60 but restarts after an explicit
+  repeated-format failure also scored 9%. No run first passed after call
+  30. This is the "halt on a visible fault" kind of stop, not a
+  stagnation trigger.
+
+Limits:
+- No monitor and no redirect were tested. The restart is clean and
+  independent; the identity does not hold for a pivot that keeps the
+  workspace, which needs outcomes for the pivot itself.
+- Tiny n: 5 runs per task, 4 tasks in the horizon stage, two cheap hosted
+  models. The opportunity ceiling is a plug-in estimate, not a bound.
+- Coding issues with a 30- or 60-call budget, not ML research cycles.
+
+## What a pivot should change: a mechanism label checked from the diff, with credit for allocation and not for acceptance (2026-11-03)
+
+The redirect-before-halt proposal says a pivot must change "backbone,
+representation, objective or validation". Its own audit is a self-logged
+`redirect=<axis>`. [[literature/papers/ren2026coral]] (Coral Discovery) is
+the most concrete working answer in the graph to what a pivot changes. Four
+Opus 4.6 agents ran nine evaluator-scored program-search tasks.
+- **The unit is the scoring mechanism.** A "direction" is the objective or
+  proxy optimised, the solution object, or the search/construction
+  principle. Those map onto the proposal's objective, representation and
+  backbone axes. A "method" is a change inside a direction (parameter,
+  variant, reordering, speed-up), which is the refinement the proposal
+  wants to rule out.
+- **The check is a separate reader of the diff.** A tool-less,
+  single-turn model call at every eval asks whether the candidate keeps its
+  parent's mechanism. It defaults to "preserved" when unsure. This audits
+  the risk the proposal names, that pivots may be relabelled refinements,
+  better than the agent's own label. Its accuracy is not reported.
+- **Credit against the direction's own best drives allocation, not
+  acceptance.** The champion is still the global best. A node's credit is
+  its gain over max(parent, borrowed-from nodes, own direction's best), so
+  a new direction branched from the incumbent must still beat it. The rule
+  only keeps lines alive that continue from their own weaker nodes. It
+  gives no grounds for relaxing "judge the pivot against the chain's best".
+- **New directions are valued over 3 evals, not 1.** The NEW arm prices an
+  opening by its gain over its first k = 3 evals. The three champion
+  directions examined were opened late (eval 62/100, 34/40, 58/60) and drew
+  on lines that had lagged first. This fits the 10-20 Athanor section
+  above: one cycle favours the incumbent.
+
+Our inference for the proposal: keep the acceptance rule as written. Borrow
+the mechanism definition for the axis sentence, and consider a one-call
+diff check in place of (or beside) the self-logged axis. A pivot that is
+judged by whether it sets its own records needs cycles the compute-neutral
+form does not have. That would be a different proposal.
+
+Limits:
+- Nothing halts in this paper. It has a fixed eval cap, so there is still
+  no redirect-vs-halt arm.
+- There is no ablation. The credit rule, NEW arm, claim caps (≤2 agents per
+  direction) and verifier are tested only as a bundle, best of 3 runs, with
+  no spread.
+- The cost is shown too. On LLM-SQL, per-direction credit kept agents in a
+  low-headroom line, and the single agent won.
+- Multi-agent program search with deterministic graders, not a
+  single-chain ML `/iterate` loop.
 
 ## Open questions
 
