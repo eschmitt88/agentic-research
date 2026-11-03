@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/zhu2026who]]"
   - "[[literature/papers/deeb2026towards]]"
   - "[[literature/papers/ellington2026automatic]]"
+  - "[[literature/papers/ganesan2026infinity]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -447,6 +448,63 @@ Limits:
 - No README in any ablation level, so the README effect is one task.
 - Pretraining exposure to the 2024–2026 papers is not tested. L7/L8 at 0.00
   rules out label recall, not method recall.
+
+## A seventh boundary: the verifier must not reach its re-checker, and on exact tasks the public/private split is one verifier run twice (2026-11-03)
+
+The sixth boundary keeps the agent's claim away from its verifier.
+[[literature/papers/ganesan2026infinity]] draws one more, around the
+verifier itself. In its autonomous mode an agent writes the task's verifier,
+so a check that reuses that verifier inherits its errors. The last check is
+therefore a fresh agent, network off, that receives "only the problem
+statement and the best solution, never the verifier". It writes its own
+checker, tests it on cases it builds, and the kernel compares the two
+values.
+
+In all 3 runs it agreed with the task verifier. In run 1 it wrote an
+independent pairwise longest-common-subsequence test (max 13 < 14). In
+run 2 its own C program confirmed all 2³¹ inputs sort. It caught nothing,
+because nothing was wrong with acceptance. Its scope showed in run 2. The
+task's score direction was reversed, and the re-checker would have
+confirmed the record as valid while a better network sat unreported in the
+bank. A blind re-check certifies the **artifact handed to it**. It does not
+certify the **selection** that picked that artifact, which ran on the
+unseen, wrong score. So the boundary needs a partner check upstream, on the
+score's order (see [[concepts/hce-evaluation]], same date).
+
+The same paper qualifies its own headline split. Proposers see a public
+score, and a private split "that no agent sees decides what counts". But
+"for exact-verifier tasks the two splits coincide, and the 'private' score
+is the same verifier rerun by the kernel in its own sandbox". All four
+quantum-information results are of this kind. There the firewall separates
+*who runs* the verifier, not *what data* it sees. That still blocks
+self-reported scores and edited verifiers (the [[concepts/hce-evaluation]]
+clause 4 half). It does not block overfitting to the verifier, which an
+exact verifier makes harmless. The split carried real weight only on TESS
+(later sectors), TSP (hidden instances), the ML tasks (hidden seed,
+retrain from code) and the chip task (a second workload seed). Even there
+it did not detect gaming by itself. Under the gamed TESS referee v1 the
+hidden score was inflated along with the public one. Re-scoring under the
+fixed referee moved it from 77.5 to 21.75 (public 94.5 → 30.5). What
+caught the exploit was the operator reading the claims and rewriting the
+referee. The paper's own summary credits the private split "together with
+adversarial calibration of the verifier".
+
+Our inference: for an exact checker the firewall to keep is "verifier
+code and scoring run outside the agent's sandbox", not a data split. For a
+scorer with slack (partial credit, a referee, a proxy), a hidden split
+scored by the *same* lenient scorer inherits the leniency. It helps only
+when the hidden data test something the scorer's rules do not, as TESS's
+later-sector prediction test did once the referee was fixed. Name per task
+which of the two the firewall is.
+
+Limits:
+- Three re-checks, all on exact combinatorial tasks with sub-second
+  checkers. None was tested on a case where the verifier was wrong about
+  acceptance.
+- The re-checker is the same model family as the verifier's author, so the
+  two are not independent in the sense of [[concepts/hce-evaluation]]'s
+  "the judge must not be a contestant" (10-19).
+- Single-author preprint, cred 2.
 
 ## Connections
 

@@ -63,6 +63,7 @@ sources:
   - "[[literature/papers/wang2026beyond]]"
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhou2026does]]"
+  - "[[literature/papers/nakayashiki2026lessons]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -1342,3 +1343,50 @@ it*, require a high unaided score on tasks that some weaker model gains on,
 read for the model it will govern. A skill that fails with and without is a
 repair item. Gain-only deletion is fine for "this does not help". It is not
 evidence of internalization.
+
+## Failure-routed distillation turns a chance failure into a rule; a no-change option is the write-side "none" (2026-11-03)
+
+"Distilling a skill from a failure rather than from a success" above, and
+the failure-distilled bundle of 2026-10-26, treat failures as the richer
+source. [[literature/papers/nakayashiki2026lessons]] measures the cost of
+that when the failure was luck. It used ReasoningBank's released writing
+instructions, the same experience-construction pipeline SkillOS holds
+fixed in "Why it matters here". After a chance failure of the better of
+two tools, the lesson written by the failure instruction moved a fresh
+reader of the same model to the worse tool in 11.6% of next runs. The rate
+was 0.4% with an irrelevant item and 0.4% with the lesson from a success
+(P2 +0.112 [+0.097, +0.126]; 256 worlds, 11 models). The mirror case, a
+lucky success of a bad decision, stayed bounded below 0.10 (+0.002). So the
+risk sits on the failure-routed half of the write policy.
+
+Two points for this concept:
+- **The insert step is where luck gets in.** The released failure
+  instruction asks the writer to reflect on why the run failed and to
+  prefer "concrete, actionable recovery procedures". That presupposes a
+  fault. In the printed lessons that moved readers, the rule was a
+  within-run recovery step ("switch to the other tool after an error"),
+  and the reader applied it to the next run's first choice. This is the
+  insert-side twin of [[literature/papers/he2026does]]: reflection does not
+  remove a bad rule, and here it writes one from noise. The admission
+  gate's "positive estimated gain, not merely occurred" (tang2026memory)
+  is exactly the test a one-outcome lesson fails.
+- **"Nothing needs to change" works as a candidate at write time.** One
+  outcome-neutral instruction with an explicit no-change option cut the
+  rate to 3.1% (N − RB P2 −0.085 [−0.097, −0.073]) and was credited at 5 of
+  the 6 models that carried the chance. A decision-quality note in the
+  failure instruction cut it only to 7.5% and was credited at 3 of 6. This
+  is the write-side version of pham2026reliable's "keep the empty library
+  as a scored candidate". N also drops the outcome routing, so the two
+  changes are confounded.
+
+The spread across models matters for [[concepts/shared-skill-namespace]]:
+the same pipeline gave 0/256 at Claude Opus 5.5 and Sonnet 5.5 and 100/256
+at Qwen 3.8 Max. A write policy validated on one model need not carry over.
+
+Limits:
+- One stored lesson, read once; no library, retrieval or consolidation.
+- Synthetic two-tool worlds with a clear log; the reader could have
+  checked the lesson against the record.
+- Remedies were tested only on transient failures. A no-change option may
+  also suppress a correct lesson after a real breakage; untested.
+- Writer and reader were the same model; single author; LLM-reviewed only.

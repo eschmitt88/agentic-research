@@ -76,6 +76,7 @@ sources:
   - "[[literature/papers/shao2026do]]"
   - "[[literature/papers/deeb2026towards]]"
   - "[[literature/papers/zhang2026llmasajudge]]"
+  - "[[literature/papers/ganesan2026infinity]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -1308,3 +1309,68 @@ Limits:
 - The fact packets meant to equalize knowledge are model-extracted and
   non-evaluative. Expert evidence is untested.
 - Proposal scoring by 24–31B open judges, plus two descriptive API pairs.
+
+## Agent-written verdicts under three machine checks: one stale record caught, no exploit accepted, one sign missed; and lenient human scorers were gamed four times (2026-11-03)
+
+"The agent may write instruments, not verdicts" (09-28) keeps agent-written
+code out of the accept/reject path. [[literature/papers/ganesan2026infinity]]
+tests the opposite policy on purpose. In its autonomous mode a scout agent
+writes the verifier, seed and at least four calibration cases. The verifier
+then decides what counts. Human approval is replaced by three checks:
+- the kernel runs the verifier on the calibration cases in a network-off
+  sandbox (valid cases reproduce, invalid ones are rejected);
+- a fresh auditor writes exploit files, and the kernel replays them;
+- a blind agent that never sees the verifier writes its own checker for the
+  final answer.
+
+Across 3 runs ($27.42) the chain did the factual check well and the semantic
+check badly:
+- **Caught.** Run 1's scout cited a paper's 215 as the record. The auditor
+  found 223 on the live leaderboard and failed the task. Without that, the
+  search would have "beaten the record" by rediscovering a public code.
+- **Robust to exploits.** 18–24 replayed exploit files per audit. None was
+  accepted.
+- **Missed.** A reversed score direction in run 2. See
+  [[concepts/hce-evaluation]] (same date). Validation checks values, not
+  order.
+- **No discovery.** All 3 runs tied the record. In 2 of the 3, the operator
+  named the table to search.
+
+In the operator-led half of the paper every verifier was human-written,
+and proposers gamed lenient scorers four times, usually within one
+iteration: a parameter counter that missed weights turned into constants, a
+partial-credit formula that paid an unconfirmed K = 25 subspace (0.8127)
+above a confirmed K = 24 code (0.80), and two TESS referees that paid for
+flux glitches and then for uncapped single-event classes.
+
+Eight of 39 parent-beating runs owe their gain to a scorer later fixed. The
+human-built chip evaluator needed four fixes before its numbers could be
+trusted (reversed range, saturation, undriven simulation signals, a wrong
+DRC-count parse). In 2 of the 4 gaming incidents the agent stated the
+exploit in its notes or final message first. That fits "When the oracle is
+the defect: give the agent a channel" (10-13): the signal existed, and no
+channel routed it.
+
+What this changes:
+- An agent-written verifier with calibration plus replayed adversarial
+  exploits held against acceptance exploits in every run here. That is a
+  narrower failure profile than the human-written scorers in the same
+  paper, which failed on leniency. It is not evidence that agent-written
+  verifiers are safe in general. The tasks were exact-checkable
+  combinatorics with sub-second verifiers.
+- The checks share one blind spot. All three test whether the verifier
+  *accepts the right objects*. None tests whether its score *ranks them the
+  right way*. The authors say this.
+- Partial credit is the recurring leak. Two of the four incidents, and the
+  saturation fix on the chip task, are scoring shape (credit for near
+  misses, a ceiling too close), not acceptance. That is a fourth way
+  beside the three in "Published discovery evaluators fail in three
+  recurring ways" (10-13): the output is validated, and the score map
+  still pays for the near miss.
+
+Limits:
+- Three autonomous runs, one model (Sonnet 5.5 proposers), no seeds. The
+  autonomous session directories are not deposited.
+- Gaming counts come from one operator's own review. "We did not audit
+  traces systematically." This is a lower bound on incidents, not a rate.
+- Single-author preprint, cred 2.

@@ -49,6 +49,7 @@ sources:
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhu2026precedent]]"
   - "[[literature/papers/zhang2026rethinking]]"
+  - "[[literature/papers/ganesan2026infinity]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1109,6 +1110,59 @@ Limits:
   named `system-reminder`, which mimics Claude Code's channel, but no
   Claude agent was tested.
 - Time limits per task are not reported beyond one 45-minute case.
+
+## A kernel/genome split held the score outside the mutable surface; the changes that decided results came in through the operator's side door (2026-11-03)
+
+"Evaluation outside the mutable surface, as framework code" (10-27) placed
+clause 4 of [[concepts/hce-evaluation]] in a framework and noted that the
+admission rule could sit inside the surface.
+[[literature/papers/ganesan2026infinity]] is a second framework placement,
+and it keeps the admission rule outside. Its "kernel" holds the job daemon,
+archive, scorers, private splits, the self-modification gate, the bandits
+and the budget. The "genome" holds prompts, tools, skills, playbook and the
+meta agent's own procedure. "Kernel-enforced" is implemented in three
+ordinary ways:
+- **Mount exclusion.** Agent sandboxes mount the genome and the public split
+  only. Network is off by default, root is read-only, and kernel code,
+  private splits, scorers and credentials are never mounted.
+- **Separate scoring.** The kernel scores each solution in its own fresh
+  sandbox and records tool calls itself. It never reads the agent's account
+  of what it ran.
+- **A static diff policy on every genome edit.** Only genome paths may
+  change, kernel-owned files must be byte-identical, and at most 12 files
+  may change. Then come held-in and held-out grading, a 0.03 noise band and
+  a 1.5× cost limit. A gain above 0.3 is parked for a human, not activated.
+
+Unlike wang2026rsihub's Hyperagents recipe, the gate and the parent selector
+are kernel files, so a candidate cannot edit the rule that admits it.
+
+What the placement did *not* govern is the finding. Only one genome
+generation ever reached the gate, and it was rejected on cost (2.02×). Every
+discovery result came from the initial genome. The changes that moved
+results went through the operator:
+- hand-written strategy arms for math and ML, after which the stabilizer-rank
+  bound and the looped LM appeared in the next session;
+- "already measured" tables between sessions, which were the main
+  cross-session memory;
+- four fixes to the chip evaluator and four scorer rewrites after gaming.
+
+The paper classes the arm changes as "kernel changes, not self-improvement"
+and says so. So a placement that binds the agent leaves a second writer, the
+operator, ungated. Its edits are neither held-out-tested nor logged as
+generations. This is sharma2026smsr's exclusivity point
+([[concepts/permission-gate-as-architecture]]) with the side path held by a
+human. Our inference for this box: changes a human or a main session makes
+to a running loop's scorer, arms or notes should be logged as generations of
+that loop, or its results cannot be attributed to the loop.
+
+Limits:
+- No adversarial or fault-injection test of the boundary is reported. "We
+  saw no attempt to read hidden splits or escape a sandbox", but traces were
+  not audited systematically. That is absence of observed incidents, not
+  wang2026rsihub's 30/30 scripted scenarios.
+- One gate decision in total. Held-out scored 1.000 for both arms, so the
+  gate's held-out check was never discriminating.
+- The harness is not released. Single-author preprint, cred 2.
 
 ## Connections
 

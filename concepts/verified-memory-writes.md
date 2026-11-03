@@ -35,6 +35,7 @@ sources:
   - "[[literature/papers/xu2026replaylens]]"
   - "[[literature/papers/pham2026reliable]]"
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
+  - "[[literature/papers/nakayashiki2026lessons]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -796,3 +797,57 @@ effect (a passing check, an existing file, a commit hash), not the entry.
 
 Caveats: one 9B summarizer on constructed phone failures; 39% measures
 summarizer behaviour on that set, not prevalence in deployed agents.
+
+## A true record and a benign writer still give a false lesson: chance enters at the write (2026-11-03)
+
+The 2026-10-19 and 2026-10-27 sections above show benign writers whose
+entries are wrong: usefulness tags that do not track effect, and step
+records written from intent. [[literature/papers/nakayashiki2026lessons]]
+shows a third kind. The record is true — the failure did happen — and the
+error is in what the writer concludes from it.
+
+In 256 synthetic two-tool worlds, a model wrote a lesson from one scripted
+run with ReasoningBank's released instructions, which are routed by outcome
+(the failure instruction asks why the trajectory failed and for "concrete,
+actionable recovery procedures"). A fresh session of the same model, holding
+the full log in which the better tool stays better, picked the next run's
+first tool. After a chance failure of the better tool, the failure-written
+lesson raised the panel's worse-tool rate to 11.6%, against 0.4% with an
+irrelevant item and 0.4% with the success-written lesson (P2 +0.112
+[+0.097, +0.126]; 11 models, 90,084 answers; protocol frozen and
+timestamped before the run). A lucky success of the worse tool did not
+propagate (bounded below 0.10).
+
+What this adds to the triad in the Definition:
+- **Faithfulness does not catch it.** The lesson adds nothing unsupported
+  about what happened. It over-generalizes from n = 1. A write gate needs a
+  fourth question: *is a single outcome evidence for the advice?*
+- **The fix belongs in the writing instruction, and it is partial.** A
+  three-sentence decision-quality note (judge the decision on what was
+  known before the outcome; one outcome is not evidence) cut the rate to
+  7.5%. One outcome-neutral instruction with an explicit "say so if nothing
+  needs to change" cut it to 3.1%. Both met the registered harm-reduction
+  rule on the panel. At the six models that carried the chance, the note
+  was credited at 3 and the neutral instruction at 5. Residual effects
+  stayed above zero (+0.072 and +0.027).
+- **It is strongly model-dependent.** Claude Opus 5.5, Claude Sonnet 5.5 and
+  GPT-6.1 Sol chose the worse tool 0 times in 255–256 worlds; Qwen 3.8 Max
+  did so in 100/256.
+
+Our inference, for this box: `/implement`'s Diagnostics fields
+`delta_from_prior … attributed to <cause>` and `intended_effect_confirmed`
+are outcome-written lessons from a single run when `seeds_run: 1`. The
+accepted noise band governs the no-improvement counter, not these sentences.
+This paper's evidence does not show the box is exposed (its Claude models
+were at zero, in a much cleaner setting), so this is a watch item, not a
+change.
+
+Limits:
+- One lesson, read once, no execution, no accumulation or retrieval.
+- Writer and reader are the same model, so writing and reading effects are
+  not separable.
+- The reader had a long, unambiguous log; a noisy metric with no clear rate
+  was not tested.
+- Remedies were tested only with non-diagnostic failures. Whether they also
+  suppress learning from a tool that really broke is untested.
+- Single author, not peer reviewed, reviewed only by LLMs.

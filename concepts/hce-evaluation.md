@@ -128,6 +128,7 @@ sources:
   - "[[literature/papers/zhang2026llmasajudge]]"
   - "[[literature/papers/ellington2026automatic]]"
   - "[[literature/papers/chen2026autoresearch]]"
+  - "[[literature/papers/ganesan2026infinity]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3052,6 +3053,62 @@ Limits:
 - The paper reports no seed noise, so "inside the noise band" is our
   reading of 0.0003–0.0037 gaps, not a measured one.
 - LM pretraining at ~50M parameters with 10-minute runs.
+
+## A reversed score passes value calibration, an exploit audit and a blind re-check: the preflight must test direction (2026-11-03)
+
+The known-answer preflight above has two probes so far: do-nothing lands at
+the floor (10-20), and a non-canonical known-good passes, with a
+known-ordering check where a stronger system is cheap (10-27).
+[[literature/papers/ganesan2026infinity]] adds a third defect that neither
+probe sees: a scorer that ranks candidates backwards.
+
+In its second autonomous run an agent wrote the task, including the score
+range for a minimising problem (sorting-network size). It wrote 186 → 175
+where the kernel's convention needed 175 → 186. As installed, the record
+(180 comparators) scored 0.455, and a record-beating 179 would have scored
+0.364, below its own parent. Every machine check that replaces human
+approval passed:
+- **Kernel calibration.** Valid cases reproduced their stated values, and
+  invalid cases were rejected or scored no better than the seed. Nothing
+  required a better valid case to score *higher*.
+- **Adversarial audit.** 23 exploit files, all rejected on replay. The
+  auditor described the mapping as "186→0, 175→1", which is the intended
+  direction, not the installed one.
+- **Blind re-check and report.** The reporter saw 0.545 against 0.4545 and
+  did not find the cause.
+
+No proposer found 179, so the outcome was unaffected. Had one done so, the
+parent sampler and the bandit would have treated it as a regression. The
+re-check and the report take the bank's top-scored entry, so the record
+would have gone out instead. The human operator had made the same mistake
+earlier on a chip-energy task. That one was caught only because the first
+launch scored the original design at 1.0.
+
+What this adds:
+- A do-nothing probe would pass this scorer. Empty input scores at or below
+  the seed. A known-good probe would also pass: the record reproduces its
+  value. The defect shows only when **two valid cases of known order** are
+  scored and compared. The paper's own fix is a validation step that checks
+  the score's direction on calibration cases.
+- For the pending `hce-known-bad-preflight` proposal: where a task has any
+  two valid submissions of known quality (seed and a perturbed-worse seed,
+  for instance), score both and require the order to hold. It costs one
+  extra evaluator call. A blind check on the final artifact is not a
+  substitute, because selection has already happened on the wrong sign.
+- The same paper's self-improvement gate shows a held-out split at ceiling:
+  incumbent and candidate both scored 1.000 on two held-out tasks, one seed
+  each. The gate could reject only on cost (2.02× > 1.5×), never on held-out
+  fidelity. A held-out set that every candidate saturates is not a holdout.
+  That point is ours, not the paper's.
+
+Limits:
+- One incident in one run, and it had no effect on the result. The operator's
+  chip-task reversal is a second instance, but by hand.
+- Single-author preprint, cred 2. The autonomous session directories are
+  not yet deposited.
+- The tasks are exact-verifier math tasks with a hand-written linear score
+  map. A learned or LLM scorer can be wrong about order in ways a two-point
+  check would not catch.
 
 ## Open questions
 

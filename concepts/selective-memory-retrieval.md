@@ -42,6 +42,7 @@ sources:
   - "[[literature/papers/singh2026churnbench]]"
   - "[[literature/papers/yan2026traceml]]"
   - "[[literature/papers/li2026beyond]]"
+  - "[[literature/papers/nakayashiki2026lessons]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -233,6 +234,42 @@ distilled, consumer-specific memory over raw history. Caveats:
   comparison.
 - Only one commit is scored.
 - No inter-task result clears a sign test.
+
+## A distilled lesson can outweigh the raw record it summarises (2026-11-03)
+
+The 2026-10-13 section above reads li2026beyond as favouring distilled,
+consumer-specific lessons over raw history. [[literature/papers/nakayashiki2026lessons]]
+is the case where that goes wrong. Each reader held the raw record: an
+authoritative log of 180–365 runs per tool, in which the better tool stayed
+better after any single outcome. It also got one memory item, a lesson its
+own model had written from a single run whose outcome was chance.
+
+After a chance failure of the better tool, the failure-written lesson
+raised the worse-tool rate to 11.6% on the panel, against 0.4% with an
+irrelevant item (P2 +0.112 [+0.097, +0.126]; 256 worlds, 11 models). At
+Qwen 3.8 Max it was 39.1%. The lesson added no observation the reader
+lacked. So at 6 of 11 models the distilled item overrode the record it
+was drawn from. At Claude Opus 5.5, Claude Sonnet 5.5 and GPT-6.1 Sol it
+never did (0 of 255–256 worlds).
+
+Two qualifiers for read-side policy:
+- **The lesson acted only alongside the reported failure.** The same
+  lesson read after a reported success gave 0.2%. A retrieved lesson
+  reinforced the most salient recent outcome; it did not act alone.
+- **Most of the effect was where the record was silent on independence**
+  (+0.181 vs +0.042 where the log said failures are independent;
+  descriptive, across different worlds). A record that states its own
+  noise model may protect the reader. That is the read-side complement of
+  a write-side remedy.
+
+For this concept: distilled memory is not neutral compression. Where the
+raw record is available and cheap, a lesson that contradicts it should
+lose. This paper shows that some models do not apply that rule unprompted.
+
+Limits:
+- One item, always shown; no retrieval or ranking was tested.
+- Same model wrote and read, so this is not a measure of reading alone.
+- Synthetic worlds with a clear-cut record; one generation per cell.
 
 ## Open questions
 
