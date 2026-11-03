@@ -1577,3 +1577,63 @@ All 16 readers had already finished when this check ran. Their edits are applied
 - **Git:** everything is pushed, and `main` matches `origin/main`.
 
 The only open items are your decisions on the two pending proposals: 10-18 redirect-before-halt and 10-25 hce-known-bad-preflight.
+Batch 1 (Jain & Vedam restart monitors, Coral Discovery) is reading. I'll apply its concept edits, commit, re-check the verdict, then launch the next pair.
+
+Corrected a small error the jain2026monitor reader caught: the srinivasan note credits 2608.03222 to "Lyu et al.", but Chenyu Wang is first author (confirmed via arXiv). Waiting on the Coral reader.
+
+Batch 1 is committed and pushed (`789f7d1`): 2 notes, 8 concept edits, no new dead links. The verdict is still `slow/low`. Batch 2 (items 9–10: harness verification, claim smoothing) is now reading.
+
+Item 10 (claim smoothing) is in, mildly below framing. Waiting on the item 9 reader before committing batch 2.
+
+Batch 2 is landed and pushed (`940a673`, 6 edits across 6 concepts). The verdict is unchanged at `slow/low`. Batch 3 (items 11–12: score-seeking, judge version shift) is reading.
+
+Item 12 (judge version shift) is in, moderately below framing: the digest's claim that the audit "correctly flagged" two API replacements is wrong. Waiting on the score-seeking reader.
+
+Batch 3 is landed and pushed (`5c6836f`): 5 edits across 3 concepts. 6 of 17 papers are now done. The verdict is `slow/low`. Batch 4 (items 13–14: simple baselines, Auto-Research Arena) is reading.
+
+The notifications are working, so this was only the fallback wake. The batch 4 readers (items 13–14) are still running. No action needed until they report back.
+
+Item 14 (Auto-Research Arena) is in, mildly below framing. Each harness ran one search at a single seed, and the "held-out" BPB is read on the same evaluator the search used. Waiting on the simple-baselines reader.
+
+Batch 4 is landed and pushed (`2f1f03a`): 7 edits across 5 concepts, 8 of 17 done. Batch 5 (items 15–16: Infinity Machine, Lessons from Luck) is reading.
+
+Item 16 (Lessons from Luck) is in, the first one this run that reads *at* its digest framing. The effect is absent on the Claude models, though. Waiting on the Infinity Machine reader.
+
+Batch 5 is landed and pushed (`03d2710`): 7 edits across 7 concepts, 10 of 17 done. Batch 6 (items 17–18: instruction conflicts, retrospective harness adaptation) is reading.
+
+Item 18 (retrospective adaptation) is in, at framing. It ran on this box's exact stack, and its three-part after-the-fact check (did the problem recur, was the change read, did behaviour change) points at a gap in `/elevate`. Waiting on the instruction-conflicts reader.
+
+Batch 6 is landed and pushed (`63967bc`): 6 edits across 5 concepts, 12 of 17 done. Batch 7 (items 19–20: oversight directives in skills, rTaste) is reading.
+
+Item 20 (rTaste) is in, at framing, though agent ranking never actually chose which experiment ran. Waiting on the oversight-directives reader.
+
+Decline rows are drafted, each with a one-line reason and any datum worth keeping. Waiting on the OpenFrontiers and ParetoRSI-Gym readers. Aligning Autoresearch/HackBench goes last.
+
+OpenFrontiers is in, at framing. Its grader was validated in both directions, which is the second attestation this run for adding a known-good arm to the pending preflight proposal. Waiting on ParetoRSI-Gym.
+
+Batch 8 is landed and pushed (`97b1813`), 16 of 17 done. The last reader (Aligning Autoresearch/HackBench) is running. After it lands I'll write the `## Curation` section, archive the file to `_done/`, log, and run `/promote-moc`.
+
+The backlog is cleared. `raw/_candidates/2026-11-02-digest.md` now has a disposition for every item and is archived in `_done/`, so the uncurated count is 0. Everything is committed and pushed (last commit `c488743`).
+
+**What happened**
+- **Disposition of the 29 open papers** (items 7–20 plus 15 near-misses):
+  - 17 ingested: all 14 ranked items plus 3 near-misses I promoted (OpenFrontiers, ParetoRSI-Gym, Aligning Autoresearch/HackBench).
+  - 12 near-misses declined, each with a one-line reason. Where a declined paper had a usable number, it is recorded in the Curation table.
+- **Dedup:** none of the 29 had its own literature note. Three were only cited inside last week's notes.
+- **Pacing:** the verdict stayed `slow/low` because the GPU was busy. Weekly quota was fine (13% → 18% used). I worked in nine small batches of readers, re-checked the verdict and pushed after each.
+- **Graph changes:** papers went 307 → 324. 54 concept edits across 24 concepts, insert-only. No new dead wikilinks, and the concept count held at 35. `/promote-moc` declined because no concepts were added and all 35 are already mapped.
+
+**How the PDFs compared to their digest entries:** 5 read at their entry, 12 below (4 of them moderately), none above. The running tally is now 133 PDFs: 110 below, 23 at, 0 above.
+
+**What it means for the pending proposals**
+- **Known-bad preflight (10-25):** this got the most new evidence, and it all says to put the known-good check back in.
+  - In Aligning Autoresearch, 9 of 12 ResearchGym/AutoLab graders give credit to a do-nothing, empty or constant submission. That is the first multi-grader evidence from ML-research loops, which the proposal said it lacked.
+  - In Infinity Machine, a scorer pointing the wrong way passed every check the paper ran. Only a "a better answer must score higher" test catches that.
+  - The judge-version-shift paper adds a point for HCE §4: when the grader is an LLM behind an API, the pinned hash should cover the model ID, the prompt and the decoding settings.
+- **Redirect-before-halt (10-18):** there is still no study comparing a redirect against a halt. Coral Discovery gives the best answer yet to what a forced pivot should change: the underlying approach, checked from the diff by a separate model call.
+- **`/elevate`:** the retrospective-adaptation paper ran on this box's exact stack (Claude Code + Opus 5.5). It shows that `/elevate` gates which changes get in but never checks afterwards whether an accepted change did anything. It's a single source, so I'd hold it rather than propose anything.
+
+**Needs your attention**
+- `~/.claude/skills/wrap/SKILL.md` contradicts itself. Its description says it "waits for confirmation", but line 84 says "no confirmation gate". I didn't edit claude-system from this repo.
+- In passing, I corrected a first-author error in `literature/papers/srinivasan2026continue.md`: arXiv 2608.03222 is by Wang, Lyu et al., not "Lyu et al."
+- I didn't run `/wrap` because it pauses for confirmation and this session is non-interactive. The SessionEnd hook will write the NOTES.md entry.
