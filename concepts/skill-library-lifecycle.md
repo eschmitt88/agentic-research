@@ -64,6 +64,7 @@ sources:
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhou2026does]]"
   - "[[literature/papers/nakayashiki2026lessons]]"
+  - "[[literature/papers/treude2026how]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -1390,3 +1391,54 @@ Limits:
 - Remedies were tested only on transient failures. A no-change option may
   also suppress a correct lesson after a real breakage; untested.
 - Writer and reader were the same model; single author; LLM-reviewed only.
+
+## A session retrospective on Claude Code: proposals carry the skill's own checklist, and a consulted change helped only where it covered the instance met later (2026-11-03)
+
+The sections above test write and removal policies in synthetic loops.
+[[literature/papers/treude2026how]] watches the insert step on this box's
+own stack (Claude Code 2.1.295, Opus 5.5). A third-party `/retro` skill
+reviewed each of 30 finished SWE-bench Verified sessions and proposed
+harness changes for human approval. The authors implemented 24 and
+evaluated 12 on later same-repo issues, 5 sessions with and 5 without
+the change per event.
+
+Three points for this concept:
+- **The insert step imports the proposer's priors.** 101 of 125
+  proposals cited an event in the session. 19 cited none, and 18 of those
+  were lint checks, because the skill's text calls a repo with no
+  pre-commit hook or CI lint job "a finding". This is the write-side twin
+  of nakayashiki2026lessons: there a chance outcome wrote the rule; here
+  the skill's checklist did. tang2026memory's admission test ("evidence
+  retained") would reject these proposals on their own record.
+- **Fired is not the same as effective.** Cortex's rule (above) treats an
+  item that never fired as unmeasured. That case occurs here: the one
+  evaluated prior-driven change, a pre-commit config, was present in 5/5
+  sessions and run in 0/5, since sessions never commit. The converse
+  also occurs. Four known-failures files were consulted in every adapted
+  session and left recurrence unchanged (5/5, 5/5, 4/4, 5/5), because
+  later sessions met failures the lists did not name. The 2 changes that
+  removed the targeted action (5/5 → 0/5, 3/5 → 0/5) both covered the
+  instances later met. Exposure is necessary but not sufficient for
+  admission.
+- **Instance facts age fastest.** A repo-level fact (the test command)
+  transferred cleanly. Lists of specific failing tests did not. One list
+  also said "treat any unlisted failure as yours", and on an unrelated
+  control issue 4/5 adapted sessions ran extra baseline checks against
+  0/5 before. This is so2026masked's harm-suite point from the add side:
+  a change can be judged only with a task it was not written for.
+
+Rule (our inference): admit a retrospective's change only with a recorded
+later task that (a) met the targeted problem in the unchanged harness,
+(b) shows the change read, and (c) shows the action changed, plus one
+unrelated task for added work. Drop changes justified by the proposer's
+checklist rather than by the session.
+
+Limits:
+- Seven informative events, 5 sessions per arm, no statistical tests. By
+  our Fisher test only 5/5 → 0/5 (p = 0.008) and the control's 0/5 → 4/5
+  (p = 0.048) clear 0.05 alone.
+- Humans selected proposals and evaluation issues; issues were picked to
+  reproduce the problem. Coding was by two LLMs, resolved by the first
+  author.
+- All evaluated changes target environment problems (test runner,
+  pre-existing failures). No removal or revision arm.

@@ -50,6 +50,8 @@ sources:
   - "[[literature/papers/zhu2026precedent]]"
   - "[[literature/papers/zhang2026rethinking]]"
   - "[[literature/papers/ganesan2026infinity]]"
+  - "[[literature/papers/laddha2026position]]"
+  - "[[literature/papers/treude2026how]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1163,6 +1165,98 @@ Limits:
 - One gate decision in total. Held-out scored 1.000 for both arms, so the
   gate's held-out check was never discriminating.
 - The harness is not released. Single-author preprint, cred 2.
+
+## Role rank depends on the model family, and message boundaries move a conflict as much as role does (2026-11-03)
+
+"Channel rank decides a conflict" (2026-10-26) explains xu2026stale by the
+channel: the file arrives as an instruction and the code as tool output.
+The 2026-11-03 section above found that role alone set no stable rank when
+nothing conflicts. [[literature/papers/laddha2026position]] tests rank
+directly. The same one-line instruction is sent from five seats (operator
+and repository in the system message, user, tool result, memory note).
+Only its position, chat role and message boundary change. There are 14
+open-weight readers (Qwen 3, Qwen 3.5, gpt-oss; 26 model-modes) and
+1,887,356 code-scored replies.
+
+- **The weak form of channel rank holds.** A user line beats a tool
+  result in 20 of 26 model-modes (52.57–78.51%). Part of this exists with
+  no conflict: alone, a user line is carried out more often than the same
+  line from a tool in 23 of 26.
+- **The strong form does not.** A policy sent first in the system message
+  wins only 6.07–17.35% of conflicts with a later line on Qwen 3 and
+  11.66–41.50% on Qwen 3.5. On gpt-oss, which was trained on a
+  system > developer > user order, it wins 62.94–75.73% of replies that
+  act. Rank is something a model is trained to apply, not a property of
+  the chat format.
+- **The boundary is a placement of its own.** Inside one message the
+  first of two lines wins 72.42–94.66%. Split into two messages, the first
+  keeps only 22.95–62.65%, and on Qwen the later message wins most
+  conflicts. This holds on both scenario halves in all 26 model-modes.
+- **The system role can cost a policy.** In tool and file-write tasks, a
+  policy first in the real system message wins 6.41–48.75 points less
+  than the same labelled text first in a user message (26 of 26). In
+  format tasks the drop disappears (0 of 26). The paper says this cannot
+  be separated from the tool definitions that share the system turn.
+
+For this box the relevant layout is not the paper's system-message seat.
+CLAUDE.md and `.claude/rules/` arrive as labelled text inside a user-turn
+`system-reminder`, after the system prompt. A loaded SKILL.md and later
+chat arrive in later messages. On these readers, that layout means primacy
+inside the reminder block and recency across messages. Whether Claude
+does the same is untested. Claude already differs on one measure: these
+readers flag a conflict in ≤2.92% of replies, while Claude Code named the
+file–code conflict in 79/80 ([[literature/papers/xu2026stale]]).
+
+The placement axis therefore has three dials for a conflicting
+instruction, not one: role, position, and whether it shares a message with
+its rival. Their weights differ by model family. That is the paper's main
+practical point: test placement on the model in use.
+
+Limits:
+- Open-weight readers only (0.6B–122B); no Claude or hosted model.
+- One-line synthetic instructions, one label wording per seat; the label
+  itself is never varied. Only 50 items are tested inside realistic text,
+  and there the strong gpt-oss operator falls 15.12–29.77 points.
+- The tool/file-write restriction of the role effect was found on the
+  discovery half, then held on the held-out half.
+- Family contrasts mix training, chat format, serving release and
+  precision.
+
+## A check bound to an event the session never produces does not fire: 28 of 38 proposed executable checks (2026-11-03)
+
+"The boundary has a time axis" above places a check *when* the protected
+action happens. [[literature/papers/treude2026how]] shows the cheap failure
+of that choice. A check placed on an event that the agent's workflow does
+not produce sits outside the run's time axis entirely.
+
+A `/retro` skill on Claude Code (Opus 5.5) proposed 38 executable checks
+across 29 of 30 SWE-bench Verified sessions, the largest mechanism class.
+Only 9 of the 38 could report a failure in the task environment as
+written. Of the other 29, 28 needed tools the container lacked or were
+git commit hooks. The task sessions made no commits, so the hooks would
+never run. The one such check the authors carried into evaluation, a
+pre-commit config, was present in 5/5 adapted sessions and run or read
+in 0/5.
+
+Two points for this concept:
+- **Placement has to name an event the agent actually emits.** A git
+  hook is outside the agent (a strong placement in this concept's table),
+  but it binds to `git commit`. An agent that edits, tests and stops never
+  crosses it. This box's own hooks bind to Claude Code session events
+  (SessionStart, PreCompact, SessionEnd), not to git events, so they do
+  not have this gap.
+- **A check that cannot fail looks like coverage.** The proposer counted
+  each as a safeguard, and a reviewer reading the list would too. One
+  executable-check proposal was a CLAUDE.md pointer, which cannot fail.
+  The fix is cheap: before admitting a check, confirm the trigger event
+  and the tool exist in the target environment.
+
+Limits:
+- Counts of proposals, not measured enforcement. Only one commit-bound
+  check was run, by 5 sessions.
+- The no-commit workflow is the benchmark's (a patch is diffed, not
+  committed). In a workflow that commits, the same hooks would fire.
+- Coded by two LLMs, resolved by one author.
 
 ## Connections
 

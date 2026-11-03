@@ -41,6 +41,7 @@ sources:
   - "[[literature/papers/mcmillan2026instruction]]"
   - "[[literature/papers/xu2026stale]]"
   - "[[literature/papers/zhu2026precedent]]"
+  - "[[literature/papers/laddha2026position]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -613,6 +614,45 @@ Limits:
   example 30/30.
 - There is no arm stating the target without the priority clause, so the
   clause's own contribution is not isolated.
+
+## No open model keeps a declared priority at 0.95, and dropped instructions go unreported (2026-11-03)
+
+The 2026-11-02 section above proposes that a typed rule line carry a
+priority field ("over existing code: yes/no"), because a stated priority
+beat the code where an example did not. [[literature/papers/laddha2026position]]
+measures how reliably a model applies a declared priority it reads. Two
+conflicting options are tagged `[priority: t]` (t = 1–6) under a system
+rule that the lower number wins. There are 6,480 trials per model-mode,
+14 open-weight readers and 26 model-modes, scored by code.
+
+- **The rule is followed more often than not, but not reliably.** The
+  lower tier wins 50.78–98.51% of decided replies (above half in 24 of
+  26) and 24.29–87.08% of all usable replies. Thinking helps Qwen, by up
+  to +25.83 points.
+- **No reader keeps even two tiers in order at 95% reliability.** The
+  upper bound on tiers kept in order at q = 0.95 is 1 in every one of the
+  26 model-modes. Even the best case, Qwen3.5-27B with thinking, follows
+  the rule in 98.51% of decided replies but 87.08% of usable ones.
+- **The loss is silent.** At most 2.92% of decided pair replies flag or
+  hedge the conflict (by keyword pattern). A reply rarely says which
+  instruction it dropped.
+
+For the priority-field idea this means the field is useful as an input to
+a checker, not as an instruction to the model. Read by the model, a
+priority is one more soft cue that holds on most replies. Read by a
+predicate on the output (zhu2026precedent's choice classifier), it holds on
+every reply. This is the division of labour this concept already argues
+for, now with a measured ceiling on the prose side. It also fits
+[[literature/papers/razmara2026one]], where a priority line between two
+skills moved achievable rules only 2–11 points.
+
+Limits:
+- Open-weight readers only. Claude may differ: Claude Code named a
+  file–code conflict in 79/80 replies in xu2026stale, far above 2.92%.
+- Numeric tier tags are not the same as zhu2026precedent's
+  natural-language precedence clause, which gave 59/60. The two forms are
+  not compared in one study.
+- Flagging is a fixed keyword pattern; reasoning is not read.
 
 ## Connections
 

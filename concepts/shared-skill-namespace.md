@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/taneja2026scan]]"
   - "[[literature/papers/liu2026lost]]"
   - "[[literature/papers/razmara2026one]]"
+  - "[[literature/papers/laddha2026position]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
@@ -233,6 +234,46 @@ Caveats:
 This box has no same-job pairs today: user-level and project skill lists
 are the same set. Our inference: the exposure arrives with plugin or
 vendor skills that overlap a house skill.
+
+## "Load order" is two variables: within one message the first rival wins, across messages the later one does (2026-11-03)
+
+The 2026-10-27 section above found that load order picks the winning skill
+inconsistently across readers, so a precedence-by-path rule would not
+predict behaviour. [[literature/papers/laddha2026position]] splits order
+into two parts that work in opposite directions. It uses one-line
+conflicting instructions rather than skill files, 14 open-weight readers
+(26 model-modes) and code-only scoring.
+
+- **Same message: the first line wins.** 72.42–94.66% of decided replies,
+  in all 26 model-modes.
+- **Separate messages: the first keeps only 22.95–62.65%.** On Qwen the
+  later message wins most conflicts (59.77–89.05%). gpt-oss is near even.
+- **Pairs do not settle three-way clashes.** Pairwise win rates cannot
+  fix the winner of a larger conflict without an extra assumption (shown
+  by example in App. G). Forecasts from pairs improve in every model-mode
+  once they know where the task line sits.
+
+For this namespace the split matters because the two skill paths load
+differently. SkillClash force-loads both files into one system prompt,
+which is the same-message case. Claude Code loads a SKILL.md on demand,
+so it arrives in its own message, later than CLAUDE.md and any skill used
+earlier. On these readers the later-loaded skill, or a later chat line,
+would tend to win a conflict with CLAUDE.md. A namespace precedence rule
+would therefore need to say *when* a file is loaded, not only *which* path
+it comes from. That is our inference; no Claude reader is tested.
+
+Razmara and this paper disagree on Qwen-family readers. Razmara's
+first-listed skill won only 24% of takeovers on Qwen2.5-7B. Here one-line
+rivals in one message give the first line 72–95% on every Qwen model. Our
+reading is that a worked example can overrule the position effect that
+bare lines show. That fits the 2026-10-27 finding that the example is the
+channel. Neither paper tests both.
+
+Limits:
+- One-line instructions, not skill files with rules and examples.
+- Open-weight readers only; Claude Code's on-demand `Skill` loading is
+  not tested.
+- Qwen2.5 (razmara) and Qwen 3 / 3.5 (here) are different generations.
 
 ## Open questions
 

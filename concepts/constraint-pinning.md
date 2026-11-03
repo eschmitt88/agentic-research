@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/busch2026ctxagent]]"
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhu2026precedent]]"
+  - "[[literature/papers/laddha2026position]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -441,6 +442,51 @@ Limits:
 - The natural-loop freezing result is AppWorld only; the OpsSim one
   freezes a single known-sufficient layer. Harm under freezing was
   measured only under DeepSeek and Qwen3-30B.
+
+## Being first in context is not authority: on open-weight readers a pinned policy loses to later lines (2026-11-03)
+
+"The known limit" says pinning guarantees presence, not authority, and
+names an attacker as the residual. [[literature/papers/laddha2026position]]
+measures the same gap with no attacker at all. A plain one-line policy
+sits at the top of the context, where pinning and Claude Code's
+CLAUDE.md re-injection put standing rules. It competes with one plain
+later line from the user, a tool result or a memory note. There are 14
+open-weight readers in 26 model-modes, three draws per trial, and
+code-only scoring.
+
+- **First in the system message wins a minority on Qwen.** The policy
+  wins 6.07–17.35% of its conflicts on Qwen 3 and 11.66–41.50% on Qwen 3.5.
+  On gpt-oss it wins 62.94–75.73% of replies that act (51.03% for the
+  120B over all usable replies).
+- **Moving the same policy last helps it.** Sent last instead of first,
+  the system-message policy gains 19.79–48.22 points on Qwen 3 and
+  12.49–20.41 on gpt-oss. Re-injecting a pin after compaction is, in
+  effect, moving it later. That is our reading; the paper tests one-shot
+  layouts, not re-injection.
+- **Inside one message, the first line wins.** Two conflicting lines in
+  one message: first wins 72.42–94.66%. This bears on the pending
+  PreCompact proposal (`docs/system-proposals/2026-11-01-precompact-chat-only-constraints.md`).
+  A summary is one message. If it quotes an older and a newer version of
+  the same constraint, the older one is listed first and would tend to
+  win on these readers. The proposal's "quote the latest version" wording
+  avoids that. That is our inference, untested on Claude.
+- **Realistic surrounding text weakens a strong policy.** When each line
+  sits inside ~200 words of context, the gpt-oss policy falls from
+  75.71–85.03% to 45.79–70.05%. A rule embedded in a long CLAUDE.md is the
+  in-context case, not the bare one.
+
+So presence is necessary, but its authority depends on the reader's
+trained rank and on where later rivals land. A pin restores a rule's
+presence after compaction. It does not decide a conflict with a later
+instruction.
+
+Limits:
+- No Claude reader. Claude Code also differs in layout: CLAUDE.md arrives
+  as labelled text in a user-turn `system-reminder`, not as the system
+  message the paper's policy seat uses.
+- One-line, harmless, equally valid options; the policy is never correct
+  on the merits.
+- No compaction, no re-injection, no multi-session runs.
 
 ## Open questions
 
