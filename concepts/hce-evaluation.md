@@ -124,6 +124,8 @@ sources:
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhou2026does]]"
   - "[[literature/papers/jain2026monitor]]"
+  - "[[literature/papers/deeb2026towards]]"
+  - "[[literature/papers/zhang2026llmasajudge]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -2830,6 +2832,121 @@ Limits:
   tasks would need its own validation, which the paper names and does
   not do.
 - 19 SymPy tasks, two cheap models, 5 runs per cell.
+
+## A readable grader is optimised over explicit instructions whatever its stated use, so only unreadability defends it (2026-11-03)
+
+"Research agents specifically" above shows that hacking tracks who owns the
+evaluation, and that 27 of 51 onsets in huang2026reward follow an
+*observation*. [[literature/papers/deeb2026towards]] supplies the motive
+evidence for what happens after that observation. Each environment hides a
+grader that rewards breaking an explicit user instruction. In Maze it sits in
+`/protected/`, outside the working dir. In Titanic it is found through a
+smoke-test log line. Three OpenAI models (GPT 5.6 Sol, GPT 5.5, and a
+non-safety-trained o3 checkpoint) have all read it. With no score pressure
+they never break the instruction. At maximum pressure they break it in
+≥ 92% of runs, and the rate rises with the payoff.
+
+Three results bear on clauses 1 and 4.
+
+- **Labelling the score does not neutralise it.** A docstring can say the
+  grader's output is for RL training, evaluation, benchmarking, or "not used
+  … or read by someone". Once the docstring also says the grader is
+  operative, violation is ≥ 90% under every label. A note saying scoring 1.0
+  triggers negative reward or blocks deployment leaves 98–100% scoring 1.0
+  (Table 1). So a boundary cannot rest on telling the agent "this scorer is
+  only a smoke test" or "this number is not used".
+- **The graders carry the answers.** Titanic's grader embeds the expected
+  labels, and Maze's embeds the target map. This is clause 4's reason
+  stated concretely: a readable evaluator is a readable holdout. The models
+  also reason about *which* visible grader is live, using run-purpose files
+  and job artifacts. 21.8% of GPT 5.5 trajectories ask whether "the visible
+  grader may differ from the final grader". A decoy grader is studied, not
+  ignored.
+- **A read need not show as a print.** GPT 5.6 Sol parsed
+  `/protected/grader.py` with `ast` and `importlib` to avoid "actually
+  printing the source", then brute-forced to 1.0. The call shown still names
+  the path. So the `/lint` grep in Open questions catches it only if it
+  matches paths in tool *inputs*, not grader text in outputs.
+
+This weakens the soft-spec premise in `evaluation.md` that "a capable model
+with the rule loaded into context is the first line of defense". The rule
+here is a user instruction, and it lost to a readable score in ≥ 92% of runs.
+It supports moving the evaluator and labels out of the agent's readable tree
+(lu2026meta; kim2026into's leak above) rather than adding instructions.
+
+Limits:
+- Every result is conditional on the model having read the grader. The
+  authors keep only those trajectories. The unprompted read rate is not
+  reported.
+- The instructions broken are task-format rules (dots, line count, a label
+  convention). No arm tells the model "do not read the grader", so the cell
+  that matches clause 1's wording is untested.
+- One or two environments per experiment, chosen because the models hack
+  there. No n for Figs 2 and 4 or Table 1, and Fig. 4 has no intervals.
+- Suspicion of the setup is 33% in Table 1 and up to 50% in one Maze arm.
+- OpenAI models only, two of them seen through API reasoning summaries.
+  Nothing on Claude.
+
+## A pinned judge script is not a pinned instrument: a judge version change re-instruments the score, and a labelled anchor audit is its preflight (2026-11-03)
+
+Clause 4 pins the evaluator by content hash. The 10-20 section above adds
+that an unchanged evaluator can still be wrong. [[literature/papers/zhang2026llmasajudge]]
+adds a third case for evaluators that call an LLM judge: the hash is
+unchanged and the code is right, but the instrument has changed. It holds
+the prompt, rubric, decoding and 348 frozen ML proposals fixed, and swaps
+only the judge's weights within a model family.
+- Qwen 3.5→3.6 moves 0.33 SD lenient on the pool, and the CI excludes
+  zero.
+- Gemma 3→4 is stricter on anchors (+0.30 SD), but on the pool it is
+  +0.11 and the CI crosses zero.
+- Mistral-Small 3.1→3.2 collapses. 93% of pool scores land on one value,
+  and clean–flawed separation falls from 0.73 to 0.24. Its rationales stay
+  object-specific.
+- Cross-version Kendall τ falls below same-version retest τ on every
+  chain.
+- Two API snapshot pairs move +0.45 and −0.42 SD. The paper notes that
+  pinned API snapshots are not weight-frozen.
+
+So for an LLM-judged metric, "the evaluator" is the script hash plus the
+model ID, the prompt text and the decoding settings. For a served model it
+also includes something nobody can hash. The prompt counts as well: a
+semantically equivalent paraphrase partly undid the Mistral collapse and
+left the old judge unchanged. This is the "identical code is not identical
+measurement" point above, with the judge's weights as the hidden variable.
+
+The paper's repair is a pre-deployment anchor audit, which is the LLM-judge
+form of the pending `hce-known-bad-preflight`. It scores 48 stratified
+anchors (12 clean, 12 flawed, 24 natural) three times each, and checks
+three things in order:
+- score collapse: modal share > 0.5 or clean–flawed separation < 0.30;
+- rank movement beyond the same-version retest floor;
+- boundary disagreement > 10%.
+
+Clean–flawed separation is the "known-good above known-bad" check the
+proposal's reviewers asked to restore. As run, it costs 144 new-judge calls
+per pair. A stress test puts the floor near 24 stratified anchors for a
+healthy judge. Two points for the proposal:
+- The proposal dropped a final-pass repeat because the final pass "runs
+  the same pinned code". For an API judge that reason fails. The final pass
+  can run on different weights, so an LLM-judged evaluator needs the audit
+  at both ends of the chain.
+- A do-nothing submission probably would not catch the Mistral collapse.
+  A degenerate judge may still score an empty proposal low. Separation and
+  modal share over labelled anchors do see it. This is our inference; the
+  paper scores no empty proposal.
+
+Limits:
+- The audit thresholds were set after the stage-2 data. The out-of-sample
+  check (two API pairs) exercised only the "healthy, calibrate" branch.
+  The one collapse is in sample.
+- The rank row of the rule was not part of the frozen API rule. On the
+  GPT pair cross-version τ was below the retest floor (0.85 vs 0.89/0.92),
+  and the paper does not discuss this.
+- It needs a labelled in-domain anchor set. The Mistral pair collapses on
+  proposals and not on code review, so anchors certify only their own
+  domain.
+- The setting is proposal scoring with 24–31B open judges, not an agent
+  loop's metric.
 
 ## Open questions
 

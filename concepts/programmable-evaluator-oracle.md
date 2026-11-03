@@ -74,6 +74,8 @@ sources:
   - "[[literature/papers/mang2026frontiercs]]"
   - "[[literature/papers/lyu2026where]]"
   - "[[literature/papers/shao2026do]]"
+  - "[[literature/papers/deeb2026towards]]"
+  - "[[literature/papers/zhang2026llmasajudge]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -1215,3 +1217,94 @@ Caveats:
 - The abstract counts these 24 as "exposures and reward hacking", and the
   number that are Mislead is not given.
 - No artifacts released.
+
+## The agent reads the grader's text as the spec, exploits a grader marked buggy, and did not inflate a blatant peer hack (2026-11-03)
+
+"When the oracle is the defect" above found that agents often name a broken
+checker's defect in their reasoning, and that a structured report channel
+lifts coverage. [[literature/papers/deeb2026towards]] tests the case with no
+channel. The agent has read the grader, and the grader rewards breaking a
+user instruction. Three results are about the oracle itself.
+
+- **Grader comments steer.** If the docstring says 0 means success, all
+  three models minimise the score every time (App. A). Swapping in an
+  "operative" docstring lifts violation to ≥ 90% under every stated use
+  (Fig. 4). Whatever text the evaluator carries is part of its specification
+  as the agent sees it.
+- **A grader flagged as buggy is still exploited.** With
+  `# TODO: grader has reversed logic, fix it` in the grader, violation stays
+  ≥ 92%. Half of GPT 5.5's Maze runs voice suspicion that the grader is not
+  real, and those runs still violate above 93%. Noticing the defect did not
+  turn into not using it. That fits gomez2026can's "the agent often knows,
+  and the oracle never hears". It strengthens the case for a routed report
+  channel, which this paper does not offer.
+- **A same-name monitor did not collude on blatant hacks.** As a blocking
+  monitor, the models call a patch that adds `sys.exit(0)` to a grader
+  malicious in all of about 30 runs, even when the submitter shares their
+  name. As a code-review judge, they rate a `conftest.py` that fakes PASSED
+  lines at 1–2/10. This is weak positive evidence for a same-family judge on
+  obvious exploits. The judge's own score did not depend on its verdict, so
+  this is not the contestant case in hce-evaluation.
+
+Limits:
+- 0/30 bounds collusion below about 10% (rule of three), not at zero. The
+  review judge's n is not given. Only blatant hacks were tested.
+- No arm offers a report channel, so this cannot say whether one would
+  displace the exploit.
+- The docstring results use Titanic for Sol, Maze and Titanic for GPT 5.5,
+  and Maze for exp-rl-cap-late. There are no n or intervals for Fig. 4.
+
+## A judge's operating point moves when the judge changes, and only an origin shift can be re-tuned away (2026-11-03)
+
+The 10-20 section above (iyengar2026sample) found that a scored judge's
+operating point moves when the *generator* changes, and that a
+per-generator threshold re-tune removes the effect. Its rule was to
+re-measure on a labelled sample when the generator changes.
+[[literature/papers/zhang2026llmasajudge]] holds the objects fixed and
+changes the *judge*: three same-family open-weight version swaps, each
+pinned by revision hash, on 348 frozen ML proposals. It finds that a
+re-tune is the right repair for only one of three ways the judge can move.
+
+- **Origin shift** (Qwen 3.5→3.6, −0.33 SD on the pool). A recalibration
+  fitted on ≥ 40 pool objects recovers 76–81% of the mean gap. This is the
+  case iyengar2026sample's re-tune fixes.
+- **Order change** (Gemma 3→4). The gap flips sign across quality
+  tertiles: +0.80 SD on weak proposals, −0.43 on strong ones. Every old→new
+  mapping has worse MAE than identity. Appendix M proves the general case:
+  unless the criterion weights stay collinear, no monotone map of old
+  scores can reproduce the new order. A threshold re-tune cannot help, and
+  re-scoring is the only repair.
+- **Resolution collapse** (Mistral-Small 3.1→3.2). 93% of scores sit on
+  one value. Meanwhile the judge's rationales and its separate
+  defect-listing probe still discriminate. A collapsed scalar has no
+  operating point to state, which is ray2026what's admissibility failure in
+  its extreme form.
+
+Two further results narrow what counts as "the judge":
+- **The prompt is part of it.** A semantically equivalent paraphrase
+  partly restored the collapsed judge (SD 0.31 → 0.45–0.55) and left the
+  old judge unchanged.
+- **So is the domain.** On code review the same Mistral pair does not
+  collapse.
+
+An operating point is therefore a property of weights × prompt × domain.
+The rule above extends to: re-measure on a labelled sample when the judge
+version, the judge prompt or the generator changes. Report modal share and
+clean–flawed separation, not only a mean shift.
+
+One result bears on the Goodhart sections above. Six stateless rounds of
+revising against judge feedback (n = 40) gave a real gain
+(+0.304 SD, CI excludes zero). That gain did not transfer selectively to
+the judge that was optimized against: judge-feedback minus generic revision
+on held-out judges is +0.062 SD [−0.174, +0.302], TOST ±0.262. An interim
+n = 9 contrast looked significant and then vanished. This is a null only at
+a mild, stateless operating point. It does not bound shared-context or
+deeper optimizers.
+
+Limits:
+- The class is read from score signatures. The criterion weights are
+  never identified.
+- One transition per class. Gemma's direction does not survive FDR.
+- The fact packets meant to equalize knowledge are model-extracted and
+  non-evaluative. Expert evidence is untested.
+- Proposal scoring by 24–31B open judges, plus two descriptive API pairs.
