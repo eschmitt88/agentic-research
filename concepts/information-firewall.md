@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/yao2026explicit]]"
   - "[[literature/papers/zhu2026who]]"
   - "[[literature/papers/deeb2026towards]]"
+  - "[[literature/papers/ellington2026automatic]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -403,6 +404,49 @@ Limits:
 - The sed case is one run.
 - OpenAI models only, and all trajectories are conditioned on reading a
   grader.
+
+## With the data present, the paper text was worth little, but the task README carried the target score and a method hint (2026-11-03)
+
+The firewall withholds the source method so that a match reads as
+discovery. [[literature/papers/ellington2026automatic]] measures how much
+the paper itself is worth to an agent on supervised tasks where the data
+are given. Nine tasks, Claude Opus 5, 3 attempts per cell, no task README,
+reported scores masked in the paper text. Median simple-baseline strength
+(0 = trivial floor, 1 = published DL method):
+
+- full paper + all data 0.88; abstract only 0.83; no paper text 0.82;
+- half the training rows 0.80; 10% of rows 0.62;
+- no training labels 0.17; identifiers only 0.00 (with or without abstract).
+
+Only the last three differ from full text (Holm p = 0.039, 0.027, 0.027).
+For supervised prediction, then, withholding the paper is a weak firewall:
+the labelled data carry almost all of the result. That is the converse of
+wang2026naturebench's reading, where the firewall makes a match
+interpretable. Here a match without the paper is the expected case, so it
+says little about discovery.
+
+Two leaks the firewall's file-level rule would not catch:
+- **The task description carries method.** On one neuroscience task the
+  context-ablation run scored 0.15 against 1.01 in the main cohort. Only
+  the main cohort's README told the agent to fit a separate decoder per
+  subject and direction. A task spec written from the paper can hand over
+  part of the method, as in [[literature/papers/lyu2026where]].
+- **The target score is not the labels.** Labels and results files were
+  outside the container, and the audit logs show none was read. But the
+  README stated the published score in at least 23 of 36 tasks, every
+  attempt read it, and in two five-hour attempts the agent used reported
+  scores to estimate its own test score. HCE clause 1 already bans fetching
+  a leaderboard during search; a score in the task's own docs is the same
+  channel by another route.
+
+The paper's audit form is worth copying: log what each attempt *could*
+reach, then what it used. Eight attempts asked for a withheld file.
+
+Limits:
+- 9 tasks, 3 attempts per cell. L5's −0.12 drop is n.s. at this n.
+- No README in any ablation level, so the README effect is one task.
+- Pretraining exposure to the 2024–2026 papers is not tested. L7/L8 at 0.00
+  rules out label recall, not method recall.
 
 ## Connections
 

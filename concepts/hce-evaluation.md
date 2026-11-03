@@ -126,6 +126,8 @@ sources:
   - "[[literature/papers/jain2026monitor]]"
   - "[[literature/papers/deeb2026towards]]"
   - "[[literature/papers/zhang2026llmasajudge]]"
+  - "[[literature/papers/ellington2026automatic]]"
+  - "[[literature/papers/chen2026autoresearch]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -2947,6 +2949,109 @@ Limits:
   domain.
 - The setting is proposal scoring with 24–31B open judges, not an agent
   loop's metric.
+
+## A measured floor and a competent comparator are two different checks: one cheap shot recovered a median 95.5% of published gains (2026-11-03)
+
+The known-answer pre-flight sections above (10-20, 10-27) check the
+*evaluator*: a do-nothing submission must land at the floor, and a
+known-good one must clear it. [[literature/papers/ellington2026automatic]]
+supplies the check on the *claim*: is the gain bigger than what a cheap,
+competent baseline gets with no search at all?
+
+On 36 supervised tasks from Nature-, Science- and Cell-family DL papers,
+Claude Opus 5 got one script, 30 minutes, 4 CPUs, no GPU and no pretrained
+weights per attempt, 5 attempts per task. Scored on the task's held-out
+test fold as (baseline − trivial floor) / (published DL − trivial floor):
+- median 0.955, mean 0.857 over task medians; 12 of 36 at or above the
+  published number;
+- 23 of 180 attempts crashed and are excluded; as zeros, the mean is 0.796;
+- the DL reference is a reported number, usually the table's best entry,
+  not a rerun on the same fold.
+
+Three points for this concept:
+- **The floor must be measured, not assumed.** The paper's trivial predictor
+  is the known-bad floor, scored per task. Most floors sit at chance, but
+  one grouped task's trivial PCC is 0.862 against a DL score of 0.973. Its
+  selection policy says "a training-mean predictor does not generally have
+  held-out R2=0". For the pending `hce-known-bad-preflight` proposal: "lands
+  at the floor" needs the floor computed on the same split.
+- **A competent comparator is not a known-good probe.** Its score is not
+  known in advance, and replicates spread (median within-task range 0.10;
+  7 of 35 tasks above 0.2). It cannot certify an evaluator. It can stop a
+  chain from crediting a gain that a one-shot GBDT already gets. That is the
+  role chen2026cads's non-LLM prior plays in
+  [[concepts/evolutionary-expansion]].
+- **Agent-chosen validation is optimistic.** Over 153 attempts, the agent's
+  own validation score beat test in 102 and ranked test at Spearman 0.40.
+  The likely cause, which the paper does not test, is that the source
+  papers' test splits are harder than a random holdout. This supports
+  clause 3's pinned split: the comparator and the chain must be scored by
+  the pinned evaluator on the pinned split, never by self-report.
+
+Rule (our inference, untested in a loop): before `/iterate` credits a
+chain's best `metrics.json`, score ≥ 3 replicates of a one-shot baseline
+through the pinned evaluator on the same validation split. Report the
+chain's result as a margin over the baseline mean, with the replicate
+range as the band. Cost is about 3 × 30 CPU-minutes. One draw is not
+enough, for the reason in the 10-27 single-draw section above.
+
+Limits:
+- One model (Opus 5), supervised prediction only, one test fold per task.
+- The task README showed the published score in ≥ 23 of 36 tasks and every
+  attempt read it. Labels never entered the container.
+- No interval or test on the headline. Preliminary preprint.
+- The paper uses the baseline as a reviewer's check on published work, not
+  as an in-loop comparator. The rule above is ours.
+
+## An admissibility gate split from the target is clean, but read once on the searched validation set its winners sit at the edge (2026-11-03)
+
+[[literature/papers/chen2026autoresearch]] (Auto-Research Arena) builds on
+Karpathy's autoresearch, the setting closest to `/iterate`. Each track
+minimizes one resource (parameters, tokens, KV cache, latency, ...). The
+candidate counts only if validation BPB < τ and the other resource limits
+hold. Two parts of the design are worth copying:
+- **Admissibility is a gate, not a term in the score.** Quality,
+  resources and (on inference tracks) a next-token total-variation check
+  decide whether a candidate counts. Only then is the target compared. A
+  gain that breaks a constraint cannot be traded into the score.
+- **The evaluator, not the harness, records the result.** Arena logs
+  every launch and reports the best admissible candidate, whether or not
+  the harness kept it. Protected files are checked before each run. A
+  harness cannot misreport its own endpoint.
+
+What it does not protect:
+- **The gate is on the selection set.** The "held-out" BPB that decides
+  admission is shown to the harness after every launch. Nothing is
+  re-scored on a sealed split or a second seed. A tight constraint pushes
+  winners to the edge: 6 of 12 Table 5 winners sit within 0.004 BPB of τ
+  (e.g. 1.0497 under < 1.05, 1.9963 under < 2.0). BPB noise across seeds
+  is not reported. So whether these winners are admissible on a re-run is
+  unknown. This is the single-read selection problem above, applied to
+  the admission decision, not the score.
+- **The idea-library headline is a max over 305 single reads.** BPB
+  0.9295 → 0.9112 is the best candidate on the evaluator the search used.
+  The reference had one run and no search at equal GPU-hours. The authors
+  note the top two differ by 8 × 10⁻⁶. They do not price the inflation in
+  the 1.97% gain.
+- **An extreme outlier goes unaudited.** One harness cut KV-cache
+  allocation from 33,790 KiB to 1.000 KiB, and the paper does not explain
+  how. A 4.5-order gain that passes every gate is exactly what the pending
+  known-bad preflight, and a mechanism trace, are for.
+
+Our inference, for `/iterate` and the pending `hce-known-bad-preflight`
+proposal:
+- Make admissibility a typed gate separate from the improvement metric,
+  and have the evaluator, not the agent, record the best admissible run.
+- Confirm admission for any candidate within the noise band of τ on a
+  second seed before it is credited.
+- A known-good preflight is cheap here: re-run the reference through the
+  evaluator and check that it is admissible with the expected values.
+
+Limits:
+- One search per harness × track × model, seed 42. No intervals.
+- The paper reports no seed noise, so "inside the noise band" is our
+  reading of 0.0003–0.0037 gaps, not a measured one.
+- LM pretraining at ~50M parameters with 10-minute runs.
 
 ## Open questions
 

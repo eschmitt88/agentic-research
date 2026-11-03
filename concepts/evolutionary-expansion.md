@@ -43,6 +43,8 @@ sources:
   - "[[literature/papers/kim2026elicitation]]"
   - "[[literature/papers/wang2026rsihub]]"
   - "[[literature/papers/ren2026coral]]"
+  - "[[literature/papers/ellington2026automatic]]"
+  - "[[literature/papers/chen2026autoresearch]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -587,6 +589,103 @@ Limits:
   excludes the verifier's per-eval calls.
 - Deterministic graders on program-search tasks. Only Signal has a
   held-out split, and its score is visible to the agents.
+
+## One 30-minute shot reached 91.5% of a five-hour iterative budget on 9 science tasks, and the round-picking judge only tied validation (2026-11-03)
+
+The 10-27 section above says the baseline to beat is a competent prior,
+and oved2026llm's fresh-sample arm asks whether a task rewards search at
+all. [[literature/papers/ellington2026automatic]] adds a same-agent version
+of that question on real supervised science tasks: does iterating beat one
+unsearched shot?
+
+Setting: 9 tasks, Claude Opus 5 at high effort, CPU only, no pretrained
+weights. Mean simple-baseline strength (0 = trivial floor, 1 = published DL
+method), test fold:
+
+| Arm | Reps | Mean SBS |
+|---|---|---|
+| Single attempt, 30 min | 5 | 0.88 |
+| Single attempt, 150 min | 3 | 0.88 |
+| Best of 5, picked by validation | – | 0.90 |
+| Ten rounds + judge | 3 | 0.92 |
+| Five hours (≤ 50 rounds) + judge | 2 | 0.96 |
+
+No arm differs from the single attempt (paired Wilcoxon, Holm; smallest
+adjusted p = 0.16). Over 45 iterative runs, the judge's pick and the
+best-validation round both averaged 0.94, against 0.95 for the hindsight
+best.
+
+What this adds:
+- **A one-shot arm belongs next to every search arm.** On the 36-task main
+  cohort the same single shot recovered a median 95.5% of the published gain
+  and matched it on 12 tasks. A search loop that reports gains over its own
+  seed, and not over an unsearched shot at a few CPU-minutes, can credit
+  itself with ground a single draw already covers.
+- **A longer single run is not search.** Raising the cap from 30 to 150
+  minutes changed nothing (0.88 → 0.88). What gain there is came from more
+  rounds, not more wall-clock per script.
+- **The judge is a selector and added nothing over validation** (0.94 vs
+  0.94). This matches the pass-at-k point that selection is the scarce
+  resource.
+
+Limits:
+- 9 tasks chosen from earlier single-attempt results, 2–5 replicates per
+  arm. The 0.88 → 0.96 trend may be real and underpowered.
+- Confounded: the single and best-of-5 arms ran on builds that hid the task
+  docs; the iterative arms could read the published score, and two
+  five-hour attempts used it to estimate their own test score.
+- Rounds are revise-and-rerun of one script, not a population. No
+  tree or evolutionary arm was run.
+
+## A one-incumbent loop ranked second against evolutionary, tree and archive harnesses on an LM-pretraining benchmark, at one run per cell (2026-11-03)
+
+[[literature/papers/chen2026autoresearch]] (Auto-Research Arena) runs
+GEAR (evolutionary), Arbor ([[literature/papers/jin2026toward]], hypothesis
+tree), Heuresis (diversity-preserving archive), AutoScientists
+(multi-agent), and the authors' Beam Search (4 programs × 2 children) and
+Sequential Search (one incumbent, keep on strict gain). The setting is nine
+constrained LM-pretraining tracks, 100 charged launches each. Elo across
+tracks:
+
+| Model | 1st | 2nd | 3rd | 4th | 5th | 6th |
+|---|---|---|---|---|---|---|
+| Opus 5 | AutoSci 1729 | **Sequential 1688** | Arbor 1632 | GEAR 1622 | Beam 1439 | Heuresis 1350 |
+| GPT-6 | GEAR 1835 | **Sequential 1702** | Arbor 1460 | Beam 1423 | AutoSci 1299 | Heuresis 1281 |
+
+What this adds to the losing-alternative arm:
+- **The population machinery did not pay reliably here.** The archive
+  harness was last under both models. Beam, the authors' own breadth
+  variant of Sequential with the same proposer and reviewer, lost to it by
+  about 250–280 Elo. This matches [[literature/papers/zou2026fmlbench]]
+  (greedy ties the best tree search) in a new domain.
+- **The ranking flips with the model.** AutoScientists is first under
+  Opus 5 and fifth under GPT-6. GEAR is fourth and first. This matches
+  [[literature/papers/wang2026rsihub]]: no policy ranking holds across
+  agents at one run per cell.
+- **Cross-harness reuse, not a single lineage.** An idea library pooled
+  from all searches seeded a quality search whose final design drew on
+  four harnesses and four objectives. Ideas did not combine additively
+  (one reuse step scored worse than the reference). This is the
+  islands/archive migration effect, done by hand between independent
+  runs.
+
+How far to trust "simple wins":
+- Sequential is second, not first. It wins 3 of 9 tracks under Opus 5 and
+  2 of 9 under GPT-6.
+- Realized budgets differ. Under GPT-6, Arbor and AutoScientists used 14.7
+  and 30.2 of 100 launches (see [[concepts/budget-as-ceiling]]). The clean
+  Opus 5 losses are GEAR and Heuresis, which used all 100. The gaps to
+  Arbor and GEAR are 55 and 65 Elo, from one run each.
+- Sequential is the authors' baseline, with a reviewer, tie-break rules
+  and a quality-attempt allowance. The integrations of the other harnesses
+  are not described in detail.
+
+Limits:
+- One search per harness × track × model at seed 42. No CIs.
+- No token, dollar or wall-clock matching ([[literature/papers/oved2026llm]]'s standard is not
+  met).
+- No fresh-sampling or non-LLM prior arm beyond TPE, which cannot reach
+  most tracks' architectural changes.
 
 ## Open questions
 

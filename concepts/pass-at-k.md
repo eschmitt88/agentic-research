@@ -41,6 +41,7 @@ sources:
   - "[[literature/papers/kim2026elicitation]]"
   - "[[literature/papers/lyu2026where]]"
   - "[[literature/papers/shi2026weight]]"
+  - "[[literature/papers/ellington2026automatic]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -698,6 +699,44 @@ estimate. Log the archive best and the delivered pick as two numbers.
 
 Caveats: one run per cell, and the selection family's focal rules are
 exploratory.
+
+## Validation picked from five replicates for 80% of the hindsight headroom, and dropping crashed runs moved the mean six points (2026-11-03)
+
+The 10-06 section above found an agentic selector capturing about 30% of
+the oracle gap. [[literature/papers/ellington2026automatic]] gives a much
+higher capture for a plain validation score, on 5 replicates per task of a
+one-shot baseline (Claude Opus 5, 36 supervised science tasks):
+- mean SBS 0.88 for the median replicate, 0.92 for the validation-picked
+  replicate, 0.93 for the hindsight best (153 attempts that printed a
+  validation score);
+- capture ratio (0.92 − 0.88) / (0.93 − 0.88) ≈ 0.8, our arithmetic;
+- yet validation and test SBS correlate only at Spearman 0.40, and
+  validation was higher in 102 of 153. Within a task, the best-validation
+  replicate was also best on test in about half the tasks.
+
+So a weak, biased selector still captures most of a small headroom. The
+headroom is small because replicates mostly agree: median within-task
+range 0.10, 7 of 35 tasks above 0.2. Capture ratio and headroom should be
+reported together; neither alone says whether more draws pay.
+
+Two reporting points from the same paper:
+- **Failures in the denominator.** 23 of 180 attempts crashed before
+  predicting and are excluded from task medians. Counting them as 0 moves
+  the mean from 0.857 to 0.796; the median stays 0.955. All six tasks with
+  medians below 0.5 had at least one crash, and two of them rest on two
+  scored replicates. Report k per cell and the exclusion rule, as the
+  10-12 section asks.
+- **A normalized ratio again.** SBS rescales each task to [floor, DL]. One
+  task's floor is 0.862 PCC against a DL score of 0.973, so a small raw
+  gain reads as SBS ≈ 1. Values above 1 (up to 1.49) lift the mean. The
+  paper prints raw floors and references (Table 2), which is the right
+  practice; it does not print raw baseline scores.
+
+Limits:
+- The 0.88 / 0.92 / 0.93 figures pool the 153 attempts with a validation
+  score; they are not the headline task medians.
+- One model; replicates differ only by sampling.
+- The selector is the agent's own random holdout, not a pinned split.
 
 ## Open questions
 

@@ -78,6 +78,7 @@ sources:
   - "[[literature/papers/zhou2026does]]"
   - "[[literature/papers/jain2026monitor]]"
   - "[[literature/papers/ren2026coral]]"
+  - "[[literature/papers/chen2026autoresearch]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -2041,6 +2042,50 @@ Limits:
   low-headroom line, and the single agent won.
 - Multi-agent program search with deterministic graders, not a
   single-chain ML `/iterate` loop.
+
+## A launch budget metered by the evaluator, failures charged, is a cap and not matched spend: two harnesses used 15–30% of it and lost (2026-11-03)
+
+"Whose estimate the gate may use" puts the meter outside the agent.
+[[literature/papers/chen2026autoresearch]] (Auto-Research Arena) does that
+for a GPU research loop. Each search gets 100 charged launches, the
+reference evaluation included. A launch is charged when a GPU-work marker
+is written, so crashes, OOMs and abandoned runs consume budget. The harness
+reads its remaining budget from Arena instead of counting its own rounds
+or generations. Each launch is capped at 600 s of training on one A100.
+
+The paper also shows why a cap is not a matched comparison. Mean launches
+used per objective:
+
+| Model | Sequential | GEAR | Beam | Heuresis | AutoScientists | Arbor |
+|---|---|---|---|---|---|---|
+| Opus 5 | 87.7 | 100 | 96.9 | 100 | 84.7 | 54.0 |
+| GPT-6 | 100 | 100 | 95.8 | 86.8 | **30.2** | **14.7** |
+
+Under GPT-6, the two harnesses furthest below Sequential Search in Elo
+(AutoScientists −404, Arbor −243) used about a third and a seventh of its
+launches. Part of "simple beats sophisticated" is "a harness that spends
+its budget beats one that stops". LLM tokens, dollars and wall-clock are
+not reported for any harness, and Beam runs four GPUs at once. This fits
+the "a cycle is not a unit of spend" section above: launches are one
+currency, and the arms are matched in none.
+
+A depth–breadth sweep at a fixed 20 GPU-hours (Beam, BPB < 2.0) gives 60 /
+30 / 15 / 12 candidates at 1,200 / 2,400 / 4,800 / 6,000 s each. The
+smallest model came from the shortest setting (123K params, BPB 1.986).
+The authors say it establishes neither an optimal allocation nor a causal
+effect. That GPU-hours are the unit is the useful part.
+
+Our inference for `/iterate`: meter launches at the evaluator and charge
+failures, as Arena does. Report realized GPU-hours and tokens next to any
+arm comparison, because a ceiling that one arm under-spends does not make
+the arms compute-matched.
+
+Limits:
+- One search per cell, no repeats. Why GPT-6 Arbor and AutoScientists
+  stopped early is not explained.
+- No halt rule was tested. Sequential stops only when the budget runs out.
+- Launches cover a 10-minute training run. Per-launch GPU-hours vary by
+  track, since time-to-quality runs end early.
 
 ## Open questions
 
