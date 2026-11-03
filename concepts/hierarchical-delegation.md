@@ -32,6 +32,7 @@ sources:
   - "[[literature/papers/samanta2026learning]]"
   - "[[literature/papers/woo2026youra]]"
   - "[[literature/papers/kanke2026rtaste]]"
+  - "[[literature/papers/li2026aligning]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -158,6 +159,57 @@ Limits:
 - The critic and lead have no tools, so the lead cannot check a critic's
   claim against the code or literature.
 - Labels are model-made. One run per condition. No per-model CIs.
+
+## When a human is the parent, a detailed spec with curated sources did the work; a one-line goal behaved almost like no human (2026-11-03)
+
+The sections above treat the parent's output as a contract. In
+samanta2026learning it is a work order (objective, evidence, acceptance
+criteria). In ye2026agent "the contract is the specification".
+[[literature/papers/li2026aligning]] (AutoBenchmark, Part 1) puts a
+*human* in the parent seat over a long autoresearch loop and varies how
+much the human specifies. Muse Spark 1.1 builds a 10-task benchmark over
+10 iterations. Selection is on lowest solver score among iterations that
+pass five LLM quality judges. Lower scores mean a harder benchmark.
+- **No human.** The agent picks its own benchmark. Selected-checkpoint
+  solver scores are 90 / 84 / 80 (Muse Spark / Glimmer / held-out
+  Nemotron), and held-out Opus 5 scores 98.0.
+- **One sentence of intent, no sources.** On Rebuttal Bench: 84.4 / 83.7
+  / 81, and Opus 5 83.1. On Graveyard: 76.2 / 81.6 / 75.4, and Opus 5
+  90.7.
+- **Detailed spec plus a curated source corpus.** On Rebuttal: 43.5 /
+  51.2 / 39.1, and Opus 5 65.9. On Graveyard: 60.8 / 55.3 / 52, and
+  Opus 5 84.4. The Rebuttal run starts near 71 at iteration 1, so most of
+  the gap exists before the loop iterates.
+- **A redirect when the loop stalls.** SilentTrain was forked at
+  iteration 6 after five iterations above 92. One branch got three human
+  instructions, all about *how* to build the tasks (multi-hour jobs, full
+  source files, behavioural tests). It reached 64.2 / 54.2 / 48.8. The
+  unaided branch reached 88.1 / 85.6 / 83.8.
+
+For this concept: what a human parent adds is spec detail and sources,
+not just being there. A goal stated in one line behaved almost like no
+parent at all. This is the piriyakulkij2026subagents finding (delegation
+needs a stated contract) with a human as the parent. For this box's
+`agency: max` runs, the leverage is in the written spec and the curated
+corpus given at launch, and in a concrete redirect at a stall. A
+one-line goal followed by approvals is not where the leverage is. The
+paper's "humans pivotal in ideation" headline overstates what was varied:
+the one-line "what to build" arm is the one that barely helped.
+
+The fork is also a redirect-vs-continue datum for the pending
+`iterate-redirect-before-halt` proposal. A concrete redirect at a stall
+beat continuing unaided, n = 1. There is still no redirect-vs-halt arm.
+
+Limits:
+- One run per setting, no seeds. The no-human baseline is a different,
+  agent-chosen benchmark, reused as the reference for both benchmarks.
+- The detailed arm adds a curated source corpus that the one-line arm
+  lacks, so spec detail and sourcing are not separated.
+- The humans are not named or counted ("operator-in-the-loop", apparently
+  the authors). Their effort and time are not reported.
+- Every quality judge is the proposer's own model (Muse Spark 1.1). The
+  held-out solvers (Nemotron each iteration, Opus 5 on the final pick)
+  check difficulty, not validity.
 
 ## Open questions
 

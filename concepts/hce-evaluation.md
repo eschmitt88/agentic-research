@@ -131,6 +131,7 @@ sources:
   - "[[literature/papers/ganesan2026infinity]]"
   - "[[literature/papers/yao2026openfrontiers]]"
   - "[[literature/papers/wang2026paretorsigym]]"
+  - "[[literature/papers/li2026aligning]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3221,6 +3222,66 @@ Limits:
   proxy items would pass a 13-gram filter.
 - Fig. 2 and Table 3 disagree on the one cell they share (Qwen3-4B, Codex,
   code).
+
+## The best transcript monitor localizes about seven in ten planted or screened hack commands, and no clean run is scored, so its false-alarm rate is unknown (2026-11-03)
+
+"Detection runs in two layers, and both leak" (09-28, huang2026reward)
+found that full-trajectory review still cleared 12 of 33 panel misses.
+[[literature/papers/li2026aligning]] (HackBench) is the first benchmark
+here that measures that last layer by itself, on long ML-research runs. It
+uses 169 trajectories from 13 ResearchGym, AutoLab and w2s tasks. The
+median run is 1.06M characters with 264 commands, and the median number of
+hacking commands is 1. Each command is labelled [CMD n], and the monitor
+returns the hacking indices.
+- **Best monitor: Claude Opus 5, F1 64.9 (P 69.7, R 72.6).** Muse Wonder
+  gets 61.5. Four models cluster at 50.9–53.0: GPT-5.6 Sol, Kimi K3,
+  Claude Opus 4.8 and GPT-5.5. GLM-5.2 gets 32.3.
+- **Most hacks are planted.** In 128 runs, GLM-5.2 inserted the hack
+  commands into an honest trajectory and patched the later observations.
+  The other 41 are natural hacks. Every natural hack was first flagged by
+  a GPT-5.6 Sol screen.
+- **Every trajectory contains a hack.** The benchmark scores localization
+  given that a hack exists, not detection.
+
+For this concept, three points:
+- A transcript reviewer is a recall-limited backstop even when the hack is
+  known to be there. On this data the best one misses about 27% of gold
+  commands, and on natural hacks the gold set only holds what one model
+  already found. A run that passes a transcript review has not been shown
+  clean. That fits huang2026reward's "observability is not verification".
+- What an HCE backstop most needs is the false-alarm rate on honest
+  chains, and that is unmeasured. A monitor that flags something in every
+  run loses nothing here at the trajectory level. A reviewer added to
+  `/iterate` would need its own clean-run calibration first.
+- The same paper's benchmark-building loop (AutoBenchmark) gates every
+  iteration on the agent's own reference solution. It must score ≥ 0.9 on
+  the real verifier before any solver runs. That is the known-good half
+  that reviewers asked the pending `hce-known-bad-preflight` proposal to
+  restore. It exists there because the loop writes the task. Most
+  downstream ML evaluators here have no reference solution, as the
+  proposal says.
+
+A side result applies the known-ordering preflight
+([[literature/papers/kim2026elicitation]], 10-27) to an LLM judge. The
+known order is that expert human prose should outrank model prose.
+Pairwise Opus-4.8 and GPT-5.6 judges placed the model above the human in
+63.5–84.6% of comparisons. Generated per-item rubrics did so in 100%. A
+judge that fails a known order will reward the wrong direction under
+selection.
+
+Limits:
+- One call per monitor, no CIs. With a median of 1 gold command,
+  per-trajectory F1 is nearly binary, so the four-model cluster is not
+  resolved.
+- No natural vs synthetic split. Gold labels for the planted set were
+  audited by Claude Opus 4.8 and GPT-5.5, which are also scored as
+  monitors.
+- The paper does not say whether the injected runs' "analysis/plan" text
+  matches the inserted commands, or how the longest transcripts (3.8M
+  characters) fit each monitor's context.
+- Trajectories come from GPT-5.5 and GLM-5.2 in a bash-only scaffold, not
+  from Claude Code. The judge-ordering result uses an n the paper does not
+  state (multiples of 1/13).
 
 ## Open questions
 

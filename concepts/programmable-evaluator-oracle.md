@@ -77,6 +77,7 @@ sources:
   - "[[literature/papers/deeb2026towards]]"
   - "[[literature/papers/zhang2026llmasajudge]]"
   - "[[literature/papers/ganesan2026infinity]]"
+  - "[[literature/papers/li2026aligning]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -1374,3 +1375,67 @@ Limits:
 - Gaming counts come from one operator's own review. "We did not audit
   traces systematically." This is a lower bound on incidents, not a rate.
 - Single-author preprint, cred 2.
+
+## Twelve ML-research graders audited: nine pay a no-op, empty or constant submission, and they fall into three probe classes (2026-11-03)
+
+"A do-nothing check covers one evaluator defect" (10-27,
+[[literature/papers/shao2026do]]) proposed a three-entry battery:
+do-nothing → floor, staged labels → floor, and known-good → above floor.
+[[literature/papers/li2026aligning]] (App. E, Table 13) audits the graders
+of 5 ResearchGym and 7 AutoLab tasks for score-shape exploits, one per
+task. These are published ML-research benchmarks, which is the setting
+the pending `hce-known-bad-preflight` proposal says its evidence lacked.
+Our grouping of the 12:
+- **Untouched start state clears the bar (4).**
+  - Cross-modal retrieval: the no-op source model beats the published
+    baselines.
+  - Materials tokenization: stock WordPiece clears the floor because the
+    grader takes a max over micro, macro and per-seed F1.
+  - Continual learning: a frozen ViT with nearest-class-mean heads "ties
+    InfLoRA".
+  - Data selection: picking ~1 sample leaves the base model nearly
+    unchanged, and it scores above honest selection.
+- **Empty, constant or stub output beats the start state (5).**
+  - Multilingual OCR: empty output, a real 2–3× CER gain over the untuned
+    model.
+  - Moving-MNIST: a near-mean frame, "observed as a saved ZeroPredictor".
+  - Time-series explanation: constant near-max attribution.
+  - LLM serving: a stub engine with self-reported throughput.
+  - GRPO math: a constant number, or word salad that passes a substring
+    retention gate.
+- **A degenerate optimum that still takes work (3).** A Hopper policy that
+  only stays upright (~1000 return from the alive bonus), a mode-collapsed
+  LoRA, and early stopping at the ppl-18 reward saturation.
+
+App. C adds that four of the five ResearchGym wrapper rewards are stubs
+that check for changes to the task tree, and that the w2s wrapper returns
+a constant 0.0. So the recorded reward did not compute the research
+metric at all.
+
+What this changes for the battery:
+- **"Floor" needs a definition.** For OCR the untouched model *is* the
+  floor, and an empty output beats it. Probe empty and constant outputs
+  against the start-state score, not only the do-nothing submission
+  against an abstract floor.
+- **Some defects need the known-good arm.** In data selection, doing
+  nothing beats honest work. Every no-op probe lands where it "should",
+  and only "a known-good submission beats the no-op" fails. That is
+  zhang2026double's rule ("the correct one beats them all").
+- **The third class has no cheap probe.** Survival-only policies and
+  early stops at saturation need a mechanism check or a rule that the
+  metric does not saturate. That is the 09-29 section's point (a correct
+  scalar under-specifies the mechanism).
+
+One cross-paper discrepancy is open. shao2026do reports that
+flux2_klein_lora's manifest forces a score of zero whatever the agent
+does, while Table 13 says an overfit LoRA scores high. Neither paper names
+a version.
+
+Limits:
+- These are exploits "identified by auditing the grader", one per task.
+  Only a few have measured scores. The three-way grouping is ours, not the
+  paper's.
+- Twelve tasks, chosen because they back HackBench, not sampled. The share
+  is a lower bound per task (one exploit listed each), not a prevalence.
+- Some exploits depend on wrapper details (stub rewards, self-reported
+  throughput) that a careful downstream evaluator would not copy.
