@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/kumar2026turncost]]"
   - "[[literature/papers/vats2026good]]"
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
+  - "[[literature/papers/zhang2026rethinking]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -312,6 +313,53 @@ offline contrast sets vetoed 95% of live WebShop purchases.
 
 Caveats: the live results use one 4B decision model with injected silent
 failures. The decision models are not the Claude models this box runs.
+
+## A cheap cross-family critic paid on weak-baseline agents, and its "1.0× cost" is a price gap, not a token count (2026-11-03)
+
+[[literature/papers/zhang2026rethinking]] gives seven open-weight coding
+agents the same reviewer model, Qwen3.7-Plus. Its output price is
+$1.194/M, against $5.373/M for the Qwen Max agents and $0.299/M for
+DeepSeek V4-Flash. The critic runs once at stop, read-only, in a fresh
+context. It returns unmet requirements, and the agent revises once.
+Averaged over agents it gave +5.9 to +9.5 pp on a Terminal-Bench subset
+and +3.9 to +6.6 on SWE-bench Verified. Cost was 1.13–1.25× and 1.00–1.04×
+in dollars.
+
+Read against the 2026-10-26 section (vats2026good):
+
+- **The agent's base rate decides whether a cheap overseer pays.** In
+  vats2026good a cheap controller on a Sonnet 5.5 agent with 87%-precise
+  finish requests raised cost ×1.19 for no gain. Here the agents start at
+  55% (TB) and 71% (SWE), and a cheap critic raised cost by a similar
+  factor for +6–9 pp. This is the "on a weaker agent, verification may
+  pay" caveat, now observed. It is not a controlled comparison: the
+  agents, benchmarks and overseer roles all differ.
+- **The dollar ratio is mostly the price gap.** In output tokens, L3 is
+  0.95–1.11× baseline on TB and 1.06–1.15× on SWE. The near-1.0× SWE
+  dollar figure needs a critic at about 22% of the agent's output price.
+  For DeepSeek V4-Flash the critic costs 4× more per output token than
+  the agent. The paper gives per-model cost only in figures, so the
+  per-agent economics cannot be read off. The rule from the
+  prefix-caching section still applies: price a role swap at the
+  incumbent's real rates.
+- **Width beats depth on cost because the expensive model re-runs less.**
+  Four critics on one delivery reached 65.8% at $0.62 per trial. Four
+  sequential rounds reached 66.1% at $0.77. Critic spend was about $0.14
+  in both. The gap was agent re-execution. This is the same lesson as
+  above: a cheap model is priced by what the expensive model does next.
+- **A prompt is not a constant across backends, again.** The same
+  one-paragraph verification instruction gave MiniMax-M2.5 +12.6 pp on
+  SWE and Qwen3.8-Max −2.3.
+
+Limits:
+- No same-model critic arm. Whether the gain needs a *different* model,
+  or only a fresh context and the protocol, is untested. That is the
+  question this page's "mixing families is not independence" section
+  raises.
+- One critic model, from the sponsor. No intervals; 3 trials on about
+  28–29 tasks per agent.
+- No agent is a model this box runs. On a Max plan with Opus in both
+  roles, the price gap that made this cheap does not exist.
 
 ## Open questions
 

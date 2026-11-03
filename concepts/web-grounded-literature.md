@@ -15,6 +15,7 @@ sources:
   - "[[literature/papers/wang2026search]]"
   - "[[literature/papers/chen2026evigraph]]"
   - "[[literature/papers/xiao2026search]]"
+  - "[[literature/papers/singharoy2026quantifying]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -176,6 +177,52 @@ Two cheap consequences:
 
 Caveat: the paper's large gains come from 2-document budgets under adversarial
 orderings, and it scores dataset labels, not written reports.
+
+## Synthesis from snippets overclaims; full text plus calibration instructions halves it, and neither alone does much (2026-11-03)
+
+The AutoResearchBench section above notes that decisive evidence sits in
+appendices and ablations, out of reach of snippet-level retrieval.
+[[literature/papers/singharoy2026quantifying]] measures what that does to
+the written synthesis. Deep-research agents mostly cite pages they never
+opened. On ResearcherBench, Luna 5.6 opened 19% of its cited documents and
+Sonnet 5 opened 2%. Their reports overstate relative to the cited set: a
+GPT-5 judge finds 29% (Luna) and 61% (Sonnet 5) of their main conclusions
+missing an important qualification.
+
+The paper then crosses two levers on 61 questions (mean SmoothScore; share
+of claims ≥ 3):
+
+| | Luna | Sonnet 5 |
+|---|---|---|
+| Web search (snippets) | 1.95; 29% | 2.54; 61% |
+| + calibration instructions | 1.88; 26% | 2.23; 44% |
+| Cited documents in full, search off | 1.80; 23% | 2.38; 51% |
+| Full documents + instructions | 1.52; 12% | 1.78; 25% |
+
+Only the combined arm roughly halves the rate for both models. The
+instructions say: state the conditions a result held under, say when sources
+disagree, do not combine findings into a stronger conclusion, and avoid
+conclusive wording.
+
+This is the box's own pipeline, measured. `/digest` entries are written
+from abstracts and search pages, and 98 of 116 PDFs read below their entry.
+The `/curate` reader stage (read the whole PDF, verify each number, say what
+the evidence does not show) is the docs-plus-instructions arm. Our
+inference: adding a hedging instruction to `/digest` alone would be the
+weak arm. The digest's verdict should stay provisional until a reader has
+the PDF. A cheap check is to run the released SmoothScore code over digest
+entries, with the fetched PDF as the only cited document.
+
+Limits:
+- One generation per question per arm, no seeds. Luna's single-lever CIs
+  overlap its baseline.
+- The calibration instructions echo the judge's rubric, and no human
+  scored the regenerated reports.
+- Two models and one benchmark (ResearcherBench). "Full documents" means
+  the documents the snippet-based report already chose, so it does not test
+  better retrieval.
+- Claude systems' search results are encrypted, so their 2% "opened" is a
+  lower bound on what the model saw.
 
 ## Open questions
 

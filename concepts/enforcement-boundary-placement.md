@@ -48,6 +48,7 @@ sources:
   - "[[literature/papers/wang2026rsihub]]"
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhu2026precedent]]"
+  - "[[literature/papers/zhang2026rethinking]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1054,6 +1055,60 @@ Limits:
   harm with no rule at all.
 - Most loops plant the deletion; natural proposers relax rules more
   often than they delete them, which a layer-level check misses.
+
+## Four points on the time axis, one comparison: in-run reminders move checking, not outcomes, and message role is not a stable lever (2026-11-03)
+
+The time-axis section above says *when* a boundary is checked is a
+placement choice. [[literature/papers/zhang2026rethinking]] puts one
+verification intent at four times in the same harness:
+
+- at the start (L0, system or user message);
+- injected after tool results during the run (L1);
+- at the first stop (L2);
+- in a separate read-only critic before acceptance (L3).
+
+It runs seven open-weight coding agents on Terminal-Bench and SWE-bench
+Verified subsets, with 3 trials per cell. Three results bear on this page:
+
+- **Harness-injected reminders change behaviour; prompt text alone did not
+  in wiedmann2026agents.** In baseline TB runs, only 6.2–13.6% of editing
+  turns are followed by a recognized check. After an after-edit reminder,
+  a check follows within two turns in 58–72% of reminder events. The two
+  denominators differ, but the shift is large. The outcome shift is small
+  and unstable: +3.5 to +5.4 pp on TB, −0.3 to +3.6 on SWE. As in
+  kim2026divergent, the check the placement buys is necessary, not
+  sufficient. The cases show agents checking compilation while missing an
+  invalid substitution, and checking output equality while missing a
+  runtime limit.
+- **The outermost placement was the most consistent.** The separate
+  critic was positive in 24 of 28 model × design cells on TB and 21 of 28
+  on SWE. Per-model results under L0–L2 often change sign. The
+  separate-critic placement is confounded with a different, cheaper model
+  and a long protocol, though, so this ranks bundles, not placements.
+- **Late in the run is also a placement.** Moving the stop gate earlier
+  (also firing after 80% of the time limit) raised a user recheck from
+  +4.1 / −0.3 to +4.8 / +4.1. It raised a rejection from +2.1 / +4.1 to
+  +6.0 / +6.2. In one case a critic confirmed a real defect, but the run
+  hit its 45-minute limit before the repair was done. A check at stop
+  needs time left to act on.
+
+On channel rank: system role beat user role for the start-of-run
+instruction on both benchmarks (+3.3 vs +1.2 TB; +3.9 vs −1.1 SWE). For
+the after-edit reminder, user role beat system on TB (+5.4 vs +3.5) and
+lost on SWE (−0.3 vs +3.6). Role and the "[… not a message from the
+user]" marker change together. So the role effect is not a constant on
+this evidence. "Channel rank decides a conflict" above is about two
+sources that disagree. Here nothing conflicts, and role alone did not set
+a stable rank.
+
+Limits:
+- No intervals. A per-model cell has about 84 trials, so swings under
+  about 15 pp are within 2 naive SE (our estimate). Most "model-dependent"
+  sign flips may be noise.
+- Open-weight agents only. The "automated" format is a user-role message
+  named `system-reminder`, which mimics Claude Code's channel, but no
+  Claude agent was tested.
+- Time limits per task are not reported beyond one 45-minute case.
 
 ## Connections
 

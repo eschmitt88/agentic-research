@@ -26,6 +26,7 @@ sources:
   - "[[literature/papers/zhu2026who]]"
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
   - "[[literature/papers/alfaqeeh2026beyond]]"
+  - "[[literature/papers/singharoy2026quantifying]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -427,3 +428,53 @@ stand in for the effect. The paper does not test such a typed record.
 Caveats: the models are typed decision models (0.8B–12B and hosted Jev), not
 the LLM judges this concept's GSAR work used. The effect sizes are log-prob
 shifts on constructed counterfactual pairs, not deployment rates.
+
+## Grounded is not calibrated: type a claim's strength against the evidence, and let the repair be the type (2026-11-03)
+
+This concept's partition asks whether a claim has support
+(grounded / ungrounded / contradicted / complementary). The 2026-11-02
+section above adds *wrong source*. [[literature/papers/singharoy2026quantifying]]
+measures a failure that passes all of these. A conclusion that some cited
+evidence supports is grounded, even if other cited evidence narrows it to a
+setting or makes it contested. The paper calls this smoothing. Across 868
+deep-research reports from seven systems, 22.7–93.4% of main conclusions per
+system–dataset cell needed at least a material revision, by a GPT-5 judge.
+
+Three design choices are worth importing:
+- **Type the counter-evidence, not just its presence.** The skeptic pass
+  tags each item `counter` (cuts against what the claim asserts),
+  `concession-match` (confirms a limitation the claim itself states, which
+  does *not* count against it) or `rival-win` (another method's success,
+  which counts only if the claim ranks or excludes it). Without the middle
+  tag, a well-hedged claim is penalized for its own hedge. Without the
+  third, every comparative claim looks contradicted.
+- **The verdict type is a repair action.** The judge picks the minimum
+  semantic repair: none, append a caveat, revise a predicate, recast the
+  conclusion, replace it. Each maps to one score (1–5). This is GSAR's
+  tiered recovery (proceed / regenerate / replan) at the claim level. The
+  type tells the writer what to do, which a scalar does not.
+- **Counts are not consensus.** The judge's ground rules state: "Item counts
+  and pass labels are not evidence of consensus or its absence." Evidence is
+  grouped by aspect (topic), not by stance, so supporting and opposing
+  items on the same question sit side by side. This is the same discipline
+  as the Consistent Minority Effect section in this concept, applied to evidence
+  rather than votes.
+
+The paper's evidence check uses an external yardstick. Revising a report
+with only the typed, aspect-grouped evidence raised gold-rubric scores as
+much as giving the full documents: +4.4 vs +4.1 for Luna, +12.0 vs +9.7 for
+Sonnet 5, at one-fifth to one-tenth of the tokens.
+
+For this box: a literature note's TL;DR and Claims are conclusions in
+exactly this sense. A typed check would ask, per claim, whether the
+paper's own limits section or results table narrows it. That is what the
+`/curate` framing verdict (above / at / below) does by hand.
+
+Limits:
+- One judge (GPT-5), checked on 73 claims by two author-annotators
+  (α = 0.68; exact agreement 56%). Gemini 2.5 Pro and Sonnet 4.5 as judges
+  agree much less well (α = 0.41, 0.11).
+- The tags are produced by GPT-5-mini. The paper does not validate the
+  per-item tags, only the final score.
+- The evidence pool is the cited set only, so the type is relative to what
+  the writer chose to cite.

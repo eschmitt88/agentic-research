@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/lumer2026reflective]]"
   - "[[literature/papers/kim2026into]]"
   - "[[literature/papers/alfaqeeh2026beyond]]"
+  - "[[literature/papers/singharoy2026quantifying]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -332,6 +333,57 @@ Limits:
 - Annotators are two co-authors. The held-out set is 60 real claims.
 - It certifies provenance, not that the run was sound or ran the described
   code.
+
+## Every anchor can support its claim and the conclusion still overstates: smoothing is scored against the whole cited set (2026-11-03)
+
+The 2026-10-06 section above says every anchor can resolve while the
+cited set is skewed ([[literature/papers/xiao2026search]]). The xiao2026search
+gap is selection: the cited set may not represent the field.
+[[literature/papers/singharoy2026quantifying]] measures a second gap that
+remains even when the set is fixed. A conclusion can be supported by some
+of its cited documents and still be broader or more certain than the cited
+set *as a whole* allows. The paper calls this *smoothing*. A per-claim
+anchor check passes it by construction, because the supporting citation
+is real.
+
+SmoothScore reads the full text of every cited document twice: once for
+support, once with a skeptic prompt for counter-evidence. A GPT-5 judge then
+scores each conclusion by the smallest repair that would make it faithful.
+Across 868 reports and 5,674 claims from seven systems, 22.7–93.4% of claims
+per system–dataset cell needed at least a "revise" (an important
+qualification missing). The GPT systems are at the low end and Gemini Deep
+Research at the high end.
+
+Two findings sharpen guidance #8 and the lumer2026reflective section above:
+- **Agents cite pages they did not open.** On ResearcherBench, Luna 5.6
+  opened 19% of what it cited (95/496) and Sonnet 5 opened 2% (34/1,458).
+  45 of 65 Luna reports opened no page at all. They cited from search
+  snippets (Luna's median: 585 characters). A citation is then anchored to
+  a page the agent never read. lumer2026reflective's rule "verify the cited
+  page's main content supports the claim" assumes the page was read.
+- **Reading the sources is what moves it, alongside instructions.** Giving
+  the cited documents in full and adding calibration instructions cut
+  claims ≥ 3 from 29% to 12% (Luna) and 61% to 25% (Sonnet 5). Each lever
+  alone did much less.
+
+For this box: an anchor into `raw/` is only as strong as the reading
+behind it. A claim anchored to a PDF the writer only saw the abstract of is
+the snippet case. This is the gap between the digest entries and the PDFs
+(98 of 116 read below their entry).
+
+Limits:
+- No human-written baseline. "Overstates" means "a GPT-5 judge found a
+  needed repair", not "more than an expert would".
+- The judge was checked against two author-annotators on 73 claims from
+  three systems (α = 0.68 vs annotator 1; 62% precision at the ≥ 3
+  threshold). Levels move by up to 1.7 points with the judge; the order of
+  systems does not.
+- The measure only looks inside the cited set. Citing fewer or friendlier
+  sources can make a claim look less smoothed.
+- One generation per query, and no seeds. The intervention covers two
+  models on 61 questions, and its instructions echo the judge's rubric.
+- Claude systems' search results are encrypted, so their "opened" counts
+  only web-fetch calls. Exposure may be higher.
 
 ## Open questions
 

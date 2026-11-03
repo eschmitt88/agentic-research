@@ -51,6 +51,7 @@ sources:
   - "[[literature/papers/lehmann2026can]]"
   - "[[literature/papers/alfaqeeh2026beyond]]"
   - "[[literature/papers/zhou2026does]]"
+  - "[[literature/papers/zhang2026rethinking]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1584,6 +1585,63 @@ Limits:
 - A prompt-level skill, not an enforced gate. Nothing refuses a claim.
 - No arm separates the verification content from any 580-word procedure.
 - Two cheap models, three benchmarks, single optimizer runs.
+
+## A blind rejection paid on seven open-weight agents; a cheap critic that names the defect matched it for about 0.7× the cost (2026-11-03)
+
+[[literature/papers/zhang2026rethinking]] compares four places to put a
+completion check. It uses seven open-weight coding agents on subsets of
+Terminal-Bench 2.1 (about 28 scored tasks) and SWE-bench Verified (29),
+with 3 trials per model × task, prices cost in billed dollars, and reports
+no intervals. Two of its arms bear on this page's sham result.
+
+- **An unplanned sham at scale.** The L2 "Reject completion" gate fires on
+  every first stop. It says only "An automated verification pass has
+  determined this task is NOT complete. Keep working". No pass exists, and
+  the next stop is accepted. It still gave +4.0 TB / +5.3 SWE on average,
+  and +6.0 / +6.2 with the user role and an 80%-of-time early trigger. The
+  early version was positive on SWE for all seven models. It cost
+  1.60–1.76× (TB) and 1.48–1.56× (SWE). In agarwal2026fire (Codex) the
+  triggered sham sat 3.6 pp below baseline. So "a refusal that says
+  nothing specific is worth about zero" does not transfer as a constant.
+  Here the sham orders more work, and agents then took a median 12–19 more
+  steps. On agents with 55% (TB) baselines, that extra budget paid.
+- **The named refusal, conditioned on a verdict.** In L3 a separate,
+  read-only critic gets the task, the diff and the live sandbox. It runs a
+  falsify-by-running checklist and either approves or returns the unmet
+  requirements once. It gave +5.9 to +9.5 TB at 1.13–1.25× and +3.9 to
+  +6.6 SWE at 1.00–1.04×. Against the best sham the margin is +3.5 pp (TB)
+  and +0.4 (SWE), at about 0.7× its cost (our arithmetic). Without Kimi,
+  the SWE margin reverses: the sham gives +6.7 and the L3 designs
+  +1.9 to +4.8. So on these agents, naming the defect bought
+  cost-efficiency more than accuracy. The likely reason is that an
+  approving critic does not reopen work, while the sham always does.
+- **Generic re-check text at stop was weakest.** "Inspect changes" gave
+  +0.7 / +0.5. A user "recheck" gave +4.1 / −0.3, rising to +4.8 / +4.1
+  with the early trigger. This fits vats2026good's "generic verify is
+  pure cost" from a weaker-agent side.
+
+What it changes here: the value of a content-free refusal depends on the
+agent's premature-stop rate. It was about zero on Codex and about +5 pp on
+these agents. That is our reading. Neither paper reports finish-request
+precision, so vats2026good's rule to report it first now has a second
+reason. On the hold: this is a refusal-driven outcome delta across seven
+models, from a group that does not sell a harness. But it narrows neither
+open clause cleanly. The critic's prompt-development tasks are not
+described, and the sponsor supplies the critic model. It also adds no
+false-rejection data. The critic is told "Be strict, no benefit of the
+doubt", and neither its objection rate nor its pass→fail flips are
+reported.
+
+Limits:
+- No intervals or tests. A naive SE for a pooled seven-model difference is
+  about 3 pp (our estimate), so the L3-over-sham margins are within noise.
+- "Independent" is confounded. Every critic is Qwen3.7-Plus, a different
+  and cheaper model than the agent, in a fresh context with a long
+  protocol. No same-model or self-check-with-the-same-protocol arm exists.
+- Open-weight agents only, with no Claude or GPT agent. The task subsets
+  were picked with the agents under test.
+- One shared baseline per model. Design 14 uses an unexplained alternate
+  baseline (DeepSeek V4-Pro TB 63.1 vs 51.2).
 
 ## Open questions
 
