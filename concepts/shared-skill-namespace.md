@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/liu2026lost]]"
   - "[[literature/papers/razmara2026one]]"
   - "[[literature/papers/laddha2026position]]"
+  - "[[literature/papers/sanko2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/skill-library-lifecycle]]"
@@ -274,6 +275,50 @@ Limits:
 - Open-weight readers only; Claude Code's on-demand `Skill` loading is
   not tested.
 - Qwen2.5 (razmara) and Qwen 3 / 3.5 (here) are different generations.
+
+## A copied skill carries its loosening line but not the condition that gated it, and scanners don't look (2026-11-03)
+
+The "Trust and permission verification" question above has two measured
+layers. One is grants (kapner2026scanning: `allowed-tools` pre-approving a
+shell). The other is commands in the body (taneja2026scan).
+[[literature/papers/sanko2026when]] adds a third: **instructions in the
+body that tell the agent not to ask**. These include "proceed without
+confirmation", "pass `--yes`", "keep going until done" and "commit with
+`--no-verify`". Over 1.53M public English skills, 5.8% carry at least one
+such line (detector estimate), and 70.1% of the lines carry no scope
+condition.
+
+What it adds to the portability story:
+
+- **Scanners ask the wrong question.** The two open-source skill scanners
+  catch 2–28% of loosening offline and 15–46% with an LLM, at precision
+  below 0.4. 23–29% of their flags land on guardrails ("do not
+  auto-approve"). Asked the oversight question instead of the malware
+  question, the same LLM reaches F1 0.65. A namespace-level screen built
+  for malicious skills does not see this class at all.
+- **The line travels; its context does not.** 93.4% of copied variants
+  leave oversight text untouched. A skill written for one context ("CI
+  only", "I trust this repo") is loaded unchanged in others.
+
+This box is a concrete case. `~/.claude/skills/*` are byte-identical to the
+public `claude-system/claude/skills/*`. The `/ingest`, `/fetch-paper`,
+`/discover`, `/wrap` and `/sync-imports` bodies say "no confirmation gate"
+with no condition in the line. The condition is the confirmation principle
+in `rules/agency.md`, plus a coordinator verdict for spend, and both live
+outside the skill folder. The `respects:` path points at
+`~/claude-system/...`, which a copier will not have. Our inference, untested:
+for a portable skill, a loosening line should carry its scope inline (e.g.
+"no confirmation gate for artifact writes; spend follows agency.md"), so
+that the condition survives the copy.
+
+Limits:
+- No behavioural measure. Nothing shows that a copied loosening line, or
+  the lack of a scope clause, changes what an agent does.
+- Scanner results come from one LLM (GPT-5.4) on 400 gold units with 61
+  positives. Recall CIs are about ±0.12.
+- Whether this box's skills are actually in GitSkills was not checked. The
+  repo is public and its first commit (2026-04-24) is inside the dataset's
+  window.
 
 ## Open questions
 

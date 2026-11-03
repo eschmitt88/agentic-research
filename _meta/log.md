@@ -797,3 +797,5 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-11-03 04:30 ingest raw/papers/nakayashiki2026lessons.pdf
 2026-11-03 04:35 ingest raw/papers/laddha2026position.pdf
 2026-11-03 04:35 ingest raw/papers/treude2026how.pdf
+2026-11-03 04:40 ingest raw/papers/sanko2026when.pdf
+2026-11-03 04:40 ingest raw/papers/kanke2026rtaste.pdf

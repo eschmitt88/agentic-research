@@ -31,6 +31,7 @@ sources:
   - "[[literature/papers/hu2026analyzing]]"
   - "[[literature/papers/samanta2026learning]]"
   - "[[literature/papers/woo2026youra]]"
+  - "[[literature/papers/kanke2026rtaste]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -120,6 +121,43 @@ upward information flow across the delegation boundary, which most
 hierarchical-agent designs in this cluster lack — subagents report results,
 not generalizations. The paper concedes the promotion step is itself
 unevaluated.
+
+## A propose–critique–merge team helped the small models and cost 1.56×, with no clear gain for the large ones (2026-11-03)
+
+The isolation section above says delegation pays across an interface and
+mostly under pressure. [[literature/papers/kanke2026rtaste]] tests a
+research-ideation team against one continuous context of the same model.
+The team has two proposers who search and draft independently, a critic
+with no tools who reviews the pooled drafts once, and a lead with no tools
+who keeps, revises or merges them into five experiments. Six models × seven
+NLP seed papers, one run each:
+- **Pooled gain: +0.71 sound, valuable and new experiments out of five**
+  (2.00 → 2.67; 95% CI −0.10 to +1.52 across seed papers).
+- **The gain is the small models.** GPT-6 Luna 0.71 → 2.00 and Muse Spark
+  1.3 0.14 → 1.00, at about the cost of one single researcher. Claude
+  Opus 5.5 alone (3.33, six seed papers) matched its team (3.14).
+- **Cost: $15.31 → $23.93 per condition.** Sound, valuable and new per $100
+  fell from 13 to 11. Because proposing cost varied about 100× across
+  models and execution about 2×, a small-model team with a strong executor
+  matched the most efficient large model per dollar on sound, valuable
+  experiments, though not on non-obvious ones.
+- **What the team changed was design, not direction.** Teams checked the
+  paper, hit obvious follow-ups and went beyond the paper about as often.
+  They registered stricter events (CI bound vs threshold) and stated
+  lower probabilities.
+
+For this concept: a role split with a critic is a capability lever for a
+weak model, not a quality lever for a strong one. That matches the
+isolation section's frontier result (no accuracy gain, more tokens). For an
+Opus-class `/propose`, one context is the default, and a critic pass is
+better aimed at the event design than at the choice of idea.
+
+Limits:
+- Not compute-matched. There is no single-researcher best-of-two arm at
+  equal cost.
+- The critic and lead have no tools, so the lead cannot check a critic's
+  claim against the code or literature.
+- Labels are model-made. One run per condition. No per-model CIs.
 
 ## Open questions
 

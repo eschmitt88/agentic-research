@@ -13,6 +13,7 @@ sources:
   - "[[literature/papers/kumar2026turncost]]"
   - "[[literature/papers/srinivasan2026continue]]"
   - "[[literature/papers/jain2026monitor]]"
+  - "[[literature/papers/kanke2026rtaste]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -368,3 +369,47 @@ Limits:
 - Model calls are the budget unit; cost in tokens or dollars is not
   modelled.
 - Fixed cutoffs only. No adaptive or learned schedule was tested.
+
+## An agent's forecast of its own experiment outcomes was no better than a fresh reader of the registration, and the bias direction split by model (2026-11-03)
+
+The 11-02 section above found outcomes forecastable at the task level, with
+the limit "no agent self-forecast was tested". [[literature/papers/kanke2026rtaste]]
+tests one. Six models each registered five small experiments with one
+pre-stated event (a statistic against a threshold), then gave each a
+probability before any ran. A fresh instance of the same model saw only the
+seed paper and the five registrations (no code, no search, no reasoning)
+and forecast the same events. Brier scores over 415 MVEs, lower is better:
+
+| Forecaster | Brier |
+|---|---|
+| Base rate (other seed papers) | 0.240 |
+| The proposing agent | 0.192 |
+| Single fresh-reader judges | 0.179–0.216 |
+| Mean of six fresh readers | 0.179 |
+
+Agent minus same-model reader: −0.006 (95% CI −0.021 to 0.009).
+
+What this adds:
+- **The proposer's extra context bought no measurable forecasting edge.**
+  Its own reading and search did not beat a reader who saw only the
+  registration. This is the outcome analogue of the Definition: an
+  external forecast is at least as good as the self-report, and a mean of
+  several external ones is better.
+- **The bias direction is model-specific, not uniformly optimistic.**
+  GPT-6 Astra, GPT-6.1 Sol, GPT-6 Luna and Muse Spark 1.3 stated higher
+  probabilities than their event rates. Claude Fable 5.1 and Opus 5.5
+  stated lower ones. [[literature/papers/bai2026how]]'s uniform downward bias was about cost;
+  for outcomes, a correction margin has to be fitted per model, like
+  [[literature/papers/jain2026monitor]]'s cutoff.
+- **A complete registration carries the forecast.** The paper suggests
+  the null may be built in: each registration had to be complete enough
+  for a separate executor. For `/propose`, that is a design rule. An
+  `expected_metric:` written to that standard can be forecast by any cheap
+  second reader.
+
+Limits:
+- One run per condition. The CI is across seven seed papers.
+- Events are binary thresholds the proposer chose. Their occurrence rate
+  depends on event form (CI-bound vs plain threshold), which differs by model.
+- NLP experiments that run on one GPU with ≤8B models. No cost forecasts
+  were elicited.

@@ -37,6 +37,7 @@ sources:
   - "[[literature/papers/chen2026auditing]]"
   - "[[literature/papers/shi2026weight]]"
   - "[[literature/papers/ren2026coral]]"
+  - "[[literature/papers/sanko2026when]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -953,6 +954,49 @@ Limits:
 - Best of 3, no spread. Which run the HHI figures use is not stated.
 - Spreading has a price. On LLM-SQL and Txn Sched the concentrated arms or
   the single agent won.
+
+## Oversight-loosening text spreads by verbatim reuse from a few upstream skills, not by adopter edits (2026-11-03)
+
+The section on the human-distributed substrate asks whether a defect spreads
+from a bad shared entry or appears when components are assembled. It also
+warns that an artifact count is not a publisher count.
+[[literature/papers/sanko2026when]] measures the spread directly for one
+kind of text: lines in a `SKILL.md` that tell the agent to act with less
+human oversight. It runs near-duplicate family analysis (MinHash Jaccard
+≥ 0.7, 118,076 families) over 1.53M public English skills, and uses a
+detector validated on held-out labels (loosening F1 0.65).
+
+- **Copying does not amplify.** 5.8% of distinct skills carry loosening
+  against 5.4% of all copies (ratio 0.94). For tightening the ratio is 0.85.
+  Widely copied skills are not more loosening than the rest.
+- **It is concentrated upstream.** 2.4% of loosening-carrying families hold
+  half of loosening-carrying copies. 960 of 86,048 distinct loosening units
+  (1.1%) hold half of loosening occurrences. The top 100 families hold 23%
+  of loosening-carrying copies but 1.4% of all copies.
+- **Adopters don't edit it.** 93.4% of variants leave the ancestor's
+  oversight text untouched (92–97% across specifications). Where they do
+  edit, the loosening share of added and removed units is equal (+0.1
+  points [−5.3, +4.7]). Real changes come from upstream: new releases of
+  the same pack add an auto-commit mode or drop an ask-first line.
+
+For this concept: this is the "bad shared entry" channel, measured with
+family de-duplication, which taneja2026scan said to do. The shape is
+copy-through, not growth. A defect enters at the source and is passed on
+unchanged. Downstream curation neither adds it nor removes it. That locates
+the audit point in the same place as the `/lint` gap above: the upstream
+file, before it is copied. This box is an upstream in that sense. Its
+skills are byte-identical copies of the public `claude-system` repo, and
+downstream projects import hub concepts by path.
+
+Limits:
+- Text only. No measure of whether an agent follows the copied line, or of
+  any harm. The paper's own reading is "a convenience, not an attack".
+- Families and ancestors are inferred from similarity and commit dates, not
+  observed fork history. The two ancestor rules disagree on small shifts.
+- The lexicon that finds candidate lines catches an estimated 32%
+  [14, 75] of loosening, so the absolute counts are lower bounds.
+- Public GitHub `SKILL.md` files only. Not memory stores, not agent-written
+  libraries, not CLAUDE.md or AGENTS.md.
 
 ## Connections
 

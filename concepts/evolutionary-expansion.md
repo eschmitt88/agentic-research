@@ -45,6 +45,7 @@ sources:
   - "[[literature/papers/ren2026coral]]"
   - "[[literature/papers/ellington2026automatic]]"
   - "[[literature/papers/chen2026autoresearch]]"
+  - "[[literature/papers/kanke2026rtaste]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -686,6 +687,47 @@ Limits:
   met).
 - No fresh-sampling or non-LLM prior arm beyond TPE, which cannot reach
   most tracks' architectural changes.
+
+## Before execution, a proposer's ranking of its own five experiments tracked write order and pass likelihood, not value (2026-11-03)
+
+This concept's move is "grow many in parallel and let the fitness signal
+winnow them". `/propose --expand` emits N siblings, and guidance 5 prunes
+after a generation. Neither says whether the proposer's own pre-execution
+ranking is a usable pruner when not every sibling can run.
+[[literature/papers/kanke2026rtaste]] measures that ranking against executed
+outcomes. Six models each proposed five minimum viable experiments (MVEs) on
+seven NLP papers, 415 MVEs in all. Every MVE ran regardless of rank, and three
+LLM auditors judged the results.
+- **Rank ≈ write order.** The agent's first choice was the auditors' most
+  valued MVE in 38% of conditions (random: 20%). It beat the MVE written
+  first by only +3 pp (95% CI −8 to +15). It *was* the one written first in
+  47% of conditions.
+- **Write order ≈ obviousness.** The first-written MVE was on a model-written
+  list of obvious follow-ups in 61% of conditions, against 35% for the fifth.
+  On one seed paper, all eight conditions of the four larger models wrote
+  the same check first. This is [[literature/papers/gurkan2026mutation]]'s attractor at the
+  proposal level: the operator's first sample is its most typical one.
+- **Rank favours passing.** The first choice's event occurred in 47% of
+  conditions, the last choice's in 29%. Fresh same-model judges ranked
+  the same way. Their first choices were beyond-paper and non-obvious
+  *less* often than a random pick.
+
+For this concept: when proposals are cheap to execute (here about $3 each including the proposing calls,
+under a 45-minute machine cap), run the population and let the measured result select.
+If a budget forces pre-execution pruning, a random or diversity-based cut is
+no worse on this evidence, and the proposer's rank selects for the
+predictable siblings that an MVE is meant to avoid. The breadth is real:
+194 of 415 MVEs were judged sound, valuable and new.
+
+Limits:
+- The ranking never decided what ran. The paper notes an agent whose rank
+  is binding "may rank with more reasoning". No such arm exists.
+- One run per condition. CIs are across seven seed papers. The +3 pp null
+  does not exclude a 15-point advantage.
+- All labels are from models (two of the three auditors are also
+  executors). Auditors saw outcomes and ranked event-occurred MVEs higher,
+  so "most valued" partly rewards passing.
+- Five siblings per batch, one generation. Nothing on later generations.
 
 ## Open questions
 

@@ -48,6 +48,7 @@ sources:
   - "[[literature/papers/das2026selfpropagating]]"
   - "[[literature/papers/yang2026approval]]"
   - "[[literature/papers/chen2026knowing]]"
+  - "[[literature/papers/sanko2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -742,3 +743,50 @@ evidential face from ng2026agent. On this box that means a denial in
 not just return "permission denied". Caveats: sandboxed SWE tasks, one run
 per cell, detectors for five named categories only. The paper says the
 absence of a detected violation does not show that a run was safe.
+
+## Skills remove the instruction-held checkpoints in text, and 70% do it with no scope (2026-11-03)
+
+Every gate in this note is enforced by the harness or a policy engine.
+[[literature/papers/sanko2026when]] measures the other kind: checkpoints
+that exist only because an instruction asks for them ("ask before
+pushing", "report each commit"). Skill text can remove these, and can also
+steer an agent around the harness's own gate ("pass `--force`"). The paper
+calls such lines *oversight-loosening directives*. Its test is whether
+deleting the line would change how much control a human has.
+
+- **How they loosen.** In a 1,600-unit human-labelled sample, 13.3% of
+  oversight-vocabulary units loosen and 36.4% tighten. The loosening
+  mechanisms are permission flags (`-y`, `--yes`) 33.9%, skipped
+  confirmation 27.4%, and "don't stop" 16.0%. By detector, 5.8% of 1.53M
+  public English skills have at least one.
+- **Scope is the missing field.** 70.1% [63.9, 75.8] of loosening units
+  have no condition such as "only in CI" or "only if the user authorized
+  it". Scope was codable only after the codebook was revised (κ 0.17 in
+  round 1, 0.85 on the gold set).
+- **Loosening is denser where the stakes are higher.** At equal amounts of
+  oversight text, shell, package-install and `sudo` skills have 1.74–1.82×
+  the odds of loosening, and lower or equal odds of tightening. Git-write
+  skills are the exception (tightening OR 2.01).
+
+For this concept, a gate's text is part of the gate, like the grant
+language section above. A per-context condition is what separates a gate
+that relaxes from one that is switched off. This box's own directives sort
+cleanly. Conditional: `agency: max` autonomy (opt-in, verdict, ceilings,
+`hold`) and `/curate`. Unconditional: the global "commit and push without
+asking… every git repo", the "artifact writes commit autonomously
+everywhere" principle, and the "no confirmation gate" lines in five skill
+bodies. The unconditional ones cover git-reversible writes, which is the
+box's stated rationale. The paper does not code reversibility. The one that
+is not cleanly reversible is the push to a public remote. Separately,
+`/wrap`'s description says "waits for confirmation" while its body says "no
+confirmation gate". The same checkpoint is tightened and loosened in one
+skill.
+
+Limits:
+- Prevalence of text only. No agent was run, so nothing shows that a
+  loosening line changes behaviour with the harness gate on, or that a
+  scope clause helps. That is the paper's stated future work.
+- "Loosening" counts control removed, not risk. `--yes` to a package
+  manager and "push without confirmation" count the same.
+- The second coder is an LLM (Claude Opus 5.5). There is no second human,
+  and the codebook is not released.
