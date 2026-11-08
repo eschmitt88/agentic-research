@@ -32,6 +32,91 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-10-25 | [hce-known-bad-preflight](2026-10-25-hce-known-bad-preflight.md) | `rules/evaluation.md` | adopt | proposed |
 | 2026-11-01 | [precompact-chat-only-constraints](2026-11-01-precompact-chat-only-constraints.md) | `hooks/pre-compact.sh` | adopt | proposed |
 
+## Considered and held (2026-11-08 run)
+
+This run covers the 11-02 digest (6 papers) and the 11-03 curate (17
+papers), 23 new notes in all. Concepts held at 35. The two
+`~/claude-system` commits since 11-01 (49ee62e redaction, 3e299dc rc
+units) touch no pending target, and all three proposals (10-18, 10-25,
+11-01) are still undecided. **Zero proposals.** Ten ideas held:
+
+- **An LLM judge's model ID is part of the §4 evaluator pin**
+  (`zhang2026llmasajudge`: a judge-weight swap under a fixed prompt and
+  rubric re-instruments the score; `alfaqeeh2026beyond`,
+  `singharoy2026quantifying`: changing the judge moves score levels but
+  not the ranking; cred 3 each, two with code). This is the closest miss.
+  Gate 1 passes on three groups, and the edit would be one clause in
+  `rules/evaluation.md` §4. **Held: no live target.** No downstream
+  project scores its HCE metric with an LLM judge (searched every
+  project: `game-fun-rubric/tools/score.py` calls no model, and the
+  chemrage "judge" hits are checkpoint names). It also lands in the same
+  section as the pending 10-25 proposal, so it goes to that proposal's
+  reviewer as input instead: for an API judge, log the model ID and the
+  prompt hash next to the evaluator hash, and repeat the probe at the
+  final pass.
+- **`/iterate` repeat-the-win rule, with the baseline taken as a mean and
+  never the min or max of stored runs** (`zhou2026does`, cred 4, code).
+  **Held.** The only evidence is one paper's simulation, and the paper
+  itself flags the rule only. The repeat rule adds a run to each cycle, so
+  it adds surface area. Its target, `skills-experiment/iterate/SKILL.md`,
+  already carries the pending 10-18 proposal. Watch item: "beat the
+  chain's best" compares against a selected maximum, which biases the
+  counter toward halting.
+- **`/elevate` post-adoption check** (`treude2026how`, cred 3, code: a
+  harness change can be read every session and still change nothing).
+  **Held.** It adds a step to this skill on n = 5. The note's own caution
+  is that one small-n source should not carry a proposal. The cheap
+  version runs without a skill change: grep transcripts around one
+  accepted proposal's apply date.
+- **Proposer rank is not a quality signal for pruning `--expand`
+  siblings** (`kanke2026rtaste`, cred 3, code). **Held: no target.**
+  `/propose --expand` emits siblings without ranking or pruning them.
+- **Blind-refusal vs critic Stop hook** (`zhang2026rethinking`, cred 3).
+  **Held: no target.** The box's only Stop hook is `token_logger.sh`, and
+  it never refuses.
+- **Scope clause beside "no confirmation gate" in skill text**
+  (`sanko2026when`, cred 3). **Held on Gate 1 fit.** The paper measures
+  skill text, not behaviour, and the note says to flag it, not adopt it.
+- **Report numbers inserted from `metrics.json`, not retyped**
+  (`alfaqeeh2026beyond`). **Held.** No arm tests the remedy.
+- **Freeze safety and governance lines against self-editing loops**
+  (`so2026masked`). **Held: no target.** No loop on the box edits its own
+  rules unattended.
+- **A competent one-shot comparator before crediting a chain's gain**
+  (`ellington2026automatic`, cred 3, code). **Held on Gate 2.** It adds a
+  replicate-baseline step, and the in-loop use was not tested.
+- **A priority clause on forward-looking CLAUDE.md rules**
+  (`zhu2026precedent`, `laddha2026position`). **Held.** Neither tests the
+  cell that matters for adoption. This narrows the `xu2026stale` hold but
+  does not lift it.
+
+Input for the pending proposals, not new proposals:
+- **10-25 known-bad preflight.** A known-good or known-ordering probe is
+  now attested by `li2026aligning` (an ML-research audit with three
+  probes), `ganesan2026infinity` (a reversed score passed value
+  calibration; cred 2), `zhang2026llmasajudge` (anchor audit),
+  `wang2026paretorsigym` (measured M_0 floor, partly a format artefact),
+  `yao2026openfrontiers` (the checker's attack suite had a hole), and
+  `chen2026autoresearch` (admissibility gate). This adds to the earlier
+  case for restoring the known-good half. `ellington2026automatic`: compute
+  the floor, don't assume it.
+- **10-18 redirect-before-halt.** There is still no redirect-vs-halt arm.
+  `srinivasan2026continue` (cred 4) and `jain2026monitor` both find that
+  continuing beats a cold restart, so a pivot must keep the chain's state.
+- **11-01 precompact.** `busch2026ctxagent` is neutral: retention is at
+  ceiling, and PreCompact may rarely fire at Opus 5.5 window sizes.
+
+**Paired control:** `experiment-loop-skill-scoping` (07-14), re-tested on
+`belikova2026managing` (cred 3, HF dataset) and `lodha2026less` (cred 2).
+**Pass, marginal.** Gate 1's code clause is met by belikova. Credibility
+balances to 2.5, which the Gate 2 removal clause ("removals can pass on a
+modest evidence base") covers: the change removed two skill files and
+seven descriptions from every literature-only session. Caveats: belikova
+measures skill transfer, not description load, so the evidence fits only
+indirectly. The proposal was user-originated rather than gate-produced,
+which makes it a weaker drift probe. Next control in the rotation:
+`hce-evaluator-integrity` (07-19).
+
 ## Considered and held (2026-11-01 run)
 
 This is the first run over the 10-26 digest (6 papers) and the 10-27
