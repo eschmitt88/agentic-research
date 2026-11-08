@@ -493,3 +493,26 @@ This week's /elevate run wrote one proposal from nine ideas considered, and the 
 - **Input for the pending 10-25 proposal (`hce-known-bad-preflight`):** kim2026elicitation suggests also scoring a known-correct answer in a non-standard form. zhu2026who suggests scoring the do-nothing submission from the task's real starting state rather than an empty workspace.
 
 Three proposals now await your decision, each on a different file: 10-18 redirect-before-halt, 10-25 hce-known-bad-preflight, and today's. I left the uncommitted `_meta/curate.log` change alone, as previous runs did.
+Warning: this sign-in can end at any time from now until 2026-11-08. Renewing it does not move that date. Run claude auth login now, or use claude setup-token for unattended jobs.
+This week's /elevate run wrote **no proposals**. I considered 10 ideas from the 23 papers ingested since the last run (the 11-02 digest plus the 11-03 curate), and none cleared both gates. The reasoning is written to `docs/system-proposals/_index.md`, and the log line is in `_meta/log.md`. Both are committed and pushed as `fc69a5c`. Nothing in `~/claude-system` was touched.
+
+**Closest miss:** for an evaluator that uses an LLM as judge, include the judge's model ID in the §4 evaluator pin.
+- **Evidence:** three groups, credibility 3 each, two with released code. `zhang2026llmasajudge` shows that swapping the judge model under a fixed prompt changes the score. `alfaqeeh2026beyond` and `singharoy2026quantifying` show that changing the judge shifts score levels while the ranking stays the same.
+- **Why held:** it applies nowhere today. I searched every project, and none scores its held-out metric with an LLM judge. It would also edit the same section as the pending 10-25 proposal, so I've passed it to that proposal's reviewer as input instead.
+
+**Other ideas held:**
+- **Keep a new best only if it repeats on a second run** (`zhou2026does`): rests on one paper's simulation, adds a run per cycle, and its target already has the 10-18 proposal pending.
+- **Check after adoption whether an accepted change did anything** (`treude2026how`): only five sessions of evidence, and it would add a step to this skill.
+- **No target on this box:** four ideas (from `kanke2026rtaste`, `zhang2026rethinking`, `so2026masked`, and the alfaqeeh report-numbers remedy). For example, `/propose --expand` never ranks its siblings, and the only Stop hook just logs tokens.
+- **Untested or adds surface area:** two more, from `sanko2026when` and `zhu2026precedent` (untested) and `ellington2026automatic` (adds a comparator step).
+
+**Paired control:** `experiment-loop-skill-scoping` still passes, but only just. Its evidence averages credibility 2.5, which gets through only because the gates are looser for changes that remove things. It was also your idea rather than a gate-produced proposal, so it's a weak test of whether the gates have drifted. Next in the rotation is `hce-evaluator-integrity`.
+
+**For your three pending proposals:**
+- **10-25 known-bad preflight:** six of the new sources support adding a known-good (or known-ordering) check alongside the do-nothing check.
+- **10-18 redirect-before-halt:** there's still no test that compares redirecting with halting. Two new papers find that continuing beats a cold restart, so any redirect should keep the chain's state.
+- **11-01 precompact:** the one new paper on it neither helps nor hurts.
+
+**Two things need your attention:**
+- **The Claude sign-in expires today.** The cron wrapper wrote a warning to `_meta/elevate.log` saying the sign-in can end any time until 2026-11-08, and renewing doesn't move that date. Run `claude auth login`, or use `claude setup-token` for unattended jobs, or the scheduled runs will start failing.
+- I left that uncommitted `_meta/elevate.log` change alone because it belongs to the cron wrapper.
