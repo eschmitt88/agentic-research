@@ -835,3 +835,4 @@ I added a `## 2026-11-02` weekly rollup covering 10-27 → 11-02 to the end of `
 - **Next:** three proposals are now waiting on you (10-18, 10-25 and 11-01). The 11-02 digest items 7–20 still need curating. The other open items carry forward unchanged, including documenting the /digest harvest order.
 
 **Count discrepancy:** the 11-02 digest log reports 100 papers checked against their digest entries (86 below, 14 at). That total leaves out the 16 papers from the 10-27 curate. The correct running total is 116: 98 below their digest entry, 18 at, none above. The rollup uses 116 and notes the gap. I didn't edit the digest log, so the wrong number is still in `_meta/digest.log` if you want it fixed there too.
+Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in again, or use `claude setup-token` and set CLAUDE_CODE_OAUTH_TOKEN for unattended jobs
