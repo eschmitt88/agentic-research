@@ -51,6 +51,9 @@ related_concepts:
   - "[[concepts/enforcement-boundary-placement]]"
 related_experiments: []
 tags: [policy, enforcement, formal-methods, types, determinism, governance]
+used_by:
+  - project_slug: intent-briefing
+    imported_on: "2026-11-13"
 ---
 
 # typed-enforcement

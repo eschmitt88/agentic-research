@@ -21,7 +21,9 @@ sources:
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhu2026precedent]]"
   - "[[literature/papers/laddha2026position]]"
-used_by: []
+used_by:
+  - project_slug: intent-briefing
+    imported_on: "2026-11-13"
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
   - "[[concepts/typed-enforcement]]"
