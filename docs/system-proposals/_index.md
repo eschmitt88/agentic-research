@@ -31,7 +31,7 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-10-18 | [iterate-redirect-before-halt](2026-10-18-iterate-redirect-before-halt.md) | `skills-experiment/iterate/SKILL.md` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; text as proposed plus one line of rationale) |
 | 2026-10-25 | [hce-known-bad-preflight](2026-10-25-hce-known-bad-preflight.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; with the 'skip with a logged reason' clause and the 'passing does not validate' caveat) |
 | 2026-11-01 | [precompact-chat-only-constraints](2026-11-01-precompact-chat-only-constraints.md) | `hooks/pre-compact.sh` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; wording verbatim) |
-| 2026-11-14 | [system-review-intent-briefing](2026-11-14-system-review-intent-briefing.md) | hooks, skills, rules, CLAUDE.md, template, coordinator, docs | adopt | **accepted** (user-directed review, applied 2026-11-14, claude-system@1c23fbd..0d4b305; 23 project repos migrated to `paths:` rule scoping; smoke tests 31/31) |
+| 2026-11-14 | [system-review-intent-briefing](2026-11-14-system-review-intent-briefing.md) | hooks, skills, rules, CLAUDE.md, template, coordinator, docs | adopt | **accepted** (user-directed review, applied 2026-11-14, claude-system@1c23fbd..0d4b305; 23 project repos migrated to `paths:` rule scoping; then a trim pass, claude-system@7656ad6..fade13d, 18.6k → 9.8k words, six skills behaviour-tested on Sonnet; smoke tests 32/32) |
 
 ## Considered and held (2026-11-08 run)
 

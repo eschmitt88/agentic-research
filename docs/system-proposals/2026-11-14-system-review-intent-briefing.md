@@ -123,3 +123,60 @@ All three accepted and applied: `iterate-redirect-before-halt`,
 - **The guide is untested** on held-out tasks. The prose changes rest on its
   three strong principles plus removal of plain contradictions. The private
   brief audit is the planned check.
+
+## Follow-up the same day: the trim
+
+The review above left the corpus flat (18,657 → 18,647 words), and the
+history showed why that matters: the July ablation took it from 18,586 to
+16,542, never near its 7k target, and accepted proposals had grown it back
+to its starting size. The user asked for a file-by-file pass on what is
+really required. Applied as claude-system@7656ad6..fade13d. (7656ad6 holds
+both skill groups and the examples removal under a message that names only
+the experiment skills; a failed pathspec folded two commits into one.)
+
+| | before | after |
+|---|---|---|
+| global `CLAUDE.md` | 1,190 | 891 |
+| rules | 2,127 | 1,387 |
+| global skills | 10,889 | 4,895 |
+| experiment skills | 4,441 | 2,670 |
+| **total (words)** | **18,647** | **9,843** |
+
+**Method.** First establish what is machine-read, by reading every consumer
+(`kg_lint.py`, the dashboard, the Pages viewer, `chain_budget.py`, the
+hooks). Those are the hard contracts: paths, frontmatter fields, the
+candidate-entry shape, the `## Diagnostics` block, the `NOTES.md` headings.
+Log-line formats turned out to be read only by people and agents. Then keep,
+per file: the contracts, the behaviour a strong model would not choose
+unprompted, and the reason for each constraint. Cut: procedure the reader
+works out alone, history, restated rules another file owns, and "does NOT
+do" lists.
+
+**Structural changes.**
+- `agency.md` no longer restates each skill's steps; the batch scale is one
+  table that skills point to.
+- `skills/examples` (`mle-task`, `mle-score`, ~2,200 words, used once in
+  April) moved to the mle-bench project, their only consumer.
+- `/elevate` gained a text budget: a proposal that adds words names what it
+  removes and states the net change. This is the one rule added, and it is
+  aimed at the regrowth.
+- Skill descriptions, which sit in every session's skill list, went from
+  4,672 to 2,796 characters.
+
+**Tests.** Six trimmed skills were run on Sonnet (the weaker model in the
+cron fallback chain) in scratch projects, with permission checks on, and
+their output checked by script: `/ingest`, `/new-experiment`, `/wrap`,
+`/promote-moc`, `/discover`, `/propose`. All produced contract-conformant
+output, and all left a planted unrelated dirty file out of their commits.
+Two findings came out of the tests:
+- Log lines asked for `HH:MM`. One run omitted it and another estimated it.
+  Nothing parses it and git has the exact time, so log lines are now
+  date-only.
+- `kg_lint` flagged the template README's own mention of wikilink syntax in
+  every new project. It now ignores wikilinks in code spans and fences.
+
+**Not tested.** `/implement`, `/iterate`, `/derive-experiment`, `/curate`,
+`/digest`, `/fetch-paper`, `/elevate` and `/sync-imports` were rewritten on
+reasoning alone. The nightly curate and the weekly digest and elevate runs
+are the first real exercise of those; `/implement` and `/iterate` have not
+been run on this box since April.
