@@ -39,12 +39,8 @@ concept; a `retired` concept warns but is still recorded.
 
 ## Scoped rules
 
-Detailed conventions live in `.claude/rules/` and are auto-loaded when you
-touch matching paths:
-
-@.claude/rules/experiments.md
-@.claude/rules/notebooks.md
-@.claude/rules/data.md
+Detailed conventions live in `.claude/rules/`. Each loads on its own when
+you read or edit a matching path (its `paths:` frontmatter).
 
 ## Budget & compute
 
