@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [chen2026when, zhang2026double, he2026swegate, ding2026reexecuting]
 evidence_strength: "code-released (chen2026when, zhang2026double, he2026swegate) + 4 attestations across 4 distinct groups; credibility ~3"
-status: proposed            # proposed | accepted | rejected | superseded
+status: accepted            # proposed | accepted | rejected | superseded
 recommendation: adopt
 ---
 

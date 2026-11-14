@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [salle2026benchmarks, chen2026governance, lencevicius2026when, nakayashiki2026when]
 evidence_strength: "code-released (salle2026benchmarks, lencevicius2026when, nakayashiki2026when); 4 independent groups; credibility ~3 (3/3/3/3)"
-status: proposed            # proposed | accepted | rejected | superseded
+status: accepted            # proposed | accepted | rejected | superseded
 recommendation: adopt
 ---
 

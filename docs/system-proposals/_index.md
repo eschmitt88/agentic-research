@@ -28,9 +28,10 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-09-20 | [framework-rule-imports-dead](2026-09-20-framework-rule-imports-dead.md) | `templates/project/CLAUDE.md` (+ `install.sh`, 8 skills, 19 repos) | adopt | **accepted** (applied 2026-10-11 with the skill-side Read step, claude-system@60f9f4c; re-verified on 2.1.296; Read step added to all 15 `respects:` skills (proposal counted 8); 19-repo CLAUDE.md sweep) |
 | 2026-09-20 | [concept-import-contract-inert](2026-09-20-concept-import-contract-inert.md) | `skills/sync-imports/SKILL.md` (+ `README.md`) | adopt-with-changes | **accepted** (applied 2026-10-11, claude-system@60f9f4c; used_by kept as a declaration ledger, mle-bench @import lines replaced with a path list) |
 | 2026-09-27 | [iterate-no-improvement-noise-band](2026-09-27-iterate-no-improvement-noise-band.md) | `skills-experiment/iterate/SKILL.md` | adopt | **accepted** (applied 2026-10-11, claude-system@60f9f4c) |
-| 2026-10-18 | [iterate-redirect-before-halt](2026-10-18-iterate-redirect-before-halt.md) | `skills-experiment/iterate/SKILL.md` | adopt | proposed |
-| 2026-10-25 | [hce-known-bad-preflight](2026-10-25-hce-known-bad-preflight.md) | `rules/evaluation.md` | adopt | proposed |
-| 2026-11-01 | [precompact-chat-only-constraints](2026-11-01-precompact-chat-only-constraints.md) | `hooks/pre-compact.sh` | adopt | proposed |
+| 2026-10-18 | [iterate-redirect-before-halt](2026-10-18-iterate-redirect-before-halt.md) | `skills-experiment/iterate/SKILL.md` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; text as proposed plus one line of rationale) |
+| 2026-10-25 | [hce-known-bad-preflight](2026-10-25-hce-known-bad-preflight.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; with the 'skip with a logged reason' clause and the 'passing does not validate' caveat) |
+| 2026-11-01 | [precompact-chat-only-constraints](2026-11-01-precompact-chat-only-constraints.md) | `hooks/pre-compact.sh` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; wording verbatim) |
+| 2026-11-14 | [system-review-intent-briefing](2026-11-14-system-review-intent-briefing.md) | hooks, skills, rules, CLAUDE.md, template, coordinator, docs | adopt | **accepted** (user-directed review, applied 2026-11-14, claude-system@1c23fbd..0d4b305; 23 project repos migrated to `paths:` rule scoping; smoke tests 31/31) |
 
 ## Considered and held (2026-11-08 run)
 

@@ -7,7 +7,7 @@ change_type: edit
 adds_surface_area: false
 evidence_citekeys: [yan2026traceml, chandran2026autoresearch, zou2026fmlbench, xia2026rrsi, cai2026forkandflush, xu2026conflictguide, zhang2026judged, li2026humanize, he2026beneath, du2026can]
 evidence_strength: "peer-reviewed (yan2026traceml NeurIPS E&D, chandran2026autoresearch ICDM) + code-released (yan, zou, xia, zhang, li, he, du) + 10 attestations across ~9 distinct groups; credibility ~3.4"
-status: proposed            # proposed | accepted | rejected | superseded
+status: accepted            # proposed | accepted | rejected | superseded
 recommendation: adopt
 ---
 
