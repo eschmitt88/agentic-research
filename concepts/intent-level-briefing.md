@@ -41,7 +41,7 @@ compile algorithms into scripts). That program said it could not run real
 ablations. It also named the main risk: contract-only skills assume the reader
 has frontier-level inference.
 
-Open boundaries, which the empirical work lives downstream to test:
+Open boundaries, which the downstream project watches the literature for:
 
 - **Capability:** below some implementer strength, scripts likely win.
 - **Context, not capability, is the reader's deficit.** A brief fails when the
@@ -57,5 +57,5 @@ Open boundaries, which the empirical work lives downstream to test:
 - [[concepts/hierarchical-delegation]]: the main place this applies, since
   every delegation is a brief.
 - [[concepts/enforcement-boundary-placement]]: where the code/prose line falls.
-- Downstream: the `intent-briefing` project (harness, experiments, writing
-  guide).
+- Downstream: the `intent-briefing` project (curated literature and an
+  evidence-graded writing guide; no in-house experiments, per its ADR 0003).
