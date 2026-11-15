@@ -33,6 +33,64 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-11-01 | [precompact-chat-only-constraints](2026-11-01-precompact-chat-only-constraints.md) | `hooks/pre-compact.sh` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; wording verbatim) |
 | 2026-11-14 | [system-review-intent-briefing](2026-11-14-system-review-intent-briefing.md) | hooks, skills, rules, CLAUDE.md, template, coordinator, docs | adopt | **accepted** (user-directed review, applied 2026-11-14, claude-system@1c23fbd..0d4b305; 23 project repos migrated to `paths:` rule scoping; then a trim pass, claude-system@7656ad6..fade13d, 18.6k → 9.8k words, six skills behaviour-tested on Sonnet; smoke tests 32/32) |
 
+## Considered and held (2026-11-15 run)
+
+The graph has not moved since 11-08: no new literature, and one seeded
+concept (`intent-level-briefing`, whose only source is the 07-31
+program). The 11-09 digest never ran (cron auth expired on opus and
+sonnet). The system did move. On 11-14 all three pending proposals were
+accepted and the corpus was trimmed from 18.6k to 9.8k words. So this run
+re-tests holds whose blocker was a pending proposal on the same file, and
+audits the trim. **Zero proposals.** Eight considered:
+
+- **Did the trim drop accepted text?** No. Every accepted contract is
+  still in its target: §1's retrieval boundary and spent reads, §4's
+  hash, preflight and pristine pass, `/iterate`'s band and pivot,
+  `/lint`'s consolidation and rule-consistency checks, `/digest`'s
+  scenario queries, both pre-compact bullets, the session-start reading
+  rule, the budget reserve comment, `/elevate`'s control, and the
+  `/sync-imports` ledger.
+- **Known-good probe and true start state in §4** (`kim2026elicitation`,
+  `zhu2026who`, plus the six 11-08 sources). **Decided, not re-proposed.**
+  The 11-14 reviewer had this input and chose a caveat ("a passing check
+  only rules out rewarding nothing") over a second probe. No new evidence.
+- **LLM-judge model ID in the §4 pin.** **Still no live target.**
+  Rechecked the HCE projects: arc-agi-2's `run_gptoss.py` is a solver,
+  and chemrage's "judge" is a checkpoint.
+- **`/iterate` winner's curse** (`zhou2026does`, cred 4, code). The
+  pending-10-18 blocker is gone. Gate 1 passes on one source. **Held on
+  Gate 2.** "The chain's best" is a selected maximum, so the bias goes
+  toward halting early, which costs some search but no compute. A
+  mean-baseline or repeat-the-win fix adds a run or a rule.
+- **More structure for the weaker cron fallback in the eight untested
+  rewritten skills** (`intent-level-briefing` capability boundary;
+  `zhao2026specbench` shows larger gaps for weaker models, but on code
+  specs). **Held.** No hub source tests contract-level skill text on a
+  weaker reader. `CLAUDE.md` already says a cheaper reader gets more
+  structure. The question belongs to the `intent-briefing` project.
+- **Drop `evaluation.md` from `/digest`'s `respects:`** (a removal).
+  **Rejected.** It is load-bearing: in an experiment repo, `/digest` is
+  exactly the retrieval that §1's boundary forbids for the task's own
+  leaderboard and write-ups.
+- **Post-adoption check** (`treude2026how`) and **retire skills on level,
+  not gain** (`wang2026beyond`). **Unchanged holds.** The first rests on
+  n = 5 and would add a step. For the second, moving `skills/examples`
+  out was relocation to its consumer, not a gain rule.
+
+**Paired control: `hce-evaluator-integrity` (07-19). Fail, on Gate 2's
+text budget.** Gate 1 still passes: `atinafu2026rewardhacking` and
+`zou2026fmlbench` are code-released, and credibility balances to 3.3.
+The rest of Gate 2 also passes, since the proposal weighed two smaller
+forms and added no hook or knob. But it adds about 15 lines to
+`evaluation.md`. It names nothing it removes and gives no net word
+change, which the budget added on 11-14 now requires. That is the
+intended tightening, not drift, and it will fail most text-adding
+accepted proposals in the rotation. Human call: either the budget
+requires an offset in the same file, and these fails are expected, or
+it only requires a stated net change, and the wording should say so.
+Next control: `token-metering-cumulative-double-count` (07-26), a code
+fix that the text budget does not touch.
+
 ## Considered and held (2026-11-08 run)
 
 This run covers the 11-02 digest (6 papers) and the 11-03 curate (17
