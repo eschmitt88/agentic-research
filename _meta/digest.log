@@ -838,3 +838,5 @@ I added a `## 2026-11-02` weekly rollup covering 10-27 → 11-02 to the end of `
 Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in again, or use `claude setup-token` and set CLAUDE_CODE_OAUTH_TOKEN for unattended jobs
 [claude_chain] model 'opus' failed or hit its limit; trying next
 Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in again, or use `claude setup-token` and set CLAUDE_CODE_OAUTH_TOKEN for unattended jobs
+[claude_chain] model 'sonnet' failed or hit its limit; trying next
+[claude_chain] FAILED on every model in the chain (opus,sonnet)

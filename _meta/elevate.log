@@ -516,3 +516,23 @@ This week's /elevate run wrote **no proposals**. I considered 10 ideas from the 
 **Two things need your attention:**
 - **The Claude sign-in expires today.** The cron wrapper wrote a warning to `_meta/elevate.log` saying the sign-in can end any time until 2026-11-08, and renewing doesn't move that date. Run `claude auth login`, or use `claude setup-token` for unattended jobs, or the scheduled runs will start failing.
 - I left that uncommitted `_meta/elevate.log` change alone because it belongs to the cron wrapper.
+This week's /elevate run made **no proposals** after considering 8 ideas. The **paired control failed**, and that needs a decision from you. Committed and pushed as `183ba38`; nothing in `~/claude-system` was touched.
+
+**What this run covered.** No literature has come in since the 11-08 run. The only graph change is the seeded `intent-level-briefing` concept. The live system did change on 11-14: the three pending proposals were accepted and the instruction corpus went from 18.6k to 9.8k words. So the run did two things:
+- **Checked the trim.** Every accepted proposal's text is still in its target file, from all four sections of evaluation.md through the pre-compact hook to the session-start reading rule.
+- **Re-tested holds whose only blocker was a pending proposal on the same file.** None passes now:
+  - **Known-good probe in evaluation.md §4:** the 11-14 review already had this input and chose the "a passing check only rules out rewarding nothing" caveat instead. There's no new evidence, so I didn't re-propose it.
+  - **LLM-judge model ID in the evaluator pin:** still no project scores its holdout metric with an LLM judge. I checked the hits in arc-agi-2 and chemrage, and neither is a judge model.
+  - **`/iterate` comparing against a selected maximum** (`zhou2026does`): the evidence passes, but the bias pushes chains to halt early rather than wasting compute, and the fix would add a run or a rule.
+  - **Dropping `evaluation.md` from `/digest`'s `respects:`:** rejected. In an experiment repo, `/digest` is exactly the kind of search that §1 forbids for a task's own leaderboard.
+
+**Decision needed: the control failure.** The control re-tested `hce-evaluator-integrity` (07-19). Its evidence still passes (code-released, credibility about 3.3), and so does the rest of the simplicity gate. It fails only on the word budget added on 11-14: it adds about 15 lines to evaluation.md, names nothing it cuts and gives no net word count. That tightening was deliberate, so this isn't the gates drifting by accident. But it will fail most accepted proposals that added text as the rotation reaches them. Which do you want?
+- **The budget requires cutting words in the same file.** These failures are then expected, and future logs should read them that way.
+- **The budget only requires stating the net word change.** Then the wording in `/elevate`'s SKILL.md should say so.
+
+**Not part of /elevate, but worth acting on:**
+- **The 11-09 digest never ran.** Cron auth had expired, and both opus and sonnet returned "Failed to authenticate". The weekly NOTES rollup was skipped too, and nothing alerted. The error message suggests `claude setup-token` and setting `CLAUDE_CODE_OAUTH_TOKEN` for unattended jobs. Without that, it may happen again. The next digest (Mon 11-16) will search back to 11-02, so nothing is lost.
+- **A NOTES "Next" item is out of date.** The trimmed `/digest` SKILL.md no longer says it uses WebSearch. Documenting the harvest order is still open.
+- **One file left uncommitted.** `_meta/digest.log` holds the failed digest's error output. I left it alone because it's another job's file.
+
+The next control in the rotation is `token-metering-cumulative-double-count`, a code fix that the word budget doesn't apply to.
