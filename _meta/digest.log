@@ -840,3 +840,41 @@ Failed to authenticate: this login reached its time limit and cannot be renewed.
 Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in again, or use `claude setup-token` and set CLAUDE_CODE_OAUTH_TOKEN for unattended jobs
 [claude_chain] model 'sonnet' failed or hit its limit; trying next
 [claude_chain] FAILED on every model in the chain (opus,sonnet)
+The six readers are still running. I'll apply their concept edits and commit once they all report back.
+
+One reader has reported: chu2026when came out "at" its digest entry, relevance 4. Five more are still running.
+
+Two readers are done: shi2026hard came out "below (mild)" its digest entry, relevance 4. Four are still running.
+
+Three of six readers are done; liu2026silent read "at" its digest entry, relevance 4. Three are still running.
+
+Four done; mitra2026agent read "at" its entry, but it says the digest's "Why" line was wrong about the selection-only null. I'll record that in the Curation section. Two readers are still running.
+
+Five done; zha2026do read "below" its entry. The "twice as often" figure comes from one compressor, Hermes, and under the box's own compaction there's no gap. One reader is still running (gao2026trustworthy).
+
+The digest ran end to end. Everything is committed and pushed, and the working tree is clean.
+
+**Harvest.** The window was 2026-11-02 → now, two weeks, because the 11-09 run failed on expired cron auth.
+- OAI-PMH worked this time, but `export.arxiv.org/oai2` now redirects to `oaipmh.arxiv.org/oai`. Without following the redirect the harvest gets nothing.
+- That endpoint's `<created>` field holds the latest version's date, so old papers look new. I picked new submissions by ID prefix `2611.` instead: 9,265 records.
+- A keyword filter cut those to 845. I read all 845 titles and 90 abstracts, and kept 20 in `raw/_candidates/2026-11-16-digest.md`.
+- Coverage ends at papers submitted Fri 13 Nov.
+- The four web searches found nothing in the window. There's still no paper comparing redirect against halt.
+
+**Ingest.** The headroom check said go/high, which allows about 6 papers, so I took items 1–6. Papers went from 324 to 330. Six parallel readers read the full PDFs; I then added their 17 concept sections across 10 concepts myself, as additions only (+1173 lines, nothing deleted). The graph lint shows one dead link, which was there before this run.
+
+Several digest entries overstated their papers:
+- **Abstract vs full text:** 2 of 6 papers read below their entry, 4 matched, none above.
+- **Item 2 (rule compliance after compaction):** the headline "rules kept in the summary are broken twice as often" holds for only one summarizer. With the one closest to our PreCompact bullet, violations come out below the full-history rate. That's the first evidence on how that bullet is worded.
+- **Item 3 (handoff summaries):** for the PreCompact bullet, the costlier failure is a summary inventing *permission*, and the bullet's examples don't cover it. The reader drafted an amendment for `/elevate` to consider; it's in the Curation section and I didn't apply it.
+- **Item 5 (statistical keep gate):** I described `/iterate`'s noise band wrongly. It only decides when a chain stops, not what's kept, so this paper has no gate there to replace.
+
+All of these corrections are recorded in the candidates file's Curation section.
+
+**Map of Content.** No new cluster is ripe. intent-level-briefing was the only concept no MoC covered, so I added it to `governance-by-architecture` as the prose-side counterpart to enforcing rules in code.
+
+**Open:**
+- Items 7–20 and 8 near misses wait for `/curate`, so the file stays in `raw/_candidates/`.
+- The readers suggested five new concepts and created none; they're listed in the Curation section.
+- The ingest commit message says 36 concepts became 37, but the count is still 36. I logged the correction rather than rewriting pushed history.
+- Harvest scratch files are in `/mnt/projects/tmp/digest-2026-11-16/` and can be deleted.
