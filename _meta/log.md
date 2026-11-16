@@ -824,3 +824,4 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-11-16 07:16 ingest raw/papers/gao2026trustworthy.pdf
 2026-11-16 07:16 ingest raw/papers/shi2026hard.pdf
 2026-11-16 07:17 promote-moc no new cluster ripe (1 unmapped concept); updated governance-by-architecture (+intent-level-briefing, 9 concepts). Ingest commit aa1145e says 'concept count held at 37'; the count is 36.
+2026-11-16 07:17 digest-autoingest n=6 verdict=go/high
