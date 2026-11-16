@@ -811,3 +811,9 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-11-15 elevate proposals=0 considered=8 control=hce-evaluator-integrity:fail — graph unchanged since 11-08 (11-09 digest failed on expired cron auth); re-tested holds unblocked by the 11-14 acceptances and audited the 11-14 trim: every accepted contract survives. Held: known-good §4 probe (reviewer decided 11-14), LLM-judge pin (still no live target), zhou2026does winner's curse in /iterate (Gate 2; bias is toward early halt), weaker-reader structure (no hub evidence), post-adoption check, level-based retirement; rejected dropping evaluation.md from /digest respects (load-bearing for §1 retrieval). Control fails on the 11-14 text budget only (no offset, no net word count); deliberate tightening, flagged for a human call on whether the budget requires an offset.
 2026-11-15 elevate text budget decided (user, claude-system@88b2253): state the net word change and name an offset or say why none exists; controls accepted before 2026-11-14 are exempt. Resolves the 11-15 control failure.
 2026-11-16 07:06 digest n=20 window_since=2026-11-02T07:22:07Z
+2026-11-16 07:07 fetch-paper 2611.04399 → raw/papers/liu2026silent.pdf
+2026-11-16 07:07 fetch-paper 2611.03223 → raw/papers/zha2026do.pdf
+2026-11-16 07:07 fetch-paper 2611.06545 → raw/papers/chu2026when.pdf
+2026-11-16 07:07 fetch-paper 2611.11342 → raw/papers/mitra2026agent.pdf
+2026-11-16 07:07 fetch-paper 2611.10787 → raw/papers/gao2026trustworthy.pdf
+2026-11-16 07:07 fetch-paper 2611.08285 → raw/papers/shi2026hard.pdf
