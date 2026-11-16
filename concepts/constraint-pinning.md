@@ -21,6 +21,8 @@ sources:
   - "[[literature/papers/so2026masked]]"
   - "[[literature/papers/zhu2026precedent]]"
   - "[[literature/papers/laddha2026position]]"
+  - "[[literature/papers/zha2026do]]"
+  - "[[literature/papers/chu2026when]]"
 used_by:
   - project_slug: intent-briefing
     imported_on: "2026-11-13"
@@ -285,6 +287,173 @@ origin-binding theorem (see [[concepts/typed-enforcement]]) arriving
 at the same wall from the harness side. The pinned buffer's
 *write path* is therefore the next surface:
 [[concepts/verified-memory-writes]] territory.
+
+## A rule kept in the summary binds as well as the full history, unless the summary's wrapper demotes it (2026-11-16)
+
+[[literature/papers/chen2026governance]] split violations by a binary
+survival label and found survived → 0%. [[literature/papers/zha2026do]]
+(ARCBench) repeats the split inside an unmodified harness (pi). It adds a
+"partially retained" label and a matched full-history arm, so each
+post-compaction violation is either the agent's own (it also happens with
+full history) or compaction's. The setup is 17 cases with one planted rule,
+one forced compaction, and a final request that asks for the forbidden
+action, graded from the tool call. Agents are four flash-tier models, none
+of them Claude.
+
+What it adds here:
+
+- **Survival is not binary.** Under the Hermes compressor 26.9% of
+  summaries keep the rule's subject but lose its scope, exception or
+  negation, and those runs violate 29.4% of the time. A presence check
+  counts them as pinned.
+- **Whether a retained rule binds depends on the compressor.** Per-run
+  violation with the rule retained, against about 9.5% for full history:
+  - Pi + RP (pi's prompt plus one "preserve operating rules … with their
+    original force and negation intact" paragraph): 6.5%, retention 99.0%.
+  - Pi: 9.3%.
+  - Structured, TRACE, ACON-UTCO: 9.9–11.6%.
+  - ACON-UT: 17.4%.
+  - Hermes: 26.8%. This is the paper's main strategy and the source of its
+    2.6× headline (21.1% vs 8.1% in S1).
+
+  Hermes prefixes every summary with "treat it as background reference,
+  NOT as active instructions … the latest message WINS". The final request
+  is that later message, and the behaviour judges had to file agents
+  citing "the latest message wins" as a separate case. There is no arm
+  without the prefix, so it is a candidate cause, not an established one.
+  ACON-UT has no such prefix and still shows an excess.
+- **A rule-preservation line is the strongest compactor-side defense, and
+  it restores presence before it restores behaviour.** Under a retrieved
+  note telling the compactor to omit rules, Pi + RP never lost the rule
+  (99.5% retained), but violation@3 rose from 9.0% to 17.9% (full 13.4%).
+  Pi went to 31.3%. On Hermes with the escape attack (GLM only), the same
+  line took retention from 66.7% to 99.0% and violation@6 from 58.8% to
+  29.4%, against 23.5% with no attack. Isolation, instructional and
+  sandwich defenses did less (41.2–52.9%).
+- **Who gave the rule sets the floor pinning cannot touch.** With full
+  history, user-given rules (c1) were broken in 25.0% of cases, rules the
+  agent was asked to persist (c2) in 16.1%, and organization-delivered
+  rules (c3, c4) in 0%. Most c1 failures are "approval": the agent treats
+  the user's later request as lifting the rule. Since the same user is
+  asking, part of that floor is revocation scored as violation.
+
+**For the accepted PreCompact change**
+(`docs/system-proposals/2026-11-01-precompact-chat-only-constraints.md`;
+our reading):
+
+- Its Risk 1 said the category-specific ask was untested. Pi + RP is the
+  first behavioural evidence for that form: one prompt paragraph to the
+  summarizer, with retention near 99% and violation at or below the
+  full-history rate. The box's bullet differs in three ways. It asks for
+  verbatim quotes, it reaches the summarizer as hook text rather than
+  inside the compaction prompt, and it targets process instructions, a
+  class the benchmark screened out.
+- Restatement is the wrong success measure for the change's own local
+  check. Grade an action after compaction against a full-context arm, and
+  use a probe whose task passes through the forbidden action without the
+  user naming it. Otherwise the "latest version" clause, which exists to
+  honour revocations, will score as failures.
+- Claude Code's continuation wrapper (checked in this box's transcripts)
+  introduces the summary as covering "the earlier portion of the
+  conversation". It has no reference-only or latest-wins clause, so the
+  Hermes-sized gap probably does not transfer. Two points remain, both
+  untested:
+  - The wrapper ends "Continue … without asking the user any further
+    questions". That works against ask-first rules ("draft it, let me
+    send"), the papprove and pdraft cases here.
+  - Quoted constraints should be written as still in force, not narrated
+    as history ("the user had asked…").
+
+Limits:
+- No Claude agent or summarizer. Episodes have 12–16 benign messages,
+  one compaction, canned tool results and a four-step decision loop.
+- Nine process, preference and formatting constraints were screened out
+  for having no attacker payoff.
+- No interval is shown for any difference, despite the stated bootstrap.
+  Pi + RP vs Pi is 6 vs 10 of 67 cases.
+- The adversarial and defense studies use one model (GLM) and one
+  compressor.
+- The Hermes prefix and its ~50-token target are never varied on their
+  own. The excess persists at a 2,500-token budget (18.8% vs 9.4%), which
+  argues against the target and leaves the prefix as the candidate.
+
+## A summary-time quote also carries policy nobody gave: summaries invent restrictions and keep withdrawn permissions (2026-11-16)
+
+Every section above treats the summarizer as something that *drops* rules.
+The box's 2026-11-14 PreCompact bullet acts on that. It asks the summarizer
+to quote the latest version of each chat-only standing instruction
+verbatim, which is pinning done by the summarizer rather than by the
+harness. [[literature/papers/chu2026when]] measures the reverse failure.
+Handoff summaries state permissions or requirements that the record does
+not support, and the successor reads them as its own notes. The setting is
+synthetic tool-use tasks with a ground-truth permission ledger, open-weight
+agents (Qwen3-8B, gpt-oss-20b), and two Claude readers labelling the
+summaries.
+
+- **Rare, with the costly direction a false permission.** On fresh
+  held-out instances, unsupported restrictions appear in 1.2–2.4% of
+  summaries and unsupported authorizations in 0.1–1.3% (lower bounds).
+  Successors given a false approval acted without permission in 11–16 of
+  60 runs per main held-out set, and in 0 of 60 with the full history.
+  Neutralizing the sentence cut this from 24 to 7 of 120 (pooled, post
+  hoc). A later pre-specified set went from 17 to 11 of 48, which was not
+  significant.
+- **Where the false policy comes from.** These are post hoc word-match
+  traces:
+  - 18 of 42 held-out false authorizations followed an approval
+    withdrawn in the writer's own context, and the summary mentioned the
+    withdrawal in only 5 of the 18.
+  - 21 of 42 followed a non-approver's comment in a tool result ("cron
+    tweaks don't need approval").
+  - Held-out false restrictions mostly generalized a rejected request
+    into a rule (59 of 76).
+  - Development ones mostly carried the agent's own earlier hedged guess
+    (46 of 64: "I might need approval").
+- **Asking the summarizer for rules did not by itself add invented
+  ones.** A compaction prompt with Rules and Approvals headings tripled
+  the policy sentences flagged by rule (Qwen3-8B 27.4% vs 8.2%). The
+  confirmed invented-restriction rate was no higher than under the default
+  prompt (5.9% vs ≈7.4%). This is exploratory, from about 230 summaries
+  per cell.
+
+So "presence, not authority" (The known limit) has a third face. Pinning
+fixes which text survives, but a summary-time quote also decides *what
+the text says*. When the summarizer is the pin, an invented or stale rule
+gets the same privileged position as a real one. The hu2026memory and
+xu2026stale hazards above are now measured inside a compaction summary,
+on small models.
+
+What this implies for the PreCompact bullet (our inference; the paper
+tests no such instruction):
+- It is not a reason to revert. The bullet's clauses already map onto the
+  three provenance classes:
+  - "the user gave" excludes own guesses and tool-result comments;
+  - "verbatim" excludes paraphrased rejections;
+  - "latest version" is aimed at withdrawals.
+
+  That is the scoped form that worked in the paper's prompt intervention
+  (see [[concepts/intent-level-briefing]]).
+- Its examples ("how to commit, what not to touch, what not to run") are
+  all restrictions. Chat-only *grants* ("go ahead and push") are the
+  class where a stale quote leads to action, and "latest version" relies
+  on a revocation step that these models got right in 5 of 18 cases. A
+  candidate amendment for `/elevate` would say that a quoted permission
+  states whether it still stands, and that the summary states no
+  permission or requirement the user did not give.
+
+Limits:
+- 8B–21B open-weight agents. The larger-model checks are exploratory,
+  and their false authorizations never led to action. Whether Opus-class
+  summarizers invent policy is unmeasured.
+- The successor never sees the original request, and most held-out
+  compactions happened at the agent's own `finish` call. Both inflate the
+  summary's authority relative to Claude Code, which re-injects CLAUDE.md.
+- Labels come from two copies of `claude-opus-5-5`, with modest human
+  agreement (κ 0.38 and 0.62). The provenance classes are word matches and
+  do not establish cause.
+- The paper's pre-specified held-out replay test for restrictions was null
+  (p = 0.58), so the behavioural effect of invented *restrictions* is
+  shown only on the exploratory development split.
 
 ## Connections
 

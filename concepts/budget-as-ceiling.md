@@ -80,6 +80,8 @@ sources:
   - "[[literature/papers/ren2026coral]]"
   - "[[literature/papers/chen2026autoresearch]]"
   - "[[literature/papers/wang2026paretorsigym]]"
+  - "[[literature/papers/gao2026trustworthy]]"
+  - "[[literature/papers/shi2026hard]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -2132,6 +2134,162 @@ Limits:
 - The 10.0M/15M figure is one round of one run. Pool-fill rates across runs
   are not reported.
 - The plan deadline's effect on outcomes is not ablated.
+
+## A cross-round error budget bounds the share of false keeps at any stopping time, but a per-round test kept false keeps as low, and the power came from a loss margin (2026-11-16)
+
+The keep-rule sections above (10-12, 10-13, 11-02) leave three rules
+standing. Bare `>` inflates. A fixed-level significance cut rarely
+commits. Repeat-the-win keeps most real gains. None of them controls
+error *across* a chain. [[literature/papers/gao2026trustworthy]] (TRUST)
+is the first source here that does. It runs an online multiple-testing
+gate: each round's level α_t comes from a total budget q, via e-LORD
+inside e-GAI. The paper proves that the **false evolution rate** stays
+at or below q. FER is the expected share of accepted updates that lose
+more than ε. The proof holds at any stopping time of the outer loop
+(App. C.2), and a chain halted by a counter is such a stopping time.
+
+The setting is harness self-improvement with two cheap models on
+HotpotQA, DROP and APPS. There are 30 rounds × 5 seeds, and 40 paired
+validation items per round are drawn from a 200-item pool. FER0 and TER
+(the share of improving candidates accepted) are scored on 300 held-out
+items. Means over six settings (our arithmetic from Table 1):
+
+| Gate | Gain (pp) | FER0 | TER | MDD (pp) |
+|---|---|---|---|---|
+| Greedy (`>`) | 23.64 | 45.59% | 50.6% | 4.96 |
+| PACE (per-round e-process, α = 0.05) | 22.40 | 1.11% | 8.4% | ≈0 |
+| SGM-B / SGM-H (FWER across rounds) | ≈0 | 0 | ≈0 | 0 |
+| TRUST (q = 0.30, ε = 0.10) | 24.84 | 2.78% | 14.3% | 0.05 |
+
+What this changes for the keep-rule question:
+- **Cross-round control is not what lowered false keeps.** PACE has no
+  cross-round budget and had the lowest FER0. Its per-round α was enough
+  at T = 30. TRUST's edit over PACE shows up as power (+5.9 TER points,
+  +2.4 pp gain), not safety.
+- **The power comes mostly from a loss margin.** TRUST tests
+  noninferiority: the null is "worse by at least ε = 0.10", ten points on
+  a [0, 1] score. At ε = 0 it accepted nothing (Table 8), the same
+  paralysis as SGM-B. At ε = 0.15, FER0 was 57.68% and MDD 5.33 pp. No
+  baseline was given the same margin, so the FER-vs-FWER contrast and the
+  margin are confounded.
+- **Over Greedy, the win is drawdown, not final gain.** Greedy is ahead in
+  2 of 6 settings, and the mean lead is 1.2 pp. Greedy's peak-to-trough
+  losses of 3.4–8.5 pp are what TRUST removes. That is the same "return
+  the best, not the last" gap an archive closes.
+
+On `/iterate`'s band. The band (skills-experiment/iterate/SKILL.md) is
+the stop-counter rule this concept already scopes. It is not a keep gate,
+since the next cycle seeds from the latest implemented experiment.
+TRUST's control covers three things the band leaves open:
+1. Multiplicity: nothing bounds how many in-chain "beyond-band" resets
+   are noise.
+2. A stored best: the band compares with the chain's best stored number,
+   never re-measured. TRUST pairs candidate and incumbent on every
+   round's fresh draw.
+3. Validation reuse, but only through an assumed constant β.
+
+For the counter, (1) costs extra cycles, which the other ceilings already
+cap. The 09-28 point stands: a halt is not an inference. (1) and (2)
+matter for the *claim* a chain makes about its best result, which is an
+[[concepts/hce-evaluation]] question.
+
+The LLM that scales each round's budget share cannot loosen the FER
+bound. The proof uses only that α_t is fixed before the round's draws and
+that the clipped charges sum to at most q. The LLM's judgment never
+enters. It can still enlarge the gain and drawdown bounds (Thm. 4 charges
+α_t × loss beyond ε) and spend the budget early. Its measured benefit is
+within SE: 44.91 ± 1.36 vs 43.78 ± 1.18, one setting. Our inference for
+any box loop that lets a model set a threshold: the clip and the budget
+ledger are code, and the model's input is frozen before the draw.
+
+Transfer (our inference): the e-value runs over per-item outcomes that
+are independent given the history. Training-seed noise in an ML
+experiment is shared by all items, so item-level evidence certifies a
+checkpoint, not a configuration. Seed replicates are the unit, which puts
+`/iterate` back in [[literature/papers/qu2026propose]]'s "certifies
+nothing at 1–3 seeds" regime. [[literature/papers/zhou2026does]]'s
+repeat-the-win remains the cheap candidate for a keep rule. No source
+compares it with an FER gate.
+
+Limits:
+- Starting harnesses are deliberately broken (e.g. "return the first
+  displayed title"), so most of the gain is repair of a planted fault.
+- Ablations cover one setting. SEs are large at 5 seeds (TRUST FER0
+  10.00 ± 10.00 on HotpotQA/DeepSeek).
+- ρ_min, ρ_max, α_max, PACE's null and the LLM's score-to-multiplier map
+  are not reported. There is no code link.
+- Solver at temperature 0 with cached responses: the only noise is item
+  sampling, unlike seed-noisy ML runs.
+
+## A stall trigger must beat run-blind references for difficulty and model within a problem, and its action must beat a resample at equal attempts (2026-11-16)
+
+The 11-02 section set the bar for a stall trigger: a matched-random
+trigger, plain continuation, and a between/within-task split. The 11-03
+section added jain2026monitor's point that a pivot's value depends on what
+it can win with the budget left. [[literature/papers/shi2026hard]] (NC
+State, the same group as [[literature/papers/srinivasan2026continue]]) adds
+a second confound and a cause → action map. Data: 3,492 mini-swe-agent runs,
+seven models, SWE-bench Verified, one run per model per issue.
+- **Difficulty is one confound; model ability is a second.** Srinivasan
+  held the model fixed. Here, at step 20, a run-blind difficulty score
+  (the share of 16 *other* models failing the issue) gets 0.924 pooled
+  AUROC. Trajectory predictors get 0.624–0.630, no better than prefix
+  length plus model identity (0.607). Within an issue, model identity
+  gets 0.724 and the predictors 0.604–0.610. On upsets, where the weaker
+  model won, the predictors score 0.42, below chance. Added to difficulty +
+  model, no predictor in 18 configurations moves AUROC beyond ±0.02.
+- **Pooled AUROC is a ranking of items.** 99.66% of 494,109 failed–
+  successful pairs compare different issues.
+- **Each cause has its own action.** Hard issue → stop or ask a human;
+  weak model → switch; bad run (the same model solves it on other
+  attempts) → retry. In a repeated-run pilot (two Llama models, ≥4 runs on
+  522 issues), run-to-run variation is 42% of outcome variance and issue
+  53%. Yet 64–82% of predictor-score variance is between issues, so alarms
+  flag hard issues, where retries rarely help.
+- **A gain from acting can be an extra attempt, not the choice.**
+  Escalating every failure to one fixed second model gains +6.91 pp
+  [4.67, 9.15]. Choosing the model per issue adds +0.09 to +0.41 pp, with
+  CIs spanning zero. The gain is the second attempt.
+
+For the redirect-before-halt rule, accepted on 2026-11-14
+(`docs/system-proposals/2026-10-18-iterate-redirect-before-halt.md`). This
+is our inference; the paper tests no counter, pivot or halt.
+- **Score the counter within problem against three run-blind
+  references.** These are problem difficulty (how other chains on the
+  same problem fared), backbone (which ideator and implementer models ran
+  it) and cycle index (the analogue of "length"). Pooled over projects, a
+  counter that fires on hard problems looks predictive for free. The
+  counter counts measured non-improvements, not text, so the AUROC values
+  do not transfer. The design does.
+- **The rule applies one action to three causes.** A pivot is worthless
+  on a problem every chain stalls on (halt is right), can help on a
+  non-recurring stall, and is the wrong fix where another backbone would
+  clear it. Its value is set by the cause mix, and only repeated chains per
+  problem can measure that.
+- **Score the pivot against a resample at the same cycle.** The rule
+  already compares at equal cycles, since the pivot replaces the third
+  refinement. But the comparison arm should be a same-axis resample, not
+  the two failed cycles before it. With run-to-run variation this large,
+  one pivot success is not evidence that the axis change caused it.
+- **Log what makes this possible later.** Next to `redirect=<axis>`, log
+  the problem identity, the backbone models and the cycle index. Without
+  them none of the three references can be computed afterwards.
+
+The compute-neutral defence is unaffected. The paper predicts a small
+*gain* where stalls are mostly difficulty, not a cost.
+
+Limits:
+- No stop, retry or switch is executed or replayed, and nothing is
+  budget-matched. The +6.91 pp is two attempts against one, with a perfect
+  failure detector assumed.
+- "Within-issue" pairs here are across models, since each model ran once.
+  Same-model discrimination is srinivasan2026continue's result (0.50 at
+  20k tokens), not this paper's.
+- The 42% run-to-run share is from older Llama models on SWE-bench-extra
+  and dev. The decomposition method is unstated, and the shares imply
+  ≈0.4% for model between a 70B and an 8B.
+- A four-page preliminary paper. Two of 18 predictor configurations are
+  tabulated, and there is no code.
 
 ## Open questions
 

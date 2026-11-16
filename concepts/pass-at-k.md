@@ -42,6 +42,7 @@ sources:
   - "[[literature/papers/lyu2026where]]"
   - "[[literature/papers/shi2026weight]]"
   - "[[literature/papers/ellington2026automatic]]"
+  - "[[literature/papers/shi2026hard]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -737,6 +738,54 @@ Limits:
   score; they are not the headline task medians.
 - One model; replicates differ only by sampling.
 - The selector is the agent's own random holdout, not a pinned split.
+
+## A cross-model oracle gap is what chance gives when every item ranks the models alike; the baseline is the best model's second attempt (2026-11-16)
+
+The 10-06 and 10-27 sections report selectors capturing a share of an
+oracle gap, and the "latent complementarity" section reads the oracle gain
+in [[literature/papers/kim2026are]] (positive in 100% of subsets) as
+latent capacity. [[literature/papers/shi2026hard]] (NC State) asks whether
+a cross-model oracle gap reflects complementarity at all.
+- **The gap fits a no-specialization null.** On SWE-bench Verified
+  (mini-swe-agent, seven models, one run each), the best single model
+  solves 76.8% and some model solves 86.8%, a 10.0 pp gap. When exactly
+  one of two models solves an issue, the weaker one wins 24.6%. With 23
+  models: 12.4 pp and 17.7%. The null is a Rasch or 2PL world fitted to
+  the real abilities and difficulties, in which every issue ranks the
+  models identically (500 simulations). All eight observed values sit
+  inside its range after Holm correction.
+- **Two draws of the better model can beat one of each.** Toy arithmetic:
+  A at 0.7 and B at 0.6 on every issue give an any-model oracle of 0.88,
+  but A twice gives 0.91. Escalating every failure to one fixed second
+  model gains +6.91 pp [4.67, 9.15] over the best single model. Choosing
+  the model per issue adds +0.09 pp [−0.36, 0.63] (held-out runs, two
+  Llama models) or +0.41 pp [−1.83, 2.85] (pre-run router). The gain is
+  in the attempt count.
+- **Complementarity is real but sparse.** An upset found in one half of
+  repeated runs recurs in the other half 44% of the time, against 19%
+  under the null (p = 0.004), on about 15 of 522 issues. Outcome variance:
+  issue 53%, run-to-run 42%, issue × model 4.6%.
+- **Part of the gap has no harvester.** 448 of 994 failures (45%) are on
+  64 issues no model solves.
+
+Rule for this project (our inference): before reading a cross-model
+(or cross-arm) oracle gap as headroom for a selector or router, report it
+next to two numbers. One is the gap a no-specialization null produces with
+the same marginals. The other is the best member's pass@2 at the same
+attempt count. A capture ratio computed against an oracle gap that chance
+alone explains measures the selector against noise. This is the same
+conclusion [[literature/papers/liu2026what]]'s flip rate reached: a 13%
+same-configuration rerun churn sets the scale.
+
+Limits:
+- One benchmark and scaffold, released labels, k = 1 per model in the main
+  data. The authors did not measure the null's power, so "within chance"
+  does not show complementarity is absent.
+- The per-issue choice null is from two older Llama models. The router is
+  thinly described.
+- Model ensembles, not k samples of one method. The selector-capture
+  sections above concern within-model samples, where the same logic applies
+  only through the run-to-run term.
 
 ## Open questions
 

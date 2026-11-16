@@ -65,6 +65,8 @@ sources:
   - "[[literature/papers/zhou2026does]]"
   - "[[literature/papers/nakayashiki2026lessons]]"
   - "[[literature/papers/treude2026how]]"
+  - "[[literature/papers/mitra2026agent]]"
+  - "[[literature/papers/gao2026trustworthy]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -295,6 +297,137 @@ work can sharpen it — e.g., a `/lint` extension that surfaces
    but the vocabulary maps directly onto this project's own
    candidate → ingested → concept → MoC → retired pipeline, where git
    already provides the snapshot/diff/review substrate.
+
+## A single-lesson admission gate with per-context non-inferiority is a screen: its one held-out-tested winner did not replicate, and it came from the writer that never saw a failure (2026-11-16)
+
+The 10-19 section above admits lesson *blocks* by randomized inclusion
+(pham2026reliable). [[literature/papers/mitra2026agent]] applies the same
+design to *single* lessons and adds two harm terms. The lessons are written
+for a frozen Qwen3.5-9B by a larger teacher, as "WHEN … THEN" notes in one
+system-prompt slot. Each candidate is switched on or off at random across
+many runs. A hierarchical Bayesian model pools contexts (τ² task ×
+decision type; BFCL domain family). A lesson passes only with all of:
+- a credible gain > 1 point;
+- enough exposure in every context;
+- P(loss > 1 point) < 0.10 in every context (non-inferiority);
+- bounded harm (τ²: wrong writes; BFCL: wrong final states);
+- on τ², all of this under sceptical, weakly informative and slightly
+  negative priors.
+
+What it did:
+- **τ²: 2 of 12 admitted, on the selection data.** "Change the address
+  first" +4.7 [+4.0, +5.4] and "list only the first change" +2.7
+  [+2.0, +3.4] (90% CrIs, 20,400 decisions). **Four lessons pushing toward
+  asking or confirming again were rejected,** each because it credibly
+  hurt at least one context. This complements the 11-02 section, where
+  52% of optimizer-added rules ask the agent to verify. Here a per-context
+  harm term is what kept such rules out. No held-out test was run.
+- **BFCL: 0 of 8 trace-written lessons passed.** The one that passed came
+  from the no-evidence writer: "when the current directory is unknown,
+  call pwd", +4.9 [+1.9, +8.0]. On 120 held-out roots it gave −0.31
+  [−3.65, +3.12]. The gate estimate lies outside that interval. Running
+  all eight trace lessons without the gate gave +0.52 [−3.33, +4.38] over
+  the standard harness (sign flipped from the paper's
+  standard − lessons). Both are null on held-out, so the gate's selection
+  added nothing measurable there.
+
+Three points for this concept:
+- **Admission on the selection split is a screen, not a certificate.**
+  The gate's design is stricter than any in the 10-19 sections. It still
+  produced a winner that shrank to zero on fresh roots. Pham's design
+  estimates blocks on a practice split and evaluates on a separate one.
+  The held-out step is what this gate needs, and it is what showed the
+  shrinkage here.
+- **An admitted lesson's provenance is not its source.** The first τ²
+  lesson states the rule the no-evidence writer also wrote "almost word
+  for word". The BFCL winner was not trace-written at all. A library that
+  records "learned from failure X" for an admitted lesson can be wrong
+  about why it is there. Compare treude2026how (11-03 section), where
+  proposals came from the skill's checklist rather than the session.
+- **"None" should be a neutral text, not only an empty slot.** On
+  held-out BFCL a fixed note with no procedure scored +4.5 [+0.7, +8.4]
+  over the standard harness, more than either lesson set (descriptive,
+  unadjusted). Pham's "keep the empty library as a scored candidate"
+  (10-19) generalizes. Score a content-free note of similar length too, or
+  a library's gain may be the presence of a note rather than its lessons.
+
+A fourth, weaker point extends "Fired is not the same as effective" (11-03
+section) one step further. The τ² lessons cut the targeted error from 6
+conversations to 0, and pass^1 did not move (−1.3 [−5.9, +3.3]). A lesson
+that fires and changes the behaviour it targets has still not been shown
+to change the outcome.
+
+Limits:
+- One frozen 9B model with thinking off, one teacher family; customer
+  service and function calling, not ML research.
+- The τ² writers' task descriptions stated the target rules, so the τ²
+  gate screens phrasings of known rules, not discovered ones.
+- The BFCL search writer read the function documentation and the trace
+  writer did not.
+- The τ² gate data were re-run after a data loss, and BFCL ran at
+  temperature 0.7, not the official 0.001. 146 of 240 held-out BFCL
+  instances were audited as defective; on the 18 clean gate instances the
+  winner's estimate was +3.9 [−0.4, +8.3].
+- The hierarchical model's specification and the rejected lessons' texts
+  are in an extended report available only on request.
+
+## A noninferiority admission gate admits edits that change nothing, and its ratio guarantee loosens later thresholds with each admission (2026-11-16)
+
+The admission sections above ask that a candidate show a positive
+estimated gain (tang2026memory), keep "none" as a scored candidate
+(pham2026reliable), and pay for the turns it adds (11-02).
+[[literature/papers/gao2026trustworthy]] (TRUST) is a formally guaranteed
+gate over exactly these edit types: adding, refining, generalizing,
+promoting and deleting reasoning rules; adding up to three closed cases
+to memory or archiving them; and routing and workflow switches. It
+admits on a different criterion. The test is **noninferiority**: the
+null is "the edit loses at least ε", with ε = 0.10 on a [0, 1] score. The
+guarantee bounds the share of admitted edits that lose more than ε.
+
+What that means for a library (our arithmetic and extension):
+- **A tie is evidence for admission.** The null boundary is
+  p_ε = (1 − ε)/2 = 0.45, so an item where the edit changes nothing
+  (Y = 0.5) raises the e-value. Forty ties give the paper's betting
+  mixture an e-value of about 9.5, or about 5.5 once most of the pool has
+  been seen.
+- **Each admission lowers the bar for the next.** With the LLM multiplier
+  at 1, the budget recursion gives α_t = (q/T)·(R + 1) = 0.01·(R + 1),
+  where R counts prior admissions. The first threshold is 100, which a
+  no-op cannot reach. After about 10–18 admissions, or with a multiplier
+  of 3 after a few, it can.
+- **The guarantee cannot see what accumulates.** FER is a ratio, so more
+  admissions also enlarge its denominator. Theorem 4 makes the cost
+  explicit: each admitted edit may lose up to ε with no charge to the
+  error budget. That is fine for a one-incumbent prompt. For a library
+  that grows by admission, it lets do-nothing rules in, and the 11-02
+  section prices those in turns, not in score.
+
+So a margin buys power (TRUST at ε = 0 admitted nothing, Table 8), and the
+price is the write-side "none" control that pham2026reliable and
+nakayashiki2026lessons found does most of the work. Our rule, untested: if
+an admission gate uses a loss margin, a noninferior candidate must still
+beat "no change" on a cost axis (turns or tokens per task) before it
+enters.
+
+A second datum is the verbatim-memory route, under Greedy only (App. I).
+With 20 examples reused for proposing and validating, an accepted memory
+entry stored a validation question with its verified answer. On a test
+question, a shared keyword ("album") retrieved it. Routing then dropped a
+needed paragraph, and Joint F1 fell from 54.55 to 48.00 (13 items down,
+none up). Validation gain was +24.44 pp while test gain ended at −2.15.
+This is "an optimizer that can write anything will write the answer key"
+(10-13), here through memory retrieval rather than rule text.
+
+Limits:
+- The paper reports no acceptance breakdown by operator or component, so
+  how many admitted edits were rules, memories or no-ops is unknown. Its
+  low empirical FER0 (ties count as failures there) suggests few no-ops
+  were admitted in these runs.
+- One incumbent harness, not a library with retrieval. The noninferiority
+  argument is about the gate's design, not an observed library effect.
+- App. I has no TRUST arm. The tie arithmetic assumes the paper's fixed
+  betting mixture. ρ_max and α_max, which cap the LLM's effect, are not
+  reported.
 
 ## Connections
 

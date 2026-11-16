@@ -78,6 +78,7 @@ sources:
   - "[[literature/papers/zhang2026llmasajudge]]"
   - "[[literature/papers/ganesan2026infinity]]"
   - "[[literature/papers/li2026aligning]]"
+  - "[[literature/papers/liu2026silent]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -947,6 +948,70 @@ Caveats:
 
 Rule: for any composite or tie-broken keep rule, log how often the secondary
 term changed the kept candidate. Do not infer its influence from its weight.
+
+## An oracle that replays gold through the agent's environment writes into the agent's record, and an oracle whose call is triggered by the agent can silently not run (2026-11-16)
+
+The 10-20 section ([[literature/papers/chen2026when]]) found that
+τ-bench's `calculate_reward()` returns the right value but leaves the
+database holding the reference state. [[literature/papers/liu2026silent]]
+audits HAL's public TAU-bench Airline archive and finds a second side
+effect of the same function. The gold replay runs through the same
+`step()` and appends the gold actions to the same `actions` list. HAL then
+archives that list as "the agent's taken actions". Neither paper cites the
+other, so two independent single-author audits now converge on one
+mechanism.
+
+- **How widespread.** Grader actions appear in 68% of 2,334 records. In 58
+  records the agent made no tool call at all, yet the record shows the
+  complete gold sequence.
+- **What it does to evidence.** Replaying stored actions verbatim
+  reproduces the recorded reward in 70% of records whose gold has ≥ 2
+  non-terminal actions. Stripping the grader's actions first raises this
+  to 92%. Contamination is heaviest where the agent did least.
+- **Position heuristics fail.** The grader's copies usually sit at the end
+  of the record. In episodes that ended with a transfer, the harness
+  appends its closing message *after* the grader runs, so the copy lands
+  mid-record. The author's own first audit stripped only the tail and
+  missed 73 episodes. A later correction overturned a per-model claim the
+  maintainers had already confirmed.
+
+The same audit adds an invocation property that the battery in this
+concept does not test. **The oracle ran only when the episode formally
+ended, and what ended it was agent behaviour.** One scaffold was graded in
+98% of episodes and the other in 51%. A missing grade was stored as 0.
+All of the existing known-answer probes (score twice, do-nothing fails,
+known-good passes) assume the oracle is called. A no-op that is never
+graded scores 0, so the do-nothing probe passes it by construction.
+
+What this adds to the implementation guidance (our inference, drawn from
+Liu's §5):
+- **Run the oracle on a copy.** Reference replay belongs in a separate
+  environment instance, or must write to a separate list. This fixes
+  chen2026when's state leak and Liu's record leak together.
+- **Every logged action carries provenance**: agent, user simulator,
+  harness or grader. Without the tag, a trajectory archive cannot be
+  cleaned without re-deriving the grader. Any box process that reads
+  transcripts as evidence about the agent inherits this (for example log
+  analysis, lesson extraction, or a monitor scored on traces).
+- **"Not graded" is its own return value, not 0.** The oracle wrapper
+  should return a distinct status when the oracle was not invoked or did
+  not complete. The aggregator reports graded fraction per cell beside the
+  score. This makes coverage the fourth cheap probe, next to the 10-20
+  section's three.
+
+Limits:
+- One benchmark family (τ-bench / τ²-bench) and one leaderboard. Stateful
+  replay graders are common in tool-use benchmarks, but the paper argues
+  prevalence by mechanism, not by survey.
+- The HAL re-grade stubs the user simulator. Separating agent actions
+  from grader actions depends on aligning parsed tool calls by name and
+  arguments. A validation check backs this up: re-grading at each recorded
+  ending event reproduces all 1,951 graded rewards.
+- The box's own ML evaluators mostly score a submitted artifact in a fresh
+  process. They do not replay through the agent's environment, so the
+  record leak has no direct analogue there today.
+- The trigger failure needs a scaffold whose way of ending differs from the
+  one the benchmark authors assumed. Any new scaffold is a candidate.
 
 ## Open questions
 

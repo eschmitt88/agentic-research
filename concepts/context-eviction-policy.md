@@ -65,6 +65,8 @@ sources:
   - "[[literature/papers/salle2026benchmarks]]"
   - "[[literature/papers/busch2026ctxagent]]"
   - "[[literature/papers/jain2026monitor]]"
+  - "[[literature/papers/zha2026do]]"
+  - "[[literature/papers/chu2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -467,6 +469,142 @@ default; and **token consumption is billed after the fact, so there is no
 backpressure signal**. Quality degradation from bloat is invisible unless
 someone measures it. That last point is the reason this concept has to be
 designed rather than discovered.
+
+## Truncation that ties summaries on task score loses a once-stated rule in most runs, and the summary budget has a cliff (2026-11-16)
+
+This page's selective-vs-summary evidence so far is about task score or
+cost. Rule-based dropping roughly ties summarization
+([[literature/papers/nguyen2026cliffcompaction]],
+[[literature/papers/kumar2026turncost]], and
+[[literature/papers/salle2026benchmarks]]'s tool-output pruning).
+[[literature/papers/zha2026do]] compares ten policies on a different
+target: whether a rule stated once, early, still governs an action after
+one compaction. The harness is an unmodified pi, with 17 cases, four
+flash-tier models, and the same model compacting and acting. Grading is
+deterministic from the tool call, against a matched full-history arm.
+
+- **Verbatim selection drops the rule.** Share of runs whose kept turns no
+  longer contain the rule:
+  - FIFO: 100%.
+  - LRU over turns later referenced by a repeated call or quoted literal:
+    88.2%.
+  - An LLM ranking turns by "likely to be needed again": 63.7%.
+
+  violation@3 is 44.8–54.4% for these, against 9.0–42.6% for the seven
+  generative strategies. The agent's-own share is flat across all ten
+  (6.0–12.1%), so the spread is entirely in what the policy kept. A
+  constraint is referenced by nothing until the moment it is needed, so
+  recency and reference counts both evict it. This is
+  [[literature/papers/lencevicius2026when]]'s observed-fact case, measured
+  on behaviour.
+- **Among summaries, a constraints slot does the work.** Pi and Structured
+  (the same prompt, with a "Constraints & Preferences" field) retain the
+  rule in 96.0% and 94.5% of runs. One added preserve-rules paragraph
+  (Pi + RP) gives 99.0% and the only below-baseline violation rate (9.0%
+  vs 11.9%). The ACON prompts, tuned for task utility or compression,
+  retain 90.7–96.0% but are violated more often (20.6%, 31.8%).
+- **The budget is a cliff, not a slope.** Under Hermes with volume filler
+  (DeepSeek, GLM), retention is ≥97.1% from 2,500 down to 750 tokens and
+  ≤4.9% at 300 and 200. violation@3 jumps from 24.2–28.1% to
+  47.1–50.0%. Hermes's fixed 177-token preamble is clipped first, ahead of
+  rule-bearing text, so at tight budgets boilerplate displaces the rule.
+- **The wrapper around the summary is part of the policy.** Hermes's
+  reference-only prefix ("NOT as active instructions … the latest message
+  WINS") coincides with the largest violation excess on *retained* rules
+  (26.8% vs 9.3% full). The paper never isolates it; see
+  [[concepts/constraint-pinning]].
+- **The evicted span is an injection surface for the summarizer.** One
+  retrieved note telling the compactor to omit rules raises the
+  generative family's rule-absent share from 0.9% to 16.3%. Selective
+  compactors do not read content, so they are unaffected, but they
+  already drop the rule. In this design volume filler is a null (37.8% →
+  34.3%) because compaction is forced anyway. It does not test
+  [[literature/papers/chen2026governance]]'s volume-to-trigger-compaction
+  attack.
+
+Rules (ours, extending the 2026-10-27 "carry stated-once observations in
+explicit fields"):
+- Do not switch a long-horizon agent to plain truncation on the strength of
+  task-score parity if it carries standing rules. The parity does not
+  extend to them.
+- Give the summary a constraints field, and fill it before fixed preambles
+  when clipping.
+- Validate any summary budget below about 750 tokens on retention of the
+  rules specifically.
+
+Limits:
+- One forced compaction over 12–16 benign messages. The
+  re-compaction regime where salle2026benchmarks saw rules erode is
+  untested.
+- Flash-tier models only. No Claude Code compactor.
+- Selective-policy retention is labelled mechanically (was the
+  rule-bearing turn kept), generative retention by an LLM panel.
+- The budget sweep is Hermes-only with filler in every run, and TRACE is
+  an AppWorld prompt run out of domain.
+- No interval is shown for any difference.
+
+## Compaction fidelity has an additive failure, and deleting the bad sentence is not the repair (2026-11-16)
+
+The "Compaction fidelity" open question, and the 2026-10-20 and
+2026-10-27 sections, measure what a summary *loses*.
+[[literature/papers/chu2026when]] measures what it *adds*: permissions or
+requirements the record does not support. It is the first test in this
+graph that holds the environment fixed at the compaction point and varies
+only the summary (same-snapshot replay, 4 successor runs per arm, matched
+seeds). The agents are open-weight (Qwen3-8B/14B, gpt-oss-20b) on
+synthetic tasks with a ground-truth permission ledger.
+
+- **Prevalence.** On fresh held-out instances, 1.2–2.4% of summaries carry
+  an unsupported restriction and 0.1–1.3% an unsupported authorization
+  (lower bounds; AI-confirmed).
+- **The repairs differ by kind of error.** The arms are neutral filler,
+  deletion, appending the true state (`restore`), rewriting the sentence
+  with the truth (`claim_correct`, an oracle), and the full history.
+  - *False approval:* neutralizing it cut unauthorized actions from 24 to
+    7 of 120 (pooled, post hoc). The full history gave 0 of 120.
+    Appending the true state only partly overrode a planted false approval
+    (42 of 142 runs, against 53).
+  - *Overgeneralized restriction* (a rejected request turned into a rule;
+    59 of 76 held-out cases): neutralizing barely moved confirmation
+    requests (197 → 190 of 236). Writing in the true permission with the
+    allowed target brought them to 48. The successor was missing a fact,
+    not just carrying a wrong one: in 192 of 197 such runs it asked about
+    a target the ledger did not allow.
+  - *Truth costs something too:* `claim_correct` raised rule violations
+    in two sets (8 → 18, 10 → 26 of 148), and `restore` doubled them on
+    Test (8 → 16) while lifting task success from 32 to 102 of 148.
+- **The compaction prompt is not the lever.** Structured (with Rules and
+  Approvals headings, "only include facts you saw") and brief-note prompts
+  both still produced invented restrictions, at rates no lower than the
+  default (exploratory). The intervention that worked was upstream, in the
+  system prompt the writer ran under (5.0% → 1.8% development,
+  1.8% → 0.3% held-out, pre-specified; see
+  [[concepts/intent-level-briefing]]). In 46 of 64 development cases the
+  invented rule was already in the agent's earlier reasoning before the
+  summary was written.
+
+Our reading: this extends the 2026-10-20 rule (fixed fields for
+failures and rejected options). A rejected request should be carried as
+"X on target A was rejected; B is allowed", with the allowed alternative.
+Carried as prose, it becomes "X needs approval". The full-history arm's
+0 of 120 is another vote for keeping the raw transcript addressable
+([[concepts/lossless-context-offload]]). It is not a vote for every
+policy: on the development split the full history still carried the
+original guess (179 of 256 runs asked).
+
+Rule: when evaluating a compaction change, count sentences the summary
+*adds* that no source turn supports, as well as facts it drops. A
+self-summary that restates permissions should carry the allowed target
+and any withdrawal, not just the requirement.
+
+Limits:
+- Small open-weight agents and a harness where the successor never sees
+  the original request. The summary's influence is near its maximum.
+- Synthetic ledger tasks. The "wrong target is rejected" behaviour is
+  one specific way a refusal arises.
+- The restriction replay effect was null on the pre-specified held-out
+  test (p = 0.58). Most repair comparisons are exploratory, four runs per
+  arm.
 
 ## Connections
 

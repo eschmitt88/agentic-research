@@ -36,6 +36,7 @@ sources:
   - "[[literature/papers/pham2026reliable]]"
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
   - "[[literature/papers/nakayashiki2026lessons]]"
+  - "[[literature/papers/mitra2026agent]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -195,6 +196,67 @@ cone check would catch "what I cited changed", not "the graph learned
 more". Catching the second would need a reverse-edge check, such as new
 notes that touch a concept's tags or citekeys. That last step is our
 inference, not the paper's.
+
+## An effect-tested write certifies the text, not that its evidence was needed: rerun the writer without the evidence (2026-11-16)
+
+The 10-19, 10-27 and 11-03 sections above show benign writers producing
+wrong entries. [[literature/papers/mitra2026agent]] asks the converse
+question about entries that *help*: did the evidence the writer read
+produce them? A teacher writes "WHEN … THEN" lessons for a frozen
+Qwen3.5-9B from its failure traces. The control rerun is the same writer,
+prompts, keep-or-revert loop, budget and dev feedback, with the episodes
+replaced by a fixed sentence. Both writers' task descriptions stated the
+target rules.
+
+- **Most of the written value did not need the evidence.** On 2,997 sealed
+  τ² retail decisions, trace-written lessons scored 80.9% and the
+  no-evidence writer's 76.8%, against 70.3% with no notes. The evidence
+  added +4.0 [+2.3, +5.7]; the writer without it got 6.5 of the 10.5
+  points. Wrong writes fell 3.1 points [−4.6, −1.7] relative to the
+  control. So the traces carried something, and most of the content came
+  from what the writer already had.
+- **The best-supported entry was written without the evidence.** Of 12
+  candidates, a randomized-inclusion gate admitted "change the address
+  first" (+4.7, 90% CrI [+4.0, +5.4], selection data). The no-evidence
+  writer had written that rule "almost word for word". On BFCL the only
+  lesson to pass the gate came from the no-evidence writer, and 0 of 8
+  trace-written lessons did.
+
+What this adds to the Definition's triad:
+- **Faithfulness and coverage are judged against the evidence, but the
+  evidence may not be the cause.** A lesson can be supported by the
+  traces, cover them, and still be one the writer would have written from
+  its priors. In this paper, the priors were a task description that
+  stated the rule. That matters whenever a store records provenance
+  ("learned from run X") or weights entries by how much evidence backs
+  them. This is the effect-side twin of treude2026how's checklist-driven
+  proposals: there the prior wrote entries with no event behind them;
+  here it wrote entries that had an event behind them anyway.
+- **Preservation can be measured per context.** The gate required
+  P(loss > 1 point) < 0.10 in every task × decision-type context and
+  bounded wrong writes, under three priors. It rejected four "ask or
+  confirm again" lessons, each because it credibly hurt at least one
+  context. That is preservation checked by effect on prior behaviour,
+  not by comparing texts. It is not sufficient: the one BFCL winner
+  tested on held-out roots fell from +4.9 to −0.31 [−3.65, +3.12].
+
+Rule (our inference): treat a lesson's evidence as its source only if a
+rerun of the same writer without that evidence does not produce it.
+Otherwise record the entry as prior-derived. For this box, a concept
+edit or `/iterate` diagnostic that a fresh session would write from the
+brief alone is not evidence that the run taught anything.
+
+Limits:
+- The writers were told the target rules, which maximizes what the
+  no-evidence writer can reproduce. With a rule to discover, the evidence
+  share may be larger.
+- One frozen 9B reader, one teacher family; customer-service decisions
+  and function calling.
+- The control's search path can differ from the trace writer's, so its
+  gain mixes search, selection, rule restatement and added text (the
+  authors' own caveat). On BFCL it also read the function documentation.
+- No held-out test of the admitted τ² lessons; six-page report, extended
+  analyses on request.
 
 ## Connections
 

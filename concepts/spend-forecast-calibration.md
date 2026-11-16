@@ -14,6 +14,8 @@ sources:
   - "[[literature/papers/srinivasan2026continue]]"
   - "[[literature/papers/jain2026monitor]]"
   - "[[literature/papers/kanke2026rtaste]]"
+  - "[[literature/papers/liu2026silent]]"
+  - "[[literature/papers/shi2026hard]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -170,6 +172,114 @@ the paper's *boundary problem*. Allocating cost as rate × wall-time folds in
 fixed setup/teardown, and because short runs finish faster that fixed cost is
 a larger fraction of their total — biasing any agentic-vs-linear ratio toward
 1.0× and hiding real overhead. Measure the window deliberately.
+
+## A meter that sums every logging layer over-counts by a factor that varies with scaffold and provider, so print the raw-to-root ratio on every run (2026-11-16)
+
+This concept's Definition asks for "measured history". The allocation
+section says a controller "needs only a meter". Both assume the meter is
+right. [[literature/papers/liu2026silent]] shows how a widely used one was
+wrong. HAL's cost column, the cost axis of its cost-accuracy frontier,
+sums usage over every tracing span. A wrapper call and the provider-client
+call it makes show up as parent and child spans with the same response and
+the same usage block.
+- In 133 of 134 logged runs, the reported usage equals the all-spans sum.
+  This identifies the rule.
+- Reported tokens are **exactly 2×** the root-span sum in 70 runs and 1×
+  in 46.
+- 44 of 94 matched leaderboard rows carry a doubled cost. Mean
+  overstatement over 133 runs is 36.5%.
+- Example: one row lists $149.98 for a run whose root-span cost is $74.99.
+  Both look like believable prices.
+- **The factor follows the client path**, which depends on scaffold ×
+  provider. On SciCode all ten zero-shot runs are clean, while most runs of
+  the other two scaffolds are about 2×.
+
+The last point matters most for this concept. liu2026what and
+kumar2026turncost (sections above) say a forecaster should be fitted per
+harness × backend. An error whose size changes with exactly those keys
+does not cancel within a stratum. It biases each stratum's fit by its own
+factor and reorders strata against each other. A uniform 2× would only
+rescale the axis.
+
+This box has hit the same class of bug twice:
+- 07-26: the Stop hook stored cumulative session totals as per-turn rows,
+  about 51×.
+- 11-14: the hook summed usage over transcript records. One response is
+  written as several records repeating its usage (11,934 records for 6,490
+  responses in the largest transcript), and subagent transcripts were not
+  read. The net error was about 2.4×. Counting now goes through a
+  deduplicated reader in `coordinator/token_log.py`.
+
+Liu's fix matches ours: count once per response ID, or over root spans
+only. Liu adds a canary we lack: **print the ratio of raw to deduplicated
+usage on every run.** "A ratio of exactly two is a bug signature that any
+reader can recognise." Here the healthy ratio is not 1. It is whatever the
+transcript format currently yields, roughly 1.8 records per response on
+the 11-14 sample. So the alarm should be a change in the ratio, not a
+fixed value.
+
+Our inference:
+- Have the token reader log `records / unique_response_ids` and the raw
+  and deduplicated totals for each session.
+- Flag a step change, which would mean Claude Code changed how it writes
+  transcripts.
+- Tag every `token_events` row with a meter version. Any forecaster or
+  ceiling calibrated on rows from before 11-14 is fitted to an inflated
+  history whose size varied, and needs a refit, not a rescale.
+
+Limits:
+- HAL's meter is a tracing library over provider clients. The box's meter
+  reads Claude Code transcripts. The mechanism is analogous (one response,
+  several records), not identical, and the box figures come from the 11-14
+  system review, not from the paper.
+- The paper measures metering error only. It fits no forecast and does
+  not show the downstream bias in a cost model. The stratum argument above
+  is ours.
+- HAL has disclosed the overstatement but has not re-derived the costs,
+  so no corrected cost frontier exists to compare against.
+
+## Outcome difficulty forecasts from the item's history with other agents, not from the item; a pre-run router gained +0.41 pp (2026-11-16)
+
+The 11-02 section said task difficulty is forecastable before the run and
+attempt outcome is not, and flagged that deployable pre-execution features
+reached only 0.51–0.57. [[literature/papers/shi2026hard]] (same NC State
+group) separates where the forecast comes from. Data: 3,492 mini-swe-agent
+runs of seven models on SWE-bench Verified.
+- **Difficulty transfers across models.** The share of 16 *other* models
+  that fail an issue ranks failures at 0.924 pooled AUROC, at step 20.
+  [[literature/papers/srinivasan2026continue]]'s 0.97 used held-out
+  attempts by the *same* model. So the forecastable part is a property of
+  the item, carried by any population of agents that has met it. It needs
+  outcomes, and the paper calls it a diagnostic, not a deployable
+  predictor.
+- **From item features, the forecast buys almost nothing.** A router that
+  predicts each model's chance from model identity and the issue text,
+  before any run, beat the best single model by only +0.41 pp
+  [−1.83, 2.85]. Choosing per issue from that issue's own past runs gave
+  +0.09 pp [−0.36, 0.63] on new runs (two-model Llama pilot).
+- **Model ability is the second forecastable term.** A model's failure
+  rate on training issues alone gives 0.724 within-issue AUROC (0.82 over
+  23 models). Trajectory predictors added nothing beyond difficulty plus
+  ability (equivalent to zero at ±0.02, 18 configurations).
+- **A floor no forecast removes.** In the repeated-run pilot,
+  run-to-run variation is 42% of outcome variance. That share is
+  unforecastable before the run by construction.
+
+For this concept (our inference): the admission/allocation rule stands,
+with a narrower input. An outcome forecast at admission is calibrated only
+for items with a history: benchmark items, or a project with earlier
+chains. A new `/iterate` project is a new item. Before it runs, the usable
+terms are the backbone's base rate and a per-model margin, as in
+[[literature/papers/jain2026monitor]] and [[literature/papers/kanke2026rtaste]].
+Item text gives little. Record per-problem outcomes so that later chains
+on the same problem have a history to forecast from.
+
+Limits:
+- No cost forecasts. This is outcomes only, with binary resolve labels.
+- The router is described in one sentence, with shallow issue features.
+  A richer pre-run model could do better; the paper's CI allows +2.85 pp.
+- One benchmark and one scaffold. The pilot uses older Llama models, and
+  the variance-decomposition method is not given.
 
 ## Connections
 

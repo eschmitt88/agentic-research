@@ -132,6 +132,9 @@ sources:
   - "[[literature/papers/yao2026openfrontiers]]"
   - "[[literature/papers/wang2026paretorsigym]]"
   - "[[literature/papers/li2026aligning]]"
+  - "[[literature/papers/liu2026silent]]"
+  - "[[literature/papers/mitra2026agent]]"
+  - "[[literature/papers/gao2026trustworthy]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3282,6 +3285,227 @@ Limits:
 - Trajectories come from GPT-5.5 and GLM-5.2 in a bash-only scaffold, not
   from Claude Code. The judge-ordering result uses an n the paper does not
   state (multiples of 1/13).
+
+## The pipeline around the evaluator is part of the instrument: an ungraded run stored as a failure passes every value check, and a re-grade is a new measurement (2026-11-16)
+
+Clause 4 pins the evaluator's code. The 10-20 section shows that a pinned
+evaluator can still be wrong, and the 11-03 section shows that a pinned
+judge script can still change instrument. [[literature/papers/liu2026silent]]
+moves the boundary one step further out. Liu audits HAL and τ²-bench from
+their published artifacts alone and finds four errors. All four sit in code
+that *surrounds* the scoring function: whether it ran, how runs were priced
+and logged, and which build re-scored them. None raised an error. Two of
+them bear on this concept directly.
+
+**1. Coverage is a separate quantity from score.** On HAL's TAU-bench
+Airline, reward is computed only when an episode formally ends. The
+Generalist scaffold usually ends with an unsolicited closing message that
+never triggers the end.
+- It was graded in 51% of its episodes, against 98% for Tool-Calling. The
+  rest were stored as reward 0.
+- Grading those episodes offline under the benchmark's own rule takes
+  pooled accuracy from 0.30 to 0.43 (41 tasks, 9 models). A 13-point gap
+  becomes a tie.
+- On write-required tasks, where doing nothing fails, the rise is 0.28 →
+  0.33. All 23 newly passing episodes contain the required write.
+- 48 of 351 run-pair orderings reverse.
+
+The "Identical code is not identical measurement" section above already
+warns that an arm which may decline gets its missing cells "scored by a
+default". This is that confound, caused here by the *grader* rather than
+the agent, and invisible in the published score. Two consequences, both
+our inference:
+- **The do-nothing preflight cannot see it.** An ungraded episode stored
+  as zero lands exactly at the floor, so a known-bad check passes it. The
+  pending `hce-known-bad-preflight` checks the scorer's *value*. Coverage
+  needs its own count.
+- **Clause 5's fail-closed rule creates the same default.** "A crash,
+  timeout or unparseable output scores as failure" is right against an
+  agent that games the scorer. But it turns every evaluator fault into a
+  plausible zero. Keep fail-closed for the score, and also write
+  `n_scored` and `n_attempted` (plus a list of unscored items with the
+  reason) into `metrics.json` and `final_metrics.json`. An arm comparison
+  with unequal scored fractions is not interpretable until the unscored
+  items are explained.
+
+**2. A re-grade is a new measurement, even when the fix is correct.**
+τ²-bench lets users re-grade saved trajectories under new evaluator code.
+- The announced banking fix in 1.0.1 turned no pass into a fail. It still
+  reversed 4 of 136 pairwise orderings among 17 submissions, and moved one
+  model from 9th place to a tie for 5th.
+- The airline criteria change in 1.0.0 (14 of 50 tasks) flipped 77 of 800
+  simulations in both directions and moved per-model scores by −7 to +2.5.
+- A solo-mode check that matches one agent name sent four telecom files
+  down the wrong path. A lenient replay warned once per call and went on.
+  The scores dropped by 59–82 points, and the command printed a number.
+
+Clause 3 already treats a split change as a breaking change. This is the
+evaluator-side equivalent, and it holds for deterministic code, not only
+for LLM judges. Our rule, untested:
+- When the evaluator hash changes inside a project, re-score every
+  experiment that will be compared under the new hash. Commit a per-item
+  before/after diff in `docs/decisions/`.
+- Never rank rows produced under different hashes.
+- Any replay or re-score must fail, not warn, when the share of mismatched
+  tool returns or missing inputs passes a threshold. Liu proposes exactly
+  this check (τ²-bench PR #573).
+
+Liu's other two cases go to [[concepts/programmable-evaluator-oracle]] (the
+grader writes into the agent's record) and
+[[concepts/spend-forecast-calibration]] (the cost column double-counts).
+
+Limits:
+- These are leaderboard pipelines with interactive, termination-gated
+  episodes. Most box evaluators score an artifact once, so the coverage
+  failure matters mainly for downstream projects that grade episodes or
+  batch over many items with per-item timeouts.
+- Most of the 0.30 → 0.43 gain is on read-only-gold tasks, which τ-bench
+  passes whenever the database is unchanged (a rule that passes doing
+  nothing). The fair claim is the comparison of the two scaffolds, not the
+  absolute level.
+- The HAL re-grade stubs the user simulator, so only database and output
+  criteria are checked.
+- Each per-model cell has 40–82 records, and the author claims only the
+  direction of the shift.
+- Single-author preprint. HAL confirmed the three HAL errors before the
+  author corrected the graded-episode count. The τ²-bench items are
+  unconfirmed.
+- The two rules above are our inference. No loop here has run them.
+
+## A trace-learning gain needs a matched no-evidence arm and a neutral-text arm, and these are a different null from the selection replay (2026-11-16)
+
+The 11-02 section above computed the selection-only null for skill
+optimizers. Unchanged candidates are simulated through the real acceptance
+rule ([[literature/papers/zhou2026does]]). [[literature/papers/mitra2026agent]]
+runs a different null as a real arm. A teacher writes "WHEN … THEN"
+lessons for a frozen Qwen3.5-9B from its failure traces. The control is
+the same writer, prompts, propose / validate / keep-or-revert loop, budget
+ceilings and dev feedback, with the episodes replaced by a fixed sentence.
+All primary contrasts are pre-registered.
+
+- **The no-evidence arm took ~60% of the gain.** On 2,997 sealed τ²
+  retail decisions: standard harness 70.3%, no-evidence search 76.8%,
+  trace lessons 80.9%. Trace − search is +4.0 [+2.3, +5.7]: it passes
+  superiority but sits below the registered 5-point worthwhile gain.
+  Against the standard harness alone the gain would read +10.5, 2.6×
+  larger. The writers' task descriptions stated the target rules. All of
+  the control's gain is on the task whose rule was stated, so the arm
+  measures phrasing a known rule, not discovering one.
+- **It differs from the selection replay, and the two do not substitute.**
+  BiPA asks whether a dev gain is noise the gate selected. It is
+  simulated, and test was +0.1. The no-evidence arm asks whether the gain
+  needed the evidence. It is run, and it is scored on sealed cases, so its
+  +6.5 is a real gain on that distribution, not a winner's curse. Neither
+  paper runs the other's arm. Zhou's pattern appears here only at the
+  gate: the one BFCL lesson that passed a strict randomized-inclusion
+  screen (+4.9, 90% CrI [+1.9, +8.0]) gave −0.31 [−3.65, +3.12] on 120
+  held-out roots, and it came from the no-evidence writer. 0 of 8 trace
+  lessons passed.
+- **A neutral note is the placebo for text arms.** A fixed note with no
+  procedure scored +4.5 [+0.7, +8.4] over the standard harness on
+  held-out BFCL. That is more than either lesson set: registered as a
+  descriptive secondary, unadjusted, and the comparison with the lessons
+  was not registered. This is the text analogue of vats2026good's
+  dose-matched placebo (10-26 section) and of pham2026reliable's "none"
+  candidate. "No note" is the wrong baseline for a note.
+- **A blind scorer audit, frozen before outcomes, moved the reading.** Two
+  model reviewers judged 146 of 240 held-out BFCL instances (60.8%)
+  clearly defective (κ = 0.84), almost all scoring a correct response
+  wrong. On the 94 clean items both lesson arms sit about 6 points
+  *below* the standard harness (+6.0 [+0.2, +12.0], +6.2 [−0.5, +13.2];
+  Holm p ≈ 0.15). The all-item contrasts were +0.31 and −0.52. Our
+  arithmetic, assuming instance-weighted means: the lessons are ~3–5
+  points *ahead* on defective items. A gain that sits on items a correct
+  answer fails is what a learner fitting the scorer would show. The
+  official score stayed primary by the registered rule, and the audit
+  chose nothing.
+- **A decision-level gain did not reach episodes.** In official τ²
+  conversations, pass^1 was −1.3 [−5.9, +3.3], although the targeted error
+  fell from 6 conversations to 0. A sealed proxy split certifies the
+  proxy. This is the 10-19 neutralization section's point with the gap
+  between task levels, not between dev and test.
+
+Rule (our inference): credit a trace-driven harness edit only with five
+arms reported together:
+1. the selection replay of the unchanged configuration through the gate;
+2. the same writer and loop with the evidence withheld;
+3. a neutral text of similar length;
+4. held-out confirmation of whatever the gate admits;
+5. a scorer audit frozen before outcomes, reported beside the primary.
+
+Arms 1 and 2 answer different questions; neither replaces the other.
+
+Limits:
+- One frozen 9B model with thinking off, one teacher family, two
+  benchmarks (customer service, function calling), not an ML-research loop.
+- On BFCL the no-evidence writer read the function documentation and the
+  trace writer did not, so that control is not information-matched.
+- The no-evidence arm was not run at conversation level; the pass^4 gap
+  (−9.6 [−18.4, −0.9]) is exploratory and confounded by a different
+  library per trial.
+- The audit labels are from LLM reviewers, so their precision is
+  unmeasured. Our defective-item split is derived arithmetic, not
+  reported.
+- Six-page report from a two-person team; the extended analyses are on
+  request only.
+
+## Re-reading a reused validation pool under an e-value gate is valid only by an assumed optimism bound, and a model may set the threshold only before the draw (2026-11-16)
+
+The 09-28 section above concluded that anytime-valid e-values do not
+license re-reading a static holdout, because the re-read data are never
+post-submission. [[literature/papers/gao2026trustworthy]] (TRUST) does
+re-read exactly such a pool. Each round draws 40 of 200 fixed validation
+items, so items recur. The paper buys validity back with an explicit
+assumption rather than fresh data. Assumption 1 says that on a reused
+item, a null candidate's expected rescaled score exceeds the null
+boundary by at most β. The boundary is raised by ζ·β, where ζ is the
+chance that the draw was seen before. Theorem 1 then gives a valid
+e-value at any stopping time, and Theorem 2 bounds the false evolution
+rate across rounds.
+
+What this adds to the concept:
+- **The reuse correction is a declared constant, not a measurement.**
+  "The present study does not address how to identify an exact value of
+  overlap correction strength from data." The β sweep shows the stakes on
+  one setting at 5 seeds (Table 9). β = 0 gave FER0 23.33 ± 14.53% and
+  MDD 1.27 pp. β = 0.01 gave 10.00 ± 10.00% and 0.02 pp. β = 0.03 and
+  0.05 gave 0% FER0, with gain down from 11.58 to 7.13 and 2.80. So a
+  static pool can sit inside a formal guarantee only with a reuse price
+  someone has to assert. That is a fourth option beside the 09-28 split
+  (one look plus multiplicity, or post-submission e-values). It does not
+  repair this concept's one-look rule for the final holdout. TRUST itself
+  keeps a separate 300-item test set for reporting only.
+- **The reuse stress test was run on Greedy only.** In App. I, the same 20
+  examples feed proposing and validation. Validation gain reaches +24.44
+  pp while test gain ends at −2.15. One accepted memory stores a
+  validation question with its verified answer. No TRUST arm is run in
+  this regime, the one where Assumption 1 is most strained.
+- **Where a model may sit inside a statistical gate.** An LLM reads the
+  history and scales each round's share of the error budget. The proof
+  needs only that this scale is fixed before the round's validation draws
+  and that the clip and the budget ledger hold. The model's accuracy never
+  enters ("the FER guarantee does not rely on the LLM correctly
+  identifying beneficial candidates"). The general rule (our extension):
+  a model may set how much evidence a decision needs, provided its input
+  is frozen before the draw that will be tested and the arithmetic that
+  spends the error budget is code. It may not see the outcomes it is
+  thresholding. Its benefit here is not shown: 44.91 ± 1.36 vs
+  43.78 ± 1.18 without it, one setting.
+- **The certificate's object is narrower than its name.** FER counts only
+  accepted updates that lose more than ε = 0.10 (ten points on [0, 1]),
+  against a budget q = 0.30. The reported FER0 (2.78% mean) is a stricter
+  empirical metric than the bound, labelled from a 300-item test Δ̂ that
+  counts ties as failures. A claim like "statistically guaranteed
+  self-improvement" should be read with ε and q attached.
+
+Limits:
+- Two cheap models; starting harnesses deliberately broken; ablations on
+  one of six settings at 5 seeds.
+- Solver at temperature 0 with cached responses. Item sampling is the only
+  noise, so per-item independence is plausible here and not in seed-noisy
+  ML runs.
+- No code link. The allocator's clip bounds and score-to-multiplier map
+  are not reported.
 
 ## Open questions
 

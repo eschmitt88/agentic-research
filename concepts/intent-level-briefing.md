@@ -5,6 +5,7 @@ status: seedling
 added: "2026-11-13"
 sources:
   - "[[docs/system-proposals/2026-07-31-instruction-ablation-program]]"
+  - "[[literature/papers/chu2026when]]"
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/constraint-pinning]]"
@@ -51,6 +52,70 @@ Open boundaries, which the downstream project watches the literature for:
 - **Horizon:** drift under long chained runs is still unmeasured in either
   direction.
 - **Two axes:** intent vs procedure is a different axis from terse vs verbose.
+
+## A vague "some actions need approval" turned into invented rules; one sentence saying where requirements come from removed most of them (2026-11-16)
+
+This page's "Open boundaries" are about briefs for a capable reader.
+[[literature/papers/chu2026when]] supplies the first controlled,
+pre-specified test in this graph of one prose sentence's wording in a
+system prompt. It also follows the effect past the reader, into text the
+reader writes for its own successor. The agents are Qwen3-8B and
+gpt-oss-20b in synthetic tool-use tasks with a ground-truth permission
+ledger.
+
+- **The hedge seeded the error.** A post hoc trace of 64 invented
+  restrictions in handoff summaries found 46 already present as the
+  agent's own earlier guess, often hedged ("Before publishing, I might
+  need approval"). In the three templates that produced 61 of the 64,
+  "approval" appeared only in the system prompt ("Some actions need
+  approval.") and in the confirmation tool's description.
+- **The scoped sentence fixed most of it.** F5 and F6 replaced that
+  sentence with "Only actions that the rules or the user's request say
+  need approval require it." Both tests were pre-specified with hashed
+  plans and scripts.
+  - Development: AI-confirmed unsupported restrictions fell from 5.0% to
+    1.8% of summaries (matched 76 vs 14, p = 1.8 × 10⁻¹¹).
+  - Fresh held-out templates: 1.8% to 0.3% (59 vs 9, p = 3.9 × 10⁻¹⁰),
+    in both models.
+  - Requests about actions that needed no approval fell from 485 to 178
+    of 3,840 episodes. Requests for approvals the ledger really requires
+    stayed flat (2,205 vs 2,199).
+  - Task success rose (2,771 → 2,866, p = 0.0014). Unauthorized actions
+    and rule violations did not change significantly.
+- **It changed the conclusion, not the attention.** The first turn
+  mentioned approval equally often under both prompts (e.g. gpt-oss-20b
+  44.1% vs 44.3%).
+
+For this concept, this is P2 evidence ("state what the reader won't do by
+default"). The vague sentence left the reader to infer *which* actions
+it covered, and the reader filled the gap with guesses. The fix names the
+source of the requirement rather than adding procedure. It also adds a
+boundary that the page did not have: a gap in a brief does not stay in
+the reader's turn. It can be written into the reader's self-summary and
+inherited as a rule by its successor. That is the long-horizon drift this
+page lists as unmeasured, seen in one mechanism.
+
+For this box (our inference): look for unscoped caution sentences of the
+form "some X need Y", where the brief does not say which X or who decides.
+They are cheap to scope. The 2026-11-14 PreCompact bullet's "standing
+instructions the user gave" is already the scoped form (see
+[[concepts/constraint-pinning]]). The fix does not transfer to every
+case, though. The new sentence is true only because these templates write
+every required approval down. Where requirements are tacit, it could
+suppress needed requests, which the paper did not test.
+
+Limits:
+- The new sentence also states a rule, so the result shows that it
+  prevents most unsupported restrictions in these templates. It does not
+  show that the old sentence caused them (the author's caveat).
+- Most old-prompt cases came from three or four report templates. In F6
+  the GPU type was coupled to prompt within model, but the drop held in
+  both models and in H100-only F5.
+- 8B–21B open-weight readers, not Opus-class. The intent-vs-procedure
+  question is about strong readers, so this is evidence on wording, not
+  on capability thresholds.
+- It did nothing for unsupported *authorizations* (matched 15 vs 11,
+  p = 0.56).
 
 ## Connections
 
