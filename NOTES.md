@@ -866,3 +866,39 @@ Weekly rollup for 2026-10-27 → 11-02 (sourced from journal/ + _meta/log.md).
 - Document the /digest harvest order (OAI-PMH → arXiv API by date → listing pages); SKILL.md says WebSearch.
 - Still open: downstream worktree `git log --all` check; `shared-substrate-contagion`
   sibling watch; /propose's first autonomous agency-branch write; deferred prose cuts.
+
+## 2026-11-16
+
+Rollup for 2026-11-03 → 11-16, two weeks because 11-09 had no entry (sourced from journal/ + _meta/log.md).
+
+### Did
+- 11-03 /curate closed the 11-02 backlog: 17 ingested (3 near-misses promoted), 12 declined → `_done/`. Papers 307 → 324.
+- 11-08 /elevate: 0 proposals of 10, control `experiment-loop-skill-scoping` passed (marginal). The LLM-judge
+  model-ID pin was held (no downstream HCE metric uses a judge) and routed into the 10-25 proposal.
+- 11-13 seeded `intent-level-briefing` (downstream `intent-briefing`, ADR 0003). Concepts 35 → 36.
+- 11-14 user-directed system review: **all three pending proposals accepted** (10-18, 10-25, 11-01) plus
+  measured fixes (Stop hook over-count ~2.4x, `applies_to:` rules never scoped, stage-by-path). Same-day
+  trim cut the instruction corpus 18.6k → 9.8k words and added a text budget to /elevate.
+- 11-15 /elevate: 0 proposals of 8. Control `hce-evaluator-integrity` failed on the new text budget alone. The user
+  settled it in claude-system@88b2253: state the net word change and name an offset; pre-11-14 controls are exempt.
+- 11-16 digest (first real run of the trimmed /digest, window 11-02 → now): 20 candidates, top 6 ingested
+  (go/high), 17 edits / 10 concepts. Papers 324 → 330. /promote-moc: no new cluster; `governance-by-architecture`
+  took `intent-level-briefing` (9 concepts). /promote-moc declined 11-03.
+
+### Findings
+- The 11-09 digest failed: cron's login hit its time limit (`claude_chain` failed on opus and sonnet).
+  `~/.claude/.env` still has no `CLAUDE_CODE_OAUTH_TOKEN`, so it can happen again.
+- arXiv harvest: `export.arxiv.org/oai2` redirects to `oaipmh.arxiv.org/oai`. Its `<created>` field is the
+  latest version's date, so new papers were selected by the `2611.` ID prefix instead.
+- Abstract vs full text, 11-16 batch: 2 below, 4 at, none above. `zha2026do`: the 2x compaction-violation figure
+  holds for only one summarizer, and the closest one to our PreCompact bullet comes in below the full-history rate.
+  `chu2026when`: a summary that invents *permission* is the costlier failure, and the bullet doesn't cover it (draft amendment in Curation).
+- Commit aa1145e says concepts 36 → 37; the real count is 36 (logged, history not rewritten).
+
+### Next
+- Curate items 7–20 + 8 near-misses in `raw/_candidates/2026-11-16-digest.md`; decide the 5 suggested concepts.
+- Give cron a long-lived token (`claude setup-token` → `CLAUDE_CODE_OAUTH_TOKEN` in `~/.claude/.env`).
+- Document the /digest harvest (OAI-PMH at the new host, select by ID prefix; arXiv API / listing fallback). Step 3 now says only "Search".
+- Route the `chu2026when` permission-invention amendment to /elevate (watch the text budget).
+- Still open: downstream worktree `git log --all` check; `shared-substrate-contagion` sibling watch;
+  /propose's first autonomous agency-branch write.
