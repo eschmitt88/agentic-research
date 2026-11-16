@@ -12,6 +12,7 @@ concepts:
   - "[[concepts/verified-memory-writes]]"
   - "[[concepts/evidence-gated-completion]]"
   - "[[concepts/refusal-cost-symmetry]]"
+  - "[[concepts/intent-level-briefing]]"
 tags: [moc, governance, enforcement, policy, determinism, safety, architecture]
 ---
 
@@ -19,7 +20,7 @@ tags: [moc, governance, enforcement, policy, determinism, safety, architecture]
 
 When an autonomous agent must obey a constraint — a permission, a
 budget, a standing policy, a memory-integrity rule — what actually
-guarantees compliance? The eight concepts here converge on one answer
+guarantees compliance? The concepts here converge on one answer
 from several directions: **the constraint is enforced by deterministic
 code at a structural site in the harness, never by prose the model is
 asked to honor.** Prose policy admits no enforcement semantics and
@@ -158,6 +159,24 @@ wrong block and a wrong allow as equal, which is a modeling choice nobody in
 the cluster has justified, and in a research loop the two errors plainly
 differ (a wrongly-permitted fabricated result may be unrecoverable; a
 wrongly-blocked experiment costs a retry).
+
+## What is left for prose
+
+The thesis above moves every binding constraint into code, which leaves a
+remainder: the goal, the constraints that cannot yet be stated as a checkable
+predicate, and the reasons behind them still reach the model as text.
+
+- [[concepts/intent-level-briefing]] — how that remainder is written: goal,
+  hard constraints with their reasons, and the context the author would take
+  for granted, with method left to the reader and invariants moved to code.
+  It is the prose-side counterpart of [[concepts/typed-enforcement]], and
+  its first measured case sits on this MoC's boundary.
+  [[literature/papers/chu2026when]] finds a vague system-prompt line ("Some
+  actions need approval.") turning into invented restrictions in agents'
+  own handoff summaries, and one sentence saying *where* requirements come
+  from cutting them from 1.8% to 0.3% of held-out summaries. That sentence
+  did nothing for invented permissions, which is the direction a gate has
+  to catch.
 
 ## The shared honest limit
 

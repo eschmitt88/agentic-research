@@ -66,7 +66,7 @@ and `/new-experiment`.
   does).
 - [[mocs/governance-by-architecture]] — what makes a stated constraint
   *binding*: enforcement by deterministic code at structural sites, never
-  prose; 8 concepts: typed-enforcement, permission-gate-as-architecture,
+  prose; 9 concepts (intent-level-briefing added 2026-11-16 as the prose-side counterpart): typed-enforcement, permission-gate-as-architecture,
   budget-as-ceiling, constraint-pinning, verified-memory-writes,
   evidence-gated-completion, refusal-cost-symmetry (new 2026-08-03 — tipped
   ripe by constraint-pinning; 2026-08-18 adds the counterweight to every
