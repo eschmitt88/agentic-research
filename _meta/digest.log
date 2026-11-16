@@ -878,3 +878,14 @@ All of these corrections are recorded in the candidates file's Curation section.
 - The readers suggested five new concepts and created none; they're listed in the Curation section.
 - The ingest commit message says 36 concepts became 37, but the count is still 36. I logged the correction rather than rewriting pushed history.
 - Harvest scratch files are in `/mnt/projects/tmp/digest-2026-11-16/` and can be deleted.
+I added the rollup to `NOTES.md` as a `## 2026-11-16` entry with Did / Findings / Next, then committed and pushed it as `b4a3451`. Only `NOTES.md` was staged, and `main` matches `origin/main`.
+
+**What it covers.** The entry spans 11-03 → 11-16, two weeks instead of one, because no 11-09 entry was ever written. The journals for those days hold only session-end lines, so almost all of the content comes from `_meta/log.md`, `_meta/digest.log` and the 11-14 system-review record. The entry is about 31 lines of content, slightly over your ~30.
+
+**Next items carried forward or changed:**
+- **Dropped:** all three pending proposals were accepted on 11-14, the 11-02 backlog was curated on 11-03, and the "deferred prose cuts" were covered by the 11-14 trim (18.6k → 9.8k words).
+- **Rewritten:** the /digest harvest-docs item. `SKILL.md` no longer says WebSearch, but the harvest order still isn't written down, and the 11-16 run found that the arXiv OAI-PMH endpoint has moved to a new host.
+- **Kept:** the worktree check, the `shared-substrate-contagion` watch, and /propose's first autonomous write.
+- **Added:** curate the rest of the 11-16 digest, give cron a long-lived token, and send the draft PreCompact amendment from the 11-16 ingest to /elevate.
+
+**Worth acting on:** the 11-09 digest failed because cron's login hit its time limit. `~/.claude/.env` still has no `CLAUDE_CODE_OAUTH_TOKEN`, so the next scheduled run can fail the same way. The fix is to run `claude setup-token` and put the token in that file.
