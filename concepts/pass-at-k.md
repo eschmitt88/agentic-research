@@ -43,6 +43,7 @@ sources:
   - "[[literature/papers/shi2026weight]]"
   - "[[literature/papers/ellington2026automatic]]"
   - "[[literature/papers/shi2026hard]]"
+  - "[[literature/papers/wang2026beneath]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -786,6 +787,42 @@ Limits:
 - Model ensembles, not k samples of one method. The selector-capture
   sections above concern within-model samples, where the same logic applies
   only through the run-to-run term.
+
+## "Every evolved agent loses tasks" needs a seed-vs-seed placebo: most losses were tasks the seed solved once in eight (2026-11-17)
+
+[[literature/papers/wang2026beneath]] reports Seed-to-Champion
+transition matrices of per-task success counts (0–8) for 16 harness-
+evolution Champions. That is the table the "Two marginals hide churn"
+section asks for, at k = 8 instead of 2.
+- **The headline.** All 16 Champions both gain (1–15) and lose (2–10)
+  Pass@8 tasks, including where Avg@8 and Pass@8 both rise. In one τ³
+  case reliability rises by 5.2 with 13 tasks gained and 10 lost.
+  Avg@8 and Pass@8 move in opposite directions in 4 of 16.
+- **Where the churn sits** (our reading of Fig. 2). 7 of that lineage's 10
+  losses are tasks the Seed solved exactly 1/8. 6 of another's 15 gains
+  are 0 → 1/8. A task with a true per-trial rate of 1/8 shows 0/8 on a
+  fresh 8 passes with probability (7/8)^8 ≈ 0.34. The paper runs no
+  Seed-vs-Seed rerun, and its own pass-half check says τ³ aggregate
+  directions flip between passes 1–4 and 5–8.
+- **Coverage-cost curves.** Pairing Pass@k with Cdep@k = k × mean cost
+  per trial for k = 1, 2, 4, 8 shows a pricier Champion reaching the
+  Seed's 8-pass coverage in 4 passes for less money (τ³ MiniSWE AHE:
+  56.7% at k = 4 vs 54.6% at k = 8). 8 of 11 reliability-improving
+  Champions cost more per trial.
+
+Rule (our inference): report the transition matrix, but split each gain
+and loss by the Seed's success count. Next to it, put a placebo matrix
+from two draws of the *same* agent at the same k. The cheapest placebo is
+passes 1–4 vs 5–8 of the baseline, which costs nothing extra. Count only
+churn above that placebo as gained or lost reach. The loss count is
+worth computing on every comparison, and AGE's select tie-break uses
+exactly that count. Read it as a noisy signal, not as forgetting.
+
+Limits:
+- The 1/8 counts come from two τ³ MiniSWE panels read off the figure; the
+  other 14 were not tallied.
+- No intervals on any turnover count.
+- One lineage per cell, so between-run churn is also unmeasured.
 
 ## Open questions
 

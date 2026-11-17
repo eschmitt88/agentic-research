@@ -135,6 +135,8 @@ sources:
   - "[[literature/papers/liu2026silent]]"
   - "[[literature/papers/mitra2026agent]]"
   - "[[literature/papers/gao2026trustworthy]]"
+  - "[[literature/papers/im2026when]]"
+  - "[[literature/papers/thang2026contain]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3506,6 +3508,90 @@ Limits:
   ML runs.
 - No code link. The allocator's clip bounds and score-to-multiplier map
   are not reported.
+
+## A judge that repeated itself 98% of the time matched the oracle 56%: validate it per construct, against a constant verdict, and by error direction (2026-11-17)
+
+The bergen2026monitoring caution above was that 96–99% self-consistency is
+reliability, with validity untested. [[literature/papers/im2026when]]
+measures both on the same episodes. On 2,160 τ²-bench episodes a
+gpt-4.1-mini judge agreed with itself on 98.2% [0.975, 0.988] and with the
+gold-state scorer on 56.2% [0.496, 0.627]. The gap is one-sided. Of 1,007
+episodes the scorer failed, the judge passed 929. Of the 2,160, 17 went the
+other way. Two-annotator labels on 120 stratified episodes, scored on three
+separate axes, add three requirements to zhang2026who's "report agreement on
+held-out labelled items at an operating point":
+- **Report per construct.** On task and commitment correctness, the
+  gold-state scorer led (0.818 / 0.758) and the judge trailed (0.584 /
+  0.575). On policy compliance all four evaluators (0.595–0.672) sat at or
+  below the constant answer "compliant" (0.688). One pooled agreement figure
+  would have hidden an axis where no evaluator measured anything.
+- **Beat the constant verdict first.** This is clause 4's do-nothing floor
+  turned onto the evaluator. A do-nothing *submission* must score at the
+  floor, and an evaluator must beat a do-nothing *verdict* on the labels.
+  The paper's always-"yes" rule scores 0.568 / 0.688 / 0.556 on the three
+  axes.
+- **Split errors by direction.** The judge's A1 false-pass rate was 39.9% and
+  its false-fail rate 1.8%. Self-agreement and rerun spread cannot show a
+  bias that repeats every time. Only labelled items can (compare
+  kohli2026nine's correlated panel error).
+
+The reference itself bounds the check. Annotator κ on policy compliance was
+0.317 in round 1 and 0.306 after a pre-declared recalibration. An evaluator
+cannot be shown valid on a construct the labellers cannot agree on, so
+report label κ next to evaluator agreement.
+
+Rule (our inference): before an LLM judge's verdict enters `metrics.json`
+or a keep decision, score it on a labelled sample against the constant
+verdict and the cheapest deterministic check available
+(programmable-evaluator-oracle, 2026-11-17). Do this per construct, with
+false pass and false fail reported separately. Self-agreement is not
+evidence for it.
+
+Limits: one benchmark, OpenAI judges, n = 120 labels (the 2,160-episode
+figures use the weakest judge); customer-service tasks; the second
+annotator shares the author's employer.
+
+## Three frozen-rule confirmations of screen leaders confirmed none, the resampling unit decided the closest call, and the confirmation pool ran out before compute did (2026-11-17)
+
+[[literature/papers/thang2026contain]] runs the 10-06 procedure ("one untouched
+confirmation run above" the last selection) three times on a real agent.
+Variants were screened against the baseline on a separate 48-task set. The
+leader was registered (tasks, rule, script) and run once on a frozen disjoint
+panel. The pass rule needs a gain ≥ 3.45 points, a one-sided p ≤ 0.025 from a
+wild cluster bootstrap over repositories, ≥ 3 gaining repositories, and
+positive leave-one-out estimates. Its size and power were simulated first.
+- **Screen leads were noise.** Leads of +6.2, +1.0 and +5.2 became −0.35,
+  −0.39 and +4.10, and none passed. If all arms were equal, P(lead ≥
+  observed) is 0.09, 0.59 and 0.10 (post hoc). In one screen all five
+  variants led because the shared baseline drew its lowest session (19 vs 21
+  and 20): [[literature/papers/zhou2026does]]'s lowest-baseline mechanism (11-02), live.
+- **The resampling unit decided the closest call.** +4.10 is 2.9 run-noise
+  SDs on fixed tasks, but p = 0.0405 with repositories as clusters. Three
+  repositories with 27 of 128 tasks carry +4.25 of the +5.25 task-equivalents.
+  Simulated false-pass rates: 0–1.9% under exchangeable nulls, 7.5–8.4% if a
+  candidate breaks 20% of repositories, and 32–41% if the worst tasks are
+  dropped after outcomes are seen. The last prices [[literature/papers/waks2026what]]'s
+  denominator channel (10-12).
+- **The holdout ran out first.** 479 of 579 validated tasks are used. The
+  100 left sit in 6 repositories (68 in one), too few for the
+  three-repository condition. One panel served two confirmations, disclosed
+  at registration. A screen costs about an hour, a confirmation about 1,000
+  runs.
+- Every task passed a reference-patch and an empty-patch check (2,494
+  controls): clause 4's floor plus the 10-20 pre-flight, per item.
+
+Rule (our inference):
+- Count final-scoring passes per task as a budget line. Plan how many
+  confirmations a finite holdout affords before planning chains (clause 2).
+- Where the holdout has natural groups, report the final interval with
+  groups as clusters, beside the seed SD.
+- Discount a validation lead by the best-of-k expectation (2.4 points for
+  five equal arms here) before spending a confirmation on it.
+
+Limits: no autonomous loop. No candidate passed, and pre-registered power
+was about 0.5, so the yield on real gains is unshown. One small model. The
+selection analysis is post hoc, and 32 of the 48 screen tasks had been run
+before.
 
 ## Open questions
 

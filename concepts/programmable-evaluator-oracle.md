@@ -79,6 +79,7 @@ sources:
   - "[[literature/papers/ganesan2026infinity]]"
   - "[[literature/papers/li2026aligning]]"
   - "[[literature/papers/liu2026silent]]"
+  - "[[literature/papers/im2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -1012,6 +1013,47 @@ Limits:
   record leak has no direct analogue there today.
 - The trigger failure needs a scaffold whose way of ending differs from the
   one the benchmark authors assumed. Any new scaffold is a candidate.
+
+## A one-bit check on a typed event matched every judge on the failure that mattered, and needed one bit of gold to do it (2026-11-17)
+
+[[literature/papers/im2026when]] scores 2,160 τ²-bench episodes four ways
+and checks each against two-annotator human labels on 120 of them. The
+evaluators are the benchmark's gold-state reward, an LLM judge, the judge
+with the policy, and a "boundary evaluator". The last one compares a per-task
+gold bit (does this task expect a WRITE?) with an observed bit (did a WRITE
+tool call succeed?). No model call. Results:
+- **Judges passed forbidden writes.** Of 11 human-confirmed writes in
+  no-write tasks, gpt-4.1-tier judges passed 9–11 under every prompt and
+  input variant. gpt-5.6 Sol passed 6. The boundary check caught 11/11.
+  Against labels it beat the gpt-4.1-mini judge on task (+0.182*) and
+  commitment correctness (+0.134*). No judge was significantly above it,
+  though Sol's interval is wide (A1 −0.029 [−0.140, +0.082]).
+- **The error direction moves with the judge's tier and inputs.** gpt-4.1
+  tier: A1 false pass 39.9%, false fail 1.8%. Sol: 13.1% / 13.2%. Sol given
+  the policy: 0/11 forbidden writes passed, but 40 of 55 fully correct
+  episodes failed (false fail 42%). This is ray2026what's block-all outcome
+  (section above) produced by a prompt change rather than calibration. It
+  extends the 11-03 rule (zhang2026llmasajudge): the operating point is a
+  property of weights × prompt × the information the prompt carries.
+- **The floor is narrow and not free.** The 11/11 is by construction, since
+  the label and the check read the same event. It caught 24 of 53 human
+  commitment failures. It missed 25 writes with wrong content or timing,
+  which only the full-gold scorer saw (native beat it overall, +0.102*).
+  It needs an advance per-request "write expected?" annotation.
+
+Rule (our inference): where the failure that matters is a typed, logged
+event (a write, a push, a read of `test/`), make the first evaluator a
+deterministic check of that event against an expectation fixed in advance.
+Put any judge above that floor, and accept it only if it beats the floor
+on labelled items. `/lint`'s `test/`-access scan is already this kind of
+check. Extending the pattern means declaring the expectation for other
+events (writes under `raw/`, evaluator-file edits) before the run.
+
+Limits:
+- 11 critical events, nearly all airline. n = 120 labels; "not
+  significantly above" is not equivalence, and the paper says so.
+- OpenAI judges only, one prompt skeleton; customer-service tool use.
+- Single author; the second annotator is a colleague at the same firm.
 
 ## Open questions
 

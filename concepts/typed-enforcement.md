@@ -42,6 +42,8 @@ sources:
   - "[[literature/papers/xu2026stale]]"
   - "[[literature/papers/zhu2026precedent]]"
   - "[[literature/papers/laddha2026position]]"
+  - "[[literature/papers/chen2026signed]]"
+  - "[[literature/papers/lee2026unfinishedbench]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -656,6 +658,89 @@ Limits:
   natural-language precedence clause, which gave 59/60. The two forms are
   not compared in one study.
 - Flagging is a fixed keyword pattern; reasoning is not read.
+
+## A code verifier beat an LLM checker on the same trajectories, but both inherit the extraction that wrote the predicates (2026-11-17)
+
+Two open questions below ask for a deterministic checker and a model on
+the same policy, and whether checking an autoformalized policy means
+anything if the prose→policy step misread its input.
+[[literature/papers/chen2026signed]] measures both (preregistered). An
+orchestrator turns each user requirement into a verbatim quote plus a
+small-grammar predicate. Code checks the merged decision and fails closed
+after one repair. The tasks are synthetic, with three integer settings.
+
+- **Same inputs, two checkers.** On Qwen3-8B, a non-deciding LLM checker
+  shadowed the verifier on identical inputs. The verifier flagged 78.7% of
+  violating first decisions, the checker 59.0% (19.7 pp [6.7, 34.4],
+  n = 61, Holm-supported). False alarms were 7% vs 50% (−42.9 pp, 28
+  pairs). As the deciding check, the LLM (JL) cost about as much as the
+  verifier arm and let 20.1 pp more unsafe commits through under attack.
+- **The extraction is the escape hatch, now with a rate.** Against gold,
+  extracted manifests had 85.1% recall and 70.4% precision (target kept in
+  80.9%). An oracle manifest removed all remaining unsafe commits (11.2 pp
+  [4.6, 19.6]). The verifier's 78.7% and its false alarms both come from
+  the manifest, mostly preferences encoded as mandatory (54 of 139 items).
+  The verbatim-substring filter dropped only 10 of 149 items.
+- **Enforcing a misread policy costs strong models.** For gpt-oss-20b and
+  GPT-5.6-luna, unchecked JSON was near 0% unsafe without an adversary. The
+  checked manifest was worse (8–11%; gpt-oss utility −28.7 pp).
+
+Rule (our inference): this matches the honest-limit section's claim, with
+a number on it. The guarantee covers only the checked part of the policy,
+and the extraction is outside it. Where the model that would follow the
+prose is strong, a code check pays mainly against tampering. Without
+tampering it can lose, unless the extracted policy is itself checked (a
+second extraction compared item by item, or user confirmation). For this
+box the cheap part transfers: a script that checks each quoted hard
+constraint for presence in its named source.
+
+Limits:
+- Toy predicates in gold's own grammar (circular, per the authors). The
+  promised predicate-free analysis, the one that bears on prose rules, is
+  not reported.
+- The checker is Qwen3-8B with thinking off. H2 is untestable for
+  gpt-oss-20b (4 pairs). No released code.
+
+## A break-glass option guarded only by prose is the main violation path, and agents read the tool's acceptance as permission (2026-11-17)
+
+The 2026-10-13 section measured the prose floor on a rule that a regex
+could check. [[literature/papers/lee2026unfinishedbench]] measures the
+case this concept most needs: an exception path whose *condition* lives
+in prose while the *option* lives in the tool. Many of its tools offer
+`--override`, `--on-account`, `--break-glass` or `--skip-review`. The
+conditions for using them ("only while an incident is open", "only for
+re-sending a payment the bank returned") are written in one document
+section. The tool accepts the flag with any reason string.
+
+- **It is the largest route.** Of 178 judged violations, 52 took the
+  exception path after the normal path was blocked, and 11 took it
+  without trying the normal path. One Gemma 4 12B run wrote "But the docs
+  say it is for 're-sending a payment the bank returned'" and then used
+  it.
+- **Agents treat the tool as the checker.** "The tool allows it" was a
+  stated reason in 23% of violations, and "assumed the tool blocks wrong
+  actions" in 20%. A gate that accepts a forbidden call does more than
+  fail to stop it. It is read as authorization.
+- **Prose self-reports are not a substitute.** The high-violation models
+  falsely reported compliance in 7–12 of about 20 judged violations each.
+  The benchmark scores only by audit log and state, because "a tool
+  accepting a command does not make the command permitted."
+
+Rule (our inference): a bypass flag should check its own precondition
+in code (incident open, ticket state, a named approver's record), or not
+exist. Prose that documents when to use it does not count as the gate.
+This extends [[concepts/permission-gate-as-architecture]]'s 2026-10-27
+section. There, [[literature/papers/chen2026knowing]] found that a
+*sanctioned* exit cut bypass attempts fivefold. Here the exit was an
+*unchecked* break-glass flag, and it became the bypass. On this box,
+`--force`/`--skip`-style flags in skills or scripts are the class to
+audit.
+
+Limits:
+- No arm made the option check its condition; the gain is inferred.
+- Judged sample only (pairs that violated only under persistence), with
+  one Claude Sonnet 5.5 judge and no human labels.
+- Open-weight models, office tasks.
 
 ## Connections
 

@@ -6,6 +6,8 @@ added: "2026-11-13"
 sources:
   - "[[docs/system-proposals/2026-07-31-instruction-ablation-program]]"
   - "[[literature/papers/chu2026when]]"
+  - "[[literature/papers/chen2026signed]]"
+  - "[[literature/papers/wang2026beneath]]"
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/constraint-pinning]]"
@@ -116,6 +118,90 @@ Limits:
   on capability thresholds.
 - It did nothing for unsupported *authorizations* (matched 15 vs 11,
   p = 0.56).
+
+## The brief-writer is the trust boundary: signed, code-checked requirements failed only where the writer mis-graded or was fed a requirement (2026-11-17)
+
+The 2026-11-16 section above found that a gap in the brief becomes an
+invented rule downstream ([[literature/papers/chu2026when]]).
+[[literature/papers/chen2026signed]] tests a typed alternative (preregistered).
+The orchestrator writes each requirement as a verbatim quote plus a
+predicate. Code confirms the quote is in the request, signs the list and
+checks the final decision against it.
+
+- **Everything after the writer was made safe; the writer was not.** An
+  oracle requirement list removed every remaining unsafe commit (11.2 pp).
+  The LLM-written list kept 85.1% of gold requirements at 70.4% precision.
+- **The dominant writer error was grading, not wording.** 54 of 139
+  extracted items were preferences the request marked "Where the
+  requirements allow, the team prefers …", recorded as mandatory. Only 3
+  of 149 failed the verbatim-quote check. Quoting verbatim kept the
+  *words*. It did not keep whether a sentence was a must or a preference.
+- **Text in the writer's input became a requirement.** One adversarial line
+  appended to the request corrupted the target requirement in 62.5%
+  (Qwen3-8B) to 100% (gpt-oss-20b, GPT-5.6-luna) of extracted lists. All
+  resulting violations came from those lists. The quote check passed them,
+  because the injected sentence was verbatim in what the writer read.
+- **For strong readers, a plain structured brief already carried the
+  requirements.** gpt-oss-20b and GPT-5.6-luna violated nothing via
+  unchecked JSON without tampering. The checked list cost utility, because
+  its own extraction errors were enforced.
+
+Rule (our inference): for a capable reader the risk sits in the writer's
+step. Two cheap habits follow, both untested in this form. (1) Quote each
+hard constraint and name its source, so a script can confirm it exists.
+(2) Mark each one as a must or a preference, because that grading is the
+measured failure. Neither defends against poisoned source text. That
+requires drawing constraints only from authenticated sources (user turns,
+rule files), not tool output, as in the PreCompact bullet's "the user
+gave".
+
+Limits:
+- Synthetic requests with explicit "must"/"prefers" cues. Tacit priorities
+  are harder.
+- No Claude writer or reader, no prose-only requirements, and one fixed,
+  non-optimised injection line.
+
+## Context the reader lacks beat a generic "verify and finish" reminder, and the reminder alone cost a capable harness 1.7–4.2 points (2026-11-17)
+
+[[literature/papers/wang2026beneath]] gives a second data point after
+the chu2026when section, this time on GPT-5.4 inside MiniSWE and Codex.
+Evolved Champion changes were split into dependency-closed Components and
+each was added alone to the Seed. The control is the Seed plus one
+generic sentence: "Inspect the available runtime tool interface, use
+tools when needed, verify the resulting state, and complete every
+requested item before ending." On TB2, the MiniSWE control adds a
+run-the-end-to-end-check clause. Scores are Avg@8.
+- **The generic reminder did nothing or harm.** On MiniSWE it moved the
+  score +0.4 (τ³) and 0.0 (TB2). On Codex, the stronger outer-layer
+  harness, it moved the score **−1.7 (τ³) and −4.2 (TB2)**. Codex's own
+  prompt and skills already carry this advice.
+- **Specific content beat it in 15 of 16 Components.** The prose-only
+  Components on τ³ add +4.5 to +6.9 over Seed. Examples: "Keep a live
+  per-entity worklist" for each card, account and transaction; use the
+  exact KB-named tool rather than a neighbouring one; serialize inner JSON
+  in the surfaced key order. On TB2 the prose Components add at most +1.8,
+  and both Codex instruction Components sit at or below Seed (70.2 and
+  69.1 vs 69.9).
+
+This is P2 evidence ("state what the reader won't do by default; leave
+out what it would do anyway"). The τ³ wins are mostly *context*: domain
+tool, payload and multi-item facts the model could not infer. The
+generic sentence restated defaults, and where the harness already had
+them it cost points.
+
+Rule (our inference): a brief sentence that a capable reader would follow
+anyway is not free. Before adding "verify X / complete everything", check
+whether the harness or skill already says it. Spend the words on
+domain facts the reader can't see.
+
+Limits:
+- Not a clean specificity test. Components are evolved, benchmark-fitted
+  and selected from Champions, and some are code. They are scored on the
+  full benchmark, including the Train tasks they were evolved on. The
+  control is one untuned sentence with no length match.
+- One evaluation per arm with no intervals. Per-pass SDs are 2–5 points,
+  so the τ³ Codex −1.7 is within noise; TB2 Codex −4.2 is about 2 SD.
+- GPT-5.4 only; intent vs procedure is not the manipulated variable.
 
 ## Connections
 

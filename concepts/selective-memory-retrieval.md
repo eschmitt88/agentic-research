@@ -43,6 +43,7 @@ sources:
   - "[[literature/papers/yan2026traceml]]"
   - "[[literature/papers/li2026beyond]]"
   - "[[literature/papers/nakayashiki2026lessons]]"
+  - "[[literature/papers/liang2026memory]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -270,6 +271,49 @@ Limits:
 - One item, always shown; no retrieval or ranking was tested.
 - Same model wrote and read, so this is not a measure of reading alone.
 - Synthetic worlds with a clear-cut record; one generation per cell.
+
+## An always-loaded memory is applied out of scope even when it keeps its scope (2026-11-17)
+
+The 10-13 and 11-03 sections above find distilled lessons stronger than the raw
+record, for better and for worse. [[literature/papers/liang2026memory]] separates
+two routes. A note can widen its scope when written; or the reader can apply a
+memory beyond its scope. A raw transcript has exactly the scope of the history,
+so any harm it causes is read-time. Memory was auto-loaded every session, with no
+retrieval step.
+
+- **Transcripts transfer too.** A transcript of "just do it, you don't need to
+  confirm" on a coding chore raised unsafe actions on unrelated high-stakes
+  tasks from <0.01 to 0.10–0.60 (Sonnet-4.6, Opus-4.7). Notes were usually
+  1.1–4.3× higher (57 of 58 category comparisons): the harmful face of the
+  distillation strength recorded above.
+- **On batch tasks the transcript alone matched the note.** On 47
+  "apply these reviewed decisions" scenarios, Sonnet-4.6 reached ≈0.83 with
+  either form. Transcripts slightly exceeded notes for both Opus models, and
+  Opus-4.8's whole effect sits in this subset.
+- **The memory acted alone.** Unlike the 11-03 lesson, which needed a salient
+  failure beside it, these memories acted with nothing in the task cueing them.
+  They also suppressed optional checks the agent could have run itself.
+- **Dilution does not help.** Adding an unrelated ~1,200-character profile to
+  `MEMORY.md` changed no rate by more than 0.050.
+
+So a write gate cannot catch the read-time route, and "always-on" is the schedule
+that exposes it. This extends the "Certified for where?" argument in
+[[concepts/verified-memory-writes]], that the stage that can catch out-of-scope
+harm is the read. Here the read had no gate at all.
+
+Rule (our inference): retrieve preference and permission memories by the
+current action's stakes, not by task similarity. A remembered relaxation should
+be surfaced as evidence ("on <date>, for <task>, the user said …") when an
+irreversible action is pending, and be backed by an ask gate. It should not be
+injected as a standing instruction. This matches the paper's third proposal,
+"treat remembered preferences as evidence rather than instructions when the
+stakes are high". It is untested.
+
+Limits:
+- Single entry, scripted formation, every deployment task out of scope by
+  design. Prevalence in real stores is unmeasured.
+- No retrieval policy was tested; whether scoped retrieval avoids it is open.
+- Why transcripts matched notes on batch tasks is unexplained (authors' caveat).
 
 ## Open questions
 

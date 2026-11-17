@@ -192,6 +192,12 @@ Three results matter for this graph:
     4–5 of 20 sealed tasks. With ~16% discordance a 20-task rerun has a
     net-change SD of about 1.8 tasks (our arithmetic), so +4/+5 is
     probably real, but the four arms share the one baseline.
+    **Correction (2026-11-17, from [[literature/papers/wang2026beneath]]):**
+    that paper reuses these Seeds and gets the same first-pass scores, but
+    its 8-pass mean for the TB2 MiniSWE Seed is 65.9, about 9 points above
+    the 3-run mean of 56.9 used here. So the "near its mean" premise does
+    not hold, and at 8 passes the headline +13.5 shrinks to +2.1 Avg@8
+    (0.0 Pass@8). Neither paper explains the gap between the two seed means.
   - **The headline +13.5 pp is mostly in-sample.** "Overall" sums the
     train split (rollout feedback), the gate split (admission) and the
     sealed split. For A-Evolve, 7.9 of its 13.5 points are train.

@@ -33,6 +33,7 @@ sources:
   - "[[literature/papers/woo2026youra]]"
   - "[[literature/papers/kanke2026rtaste]]"
   - "[[literature/papers/li2026aligning]]"
+  - "[[literature/papers/chen2026signed]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -210,6 +211,48 @@ Limits:
 - Every quality judge is the proposer's own model (Muse Spark 1.1). The
   held-out solvers (Nemotron each iteration, Opus 5 on the final pick)
   check difficulty, not validity.
+
+## Field-indexed handoffs did not beat free text; a code check on the merge did, and mainly for the weak model (2026-11-17)
+
+Guidance 2 above says "free-text handoffs drift; field-indexed handoffs do
+not". [[literature/papers/chen2026signed]] tests that directly
+(preregistered): an orchestrator briefs two branch workers and a merger on
+synthetic tasks where losing the cross-branch requirement is unsafe.
+
+- **Structure alone did nothing.** With no adversary, Qwen3-8B committed a
+  violating decision in 56.2% of structured-JSON runs vs 62.5% of
+  free-text runs. Under the 120-word relay, the figures were 56.2% vs
+  75.0%. This agrees with the cited Wang et al. 2026a.
+- **Checking the merged decision in code did the work.** A manifest of
+  verbatim quotes plus predicates, checked by code with one repair,
+  brought unsafe commits to 14.6%. Conformant commits did not rise (1.0 pp
+  [−16.7, 18.8]). The gain was flag-then-abstain, not better merges: 64.6%
+  of first merged decisions still violated a requirement.
+- **For stronger models the benign benefit vanishes.** gpt-oss-20b and
+  GPT-5.6-luna (exploratory, 12 tasks) kept requirements across an
+  unchecked JSON handoff (2.8% and 0% unsafe). The manifest arms were
+  slightly worse, because extraction errors were enforced. Signing still
+  stopped in-transit rewriting in every family (0% unsafe under T2a).
+- **The parent's reading is the residual.** An oracle manifest removed
+  every remaining unsafe commit. One injected line in the parent's input
+  corrupted the requirement in 62.5–100% of manifests, and the signature
+  then authenticated it.
+
+Rule (our inference): guidance 2 should read "handoffs need a checked
+contract", not "handoffs need fields". Fields matter only as the input to
+a check on the child's or merger's output. For an Opus-class parent with no
+adversary, the measured risk is the parent's own extraction, chiefly
+mis-grading a preference as a requirement. A field cannot fix that. A
+second reading of the source can. This fits ye2026agent's "the contract is
+the specification" and the piriyakulkij2026subagents finding that
+delegation needs stated I/O.
+
+Limits:
+- One two-branch topology, two requirements per task, integer settings.
+- Confirmatory models are 8B/20B without reasoning. The frontier subset is
+  12 tasks, descriptive.
+- Delegation here is a fixed pipeline, not a research agent's open-ended
+  subtask.
 
 ## Open questions
 

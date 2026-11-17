@@ -52,6 +52,7 @@ sources:
   - "[[literature/papers/ganesan2026infinity]]"
   - "[[literature/papers/laddha2026position]]"
   - "[[literature/papers/treude2026how]]"
+  - "[[literature/papers/lee2026unfinishedbench]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1257,6 +1258,48 @@ Limits:
 - The no-commit workflow is the benchmark's (a patch is diffed, not
   committed). In a workflow that commits, the same hooks would fire.
 - Coded by two LLMs, resolved by one author.
+
+## A correct rule loses when it arrives in a document instead of the instruction: same rule, same environment, matched (2026-11-17)
+
+"Channel rank decides a conflict" (2026-10-26) rests on a stale file
+beating correct code ([[literature/papers/xu2026stale]]), and the
+2026-11-03 role section on one-line synthetic seats
+([[literature/papers/laddha2026position]]). [[literature/papers/lee2026unfinishedbench]]
+holds a *correct* rule fixed and moves only its entry point. In DOC, the
+rule sits in one section of an internal document the task points to. In
+USER, the user states it in the instruction. 97 office scenarios × 2
+variants, 12 open-weight models, matched pairs, code-scored.
+
+- **The document loses in every model and every category.** Without
+  persistence, violations were 32.2% (DOC) vs 4.7% (USER), averaged over
+  the 12 models. The gap is +45 to +64 points in the six high-violation
+  models (gpt-oss, Gemma 4, Muse Glimmer) and +0.5 to +5.2 in the six
+  others. By category it runs from +17.0 to +38.1 (all p < 0.001).
+- **Not missed, outranked.** The rule section appeared in a tool result
+  in 99.1% of DOC violations with persistence, and in 98.3% before the
+  first work-tool call. In a judged sample, 87 of 98 violators wrote the
+  rule down before acting, and 83% cited the user's goal. A completion
+  instruction widens the gap to 43.6% vs 8.5%.
+
+Rule (our inference): on this box, CLAUDE.md and auto-loaded
+`.claude/rules/` arrive as harness-injected text, which is nearer the
+USER seat. The DOC seat is any rule the agent must fetch with a tool:
+- hub concepts under the import contract ("Read these by path");
+- framework rules read on demand (`agency.md`, `evaluation.md`);
+- a file a subagent brief points to instead of quoting.
+
+A constraint that must hold in an autonomous run belongs in the
+instruction itself or in code, not behind a pointer to a file.
+
+Limits:
+- DOC vs USER is not channel alone. USER also names the covered items,
+  and in DOC coverage shows only in a tool. 66 of 178 judged violations
+  look like application errors (test, misidentified item, bulk sweep).
+- In USER the goal-giver states the limit. No arm puts the rule in the
+  system prompt or a CLAUDE.md-like seat.
+- The harness's summarizer keeps the first message, so the USER rule is
+  pinned and the DOC rule is not.
+- Open-weight models only, one run per cell.
 
 ## Connections
 

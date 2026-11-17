@@ -52,6 +52,7 @@ sources:
   - "[[literature/papers/alfaqeeh2026beyond]]"
   - "[[literature/papers/zhou2026does]]"
   - "[[literature/papers/zhang2026rethinking]]"
+  - "[[literature/papers/im2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1642,6 +1643,48 @@ Limits:
   were picked with the agents under test.
 - One shared baseline per model. Design 14 uses an unexplained alternate
   baseline (DeepSeek V4-Pro TB 63.1 vs 51.2).
+
+## The gate's evidence assembler is part of the gate: a truncated digest turned a policy verifier into a refusal of valid writes (2026-11-17)
+
+The zhang2026how section above measured a dialogue-reading verifier on
+τ²-bench with false-reject rates of 17% (retail) and 41% (airline). It read
+the last ≤ 8 messages at 300 characters each, and gave no mechanism for the
+rejections. [[literature/papers/im2026when]] runs pre-write gates on the same
+benchmark in cumulative arms. C1 logs the verifier's objection. C2 adds up
+to two regenerations. C3 adds a block that ends the episode. The verifier is
+gpt-4.1-mini with the policy. It reads a digest: the last 20 messages at 800
+characters each, shrinking to 8 messages past 6,000 characters. Results:
+- **No Holm-significant effect** on forbidden writes or boundary success in
+  any of four domain × model cells (2,160 episodes, task-level sign-flip
+  test). The strongest trend was adverse. In retail/gpt-4.1, C3 lost 17 C0
+  successes and gained 4 (p = 0.030, Holm 0.240).
+- **Two traced false refusals.** In one, the order-status field sat at
+  character 950 of a tool result cut at 800, and the verifier rejected five
+  times ("not confirmed"). In the other, the window shrink dropped the
+  authentication turn ("not authenticated"). Retail tool results average
+  976 characters, and 59.4% exceed the cut. Under C1 the objection is only
+  logged, and under C2 the last draft proceeds. Only the refusing arm turned
+  the defect into a lost outcome.
+- **The same class of bug hit the annotation-packet builder.** The author
+  caught it in an audit before labelling.
+
+This is a refusal changing what happens next (the open-questions hold),
+measured, in the harmful direction. It also locates a false-rejection cause
+in the gate's *input*, not its judgment. That extends "the gate's own
+instruments fail quietly" (2026-09-15) and implementation guidance #3:
+route each requirement the evidence that can establish it. A
+preconditions check whose digest can drop the precondition cannot do that.
+xia2026does (judge input assurance) is the parallel on the evaluator side.
+
+Rule (our inference): a gate that assembles its own evidence logs what it
+cut. Before the gate may refuse, test it on known-good cases whose deciding
+fact sits past each cut. Until it has a measured false-reject rate, run it
+as C1 (object and log) or route refusals to review, as in alfaqeeh2026beyond's
+certify-or-route rule.
+
+Limits: two traced episodes, no fix-and-rerun, and the defect's share of
+the retail trend is unmeasured; one gpt-4.1-mini verifier gating writes,
+not completion claims.
 
 ## Open questions
 

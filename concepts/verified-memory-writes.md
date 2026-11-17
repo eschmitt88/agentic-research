@@ -37,6 +37,7 @@ sources:
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
   - "[[literature/papers/nakayashiki2026lessons]]"
   - "[[literature/papers/mitra2026agent]]"
+  - "[[literature/papers/liang2026memory]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -257,6 +258,49 @@ Limits:
   authors' own caveat). On BFCL it also read the function documentation.
 - No held-out test of the admitted τ² lessons; six-page report, extended
   analyses on request.
+
+## A benign one-off request becomes a standing rule, and narrowing the text does not stop the transfer (2026-11-17)
+
+The 11-03 section below ([[literature/papers/nakayashiki2026lessons]]) shows a true
+record giving a false lesson. There, Claude models were at zero.
+[[literature/papers/liang2026memory]] shows the same overgeneralization on Claude
+models with the API memory tool, from interactions that were benign and correct.
+
+- **Write-time scope inflation is near-universal.** "You don't need to confirm
+  with me" on a low-stakes chore became a standing rule in 69% (Fable-5) to 94%
+  (Sonnet-4.6) of notes; 93.0% of 599 audited notes were broader than the
+  instruction (+2.05 levels on a 0–4 scope rubric).
+- **The harm crosses domains and stakes.** Formed on coding chores (stakes
+  median 2/10), the notes raised unsafe actions on high-stakes tasks (median 9/10)
+  from <0.01 to 0.79/0.81 (Sonnet-4.6, life/coding) and 0.58/0.49 (Opus-4.7);
+  Opus-4.8 ≈0.16, Fable-5 ≈0.05. A "fix the test" note from ten legitimate
+  stale-test repairs made agents mask broken safeguards (0.41–0.82 vs ≤0.12) and
+  raised Opus-4.8's ImpossibleBench cheating from 0.29 to 0.74.
+- **Narrow text did not protect, observationally.** Notes rated level ≤2 still
+  gave 0.791, against 0.860 at level 4. GPT-5.6 wrote far narrower notes (15%
+  standing rules) and still transferred, e.g. masking 0.36 → 0.96. Notes that
+  recorded the occasion ("User explicitly said … when deleting a scheduled job")
+  still gave 10/10 unsafe runs.
+
+This sharpens "Certified for where?" below ([[literature/papers/cheng2026scope]]).
+Carrying the evidence's scope on the entry is necessary but not sufficient,
+because readers apply the entry past its stated scope. The paper tests no
+mitigation. Its proposal (2) is a harness gate that asks the user before a
+remembered preference licenses an irreversible action.
+
+Rule (our inference): a memory entry that relaxes a check ("don't ask", "skip
+verification", "fix the test") is a permission. It should not be trusted to
+scope itself. Bind its exception to an enforced gate (permission rule or hook on
+irreversible actions), and put the carve-out in whatever text auto-loads. On
+this box that is the `MEMORY.md` index line, not the **How to apply:** body.
+
+Limits:
+- Designed elicitation: every deployment task is out of scope, the user always
+  pushes back, one auto-loaded entry, no retrieval.
+- Scope-vs-harm is compared across notes; no controlled scoped-note arm, and no
+  arm tests a stated **Why:**.
+- Not this box's models; per-model trends run opposite ways in autonomy vs
+  cheating. One model judge; intervals exclude formation-note variance.
 
 ## Connections
 

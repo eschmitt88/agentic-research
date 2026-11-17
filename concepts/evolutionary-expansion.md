@@ -47,6 +47,7 @@ sources:
   - "[[literature/papers/chen2026autoresearch]]"
   - "[[literature/papers/kanke2026rtaste]]"
   - "[[literature/papers/wang2026paretorsigym]]"
+  - "[[literature/papers/wang2026beneath]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -773,6 +774,49 @@ Limits:
   coincide. The per-run t* is not tabulated.
 - Restart shares and dataset counts are averaged over runs, and the run
   count is stated inconsistently (9, ~21, or 10 logged runs).
+
+## Re-scored at eight passes, the four-policy grid's single-draw gains mostly shrink; the best-scoring parent was never the best to expand, and a noisy regression cap dropped the best candidate in 9 pools (2026-11-17)
+
+[[literature/papers/wang2026beneath]] is the RSIHub group's follow-up
+on the grid in the "Four evolution policies" section above (AHE,
+HyperAgents, A-Evolve, GEPA × MiniSWE/Codex × TB2/τ³, GPT-5.4). There is
+one lineage per cell, up to 20 generations. Each Champion and Seed is
+re-scored over 8 full passes.
+- **The single-draw headlines shrink.** The Seeds' pass-1 scores equal
+  [[literature/papers/wang2026rsihub]]'s single-run seeds exactly (our
+  cross-check). A-Evolve on TB2 MiniSWE goes from +13.5 to +2.1 Avg@8 and
+  0.0 Pass@8. On τ³ Codex, A-Evolve goes from +4.2 to −2.2 and GEPA from
+  +8.3 to −0.8. That TB2 Seed averages 65.9 over 8 passes, against the
+  single draw of 56.2. So the section above's "seed draw near its mean"
+  was wrong for that cell. Its "inside the noise" verdict stands, and is
+  stronger.
+- **Score is not improvement potential.** Each pool holds 4 Champions as
+  Parents, with 3 children each through one fixed mutate. In all 4 pools
+  the top-scoring Parent was not the one whose children gained most.
+  The native select rules hit the best Parent 8.8–17.5% of the time on τ³
+  (random: 25%) and 55.7–59.5% on TB2.
+- **Changes interfere.** Two HyperAgents Champions show significant
+  negative interaction between their two change groups: −6.3 [−11.7,
+  −1.2] and −6.6 [−12.6, −0.6] Avg@8 points. In TB2 Codex, both parts
+  alone fall below Seed but the whole gains +2.7.
+- **The gate replay.** Strict gain plus mean regression ≤ 0.05, decided on
+  2 passes × ~20 tasks, kept the reporting-panel best in 6 of 16 frozen
+  pools; the original rules kept it in 15.
+- **AGE** (A-Evolve plus a regression-count select tie-break, a
+  mechanism-stated mutate and a cost tie-break gate) beat all four
+  recipes on Avg@8 in all four cells, e.g. τ³ Codex +7.9 vs −2.2.
+
+Rule (our inference): score selection and admission on repeated draws
+(k ≥ 4 for both incumbent and candidate) before reading a method or
+parent ranking. A regression cap is only as good as the per-task n behind
+it: at 2 passes, one task dropping 2/2 → 1/2 already costs half the
+0.05 budget. Select on child gains, not parent scores, where a cheap
+sibling-branch probe is affordable.
+
+Limits:
+- One lineage per cell. AGE was designed on the same benchmarks and run
+  once, with no transfer test or matched-spend sampling arm.
+- Select study: 4 pools × 4 Parents, 20–27 task Test panels.
 
 ## Open questions
 

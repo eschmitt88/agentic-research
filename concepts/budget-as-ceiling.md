@@ -82,6 +82,7 @@ sources:
   - "[[literature/papers/wang2026paretorsigym]]"
   - "[[literature/papers/gao2026trustworthy]]"
   - "[[literature/papers/shi2026hard]]"
+  - "[[literature/papers/thang2026contain]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -2290,6 +2291,44 @@ Limits:
   ≈0.4% for model between a 70B and an 8B.
 - A four-page preliminary paper. Two of 18 predictor configurations are
   tabulated, and there is no code.
+
+## Re-running the unchanged baseline sizes the band: a seeds-only band resets the stop counter on 11–16% of null cycles and misses a cross-repository term 1.5× the run noise (2026-11-17)
+
+[[literature/papers/thang2026contain]] re-ran an unchanged Gemma 4 E4B coding
+agent in separate sessions on the same 128 tasks × 4 repeats. It solved 103,
+then 97, of 512 runs (1.17 points). From within-task variation, run-to-run SD
+is 1.01 points per arm and 1.44 for a two-arm difference: pairing on fixed
+tasks did not cut it below √2 × the per-arm SD, because the noise is inside
+tasks. The binomial formula gives 1.75 per arm, as 83 of 128 tasks were never
+solved in 8 runs and 10 always. A candidate's +4.10 was 2.9 run-noise SDs,
+yet one-sided p = 0.0405 with repositories resampled, an implied clustered SE
+of about 2.1 points (our arithmetic from bootstrap-t 1.954). This is the
+real-agent measurement of the item-noise gap that the 10-12 ([[literature/papers/hu2026winners]])
+and 10-26 ([[literature/papers/yao2026explicit]]) sections argued from simpler settings.
+
+Rule (our inference), for the stop counter only (the band decides when a chain
+halts, not what is kept; 11-16):
+- `/implement --seeds N` reports a mean and a per-seed std, and the counter
+  compares a difference of two such means with that std. Against a fixed
+  incumbent, a null cycle clears it with probability about P(Z > √(N/2)):
+  16% at N = 2 and 11% at N = 3. At N = 2 a fully stalled chain runs three
+  cycles without a reset only about 0.84³ ≈ 59% of the time. The chain's
+  best is a selected maximum, so the real rate is somewhat lower.
+- Here the item term was about 1.5× the run term. So the 10-26 band,
+  max(seed std, paired item SE), would have been set by the item SE. A
+  seeds-only band errs toward continuing, which costs tokens but keeps
+  nothing false.
+- A binomial SE of a pass rate is not a seed band. It overstated run noise
+  1.7× here, and it is not the paired item SE either.
+- Two sessions of the unchanged baseline are the cheapest calibration of a
+  band before a chain relies on it.
+
+Limits:
+- One small model, one withheld bundle, Python repos. The run SD is set by
+  the share of tasks with uncertain outcomes (35 of 128), which will differ
+  for a stronger agent or a continuous ML metric.
+- The noise estimates are post hoc. √(N/2) assumes normal, equal-variance,
+  independent seeds. The paper tests no stop counter, only keep decisions.
 
 ## Open questions
 
