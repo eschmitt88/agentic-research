@@ -68,6 +68,7 @@ sources:
   - "[[literature/papers/mitra2026agent]]"
   - "[[literature/papers/gao2026trustworthy]]"
   - "[[literature/papers/zhang2026rsi]]"
+  - "[[literature/papers/mehtiyev2026when]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -471,6 +472,50 @@ Limits:
   iteration, with a rolling refresh its original lacks and no ground truth.
 - 15-task chains reset state, so a skill has ≤12 later tasks to repay its
   validation. No code or traces released.
+
+## For a stale instruction line, correcting beats deleting, and no agent repaired the file unasked: 0 of 732 runs (2026-11-17)
+
+The 2026-10-26 section "Staleness in an always-loaded instruction file is
+quiet" ([[literature/papers/xu2026stale]]) left the removal gate with two
+gaps. It had no deletion arm, and its proposed repair signal was the
+agent's own conflict report. [[literature/papers/mehtiyev2026when]] fills
+both, on real repos, with Claude Code (Haiku 5.5, Sonnet 5.5). Three real
+stale lines (a test command, a code location, a procedure) were each
+tested over 22 bug-fix tasks as stale / corrected / removed: 732 runs.
+
+- **Correct, don't delete.** Stale-path use was 78/80 (command) and 55/80
+  (procedure) with the stale line, 0 with the corrected line, and 1/80 and
+  20/80 with the line removed. Without the line, agents rebuilt the old
+  folder from the code's layout. Sonnet's effort on the command case was
+  the same removed as stale (7.8 calls vs 5.8 corrected). Deletion had
+  lower median effort in only one unresolved cell (Procedure pooled: 8.9 vs
+  9.6 calls). Fix rates were flat everywhere (p = 1.0).
+- **The repair signal mostly never forms.** Agents recovered in 130/133
+  encounters, mostly by searching (98). Only 21/133 final replies named
+  the mismatch: Sonnet 17/40 on the command case, 0/31 on the procedure
+  case. 0/133 proposed a repair, and 0/732 edited an instruction file.
+  Haiku noticed *other* stale lines in 22/120 procedure runs and left them
+  "because it was not part of the bug". That is scope discipline, not
+  inability.
+- **Stale lines survive edits.** The three lines outlived 2, 13 and 4
+  later edits of their files. An edit is not a review.
+
+Rule (our inference): when a removal or revision gate here finds a stale
+path or command in CLAUDE.md, `.claude/rules/` or a skill, the action
+should be *rewrite to current*, not *delete*. Deletion leaves the agent
+to rediscover the old structure. Harvesting the agent's conflict reports
+(the 2026-10-26 proposal) will catch convention conflicts more often than
+dead paths, because a dead path that is routed around goes unreported
+in 112 of 133 encounters.
+
+Limits:
+- The tasks asked for a code fix only. Whether an agent *told* it may fix
+  the instruction file would do so is untested. The authors say this is
+  default behaviour, not behaviour when asked.
+- Three cases, with instruction kind, repo and language confounded; one
+  vendor, one harness; easy single-bug tasks.
+- The maintainer's cost of finding the correct line, which is where
+  deletion is cheaper, is not measured.
 
 ## Connections
 

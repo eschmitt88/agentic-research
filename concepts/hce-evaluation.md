@@ -139,6 +139,8 @@ sources:
   - "[[literature/papers/thang2026contain]]"
   - "[[literature/papers/gui2026coding]]"
   - "[[literature/papers/chang2026multiagent]]"
+  - "[[literature/papers/xia2026does]]"
+  - "[[literature/papers/alexander2026iterated]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3676,6 +3678,87 @@ certify recall ≥ 0.5 (see web-grounded-literature, 2026-11-17).
 Limits: theory only, single-factor latent model. It does not say how
 informative agreement is under partial independence; kohli2026nine's n_eff
 is the empirical measure of that. The assessor is assumed correct.
+
+## A matching hash certifies only the bytes between where it was taken and where it was checked: the judge's input packet is part of the evaluator (2026-11-17)
+
+Clause 4 hashes the evaluator's code. The 10-20 section adds that unchanged
+code can still be wrong, and the 11-16 section (liu2026silent) that the
+pipeline *around* the scorer is part of the instrument.
+[[literature/papers/xia2026does]] audits the stage *before* an LLM judge: a
+renderer turns recorded trajectories into text packets. One pipeline was
+studied: 30 AgentProcessBench trajectories, 240 packets, five judges.
+- **The renderer dropped `tool_calls`.** 53 of 60 judged steps were blank.
+  Every packet matched its manifest hash, because the same build wrote
+  both from the defective text. Both checkers passed, and staging passed.
+- **The judge did not notice.** No configuration named a missing call.
+  J0 (`claude-opus-5`) abstained on blank steps. Three others flagged most
+  blank *correct* steps as errors (13–22 of 27). Restoring the calls cut
+  J0's later-context contrast from 13 to 2 (drop 0.37/trajectory [0.17, 0.53]).
+- **Constructed tests found the other hash gaps.** A failed build's packet
+  passed staging, because its manifest came from the same altered text. A
+  file changed after staging was read changed. A CRLF edit passed because
+  staging hashed normalised text. One checker's hash comparison compared
+  loaded text with itself and could never fail.
+
+The 11-17 im2026when section found that judge truncation moved agreement
+≤ 0.020. That does not conflict with this. Im's cuts left the judged action
+in place. Here the action itself was gone, and Im's own gate verifier failed
+exactly when its cut removed the deciding field. Input loss matters
+item by item, when the deciding fact goes, so an aggregate re-judge cannot
+certify a renderer.
+
+Rule (our inference): for an LLM-judged metric, clause 4 covers each judge
+packet. Record an exact-byte hash at build, re-check it at dispatch and at
+read, stop dispatch if any upstream step failed, and log abstentions apart
+from `no`. Add a render known-answer case to the chain-start preflight: an
+action held only in a structured field must appear in the packet. The
+`/lint` move to the JSONL transcript (gui2026coding section above) is the
+same case: the scanner's renderer must keep `tool_use` blocks.
+
+Limits: one pipeline, chosen after the omission was found. Faults were
+written by the authors who built the controls (18/19 stopped). The judge
+effect is one configuration's contrast, not accuracy against labels.
+
+## A judge-loop gain needs a same-budget no-feedback arm scored by out-of-loop judges, and for the strongest writers that arm took nearly all of it (2026-11-17)
+
+[[literature/papers/alexander2026iterated]] runs a writer → execute → LLM
+grader → revise loop. Seven models play writer and grader, 49 pairs × 3
+runs. The writers build full data-science projects, and there are two
+revisions. The pair's own grader sees 59% → 76%. The paper adds the arms
+the 10-20 and 11-03 sections asked for, all paired per run:
+- **Same budget, no feedback.** The writer continues from the same first
+  submission with the same calls and minutes, but gets no execution report
+  and no grade. Scored by the six graders other than the writer, finals
+  reach 65% against 73% with feedback, and 74 vs 78 without Haiku 4.5.
+  Opus 5.5 (93/94), GPT-6 Sol (92/93) and Gemini 3.8 Flash (70/71) gain
+  nothing measurable from the feedback. Haiku (8 → 45) gains because only
+  the grader told it that its "real" data was generated, which the rubric
+  scores as 0.
+- **Whole budget, one session.** 140 calls / 100 minutes up front put four
+  of seven writers within 3 points of the feedback loop. Opus scored 95,
+  above every loop result. That is zhang2026review's stronger-model-alone
+  arm in budget form.
+- **Out-of-loop judges.** Every grader scored every final. The writer
+  revised toward one grader's comments, and the six others act as a held-out
+  judge panel. Graders' means range 55–78. On identical submissions the
+  cross-grader range is 28 points on average.
+
+This repeats [[literature/papers/zhang2026llmasajudge]]'s held-out-judge
+null in an agentic setting for strong writers, and adds the positive case:
+feedback pays when the writer broke a hard rule it cannot see.
+
+Rule (our inference): a critic or judge-feedback stage is credited only
+against (a) the same agent given the stage's budget with no feedback, and
+(b) a score from judges that did not give the feedback. Report the size of
+the gap against each.
+
+Limits:
+- n = 3 runs per pair and no intervals. The 100/42 paired win count is
+  clustered and Haiku-heavy.
+- The no-feedback arm drops the deterministic execution report together
+  with the grader output, so the two are not separated.
+- Rubric scores only. The writer holds the rubric, and analysis
+  correctness is never checked.
 
 ## Open questions
 

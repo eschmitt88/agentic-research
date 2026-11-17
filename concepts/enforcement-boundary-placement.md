@@ -53,6 +53,7 @@ sources:
   - "[[literature/papers/laddha2026position]]"
   - "[[literature/papers/treude2026how]]"
   - "[[literature/papers/lee2026unfinishedbench]]"
+  - "[[literature/papers/sun2026keeping]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1300,6 +1301,47 @@ Limits:
 - The harness's summarizer keeps the first message, so the USER rule is
   pinned and the DOC rule is not.
 - Open-weight models only, one run per cell.
+
+## Three points on one loop, ablated: each closes one escape route, and drift moves to whichever stays open (2026-11-17)
+
+The time-axis section says one enforcement moment is not enough.
+[[literature/papers/zhang2026judged]] and [[literature/papers/zhang2026rethinking]]
+each moved one rule between prompt and harness. [[literature/papers/sun2026keeping]]
+puts three harness points on the same agent loop and ablates them. The
+points are a tool-call gate (`PreToolUse`), a transition guard over the
+tool history, and a stop gate (`Stop` hook). The run is Claude Code,
+Haiku 4.5, pre-registered, with 200-account batches.
+
+- **Information and liveness are separate axes.** Where the procedure
+  sits (first message, system prompt, per-item reminder) changed
+  compliance per decision. It did not stop the agent ending its turn
+  with work left (Remind: 8/8 sessions, 53 of 200 decided). Auto-resume
+  fixed liveness, but the agent then interleaved accounts (7/8, about 100
+  per session) or decided without looking (3/8).
+- **Each point closes one route, and the others stay open (Table 2, 3
+  seeds).**
+  - Stop gate only: the agent cannot stop, so it decides blind (108 blind
+    decisions per session, FC 5.7).
+  - Gates only: 93% compliance, but 44.7 stop attempts per session, and
+    2/3 sessions exhausted 50 resumes (FC 104.0).
+  - Both: FC 128.0.
+- **A gate must name the item, not only the tool.** Static per-state
+  permissions left "submit for another account" open, and 3/8 FSM
+  sessions used it.
+
+Rule (our inference): place one check at each exit a long run has:
+- the end of turn (stopping early);
+- the item boundary (batching or interleaving);
+- the action that commits a result (deciding without evidence).
+
+A stop gate without a per-item evidence check is worse than none: it
+converts early stopping into blind work. This box's `Stop` hook is only a
+token logger, so `/curate` and `/digest` under `agency: max` currently
+have no point on this axis except the prompt.
+
+Limits: the ablation is 3 seeds with no CIs, one task, one model. The
+stop gate also names the next account, so it supplies a cursor as well as
+a refusal (its text matched the -loop resume text).
 
 ## Connections
 

@@ -80,6 +80,8 @@ sources:
   - "[[literature/papers/li2026aligning]]"
   - "[[literature/papers/liu2026silent]]"
   - "[[literature/papers/im2026when]]"
+  - "[[literature/papers/xia2026does]]"
+  - "[[literature/papers/alexander2026iterated]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -1055,6 +1057,48 @@ Limits:
 - OpenAI judges only, one prompt skeleton; customer-service tool use.
 - Single author; the second annotator is a colleague at the same firm.
 
+## Checkers are oracles too: two written from one plan shared a blind spot, one hash check could never fail, and "input defective" needs its own verdict (2026-11-17)
+
+The 10-20 known-answer battery (do-nothing fails, known-good passes, same
+score twice) and the 11-16 coverage probe test the scorer.
+[[literature/papers/xia2026does]] tests the software checkers that certify
+the scorer's *inputs*. Two checkers were written separately from one plan
+with ten shared requirements, and both passed the real packets. The authors
+read the code and ran 38 mutation cases (34 shared):
+- **Shared blind spot.** Both checked that each call had a result, not that
+  each result had a call. An orphan tool result was the one shared mutation
+  both accepted. Separately, the inline checker missed 2 of 34 and the disk
+  checker 1. Separate authorship from one plan did not give independent
+  failures (Knight & Leveson 1986).
+- **Assigned but unreachable.** The staged-file hash requirement went to
+  both checkers. One ran before staging existed, and the other read the
+  archive instead of the staged copies.
+- **A vacuous assertion.** The disk checker hashed text it had loaded and
+  compared it with a hash built from the same text. It could not fail.
+- **Participants.** Simulated users made 40 of 311 calls. A matcher that
+  took calls only from assistant messages called all 40 results orphans.
+- **The verdict space had no "defective input".** J0's `cannot_decide` on
+  blank steps counted as no-flag and fed the measured contrast. The other
+  judges answered "error" on blank correct steps.
+
+This is the input-side twin of the 11-16 rule that "not graded" is its own
+return value, not 0.
+
+Rule (our inference): treat every checker as an oracle that needs violating
+cases.
+- For each requirement, plant a case that must fail it, at the pipeline
+  step that is supposed to catch it.
+- Test one-to-one relations in both directions, and cover every actor that
+  writes records.
+- A hash check must be shown to fail on a changed file.
+- A judge's answer schema includes `input_defective`, counted and reported
+  apart from pass and fail.
+
+Limits:
+- One pipeline. The mutation cases were written by the checkers' auditors,
+  so "a fault suite rewards its own design" (hce-evaluation 10-20) applies.
+- The transfer study to independent pipelines is planned, not run.
+
 ## Open questions
 
 - The pattern works cleanly for problems with crisp objective
@@ -1546,3 +1590,45 @@ Limits:
   is a lower bound per task (one exploit listed each), not a prevalence.
 - Some exploits depend on wrapper details (stub rewards, self-reported
   throughput) that a careful downstream evaluator would not copy.
+
+## An additive rubric caps what a fatal error costs: only the fault a zero-overall rule names moved the score, and raw self-preference was leniency (2026-11-17)
+
+[[literature/papers/alexander2026iterated]] gives seven LLM graders the
+files and a deterministic execution report for one data-science submission
+that scores 95%. Each grader scores the original and seven copies with one
+planted fault each, three times per copy, on a 26-item / 108-point rubric.
+Four "0 overall" rules are named in the grader prompt.
+- **Only the named fatal rule fired.** Generated data claimed as downloaded
+  falls to 14, because six graders gave 0 and Haiku gave 100. The other
+  faults cost 0–5 points on average. A model term dropped while still
+  claimed in the paper: 90 (Sol and Opus 77). A wrong headline finding: 92.
+  Tests that assert nothing: 92. A causal estimand on an associational
+  model: 93. Each drop is bounded by the affected item's weight (Model 10,
+  Tests 4, Estimand 1 of 108). An additive rubric cannot express "this one
+  error invalidates the paper" unless a gate rule says so.
+- **Raw self-preference was mostly leniency.** Self-scores sit about 9
+  points above the other six graders' mean. That figure comes from Haiku
+  (+37) and Gemini (+23), which are also the most lenient graders on
+  everyone (100% given to 41% and 51% of submissions). The three strictest
+  graders score themselves *lower* (Opus −7, Sol −3, Luna −1). A
+  self-preference estimate must net out the judge's leniency on other
+  writers' work. The data allowed that grader × writer interaction, but the
+  paper does not report it.
+- **Level and order are separate properties.** On 56 student projects
+  every grader is harsher than the TAs (bias −6 to −48; r = 0.46–0.74),
+  while the six non-Haiku graders correlate 0.78–0.99 with each other: the
+  11-03 origin-shift case across vendors, so a threshold set on one grader
+  does not transfer.
+
+Rule (our inference): for a rubric judge, stratify a planted-fault
+preflight by whether the rubric names the fault as fatal. Promote any
+fatal fault the claim depends on (the result reproduces from the code; the
+headline matches the output) to a conjunctive gate, preferably checked
+deterministically, instead of leaving it as a weighted item. This extends
+the 10-27 scalar-vs-conjunction section from metrics to rubric items.
+
+Limits:
+- One base submission and one task family.
+- n = 3 grades per grader per copy, with no intervals.
+- The TA scores have no reported reliability, and the TAs graded without
+  an execution report under a modified rubric.

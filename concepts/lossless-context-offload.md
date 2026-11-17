@@ -22,6 +22,7 @@ sources:
   - "[[literature/papers/lencevicius2026when]]"
   - "[[literature/papers/salle2026benchmarks]]"
   - "[[literature/papers/busch2026ctxagent]]"
+  - "[[literature/papers/sheshanarayana2026do]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -420,6 +421,41 @@ Limits:
 - The planted values are short tokens; long or structured outputs that
   cannot be re-read (a run's stdout) are untested.
 - Claude Code's 301 observations rest on 3 compaction events.
+
+## A judge's restore ladder: the exact span recovers about 80%, identities about half that, a re-ask about 28%, and an offered page-in was used 37% of the time (2026-11-17)
+
+The three sections above found addresses unused or redundant where the workspace can
+re-show the content. A verifier reading a frozen trace is the opposite case: it cannot
+re-run anything. [[literature/papers/sheshanarayana2026do]] hides one block behind a
+`BND-` id and then restores it, on the same trace, verifier and prompt. This is the
+restore counterfactual of [[literature/papers/shen2026what]] applied to a judge.
+- **Fidelity ladder** (RRR, the share of hidden-span failures fixed; Gemini-2.5-Flash and
+  GPT-OSS-120B on two benchmarks):
+  - re-ask with the same view: 22.5–33.1%;
+  - ordered action and tool names without arguments or results: 34.0–53.9%;
+  - the exact stored events: 73.6–82.5%.
+
+  Pooled over 7 models and 4 protocols, the exact restore fixed 85.5% (compaction
+  79.8%). It spoiled 5.2% of verdicts that had survived.
+- **The page-in tool was under-used here too.** A verifier allowed to request one
+  boundary did so in 37.4% of hidden-span cases (compaction 24.3%). Its failure rate
+  stayed at 18–25%, above the forced judge's 14–17%. This is the fourth "address
+  offered, rarely used" result after busch2026ctxagent and fan2026empirical, and the
+  first where re-observation is impossible, so non-use cannot be put down to redundancy.
+- **More hidden, more failure, mildly.** Hiding 25% → 75% of the block raised failure by
+  3–8 points.
+
+Rule (our inference): where a reader must *judge* evicted content (a parent verifying a
+child, a session auditing its own pre-compaction work), the address has to resolve to
+the raw span. A list of call signatures restores about half; nguyen2026cliffcompaction's
+"the address can be the action" holds for an agent that can re-run the call, not for a
+judge that cannot. Do not rely on the reader to page in: fetch the span for every claim
+that rests on it.
+
+Limits:
+- Restore here is an oracle (the native view again), with no token cost reported.
+- No native rerun baseline, so part of the "failure" is verdict instability.
+- Verifiers are mid-tier, and the markers are synthetic, not compaction summaries.
 
 ## Open questions
 

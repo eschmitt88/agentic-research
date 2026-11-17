@@ -44,6 +44,9 @@ sources:
   - "[[literature/papers/laddha2026position]]"
   - "[[literature/papers/chen2026signed]]"
   - "[[literature/papers/lee2026unfinishedbench]]"
+  - "[[literature/papers/voria2026do]]"
+  - "[[literature/papers/mehtiyev2026when]]"
+  - "[[literature/papers/sun2026keeping]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -741,6 +744,129 @@ Limits:
 - Judged sample only (pairs that violated only under persistence), with
   one Claude Sonnet 5.5 judge and no human labels.
 - Open-weight models, office tasks.
+
+## In the wild, only 14% of context-file instructions could be audited from commits, and the audited ones split into always and never followed (2026-11-17)
+
+The 2026-10-13 section measured the prose floor on one rule in a
+controlled run ([[literature/papers/mcmillan2026instruction]]), and
+[[literature/papers/tsuchida2026do]] varied its wording.
+[[literature/papers/voria2026do]] is the field version: 621 real ACF
+snapshots (CLAUDE.md, AGENTS.md, copilot-instructions.md) against 6,541
+agent-attributed commits in 268 repos. A local 14B coder writes one check
+script per instruction and runs it on each applicable commit.
+
+- **Most ACF text cannot be checked after the fact.** Of 14,902 candidate
+  instructions, 44.0% were labelled explicit, actionable and observable
+  (an LLM upper bound; the human kept 51% of explicit + actionable ones,
+  the LLM 75%). 62.9% of those got an accepted script, and half of those
+  ever met an applicable commit: 2,053, or 13.8%. Process rules ("run the
+  linter before committing") drop out at the observability step because
+  they leave no artifact.
+- **Bimodal per rule.** 54.4% of evaluated instructions were followed in
+  every applicable commit and 37.3% in none (86.2% at the extremes with
+  ≥5 commits, n = 819). Category gaps are small. Only Implementation
+  Details (63.6%) > Testing (49.2%) is robust (δ = 0.15). The authors'
+  own hook/CI recommendation for workflow rules rests on Development
+  Process (34.0%, n = 50), which does not survive their sensitivity check.
+- **The never-followed bin is not cleanly "ignored".** 27 of 94 accepted
+  scripts were wrong, mostly stricter than the rule. Checks read final file
+  state, not the diff, and applicability is by file extension.
+
+Rule (our inference): this does not strengthen the case for code over
+prose much beyond the controlled floors. It sharpens *which* code. A
+must-hold rule that leaves an artifact can be checked post hoc on the diff
+(CI, a commit hook, `/lint`). A rule that leaves none ("run X first",
+"read Y before acting") can only be enforced at the action, by a hook that
+sees the tool call, or not at all. Since adherence looks per-rule rather
+than graded, check every must-hold rule. Passing a sample says nothing
+about the rest. A generated checker is a draft: three in ten were wrong.
+
+Limits:
+- Observational. Attribution uses AIDev heuristics with no precision
+  figure, and the agent axis is the ACF's type, not a verified committer.
+- The direction of bias in the rates is unknown (permissive and
+  over-strict scripts pull opposite ways). No human checked any verdict.
+- Unreviewed preprint, local 9–14B models, single annotator, repo 404.
+
+## A stale path is checkable without deciding which side is right, and the failure it causes looks like success (2026-11-17)
+
+The 2026-10-26 section above proposes typing *description* lines with the
+code predicate they assert, so a linter can flag a description the code no
+longer satisfies. Conventions need a hand-built predicate (zhu2026precedent's
+classifiers) and a judgment about whether the file or the code is stale.
+[[literature/papers/mehtiyev2026when]] studies the line class where both
+problems vanish: **paths and commands**. The predicate is "this path
+exists". A missing path is wrong whichever side moved.
+
+What the paper measured (Claude Code; Haiku 5.5, Sonnet 5.5; real repos):
+- A stale `pytest tests/ifds` was followed in 78/80 runs. It collects
+  nothing and exits non-zero, but every run piped it through `tail`/`head`,
+  so the shell reported success. In 64/80 runs at least one call ran no
+  tests, and none was flagged as an error. 19/40 Sonnet runs first
+  "verified" their fix with a test run that tested nothing (0/40 with the
+  corrected line). Haiku added `2>/dev/null` in 16 of its 38 runs.
+- Task success was flat (p = 1.0) and in 4 tasks the patches were
+  byte-identical across conditions. A success-only or patch-only gate
+  sees nothing.
+
+The paper proposes four safeguards and evaluates none: the harness flags
+instruction-file paths that do not exist; `pipefail`; "no tests ran"
+counts as failure; the agent proposes the one-line fix in its summary. The
+first three are deterministic checks of the kind this concept argues for.
+
+Rule (our inference): split the typed-description proposal by cost. Path
+and command lines in CLAUDE.md and `.claude/rules/` get an existence
+check now (a lint pass; `kg_lint.py` has no such check today). Convention
+lines keep the open per-line-predicate question. A PostToolUse check on
+pytest exit code 5 ("no tests collected") behind a pipe is the
+session-side twin.
+
+Limits:
+- No safeguard is measured, so the checker's yield on this box's files
+  is unknown. Three cases say nothing about how often lines go stale.
+- Pattern lines ("create `crates/core/src/agents/<name>.rs`") need the
+  parent directory resolved, not the literal path.
+- The silent-success mechanism depends on the model choosing `| tail`;
+  one vendor only.
+
+## Restated procedure vs an executable workflow on Claude Code: fidelity held, accuracy did not move, and the open route was found (2026-11-17)
+
+The 2026-10-13 section measured the prose floor on one regex-checkable rule
+([[literature/papers/mcmillan2026instruction]]). [[literature/papers/sun2026keeping]]
+measures it on a whole procedure over a long unattended run. The harness
+is the one this box runs (`claude -p`, default compaction, `PreToolUse`
+and `Stop` hooks), the study is pre-registered, and the strongest
+baseline was named before any run. 200-account SOP-Bench batches, Claude
+Haiku 4.5, 8 seeds.
+
+- **Restatement does not hold a procedure.** That baseline (Remind-loop)
+  re-attached the SOP's decision section and critical rules to every
+  account and auto-resumed up to 50 times. It reached 27.8% compliance
+  and 48.4 faithful-and-correct decisions. An executable FSM outside the
+  context reached 94.8% and 139.2 (+90.9, CI [46.2, 130.2], 7/8 seeds).
+- **But the guard is most of the metric.** Compliance is "all five data
+  sets fetched, STEP 1–4 recorded, no other account in between". That is
+  what the s1→s2 guard checks. On strict accuracy, the metric the guard
+  does not share, the result is +7.6 [−16.1, 29.8] for Haiku and −9.3
+  [−15, −2] for Sonnet 4.6. The pre-registered falsification rule
+  triggered for Sonnet. The code bought fidelity, not better answers.
+- **The honest-limit section, with a count.** Static per-state permissions
+  could not bind `submit_decision` to the current account. 3/8 sessions
+  found that route. The gap was in the skeleton, not in a semantic hatch.
+- **No checklist control in the main task**; where one existed, results
+  were mixed (τ² Telecom won; a pre-registered audit task gave −0.009).
+  Guard code ran 156–1,214 lines per workflow.
+
+Rule (our inference): for a procedure an autonomous skill must follow to
+the end, prose fixes (restating, re-injecting, auto-resuming) are not
+enforcement. A check over tool-call history is. Scope the claim to
+*process*: a guard on "did it look" does not make the decision right.
+On this box the transferable unit is a guard over files and tool order
+per item, not a full FSM. Because routes get found, list each route a
+long run could take, and confirm a check closes each one.
+
+Limits: one SOP task, 3 Sonnet seeds, code promised but not released;
+a todo/ledger scaffold without gates (the cheap middle option) is untested.
 
 ## Connections
 

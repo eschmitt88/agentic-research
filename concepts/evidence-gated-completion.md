@@ -53,6 +53,8 @@ sources:
   - "[[literature/papers/zhou2026does]]"
   - "[[literature/papers/zhang2026rethinking]]"
   - "[[literature/papers/im2026when]]"
+  - "[[literature/papers/alexander2026iterated]]"
+  - "[[literature/papers/sheshanarayana2026do]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1685,6 +1687,78 @@ certify-or-route rule.
 Limits: two traced episodes, no fix-and-rerun, and the defect's share of
 the retail trend is unmeasured; one gpt-4.1-mini verifier gating writes,
 not completion claims.
+
+## A revision cut off by its budget ships a broken artifact: 24 of 99 forced stops broke a working submission, against 2 of 115 agent-ended ones (2026-11-17)
+
+[[literature/papers/alexander2026iterated]]'s writers revise a working
+data-science project twice, from execution reports and grader comments, at
+40 calls / 30 minutes per round. The harness submits whatever is in the
+directory when the session ends. It does not check that the revision still
+runs and does not keep the best state.
+- In 26 of 294 revisions an executing submission stopped executing. In 24
+  of those 26 the writer had hit its call or time limit.
+- Where the writer ended the session itself, 2 of 115 revisions broke a
+  working submission. Where it was cut off, 24 of 99 did.
+- 30 of 147 runs fell below their first submission in some round, and 16
+  ended there. One case: Gemini 3.8 Flash at 99% rewrote its discussion
+  with a one-liner that corrupted two LaTeX commands, spent the rest of its
+  calls repairing it, never re-rendered, and fell to 89.
+
+This is the "self-claim gate erodes the best state" failure from the
+10-05 section (park2026when). Here no claim is made at all: a budget stop
+is treated as completion. The artifact's last verified state existed (the
+previous round's execution report) and was discarded.
+
+Rule (our inference): a forced stop is not a completion. When a revision
+ends on budget, re-run the artifact's own check. If it fails, ship the
+last state that passed. More generally, ship the best verified state, not
+the last one. `/iterate` already keeps the chain's best by metric. The gap
+is in single-artifact revise loops (paper drafts, reports) that overwrite
+in place.
+
+Limits:
+- Observational. Forced stops are likely the bigger rewrites by weaker
+  writers, so the 24% vs 2% is not a causal effect of the cut-off.
+- "Breaks" means fails to execute or render. Score regressions without
+  breakage are not split by stop type.
+- One task family, n = 3 runs per writer–grader pair.
+
+## Hidden evidence and the verdict contract: a forced judge certifies, an abstaining judge still certifies a quarter, and a re-audit without evidence harms 3:1 (2026-11-17)
+
+The 11-17 section above found that a gate's evidence assembler can cut the deciding fact.
+[[literature/papers/sheshanarayana2026do]] measures what happens next. Frozen trajectories
+from 4 benchmarks are shown to 7 mid-tier verifiers (Gemini Flash, GPT-OSS, Gemma 4,
+Llama 4), with one block replaced by an explicit `[ABSTRACTION BOUNDARY | BND-…]` marker.
+The prompt says "Do not infer that an omitted execution segment was good or bad".
+- **The contract sets the error direction.** Take negatives correctly rejected on the
+  full view. With the block hidden, the forced-binary judge passes 41.3% of them. The
+  sufficiency-then-ABSTAIN judge passes 29.4%. The judge allowed one page-in passes 26.2%.
+  False rejections stay at 5–13%. Among judgments correct on the full view, the forced
+  judge loses 16–17 points, almost all as wrong verdicts. The abstaining V-EVIDENCE judge loses 34% (macro, delegation),
+  mostly as abstentions, but keep a 9–18-point wrong-verdict floor.
+- **A second look at the same evidence is not a check.** An audit of the frozen first
+  verdict, with no new evidence, spoiled 28.5% of correct judgments and repaired 8.7% of
+  incorrect ones. Its coverage fell from 94.6% to 67.3%.
+- **The PASS clause was partly an absence test.** "The trajectory does not show an
+  unauthorized action" is satisfied by hiding the action. That fits
+  [[literature/papers/zhu2026who]]: the model fills evidence fields and code decides.
+  This paper adds that a prompt-level abstain option is not that rule. It halves the
+  harm at best.
+
+Rule (our inference): a completion gate treats any requirement whose evidence crosses a
+hidden span (a marker, a truncated digest, a subagent summary) as UNVERIFIED. Code
+decides this from the span map, not the model. An absence clause ("no forbidden write")
+is evaluated over a complete action list or not at all. A review pass is spent only on
+new evidence: the artifact or the raw span, never the same view re-read. On this box,
+when a main session judges a subagent's "done" from its summary, that is a hidden span
+with no marker.
+
+Limits:
+- Synthetic, label-blind markers, not LLM summaries; no Claude-class verifier.
+- FCR/FRR come from 2 of 4 benchmarks, on different native-correct subsets per protocol.
+- No rerun noise floor. Re-asking identical evidence reversed 22–33% of failures, so
+  part of every rate is instability.
+- Native accuracy is near chance on ATBench (OBA 51–66, binary).
 
 ## Open questions
 

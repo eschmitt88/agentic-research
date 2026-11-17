@@ -26,6 +26,8 @@ sources:
   - "[[literature/papers/lee2026unfinishedbench]]"
   - "[[literature/papers/liang2026memory]]"
   - "[[literature/papers/tsuchida2026do]]"
+  - "[[literature/papers/mehtiyev2026when]]"
+  - "[[literature/papers/sun2026keeping]]"
 used_by:
   - project_slug: intent-briefing
     imported_on: "2026-11-13"
@@ -784,6 +786,86 @@ Limits:
   file, and single sessions with no compaction or re-injection.
 - 10 repos, no CIs, and harness/model confounded on the open side. It is
   an unreviewed Letter.
+
+## A pinned stale path binds when the task routes through it, and the agent never says where it came from (2026-11-17)
+
+The 2026-10-26 section ("A pinned description keeps its authority after it
+stops being true") measured pinned *conventions* on synthetic code.
+[[literature/papers/mehtiyev2026when]] measures pinned *operational* lines
+(a test command, a code location, a procedure) in three real repos, on
+Claude Code with Haiku 5.5 and Sonnet 5.5. It adds two qualifications to
+"pinning confers authority without checking truth".
+
+- **Authority is gated by task routing, not by presence.** All three lines
+  were in context every session. Stale-path use was 78/80 for the command
+  (every task ends in running tests), 55/80 for the procedure (high with a
+  broad bug report, lower when the report named the function), and 0/84
+  for the location (no task needed it). A stale pinned line costs only
+  where the work passes through it and no other starting point is
+  offered. Even then, Sonnet entered the stale folder in 12/20 runs whose
+  report named the function's *current* module.
+- **Provenance is invisible.** Before the first stale call, agents cited
+  the instruction file in 2/133 runs and opened it in 0. Sonnet copied the
+  command verbatim in 35/40. A reviewer of the trajectory cannot tell
+  that the pin misled the agent. In the procedure repo a second
+  instruction file already named the new location, and the stale line
+  still won 55/80. The paper does not say whether that file was loaded at
+  start, so this is not yet a two-pin conflict result.
+- Unlike conventions, the world pushes back: the agent hit an error and
+  recovered in 130/133 encounters. The pin then re-asserts itself next
+  session, since 0/732 runs repaired it.
+
+Rule (our inference): the pinned lines most worth auditing for staleness
+are the ones on every task's path (test, build and verify commands, and
+skill entry points), not the longest or oldest. For pinned operational
+text, a dead reference is the cheap staleness test (see
+[[concepts/typed-enforcement]]).
+
+Limits:
+- Three cases, with kind, repo and language confounded; single-turn,
+  no compaction, so this is about authority, not survival.
+- Claude models only, inside Claude Code at medium effort.
+
+## A compaction-proof copy and a per-item restatement raised compliance per decision, not completion; what held was workflow state kept outside the context (2026-11-17)
+
+The 2026-11-17 section above found restatement did not bind under goal
+pressure ([[literature/papers/lee2026unfinishedbench]]).
+[[literature/papers/sun2026keeping]] tests pinning and restatement as
+pre-registered arms. The setting is Claude Code with default compaction,
+200-account unattended SOP batches, Claude Haiku 4.5 and 8 seeds.
+
+- **A pinned copy helped a little.** *Sys* puts the SOP in the system
+  prompt, which compaction cannot remove. That is this concept's defense
+  as specified. FC went from 9.4 (Plain) to 17.1, and compliance from
+  11.9% to 20.1%. With auto-resume, Sys-loop vs Plain-loop was 40.9 vs
+  18.2.
+- **Per-item restatement raised per-decision compliance but cut
+  completion.** *Remind* re-attaches the decision section and critical
+  rules verbatim to every account. It also says "no need to stop,
+  summarize, pause or rush". Compliance rose to 48.6%, but only 53 of
+  200 accounts were decided. All 8 sessions ended with work left.
+- **Agents cite a budget they never saw** ("Given the token budget … I'm
+  prioritizing speed"), first at a median of 22–81 decisions.
+- **What held was state, not text.** The FSM keeps a frame (current state,
+  history, variables) in a daemon on disk. A fresh or compacted context
+  reads it back, and hooks enforce it: 94.8% compliance to the last
+  account.
+
+For this concept: pinning secures presence, and presence is necessary but
+covers only one of three failure routes. The other two are stopping early
+and taking a shortcut. These are not lost rules; restatement leaves both
+open. This bears on the PreCompact "quote chat-only constraints" bullet.
+The bullet keeps a rule present across compaction. It does not keep a
+long procedure *on track*, and the bullet should not be read as doing so.
+
+Rule (our inference): for a multi-item procedure, pin *progress* as well
+as rules: a file-backed cursor of which item is next and what it still
+needs, which a fresh context reads back. Enforce the cursor with a hook.
+On this box that would be a ledger `/curate` writes per item and a
+`Stop`-hook check against it.
+
+Limits: one task; Sys and Remind have no CIs against Plain. The "pin
+progress" step is ours: the paper pins it *and* gates it, unseparated.
 
 ## Open questions
 
