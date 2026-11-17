@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/xiao2026search]]"
   - "[[literature/papers/singharoy2026quantifying]]"
   - "[[literature/papers/yao2026openfrontiers]]"
+  - "[[literature/papers/chang2026multiagent]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -263,6 +264,48 @@ Limits:
   matters.
 - The paper does not report how many re-verification checks failed, so
   the leak rate of a date filter alone is not measured.
+
+## The digest's precision is known and its recall is not; only a random audit of what it cut can bound it (2026-11-17)
+
+The AutoResearchBench section above calls the digest "automated recall,
+human precision verification". [[literature/papers/chang2026multiagent]]
+shows the pipeline can measure only the second. When a screen passes items
+to a costly assessor, the assessor's verdicts give precision exactly but
+recall only as r ≥ ap/(ap + 1 − a) (Prop 1). Agreement among screeners
+cannot certify a consensus (Thm 1). Without assumptions, only verdicts on
+a uniform random sample of the *unpassed* items identify the missed share
+(Prop 3), and that sample does not depend on how many screeners there are.
+
+On this box (11-16 digest), 845 of 9,265 new IDs pass the category and
+keyword filter, and 28 reach `/curate` (20 listed plus 8 near misses).
+`/curate` has ingested 11–17 of 25–29 per run. Prop 1 gives a within-hits
+recall of only ≥ 17/834 ≈ 2%.
+
+Audit sizes (exact hypergeometric, 95%, ~17 accepted per digest; our
+computation, not the paper's):
+- Prop 3's Hoeffding form needs 17,243 audits for ±8 missed items, so use
+  exact bounds. Zero hits among the 817 unlisted keyword hits certify recall
+  ≥ 0.5 at n = 124, and ≥ 0.33 at n = 66.
+- At true recall 0.5, n = 300 gives [0.35, 0.68]. Fifty per digest pooled
+  over six digests is about as good as 300 at once.
+- The keyword filter is itself a screen. Sampling only the 817 bounds the
+  reading stage, and gives an upper bound on end-to-end recall. Certifying
+  that the 8,420 non-hits hide ≤ 17 relevant items needs ~1,290 zero-hit
+  judgments, a quarter's worth at ~100 per digest.
+
+Rule (our inference): each `/digest` draws a seeded uniform sample of about 50
+unlisted keyword hits and a smaller one (~100 abstracts, or titles first)
+of non-hits. A fresh reader judges them by `/curate`'s standard, not the
+digest's, with a few listed items mixed in unmarked. Positives go to full
+text. Log counts per stratum with the graph commit. Report recall as a
+pooled interval with precision. Also log which channel (OAI-PMH or
+WebSearch) found each listed item, so Thm 2's overlap bound becomes usable.
+
+Limits: the paper is theory with an invented example and no data. The
+audit sizes assume ~17 relevant accepted per digest and stable recall
+across weeks. `/curate`'s standard depends on the graph's state ("a
+stronger in-graph source exists"), which the paper's fixed assessor does
+not allow. Papers outside the harvest are outside every stratum.
 
 ## Open questions
 

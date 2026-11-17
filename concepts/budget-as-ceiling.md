@@ -83,6 +83,8 @@ sources:
   - "[[literature/papers/gao2026trustworthy]]"
   - "[[literature/papers/shi2026hard]]"
   - "[[literature/papers/thang2026contain]]"
+  - "[[literature/papers/zhang2026rsi]]"
+  - "[[literature/papers/qin2026autoresearch]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -2329,6 +2331,84 @@ Limits:
   for a stronger agent or a continuous ML metric.
 - The noise estimates are post hoc. √(N/2) assumes normal, equal-variance,
   independent seeds. The paper tests no stop counter, only keep decisions.
+
+## The improvement loop is a spend line, and verification is most of it: validated self-improvement cost 2–4× a one-note loop for no measured gain (2026-11-17)
+
+[[literature/papers/zhang2026rsi]] charges a self-improving agent for the
+tokens it spends improving itself (the "RSI Tax"), rejected attempts
+included, next to the tokens it spends on the tasks. Each task is scored
+before its feedback is used. The study covers two models, 105 SWE-Chain-Evo
+positions in 7 chains and 89 Terminal-Bench 2.1 tasks, with one run per cell:
+- Meta-Harness, EvoSkill and RRSI spend 109–393% of their task tokens on
+  the Tax. A bounded-note loop (SRN) spends under 0.4%. SRN's mean total is
+  65.6–71.0% lower.
+- SRN's accuracy is the highest observed in 3 of 4 settings and tied in the
+  fourth. The margins are 3, 1, 1 and 0 tasks: inside any noise band, not a
+  tested equivalence.
+- Verification (re-scoring incumbent, candidates, frontier) is 74.8%, 78.1%
+  and 93.6% of the three methods' Tax. Meta-Harness spent more re-validating
+  its incumbent (615M) than on proposals (415M).
+- One candidate got 604k tokens of evaluation after the incumbent scored
+  100% under strict `>`: the 10-13 tied-score stall (wei2026scale), priced.
+
+This extends "a cycle is not a unit of spend" (10-26) and the 11-03
+launch budget (chen2026autoresearch) to the selection machinery. Re-measuring
+pays only near one noise SD (10-27, karim2026explore); here it ran every update.
+
+Rule (our inference):
+- `/iterate`'s token and GPU-hour ceilings charge incumbent re-runs, band
+  runs and candidates alike, and a chain reports spend split into candidate
+  vs re-measurement, since re-measurement can be the larger share.
+- Skip a candidate run whose result cannot change the keep decision (the
+  incumbent is at the metric's ceiling, or no possible score clears the
+  band). That is spend with no decision value.
+- An arm comparison of improvement methods is matched on total spend,
+  improvement loop included, not on task-execution spend.
+
+Limits:
+- One run per cell, no CIs; the authors wrote SRN and adapted every
+  competitor (one iteration per update, small frontiers). EvoSkill's
+  rolling frontier refresh, its largest cost, is their streaming addition.
+- Short horizons (state resets every 15 SWE tasks) penalize methods built
+  to amortize one costly search. Tokens, not dollars: 98% of the Tax is
+  input, counted at par with caching ignored. No code or logs.
+
+## Carried state front-loads the gain: +24 points at a quarter of the budget, +1.2 at the deadline, and near zero per candidate for Opus (2026-11-17)
+
+The 11-02 and 10-20 sections ([[literature/papers/srinivasan2026continue]],
+[[literature/papers/zhou2026athanor]]) found that a cold restart loses to
+continuing under a shared cap, which is why a forced pivot keeps the chain's
+state (accepted 11-14). [[literature/papers/qin2026autoresearch]] measures
+what kept state buys on held-out data, for five frontier CLI agents on
+streams of related ML tasks at 30 min each. Each agent ran once stateful
+(one session and workspace resumed) and once reset, on 32 transfer tasks.
+- **The gain is spent early.** Stateful minus reset best hidden reward,
+  mean over agents: +24.0 / +15.7 / +6.5 / +1.2 points at 25/50/75/100% of
+  the budget. The final outcome gain is −0.9 to +0.4 for four agents and
+  +7.6 for Sonnet 4.6. Opus 5: +18.3 at 25%, −0.8 at the end, wins 34.3%.
+- **Most of it is latency to the first valid result.** Time to first valid
+  falls (Opus 11.1 → 7.7 min, Kimi 18.7 → 9.5). At matched candidate counts
+  the gain is −0.5 for Opus 5 and +0.1 for GPT-5.6-Sol. After subtracting
+  each run's first-valid reward it is negative for all five agents.
+- **A bigger budget shrinks it.** GPT-5.6-Sol, one stream, 3 repeats: going
+  15 → 60 min per task lowers the outcome and time-convergence gains and
+  raises the first-solution gain.
+
+Rule (our inference): in `/iterate`, which counts cycles and not minutes,
+kept state is insurance against re-paying setup, not a source of a higher
+final score. The 11-14 rule stands; this paper gives no reason to restart
+cold. But a pivot's value should not be argued from "it keeps what the
+chain learned", because at matched attempts that was worth about nothing
+here for Opus. What decides a chain's final result is what happens after
+the first good candidate, including selection (two of the paper's cases
+found a strong early candidate and then promoted a dev-overfit one).
+
+Limits:
+- Cross-task state on a new task, not the same problem continued. The
+  state includes reusable code, so part of the speed-up is copying.
+- One run per agent × stream. GPT-5.6-Sol's repeats varied by up to 7.14
+  time-convergence points, as large as two of the five headline gains.
+- Wall-clock on a shared host with reported contention; no token costs.
 
 ## Open questions
 

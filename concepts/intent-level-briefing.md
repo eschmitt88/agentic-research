@@ -8,6 +8,7 @@ sources:
   - "[[literature/papers/chu2026when]]"
   - "[[literature/papers/chen2026signed]]"
   - "[[literature/papers/wang2026beneath]]"
+  - "[[literature/papers/tsuchida2026do]]"
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/constraint-pinning]]"
@@ -202,6 +203,53 @@ Limits:
 - One evaluation per arm with no intervals. Per-pass SDs are 2–5 points,
   so the τ³ Codex −1.7 is within noise; TB2 Codex −4.2 is about 2 SD.
 - GPT-5.4 only; intent vs procedure is not the manipulated variable.
+
+## On Claude Code, adding a reason to a mechanical rule did nothing on Opus 5 and cost Sonnet 5 22 points; a leading "If you…" cost 13–36 (2026-11-17)
+
+The sections above test whether a sentence is present and what it says
+([[literature/papers/chu2026when]], [[literature/papers/wang2026beneath]]).
+[[literature/papers/tsuchida2026do]] holds the content fixed and varies the
+form. One marker rule ("# @tracked" below the def of every Python function
+you add or modify) is appended to real AGENTS.md/CLAUDE.md files of 86
+CTXbench tasks (10 repos), in four sentences, three runs each.
+Compliance is session-level, all-or-nothing. Claude Code, n = 82 / 81 tasks:
+
+- **Opus 5:** Prescriptive 78.0%, Explanatory (same + ", because our
+  code-audit system uses this marker…") 77.2%, Conditional ("If you add or
+  modify a Python function, add…") 64.2%, Prohibitive 70.7%.
+- **Sonnet 5:** 71.6 / 49.4 / 35.6 / 17.3%.
+- Conditional was below both direct forms in every pair that responded,
+  Holm-significant (rank-biserial 0.29–0.97). The reason clause's effect
+  changed sign: 0.00 on Opus 5, −22 points on Sonnet 5 (r = +0.70*),
+  +14 on gpt-oss-120b via qwen-code (r = −0.82*). Qwen3-Coder-Next stayed
+  ≤1.3% in every form.
+
+For this concept, this is not a caution against P2. All four sentences
+state the same scope. "Conditional" here is a leading if-clause, not a
+requirement that applies only in some situations, and not a hedge. It
+does weaken the "with their reasons" half of P1 as a *compliance* claim.
+On the box's own channel, a reason attached to a rule whose purpose the
+agent can't use bought nothing on Opus and cost Sonnet a third of its
+compliance. The case for reasons (the reader generalises to cases the
+writer didn't foresee) is untested here. The Sonnet 5 vs Opus 5 spread
+(54 vs 14 points) is one more P7 data point.
+
+Rule (our inference): write a must-hold rule as an imperative with the
+scope inside it ("Do X to every Y you Z"), not "If you Z, do X". Give a
+reason where the reader must make a judgment call. For a mechanical rule,
+leave the reason out in Sonnet- and Haiku-facing briefs, or move the rule
+into a hook (P3). 78% was the best case on Opus.
+
+Limits:
+- One sentence per style, so the if-clause is confounded with dropping
+  "every" and with word order. No paraphrase replicates.
+- A toy marker with no task purpose, so the reason is pure overhead.
+  Reasons for rules tied to the task (don't edit generated files) may
+  behave differently.
+- 10 repos and no clustering correction, so the p-values are optimistic.
+  Opus 5's 13-point gap is the most fragile result. Harness and model are
+  confounded across the Claude and open pairs. It is an unreviewed
+  four-page Letter.
 
 ## Connections
 

@@ -67,6 +67,7 @@ sources:
   - "[[literature/papers/treude2026how]]"
   - "[[literature/papers/mitra2026agent]]"
   - "[[literature/papers/gao2026trustworthy]]"
+  - "[[literature/papers/zhang2026rsi]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -428,6 +429,48 @@ Limits:
 - App. I has no TRUST arm. The tie arithmetic assumes the paper's fixed
   betting mixture. ρ_max and α_max, which cap the LLM's effect, are not
   reported.
+
+## Admission by validation can cost more than serving the stream, and one unvalidated bounded note did as well in one run (2026-11-17)
+
+The 11-02 section (zhou2026does) prices an admitted rule by the turns it
+causes. [[literature/papers/zhang2026rsi]] prices the *admission process*.
+EvoSkill's frontier with validation-based selection ran on two models and
+four streams, one run each:
+- Validation was 78.1% of EvoSkill's 2,103M self-improvement tokens;
+  writing the skills was 0.2% (4.59M).
+- On DeepSeek/terminal, re-scoring the 3-program frontier per support
+  window cost 497M, against 182M to serve all 89 tasks.
+- A single note, rewritten from failed traces every four tasks, capped at
+  2,048 tokens, always loaded and adopted without validation (SRN), matched
+  or beat EvoSkill's observed accuracy in all four settings (margins 8, 1,
+  6, 0 tasks) at 0.04–0.36% overhead.
+
+Three points for this concept:
+- **The paper's "subsequent use" is Cortex's "fired" (10-19) in token
+  units.** 37.9% of EvoSkill's tax and 63.6% of ReasoningBank's went to
+  skills or memories that never entered a later context. One ReasoningBank
+  bundle went unretrieved through 34 remaining tasks. SRN's 100% use holds
+  by construction, since its note is always injected. Exposure is not effect
+  (treude2026how, 11-03); the authors make the same point.
+- **The bounded note has no admission gate and failure-only routing.** That
+  is the write policy nakayashiki2026lessons (11-03) showed turns chance
+  failures into rules. The prompt hedges it, but nothing measures it. No
+  content-free-note control was run. mitra2026agent's fixed note (+4.5 on
+  held-out, 11-16) means SRN's +4.7 pp over Static may partly be the
+  presence of a note.
+- **"Keep the empty library" (10-19) gains a cheap neighbour:** a bounded,
+  replace-not-append note, compared on total tokens.
+
+Rule (our inference): an admission gate's validation runs are charged
+against the expected number of later tasks that will load the item. A
+gated library is reported against (a) no library, (b) one bounded note
+and (c) a content-free note of the same length, all on total spend.
+
+Limits:
+- One run per cell, no CIs, the authors' own baseline. EvoSkill ran at one
+  iteration, with a rolling refresh its original lacks and no ground truth.
+- 15-task chains reset state, so a skill has ≤12 later tasks to repay its
+  validation. No code or traces released.
 
 ## Connections
 

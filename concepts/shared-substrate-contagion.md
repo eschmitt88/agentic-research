@@ -38,6 +38,7 @@ sources:
   - "[[literature/papers/shi2026weight]]"
   - "[[literature/papers/ren2026coral]]"
   - "[[literature/papers/sanko2026when]]"
+  - "[[literature/papers/abrahamsson2026unprompted]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -997,6 +998,47 @@ Limits:
   [14, 75] of loosening, so the absolute counts are lower bounds.
 - Public GitHub `SKILL.md` files only. Not memory stores, not agent-written
   libraries, not CLAUDE.md or AGENTS.md.
+
+## A store nobody called shared is still a channel, and the reader's reticence is not what keeps it shut (2026-11-17)
+
+Every source above measures a substrate agents know is shared.
+[[literature/papers/abrahamsson2026unprompted]] tests one nobody announced:
+four agents, a key-value store each prompt calls its own scratch space, two
+agents holding halves of one arithmetic answer, no mention of other agents.
+Nine commercial models, 50-world cells, two implementations, hashed locks.
+
+- **The channel is real and the only route.** Joint success never occurred
+  in 1,214 main-study worlds without a cross-agent read; a no-store arm
+  gives 0/49. A private store with the *same interface* takes gpt-6-astra
+  from 49/50 to 0/50 (reference) and 47/50 to 0/50 (replicator), the
+  no-channel arm "Run the no-channel arm" asks for, applied to existence.
+- **The reader is not the gate.** Once a listing showed another agent's
+  entry, a read followed in 493 of 501 worlds, for every model. Seeded
+  unauthored partner values were read by all four models tested. Low
+  models (gemini-3.7-flash 0/100, sonnet-5 2/50) differed in whether they
+  *wrote* the intermediate, and in whether they looked again: without
+  "check your workspace again before submitting", gpt-6-astra fell from
+  50/50 to 1/50 in both implementations (all agents listed once, at step 0).
+- **No intent needed.** Write rates match shared vs private arms; 20 of the
+  21 reasoning traces naming another party predate any exposure.
+
+So [[literature/papers/paglieri2026case]]'s and
+[[literature/papers/das2026selfpropagating]]'s paths need no agent that
+knows it is sharing. Only correct values were tested here.
+
+Rule (our inference): "nobody told the session the file is shared" is no
+protection on this box. Sessions, timers and subagents share
+conventionally named paths (the paper's task-named keys), and session start
+re-lists CLAUDE.md, NOTES.md and imported concepts (its recheck clause,
+built in). Contain by separation (one file per writer) and authorship
+(git), not by trusting agents to ignore what they find. Any count of
+cross-session reads must drop read-backs of the reader's own writes:
+Phase B gpt-5-nano fell from 17/50 to 2/50 under that filter.
+
+Limits: toy task (4 agents, 20 steps) whose text names both halves' keys;
+benign values only, so evidence for the channel, not for contagion; the
+recheck contrast is clean for one model; one group built both
+implementations, and reference cells were locked late.
 
 ## Connections
 

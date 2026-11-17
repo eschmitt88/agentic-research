@@ -46,6 +46,7 @@ sources:
   - "[[literature/papers/hu2026memory]]"
   - "[[literature/papers/das2026selfpropagating]]"
   - "[[literature/papers/pham2026reliable]]"
+  - "[[literature/papers/qin2026autoresearch]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"
@@ -348,3 +349,41 @@ playbook served whole and has never been compared with a no-memory
 control. Caveat: the paper needs hundreds of comparable practice
 episodes. Research tasks are mostly one-off, so the comparison would have
 to run on recurring jobs, not on unique investigations.
+
+## Agent-written insight cards from the same stream moved the first solution, not the final one, and a correct lesson without its conditions overapplied (2026-11-17)
+
+The 10-19 section ([[literature/papers/pham2026reliable]]) found that a
+self-curated store served whole is not reliably better than none.
+[[literature/papers/qin2026autoresearch]] adds the control pham lacked:
+memory of the same size but from an unrelated task stream. On one
+forecasting stream (4 transfer tasks, 4 frontier agents, one run each),
+each task starts a fresh session and receives all agent-written cards
+(claim, evidence, confidence, scope, actions, failure conditions) from
+earlier tasks, cards from another stream, or none.
+- **Relevance moved the start.** Matched minus shuffled first-solution
+  gain: +2.6 Opus 5, +3.9 GPT-5.6-Sol, +5.9 GPT-5.4, −2.9 Sonnet 4.6.
+- **It did not move the finish.** Final outcome: +1.0, −3.2, +0.2, −0.2.
+  Time-convergence was worse with matched cards for three agents (−15.5,
+  −27.3, −0.9) and better for Sonnet (+25.6).
+- **Any cards beat none about equally.** Over no memory, matched cards
+  gave +14.7 (Sonnet) and +5.0 (GPT-5.4); shuffled gave +14.9 and +4.8.
+- **Two failure cases.** 21 matched cards describing the exact schema
+  anchored Sonnet on one model family (RMSE 0.588 vs 0.543 shuffled, 0.538
+  no memory). In the main persistent-session runs, Opus 5 turned one real
+  failure into the standing rule "write a valid final within the first ~3
+  minutes, before any tuning". On the next tasks it made 4 valid attempts
+  vs 28 for the reset run and lost (ROC-AUC 0.978 vs 0.998).
+
+Rule (our inference): a lesson the agent writes for its future sessions
+should carry the condition it was formed under and what would retire it,
+not only the rule. The box's auto-memory feedback entries and NOTES.md
+"Findings" are this kind of store, served whole. Neither paper shows that
+relevant self-written memory raises a final result; both show it changes
+behaviour, in either direction.
+
+Limits:
+- One stream, four tasks, one run per cell. Cards are always all served,
+  never retrieved. The ablation does not compare cards with the persistent
+  session, so it cannot say whether insights or carried code and
+  transcript drove the main stateful effect.
+- The overapplied-lesson case is one run, on a stream with host contention.

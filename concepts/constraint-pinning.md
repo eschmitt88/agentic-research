@@ -25,6 +25,7 @@ sources:
   - "[[literature/papers/chu2026when]]"
   - "[[literature/papers/lee2026unfinishedbench]]"
   - "[[literature/papers/liang2026memory]]"
+  - "[[literature/papers/tsuchida2026do]]"
 used_by:
   - project_slug: intent-briefing
     imported_on: "2026-11-13"
@@ -741,6 +742,48 @@ Limits:
 - The write-down figure is from pairs that violated only under
   persistence, labelled by one LLM judge.
 - No arm tests restatement or re-injection as an intervention.
+
+## The never-evicted ceiling depends on the wording and the reader: the same present rule bound 17–78% on Claude Code and ≤21% on qwen-code (2026-11-17)
+
+"The rule was never evicted and still missed a third of the time"
+(2026-10-13) found that file size, position, architecture and a
+conflicting file did not move the ceiling
+([[literature/papers/mcmillan2026instruction]]).
+[[literature/papers/tsuchida2026do]] reuses McMillan's `@tracked` marker
+as a Python comment. The rule is the last line of real AGENTS.md/CLAUDE.md
+files (86 tasks, 10 repos), and only its wording changes. Scoring is
+per session (every added or modified function must carry it), with
+n ≈ 80 tasks × 3 runs per cell.
+
+- **Wording moves the ceiling where structure did not.** On Claude Code,
+  Opus 5 ranged 64.2–78.0% across four phrasings of one rule. Sonnet 5
+  ranged 17.3% (Prohibitive, "Never add or modify … without") to 71.6%
+  (Prescriptive). Both are Friedman p < 0.001.
+- **On another harness the rule barely existed.** On qwen-code,
+  gpt-oss-120b reached at most 20.4% and Qwen3-Coder-Next at most 1.3%.
+  Harness and model are confounded.
+- Opus 5's best case (78% of sessions, all functions marked) is above
+  McMillan's function-level 54.9% for Opus 4.6. This compares across
+  papers, so take it as a direction only.
+
+For this concept, the ceiling a pin can restore is not one number for a
+rule. It is set by the exact sentence and the reader-harness pair. A pin
+that quotes a rule verbatim preserves whichever ceiling that wording had.
+This bears on the PreCompact "quote chat-only constraints" bullet. Verbatim
+quoting keeps the user's phrasing, including a weak "if you…" or "never
+… without" form, so the quote is only as binding as the user's sentence.
+
+Rule (our inference): keep verbatim quoting, since rewording risks
+changing the meaning (chen2026signed's grading errors). For rules the box
+writes itself (CLAUDE.md, skills), use the plain imperative form, which
+was best or tied on both Claude models. Measure the residual with a hook
+rather than assuming it is zero.
+
+Limits:
+- One toy marker, one sentence per style, the rule placed last in the
+  file, and single sessions with no compaction or re-injection.
+- 10 repos, no CIs, and harness/model confounded on the open side. It is
+  an unreviewed Letter.
 
 ## Open questions
 

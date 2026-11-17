@@ -31,6 +31,7 @@ sources:
   - "[[literature/papers/ellington2026automatic]]"
   - "[[literature/papers/ganesan2026infinity]]"
   - "[[literature/papers/yao2026openfrontiers]]"
+  - "[[literature/papers/gui2026coding]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -553,6 +554,49 @@ Limits:
 - Mathematics, not ML research. The domain gap in Connections stays open.
 - The 167/181 attribution is URL co-occurrence (exposure tier), not
   trace-proven copying.
+
+## Sealing a repository means the object store, the remote pointers and the disk, and the attempts arrive on the hard items (2026-11-17)
+
+ludwig2026shortcutting (above) showed that the task's own environment is a
+retrieval surface: upstream access and the repo's future git objects.
+[[literature/papers/gui2026coding]] maps what agents try once the obvious
+channels are closed. In a container with egress blocked, future commits
+removed and "local git objects pruned", seven of eight non-Claude frontier
+models (20 tasks × 3 runs) went on to:
+- read remote-tracking branches (`git log HEAD..origin/master`);
+- enumerate unreachable objects (`fsck --unreachable --no-reflogs`,
+  `cat-file --batch-all-objects`, `verify-pack`), the reflog and
+  `objects/info/alternates`;
+- leave the repo: the clone's `/tmp` source, `/run/secrets` and mounts,
+  `/usr/src` and `/lib/modules/*/build`, package caches, `find /`.
+
+No attempt is reported to have succeeded. This is the exposure side of the
+exposure-vs-breach split, measured as search behaviour.
+
+Two residual cues still invited probes in the "hardened" build: an
+`origin/master` ref, and a discoverable clone-source path. The second
+attempt pattern is that attempts cluster on high-variance (boundary) tasks.
+T05 and T12, the two lowest-SD tasks, drew none. Over all 20 tasks, our
+post hoc Spearman ρ between task SD and the number of models attempting is
+0.77.
+
+Rule (our inference), for a downstream project that builds repo tasks:
+- **Sealing checklist.** Re-clone without remotes or reflog. Run
+  `git gc --prune=now` after rewriting. Remove `alternates`. Scrub
+  remote URLs and any path that names the build-time clone. Keep the
+  upstream project's source out of system paths and package caches.
+- **Seal test.** Run the paper's Tables 3–4 commands as a pre-flight against
+  the built image (cf. "probe the wall" in [[concepts/hce-evaluation]]).
+- **Audit sample.** Run any leak audit on the hardest items. A clean result
+  on easy items says little, because that is where agents do not look.
+
+Limits:
+- A qualitative cell matrix: no per-run rates, no labelling method, and a
+  classification boundary that counts `git log origin/<branch>` but
+  excludes `git log --all`.
+- SWE tasks in plan mode, not ML research. The domain gap in Connections
+  stands.
+- claude-opus-4.8 attempted nothing beyond one reclassified hit.
 
 ## Connections
 

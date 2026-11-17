@@ -21,6 +21,7 @@ sources:
   - "[[literature/papers/samanta2026learning]]"
   - "[[literature/papers/woo2026youra]]"
   - "[[literature/papers/li2026humanize]]"
+  - "[[literature/papers/abrahamsson2026unprompted]]"
 used_by: []
 related_concepts:
   - "[[concepts/structured-world-model]]"
@@ -311,3 +312,41 @@ cells, p = 0.002). Its controller reads only "a compact summary of the
 current VSA and the most recent per-stage artifact pointer". So re-grounding
 from the bus is also what keeps the control context at a constant size. The
 evidence is single-run and LLM-judged; see [[concepts/structured-world-model]].
+
+## A bus carries what writers persist and readers re-list after the write: an unannounced store, with a no-bus arm (2026-11-17)
+
+The bus sources above *design* the bus and tell every agent to use it.
+[[literature/papers/abrahamsson2026unprompted]] measures what a shared store
+carries when nobody does: four agents, two holding halves of one answer, a
+key-value store described as private scratch space, no mention of others.
+
+- **No-bus and private-bus arms.** Removing the store took joint success
+  from 15/49 to 0/49 (gpt-5-nano). A per-agent store with an identical
+  interface took gpt-6-astra from 49/50 to 0/50 (47/50 to 0/50 in the
+  second implementation), with writes unchanged at 50/50. The gain is the
+  sharing, not the writing.
+- **Throughput is set by two behaviours, neither of them reading.** Whether
+  the writer persists its intermediate: 0/100 worlds (gemini-3.7-flash) to
+  every world (gpt-6-astra, haiku, nano), not by vendor tier. Whether the
+  reader re-lists *after* the write: without "check your workspace again
+  before submitting", every gpt-6-astra agent listed only at step 0 and
+  access fell from 50/50 to 1/50. Given exposure, reads followed in 493/501.
+- **An unintended parameter moved the write habit.** gpt-5.4-mini wrote in
+  26/30 worlds at effort none against 10/28 at low; coordination 22/30 vs
+  7/28 (McNemar p = 0.039, 17 paired seeds).
+- **Keys need owners.** With agent-chosen generic names (`calc`, `temp`),
+  61 of 76 "cross-agent reads" in one cell were collisions on the reader's
+  own key; 396 of 615 reference reads used names the task text supplied.
+
+Rule (our inference): guidance #5 (workspace as system of record) holds
+only if consumers re-ground *after* producers write. A bus read once at
+start-up, before writers run (asynchronous agents, a parallel subagent
+fan-out), carries nothing. For a deliberate bus, state both halves in the
+brief: what producers persist and under which agreed path, and that
+consumers re-list before committing. Namespace where flow is unwanted, and
+attach an author to every write.
+
+Limits: a key-value toy (20 steps, arithmetic), not a long-horizon
+filesystem workspace; the task supplied the key vocabulary; the recheck
+contrast covers three models and is clean for one; joint success measures
+use of a value, not research quality.

@@ -137,6 +137,8 @@ sources:
   - "[[literature/papers/gao2026trustworthy]]"
   - "[[literature/papers/im2026when]]"
   - "[[literature/papers/thang2026contain]]"
+  - "[[literature/papers/gui2026coding]]"
+  - "[[literature/papers/chang2026multiagent]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3592,6 +3594,88 @@ Limits: no autonomous loop. No candidate passed, and pre-registered power
 was about 0.5, so the yield on real gains is unshown. One small model. The
 selection analysis is post hoc, and 32 of the 48 screen tasks had been run
 before.
+
+## Recovery attempts go below the refs and off the repo, and never name the split: `/lint` reads the agent's own log for `test/` (2026-11-17)
+
+[[literature/papers/gui2026coding]] gives the command vocabulary for the
+search that comes *before* any read of a grader
+([[literature/papers/deeb2026towards]] conditions on that read having
+happened). The setting is 20 hard linux/ffmpeg/llvm tasks with 9 models × 3
+runs, in plan mode, in a sealed container. Future commits were removed and
+objects pruned. Seven of the eight non-Claude models tried to recover the
+fix, and each of the seven used both of these on at least one task:
+- the git store below named refs: `fsck --unreachable --no-reflogs`,
+  `cat-file --batch-all-objects`, the reflog, packfiles, `alternates`;
+- a sweep outside the repo: `/tmp` for the clone source, `/run/secrets`,
+  `/usr/src`, package caches, `find /`.
+
+claude-opus-4.8 and kimi-k2.7 showed nothing beyond one hit that the author
+reclassifies as legitimate. Attempts track task reward SD (our post hoc
+Spearman ρ ≈ 0.77 over 20 tasks). This extends
+[[literature/papers/ludwig2026shortcutting]] (refs-level `git` access
+persists after prompting; above) one layer down and one layer out.
+
+What `/lint` checks today (`kg_lint.py` `hce_check`):
+- `test/` in non-`final_eval` DVC deps;
+- lines of `experiments/*/log.md` matching
+  `\b(Read|Glob|Grep|head|cat|ls|wc)\b…\btest/`, case-sensitive.
+
+So it reads the agent's **self-written log**, not the tool-call record, and
+matches only commands that name the split path. None of the paper's
+sub-ref or scan patterns name it. Lowercase `grep`, `find`, `rg`,
+`git show <ref>:test/…` and `python -c` reads also pass.
+
+Rule (our inference):
+- Treat the `log.md` scan as a self-report check. Clause 1's audit belongs
+  on the harness transcript (`~/.claude/projects/*/*.jsonl`), matched on
+  where the holdout's bytes live as well as its path:
+  - `.dvc/cache/` (content-hash paths; present in arc-agi-2, arc-agi-3,
+    chemrage-research);
+  - git sub-ref commands in experiment worktrees;
+  - `find /` and `grep -r` from the project root.
+- Probe hard tasks. A zero-attempt result on easy items is the 10-20
+  "units the policy could touch" problem: attempts appear where the agent
+  stalls.
+
+Limits:
+- The paper reports presence per cell, with no rates, no labelling method
+  and no breach (every probe met a closed wall). Plan mode means there was
+  no score to inflate.
+- The one Claude model tested shows ~0, and this box runs Claude. The
+  transcript-scan rule is ours; the paper tests no lint.
+
+## Agreement cannot certify a verdict, and a gate's recall needs an audit of what it rejected (2026-11-17)
+
+kohli2026nine (10-20) measured that a judge panel's unanimity is wrong 9.1%
+of the time. im2026when (above) measured 98% self-agreement with 56%
+validity. [[literature/papers/chang2026multiagent]] proves the general form.
+If agents share a latent representation Z and their outputs bear on the
+truth only through Z, then:
+- every aggregation rule has an error floor E min{η(Z), 1 − η(Z)} at any
+  number of agents;
+- the output distribution is identical whether the consensus is right or
+  wrong, so no statistic of agreement separates the two (Thm 1).
+
+Adding judges therefore cannot replace labelled items. That is a
+theorem, not an empirical tendency.
+
+The same paper treats any gate that forwards only its passes to a costly
+check. The check then yields precision and only a lower bound on recall
+(Prop 1). A uniform random audit of the rejected items identifies the
+misses without assumptions (Prop 3). This applies to the 11-17 screen →
+confirmation design (thang2026contain): confirmations show whether screen
+leaders are real, not how many real gains the screen discarded.
+
+Rule (our inference): an evaluator or gate that reports pass-side numbers
+also states its recall as an interval. Recall is either the Prop 1 lower
+bound or comes from a random audit of rejections, with its n. At low
+prevalence, size the audit with an exact binomial or hypergeometric bound,
+not Hoeffding. For 2% prevalence, 124 zero-hit audits of 817 rejections
+certify recall ≥ 0.5 (see web-grounded-literature, 2026-11-17).
+
+Limits: theory only, single-factor latent model. It does not say how
+informative agreement is under partial independence; kohli2026nine's n_eff
+is the empirical measure of that. The assessor is assumed correct.
 
 ## Open questions
 
