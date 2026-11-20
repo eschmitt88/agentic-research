@@ -1637,3 +1637,64 @@ The backlog is cleared. `raw/_candidates/2026-11-02-digest.md` now has a disposi
 - `~/.claude/skills/wrap/SKILL.md` contradicts itself. Its description says it "waits for confirmation", but line 84 says "no confirmation gate". I didn't edit claude-system from this repo.
 - In passing, I corrected a first-author error in `literature/papers/srinivasan2026continue.md`: arXiv 2608.03222 is by Wang, Lyu et al., not "Lyu et al."
 - I didn't run `/wrap` because it pauses for confirmation and this session is non-interactive. The SessionEnd hook will write the NOTES.md entry.
+Burst 1 is running: six readers on items 7–12. The apply script is ready, and I'll check the headroom verdict again before starting burst 2.
+
+The first reader (chen2026signed) is done; five are still running. I'll apply all six concept drafts together once the rest finish.
+
+Two readers are done (im2026when, chen2026signed). Four are still running.
+
+Three readers are done; three are still running (thang2026contain, liang2026memory, wang2026beneath).
+
+Four readers are done. Two are still running (thang2026contain, wang2026beneath).
+
+Five readers are done. One is left (thang2026contain).
+
+The wang2026beneath reader found a contradiction with our existing `wang2026rsihub` note, which I'll flag in that note when I apply this burst.
+
+Burst 2 is running: six readers on items 13–15 and 17–19. Burst 1 is committed and pushed (papers 330 → 336).
+
+One reader is done (tsuchida2026do), and five are still running. One result to flag for the writing guide: adding a reason to a constraint cost Sonnet 5 about 22 points of compliance in that paper (n ≈ 80 per cell, single sentence per style).
+
+Two burst-2 readers are done (tsuchida2026do, qin2026autoresearch). Four are still running.
+
+Three burst-2 readers are done. The last three are still running: zhang2026rsi, gui2026coding and chang2026multiagent.
+
+Five of six burst-2 readers are done; zhang2026rsi is the last one still running.
+
+So far 5 of 12 papers come in below their digest entry (im, chen, thang mildly, gui, abrahamsson) and 7 match it; none comes in above. That is a higher overstatement rate than the 11-16 batch (2 of 6). Waiting on burst 3.
+
+One burst-3 reader is done (mehtiyev2026when), and five are still running.
+
+Two burst-3 readers are done (mehtiyev2026when, xia2026does), and four are still running.
+
+Three burst-3 readers are done. Three are still running: voria2026do, sun2026keeping and alexander2026iterated.
+
+Four burst-3 readers are done. Two are still running (voria2026do, alexander2026iterated).
+
+Five burst-3 readers are done; alexander2026iterated is the last one still running.
+
+I finished `/curate`. The last open candidate file, `raw/_candidates/2026-11-16-digest.md`, is now in `_done/`, with 0 uncurated files left. Everything is pushed except one log line (see the end).
+
+**What happened**
+- **Coverage:** every one of the 22 open items got a recorded disposition: 18 ingested, 4 declined, none already in the graph. That covers items 7–20 plus the 8 near misses. All arXiv IDs resolved to the papers their entries describe.
+- **Method:** the headroom verdict stayed go/high (weekly usage went from 1% to 2%), so I ran three bursts of six and re-checked the verdict between them. Each paper was read in full by its own subagent. The concept additions went in insert-only: 43 sections across 20 concepts, nothing deleted. Papers went from 330 to 348, and the concept count stayed at 36. Lint shows nothing new; the one dead link was already there.
+- **Promoted near misses:** five of the eight were ingested, because their full text was stronger than the reason they were cut. Example: the stale-CLAUDE.md paper is about real stale lines, while the earlier `xu2026stale` paper used synthetic ones.
+- **Declines:**
+  - item 16: SWE-only, with no counterpart in an ML loop;
+  - EvoTrias: a method paper that repeats an existing pattern;
+  - Oracle→PostgreSQL: a domain application;
+  - CAD: off-domain, and it only confirms an existing concept.
+- **Correction:** `wang2026beneath` contradicts a premise in our `wang2026rsihub` note. I corrected that note in place.
+
+**Findings worth your attention.** These are recorded in the file's Curation section and not yet sent to `/elevate`:
+- **Digest accuracy:** 8 of 18 entries overstate their paper, against 2 of 6 last batch. The usual cause is the abstract leading with its best cell, or with a result that holds by construction.
+- **Writing guide:** adding a *reason* to a constraint cost Sonnet 5 22 points of compliance in `tsuchida2026do`. It did nothing for Opus 5 and helped one open model. That cuts against the guide's "constraints with reasons" advice, but the evidence is thin: one sentence per style, n ≈ 80 per cell.
+- **Memory:** `liang2026memory` shows benign feedback memories spreading to high-stakes tasks. Here, only the MEMORY.md index line loads automatically, so a memory's carve-outs and **Why:** line aren't in the text that is always in context.
+- **Lint gaps:**
+  - `kg_lint.py` has no check for dead paths in CLAUDE.md or `.claude/rules/`. In `mehtiyev2026when`, 0 of 732 runs repaired a stale instruction file.
+  - Its HCE scan only catches commands that name `test/`, so git-object-store and disk-sweep probes get past it (`gui2026coding`).
+- **Open watch:** `abrahamsson2026unprompted` is not the "sibling" the `shared-substrate-contagion` watch is waiting for, so that watch stays open.
+
+There was one slip. The archive commit `e6ebb52` carried only the file move, because my `git add` errored. The follow-up `472f592` added the Curation section and the log line.
+
+`/promote-moc` declined because no concepts were added since the last check and all 36 are already mapped. Its log line in `_meta/log.md` is not committed yet, since the skill gives declines no commit of their own. `/wrap` or the SessionEnd hook will pick it up.
