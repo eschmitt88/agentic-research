@@ -32,6 +32,58 @@ one-line reason). `/elevate` will not re-propose a decided idea.
 | 2026-10-25 | [hce-known-bad-preflight](2026-10-25-hce-known-bad-preflight.md) | `rules/evaluation.md` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; with the 'skip with a logged reason' clause and the 'passing does not validate' caveat) |
 | 2026-11-01 | [precompact-chat-only-constraints](2026-11-01-precompact-chat-only-constraints.md) | `hooks/pre-compact.sh` | adopt | **accepted** (applied 2026-11-14, claude-system@83ce0d5; wording verbatim) |
 | 2026-11-14 | [system-review-intent-briefing](2026-11-14-system-review-intent-briefing.md) | hooks, skills, rules, CLAUDE.md, template, coordinator, docs | adopt | **accepted** (user-directed review, applied 2026-11-14, claude-system@1c23fbd..0d4b305; 23 project repos migrated to `paths:` rule scoping; then a trim pass, claude-system@7656ad6..fade13d, 18.6k → 9.8k words, six skills behaviour-tested on Sonnet; smoke tests 32/32) |
+| 2026-11-22 | [hce-score-coverage-count](2026-11-22-hce-score-coverage-count.md) | `rules/evaluation.md` | adopt | proposed |
+
+## Considered and held (2026-11-22 run)
+
+This run covers the 11-16 digest and the 11-17 curate: 24 new notes, with
+concepts holding at 36. `~/claude-system` moved once since 11-15
+(88b2253: cron alerts, and the text budget now asks for disclosure rather
+than a hard offset). **One proposal of seven considered:**
+`hce-score-coverage-count` (above). Held:
+
+- **PreCompact: a summary states no permission the user didn't give**
+  (`chu2026when`, cred 3, code; routed here by the 11-16 Next). **Held on
+  Gate 1 fit.** The tested remedy (a provenance sentence) did nothing for
+  invented *authorizations* (p = 0.56). That is the costly direction the
+  amendment targets. The behavioural effect on held-out templates was null
+  under the pre-specified test, and the agents were 8B–21B open-weight
+  models. Whether Opus-class summarizers invent policy at all is not
+  measured. The existing bullet's "quote the latest version verbatim"
+  already covers withdrawals.
+- **Dead-path check for CLAUDE.md and `.claude/rules/` in `kg_lint.py`**
+  (`mehtiyev2026when`, cred 3, code: a stale command bound in 78 of 80
+  runs, and 0 of 732 runs repaired the file). **Held: no live target.**
+  Scanned the live corpus today. Every `~/` and `$HOME` path in
+  `claude/**/*.md|sh` resolves, and every repo-relative path named in
+  skills and rules is a template or an experiment-repo path. A new check
+  adds code to catch a defect not present. Re-run the scan when an ADR
+  moves files.
+- **Reasons in rules cost Sonnet compliance** (`tsuchida2026do`, cred 3,
+  code: one toy rule, Sonnet 5 71.6 → 49.4 with a reason, Opus 5
+  unchanged). This bears on `CLAUDE.md`'s "constraints with their
+  reasons". **Held:** it is one sentence per style, about a rule with no
+  task purpose, and it contradicts the Opus null and the gpt-oss gain.
+  This belongs to the `intent-briefing` project, not a system edit.
+- **Action-time gate on irreversible actions licensed by a memory**
+  (`liang2026memory`, cred 4, code). **Held on Gate 2.** No mitigation was
+  tested, and the gate is a new hook. The claude-system memory index line
+  "Default to action" already carries "reversible" in its auto-loaded
+  text, which is the carve-out the paper shows getting lost.
+- **Completion-pressure wording** (`lee2026unfinishedbench`, cred 4, code:
+  a "see this through" sentence adds violations). **Held: no target.**
+  Grepped the corpus. No skill, rule or hook carries persistence wording.
+  `/iterate --chain`'s "without pausing" is about confirmation, not
+  completion.
+- **HCE scan blind to `.dvc/cache` and git-object probes**
+  (`gui2026coding`). **Held on Gate 1:** cred 2, attempts not breaches,
+  run in plan mode.
+
+**Paired control: `token-metering-cumulative-double-count` (07-26).
+Pass.** Gate 1: `khan2026token` is code-released (cred 3), and the five
+cited sources balance to 3.2. Gate 2: a writer-side bug fix with no new
+surface. The text budget doesn't apply (a hook, not prose). Next control:
+`instruction-ablation-program` (07-31).
 
 ## Considered and held (2026-11-15 run)
 

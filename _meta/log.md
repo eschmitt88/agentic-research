@@ -863,3 +863,5 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-11-17 04:25 ingest raw/papers/sheshanarayana2026do.pdf
 2026-11-17 04:26 curate raw/_candidates/2026-11-16-digest.md ingested=18 declined=4 dup=0 (items 7-20 + 8 near misses; items 1-6 ingested 2026-11-16)
 2026-11-17 04:27 promote-moc declined (graph unchanged since cbe5ef0, 36/36 concepts mapped)
+2026-11-20 04:33 auto_push attempted but failed (see /home/eschmitt/.claude/hooks/auto-push.err)
+2026-11-22 elevate proposals=1 considered=7 control=token-metering-cumulative-double-count:pass (proposed hce-score-coverage-count from liu2026silent; held chu2026when precompact permission amendment on fit, mehtiyev2026when dead-path lint (live-corpus scan clean), tsuchida2026do reasons-cost-Sonnet → intent-briefing, liang2026memory action gate, lee2026unfinishedbench (no persistence wording), gui2026coding cred 2)
