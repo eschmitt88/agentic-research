@@ -536,3 +536,21 @@ This week's /elevate run made **no proposals** after considering 8 ideas. The **
 - **One file left uncommitted.** `_meta/digest.log` holds the failed digest's error output. I left it alone because it's another job's file.
 
 The next control in the rotation is `token-metering-cumulative-double-count`, a code fix that the word budget doesn't apply to.
+This week's `/elevate` run produced **one proposal**, `hce-score-coverage-count`. It's waiting for your review in `docs/system-proposals/2026-11-22-hce-score-coverage-count.md`. Nothing in `~/claude-system` was touched.
+
+**The proposal.** It adds one bullet to §4 of `rules/evaluation.md`: every score should record how many items were actually scored (`n_scored` of `n_attempted`) and why the rest weren't. The point is that a bad submission counts as a failure, but an item the grader never ran on (a timeout, an API error) is missing, not a zero. Today's checks can't catch this. The evaluator hash shows the scorer is unchanged, and the do-nothing check shows it doesn't reward empty output. But an ungraded item stored as zero sits exactly at the floor, so it passes both.
+- **Evidence:** `liu2026silent` (credibility 4, code released). On a public agent leaderboard, half of one scaffold's episodes were never graded and were stored as failures. Grading them turned a 13-point gap into a tie. `xia2026does` and `chen2026when` describe the same kind of silent fault in the code around a scorer.
+- **Word budget:** the bullet adds 64 words. Three passages in the same file that repeat other text can be cut, so the net change is +33 to +43 words.
+- **Main risk:** the case for it on this box is thin. The only project that grades item by item (`arc-agi-2`) already does this by habit; the rule just doesn't require it. If you think that's too thin, the proposal includes a 10-word fallback.
+
+**Six ideas held** (details in `_index.md`):
+- **Pre-compact "no invented permissions" amendment** (`chu2026when`): the fix that was tested didn't work on invented permissions, which is the case the amendment targets. The study also used only small open-weight models.
+- **Stale-path lint check** (`mehtiyev2026when`): I scanned the live instruction files and every path resolves, so there's nothing for a check to catch.
+- **Reasons in rules lowered Sonnet's compliance** (`tsuchida2026do`): one toy rule, and the result contradicts what happened with Opus. This belongs to the `intent-briefing` project, not a system edit.
+- **Gate before irreversible actions that a memory permits** (`liang2026memory`): it would be a new hook, and no mitigation was tested. Your "Default to action" memory line already says "reversible".
+- **"See it through" wording raises rule violations** (`lee2026unfinishedbench`): no skill, rule or hook contains such wording.
+- **Test-split scan misses `.dvc/cache` probes** (`gui2026coding`): credibility 2, below the evidence bar.
+
+**Paired control:** `token-metering-cumulative-double-count` passed again, so the gates haven't drifted stricter. Next in the rotation is `instruction-ablation-program`.
+
+The commit is pushed. The push also sent three earlier commits that were stuck locally after the 11-20 auto-push failed on a DNS error.
