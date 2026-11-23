@@ -889,3 +889,39 @@ I added the rollup to `NOTES.md` as a `## 2026-11-16` entry with Did / Findings 
 - **Added:** curate the rest of the 11-16 digest, give cron a long-lived token, and send the draft PreCompact amendment from the 11-16 ingest to /elevate.
 
 **Worth acting on:** the 11-09 digest failed because cron's login hit its time limit. `~/.claude/.env` still has no `CLAUDE_CODE_OAUTH_TOKEN`, so the next scheduled run can fail the same way. The fix is to run `claude setup-token` and put the token in that file.
+The cs harvest has 1 of about 10+ pages down, and stat is still on its first page. I'll resume when they finish.
+
+The readers are still running. The candidates file (`3687b96`) and the six PDFs (`4cbf075`) are pushed.
+
+The wong2026evaluating note is done: full text came in below its digest entry, and the reader drafted 2 concept sections. Waiting on the other five.
+
+dhuri2026markdown is done and also came in below its digest entry. The script error rules out the file-vs-gate contrast. Four readers are still running.
+
+ghosh2026truthgate is done. It's stronger on rigour than its digest entry, but the entry overstated several claims. Three readers are still running.
+
+liu2026agents is done and came in below its entry: the gains hold only on worlds chosen for having the largest loss. Two readers are still running.
+
+zeng2026resolution is done: relevance 5, and it matches its entry, though three claims are overstated. One reader, guo2026how, is still running.
+
+The digest run is finished and pushed. It found 20 new candidates, and I ingested the top 6. Items 7–20 are left for `/curate`.
+
+**Harvest.** The usual arXiv OAI-PMH endpoint returned one page, then timed out with 503 errors on every later request. I switched to the arXiv API, which answered at once. That gave 3,525 new arXiv IDs from Nov 13–20. A keyword filter cut them to 520, I read all 520 titles and 96 abstracts, and listed 20. Four papers announced Nov 16 were skipped because last week's run already screened that day. The four web searches found one new paper (a near miss). There is still no paper comparing redirect against halt after a stall.
+
+**Ingest.** The verdict was go/high before and after. Six parallel readers read the full papers and wrote the notes. I added their 15 concept sections across 10 concepts, additions only (+890 lines, nothing removed). Papers went from 348 to 354. The graph lint shows one dead link, which was there before this run. `/promote-moc` found no new cluster, since every concept is already mapped.
+
+**The digest entries overstated their papers.** These entries are written from abstracts. Against the full text, 3 read below their entry, 3 matched and none above, and 5 of the 6 explanations of why a paper matters here were wrong or went too far:
+- **Item 5, "Markdown Is Not a Firewall":** this is not evidence that a code gate beats a rules file. A bug in the author's run script put both the no-file and rules-file arms behind the gate, so that comparison was never made.
+- **Item 2, the governed ML-experiment ledger:** it only partly supports the pending `hce-score-coverage-count` proposal. The "43 of 50 trials unrecorded" figure was true by design. The useful finding is different: hashing the starting state caught two sets of runs that weren't really independent.
+- **Item 6, skills rewritten by a model without feedback:** I tied it to the Nov 14 trim, but the trim was not the paper's setup. One of the paper's appendix results actually supports the trim's rule: deleting what the model would write anyway cost nothing.
+- **Item 3, agents handing off notes:** the problem is not summaries of summaries drifting. What gets lost is evidence the note writer never turned into a conclusion. The paper doesn't argue against the PreCompact bullet quoting user constraints word for word.
+
+All corrections, plus four suggestions for `/elevate` (none applied), are in the Curation section of `raw/_candidates/2026-11-23-digest.md`. That file stays out of `_done/` until items 7–20 are curated.
+
+**Housekeeping:**
+- The ingest commit message says the concept count held at 37. The real count is 36, because I counted `_README.md`, the same slip as Nov 16. I logged the correction instead of rewriting pushed history.
+- `_meta/digest.log` was already modified when I started, so I left it unstaged.
+- Temporary files are in `/mnt/projects/tmp/digest-2026-11-23/` and can be deleted.
+
+Commits: `3687b96` (candidates), `4cbf075` (PDFs), `d6ed063` (ingest), `df062bb` (logs and curation).
+
+The timer stopped a leftover background job. It was still waiting on the abandoned OAI-PMH harvest, which the arXiv API pull had already replaced. No harvest processes are still running, and the digest results above are unchanged.
