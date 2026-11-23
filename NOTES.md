@@ -902,3 +902,38 @@ Rollup for 2026-11-03 → 11-16, two weeks because 11-09 had no entry (sourced f
 - Route the `chu2026when` permission-invention amendment to /elevate (watch the text budget).
 - Still open: downstream worktree `git log --all` check; `shared-substrate-contagion` sibling watch;
   /propose's first autonomous agency-branch write.
+
+## 2026-11-23
+
+Weekly rollup for 11-17 → 11-23, all autonomous (sourced from journal/ + _meta/log.md).
+
+### Did
+- 11-17 /curate closed the 11-16 digest: 18 ingested (items 7–20 + 5 near-misses), 4 declined → `_done/`.
+  43 sections across 20 concepts, insert-only. Papers 330 → 348. /promote-moc declined (36/36 mapped).
+- 11-22 /elevate: **1 proposal of 7**, `hce-score-coverage-count` (HCE §4: report `n_scored` of
+  `n_attempted`; ungraded ≠ zero; from `liu2026silent`). Control `token-metering-cumulative-double-count`
+  passed. Held: `chu2026when` permission amendment (fit), `mehtiyev2026when` dead-path lint (live scan clean),
+  `liang2026memory` action gate, `lee2026unfinishedbench`, `gui2026coding` (cred 2); `tsuchida2026do` → intent-briefing.
+- 11-23 digest (window 11-16 →): 20 candidates, top 6 ingested (go/high, 13% → 14% weekly), 15 sections /
+  10 concepts. Papers 348 → 354; concepts held at 36. /promote-moc declined again.
+
+### Findings
+- Abstracts keep overstating: 11-17 batch 8 of 18 below their digest entry, 11-23 batch 3 of 6, none above
+  in either. Overstatement clusters where the headline is the best cell or holds by construction.
+- `wong2026evaluating` only partly supports the 11-22 proposal (dropped failures push acceptance *up*, unlike
+  `liu2026silent`'s zeros); its usable result is that a start-state hash caught non-independent replicates.
+- `dhuri2026markdown` is **not** evidence that gates beat prose (script error removed the contrast).
+  `guo2026how` App. B.6 supports the 11-14 trim's keep criterion; offsets should be verbatim deletions.
+- Ingest commits overstate the concept count as 37 (counts `_README.md`): aa1145e and d6ed063. Fix it in /ingest.
+- 11-20 auto-push failed on DNS (github.com unresolvable); later pushes caught up. Cron digests ran on time
+  both weeks, but `~/.claude/.env` still has no `CLAUDE_CODE_OAUTH_TOKEN`.
+- 12 reader-suggested concepts now wait for a second source (10 from 11-17, 2 from 11-23); none created.
+
+### Next
+- Decide proposal 11-22 `hce-score-coverage-count`; weigh the `wong2026evaluating` caveat.
+- Curate items 7–20 + near-misses in `raw/_candidates/2026-11-23-digest.md` (held 16th section included).
+- Route the 11-23 /elevate candidates: start-state-hash HCE rule, single-run-margin caution, verbatim offsets.
+- Give cron a long-lived token (`claude setup-token` → `CLAUDE_CODE_OAUTH_TOKEN` in `~/.claude/.env`).
+- Document the /digest harvest (OAI-PMH new host, select by ID prefix); SKILL.md still doesn't.
+- Still open: downstream worktree `git log --all` check; `shared-substrate-contagion` sibling watch;
+  /propose's first autonomous agency-branch write.
