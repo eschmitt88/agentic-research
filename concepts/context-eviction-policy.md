@@ -67,6 +67,7 @@ sources:
   - "[[literature/papers/jain2026monitor]]"
   - "[[literature/papers/zha2026do]]"
   - "[[literature/papers/chu2026when]]"
+  - "[[literature/papers/liu2026agents]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -1184,6 +1185,78 @@ Limits:
 - The trigger is a format collapse, not a search plateau, and the tasks
   were picked because the baseline failed them.
 - No arm separates "drop the chat" from "keep possibly wrong edits".
+
+## Rewriting a summary from the last summary carried most of a handoff's loss in toy worlds, and the writer's view of the record, not its instructions, recovered it (2026-11-23)
+
+Implementation guidance item 3 records summary-of-summary drift as "argued,
+not measured" ([[literature/papers/nguyen2026cliffcompaction]]), and the
+2026-11-16 section notes that [[literature/papers/zha2026do]] left the
+re-compaction regime untested. [[literature/papers/liu2026agents]] is the
+first matched test in this graph that separates compressing once from
+compressing repeatedly. 56 small text worlds with hidden, checkable rules.
+One agent plays eight lives with its whole history (Memory). A chain of
+eight fresh agents each plays one life and inherits a 300-char note
+written from the previous note plus that life (Relay). Two further chains
+change one thing each: the note's writer may read the raw record of every
+earlier life (Compaction relay), or the next agent gets the raw records
+and no note (Record relay). Life g is the same instance in every arm.
+
+- **Every model loses at a handoff.** Memory − Relay is 0.26–0.67 marks of
+  5 across six models (19–48% of what Memory learns), all intervals above
+  zero. The eighth Relay life sits where Memory stood after about four
+  lives for four models, and 2.5–3.0 for the two weakest.
+- **On each model's 10 worst worlds, most of the loss is the
+  note-from-note step.** Same 300 chars, writer reads the record:
+  - gpt-6.1-sol recovers 1.82 of 2.59 marks (70%)
+  - gpt-6-astra 1.08 of 1.31 (82%)
+  - gpt-5.6-terra 0.81 of 2.03 (40%); for it one compression costs more
+    (0.92)
+
+  Over all 56 worlds sol recovers 0.39 of 0.64 (61%). A fresh agent given
+  the raw record matches the agent that lived it (−0.49 to +0.30).
+- **Stated content mostly survives a hop; what never got concluded is
+  lost.** A fact right in one Relay note is right in the next 87–89% of
+  the time. An absent fact appears in only 14–15%. Relay notes plateau at
+  about 50% of a world's facts by life 5; written from the record they
+  reach 47–54% against 24–40% on the same worlds. Failing chains' notes
+  are mostly single-game records (65% for sol), not false rules. The loss
+  sits in worlds a model needs 3+ lives to work out (0.62–1.01 marks
+  against 0.03 for worlds learned within two).
+- **Instructions to the writer did not help; length did.** Revise-the-note,
+  a confirmed / ruled-out / open ledger, and "mark what was verified and
+  record what you could not explain" all scored at or below the plain
+  request (sol, 10 worlds). A plain Relay note at 1,500 chars (3.83)
+  matched or beat a 300-char note written from the record (3.47).
+
+This is the same direction as [[literature/papers/xu2026what]] (a rewrite
+from full context beats the agent's own running reports at matched
+length) and [[literature/papers/goyal2026does]] (most of a note's deficit
+is lost at write time). It refines this page's drift worry. Restating a
+summary did not degrade what it already said. A chain whose writer sees
+only the last summary plus the newest span cannot assemble a conclusion
+that needs evidence spread across spans. In this design that is what
+"repeated compression" costs; paraphrase drift in the strict sense is not
+isolated.
+
+Rule for this project (our inference): where a summary is rewritten many
+times and its record still fits the writer's window (subagent briefs,
+session hand-offs, a `NOTES.md` "Next" carried session to session),
+regenerate it from the record (journal, logs, git history, transcript),
+not from the previous summary. At overflow compaction the record does not
+fit by definition. There the usable forms are a longer summary and a
+record the writer is made to consult, not one it is offered. Do not try
+to fix the loss with writer wording.
+
+Limits:
+- Induced rules in toy worlds, not stated constraints or real tasks. The
+  author does not claim the size of the loss transfers.
+- A 300-char budget. At 1,500 chars the note-from-note penalty was gone
+  for sol. The size of the effect at Claude Code's summary lengths is
+  unknown.
+- The 70–82% is on worlds selected by the outcome and partly reuses the
+  selection runs. The all-worlds sol figure (61%) is the safer number.
+- Single author, no code, worlds or prompts released. Variant and length
+  results are one model, 10 worlds, no intervals. No Claude model.
 
 ## Open questions
 

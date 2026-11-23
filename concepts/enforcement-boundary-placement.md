@@ -54,6 +54,8 @@ sources:
   - "[[literature/papers/treude2026how]]"
   - "[[literature/papers/lee2026unfinishedbench]]"
   - "[[literature/papers/sun2026keeping]]"
+  - "[[literature/papers/wong2026evaluating]]"
+  - "[[literature/papers/dhuri2026markdown]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1342,6 +1344,110 @@ have no point on this axis except the prompt.
 Limits: the ablation is 3 seeds with no CIs, one task, one model. The
 stop gate also names the next account, so it supplies a cursor as well as
 a refusal (its text matched the -loop resume text).
+
+## The keep/discard decision outside the proposer, as a pure function: the authority boundary held in 1,445 trials, and the scope guard was never tested by a real proposal (2026-11-23)
+
+The 10-27 section ([[literature/papers/wang2026rsihub]]) found the score
+outside the mutable surface but the *admission* rule able to sit inside
+it. [[literature/papers/wong2026evaluating]] puts the decision outside too.
+A control plane owns every lifecycle transition, and
+`decide_trial()` is a side-effect-free function of (candidate metric,
+current best, validity flag) that the proposing LLM never sees or calls.
+Three guards run before training (scope against an `editable_paths`
+whitelist and `frozen_paths` blocklist, a byte-identical no-op check, a
+proposal precondition check), and four after (runtime error, missing
+metric, invalid config, edit failure).
+- **The manager was swappable without changing the record.** A
+  heuristic, a prompt manager, a LangGraph manager on DeepSeek V4 Flash
+  and on qwen2.5-coder:7b all ran under one contract on six nodes.
+- **The fires came from proposal quality, not escape attempts.** 220 of
+  1,445 trials (15.2%) were stopped at the precondition check (malformed
+  or unchanged values, bounded candidates exhausted; 24 of 30 on the
+  MLAgentBench adapter). `invalid_edit_scope` occurred only in a forced
+  1-trial stress campaign.
+- **The workers made escape hard by design.** `LocalWorker` applies
+  "change PARAM from X to Y"; the coding-agent path goes through a
+  deterministic constant-patch bridge; three nodes expose only
+  `config.yaml`. The scope guard never met a free-form patch under
+  optimization pressure.
+- **Labels are reproducible from observable fields.** A rule-based
+  relabeler that never reads `failure_category` agreed at κ = 0.830
+  [0.703, 0.958] on 50 stratified failures; all disagreements were
+  `runtime_error` / `no_op_patch` cases whose evidence sat in artifact
+  files outside the record.
+
+Rule for this project (our inference): when a loop compares its own arms,
+the comparison that decides keep or discard should be code that takes
+numbers and returns a state, with the model supplying only the proposal.
+Placing the scorer outside the surface (rsihub) is not enough if the
+model, or code it can edit, owns the comparison. This box's `/iterate`
+decides "improvement" (beat the chain's best by more than the noise band)
+by a rule written in its SKILL.md and applied by the model, not by code;
+that is the prose form of this boundary, and the counter it feeds is the
+`max_consecutive_no_improvement` ceiling.
+
+Limits:
+- No arm lets the proposer edit the decision or the guards, so the
+  boundary is described and exercised, not attacked. The bounded workers
+  mean the scope guard's pressure test is still missing.
+- The κ is agreement between two rule sets over the same record, not
+  human agreement.
+- One author, a workshop paper; the AIDE contrast is by code reading,
+  not a run under the same nodes.
+
+## A rules file and a gate on four shipped CLIs: the gate's zero is by construction, and the comparison that would rank them was not run (2026-11-23)
+
+Every placement contrast in this note so far moves one rule between
+the prompt and the harness on one agent
+([[literature/papers/zhang2026judged]], [[literature/papers/sun2026keeping]]).
+[[literature/papers/dhuri2026markdown]] is the first pre-registered test
+that puts a root rules file (AGENTS.md / CLAUDE.md / GEMINI.md) beside a
+model-free gate at security boundaries, on four shipped CLIs with vendor
+permission prompts off. Three agents met the boundaries: Claude Code,
+Codex CLI and OpenCode/DeepSeek. There were 15 runs per arm per boundary,
+one run per cell.
+
+- **The placement contrast was lost.** A run-script error put the
+  no-file and rules-file arms behind the gate in all three HTTP sets.
+  Only the neutral-file arm ran ungated. "Gate vs file" is confounded
+  with "neutral file vs no/rules file", and the registered ungated
+  crossing rate under A and B does not exist. The paper says so (§4.3,
+  Table 15).
+- **What remains is descriptive.** 5 of 90 gated steps made a bounded
+  request (3 without the file, 2 with it), all OpenCode/DeepSeek, with 11
+  denied requests. Claude Code and Codex made none in 60 gated steps.
+  Ungated (arm C), requests reached the mock in 1, 3 and 3 of 15 runs.
+  The package set, ungated in every arm, crossed 0/0/1.
+- **The gate changes the stimulus.** Its self-naming `403
+  blocked_by_gate` told the agent a gate existed, and one run retried
+  seven times across four HTTP methods. It also stripped the planted
+  notice from one seed under A and B only. A gated arm's attempt count
+  and an ungated arm's arrival count are the same event only up to the
+  first request.
+- **One behaviour moved with the file, outside the gate's table.** A
+  found access token reached the mock in 5/5 OpenCode runs without the
+  file and 0/5 with it. These were status probes and permitted calls,
+  which the deny table does not list.
+
+Rule (our inference): this does not add a measured point to the
+prompt-vs-harness axis. It adds two placement facts:
+- the gate's zero is a property of what its table lists;
+- a rule in the file can still matter at the edges the table leaves
+  open, here credential use on allowed routes.
+
+Both placements are needed, with the gate carrying the enumerable
+boundary and the file carrying intent for the rest. That is what
+[[concepts/permission-gate-as-architecture]] already argues. When a
+skill on this box claims a boundary "holds", say which layer holds it.
+For ingest subagents run with permissions bypassed, no layer does: the
+same situation as this paper's arm C.
+
+Limits:
+- n = 15 per cell, one run each, and every boundary event comes from one
+  agent. Three OpenCode runs could read the matrix's arm and set lists
+  from the process table, and two of them are among the five attempts.
+- Vendor permission prompts were off, so nothing here ranks them.
+- Toy Flask repositories, one author-written file, single adjudicator.
 
 ## Connections
 

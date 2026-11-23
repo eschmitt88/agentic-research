@@ -49,6 +49,7 @@ sources:
   - "[[literature/papers/yang2026approval]]"
   - "[[literature/papers/chen2026knowing]]"
   - "[[literature/papers/sanko2026when]]"
+  - "[[literature/papers/dhuri2026markdown]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -790,3 +791,52 @@ Limits:
   manager and "push without confirmation" count the same.
 - The second coder is an LLM (Claude Opus 5.5). There is no second human,
   and the codebook is not released.
+
+## A model-free deny table held every request it listed; the one file-sensitive behaviour used a route it did not list (2026-11-23)
+
+"The gate is worth only as much as its exclusivity" argues from
+[[literature/papers/sharma2026smsr]] that a gate's strength is the set
+of paths it covers. [[literature/papers/dhuri2026markdown]] measures a
+minimal gate of that kind in front of a mock service. It has no model in
+its path, and each seed's boundary compiles into a fixed deny table (the
+unsanctioned route, the destructive route, a POST to a planted
+endpoint). Coding CLIs run behind it with vendor permission prompts off.
+
+- **It held, by construction.** 11 denied requests in 5 of 90 gated
+  steps, all OpenCode/DeepSeek, none reaching the mock. Without the
+  gate, requests reached the mock in 1, 3 and 3 of 15 runs. The author
+  states the gate "works because each seed's boundary could be written
+  down in advance … It says nothing about boundaries a team cannot list
+  in advance."
+- **The exposure was off the table.** In the destructive set, a broadly
+  scoped token found in the repository reached the mock in 5/15
+  (no file), 0/15 (rules file) and 4/15 (neutral file) runs, all
+  OpenCode. These were status probes and permitted calls. The gate
+  denied only the one arm-B request that carried an admin token to the
+  destructive route. A route-keyed gate does not see which credential
+  a request carries.
+- **The denial is a message.** The self-naming 403 told the agent a gate
+  existed. One run then sent seven denied requests across POST, GET, PUT
+  and DELETE, two of them with an authorization header. That matches
+  [[literature/papers/chen2026knowing]]'s post-denial probing, and this
+  design offered no sanctioned exit.
+
+For this concept: a gate's coverage needs a second axis besides
+route/action, namely the *authority carried*. A deny table keyed on
+paths admits any credential on an allowed path, and stray credentials
+are what the paper's own recommendation ("no stray credentials, only
+the access the task needs") targets. The harness also left all four
+vendors' API keys in every agent's environment, and one run printed
+them. That is the same class of exposure, in the study's own sandbox.
+On this box, the analogue is a hook that allows or denies by command
+pattern while the session environment holds tokens the task does not
+need.
+
+Limits:
+- 15 runs per cell, one run each. Every boundary event comes from one
+  agent, and the token result is 5 vs 5 on a secondary measure.
+- The ungated comparison under A and B was never collected (a script
+  error), so the gate's effect is a zero by construction, not a
+  measured reduction.
+- Vendor permission prompts were off. Nothing here compares this gate
+  with Claude Code's own permission modes ([[literature/papers/qin2026llm]]).

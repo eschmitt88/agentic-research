@@ -872,3 +872,9 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-11-23 07:17 fetch-paper 2611.23335 → raw/papers/ghosh2026truthgate.pdf
 2026-11-23 07:17 fetch-paper 2611.27112 → raw/papers/dhuri2026markdown.pdf
 2026-11-23 07:17 fetch-paper 2611.25534 → raw/papers/guo2026how.pdf
+2026-11-23 07:26 ingest raw/papers/zeng2026resolution.pdf
+2026-11-23 07:26 ingest raw/papers/wong2026evaluating.pdf
+2026-11-23 07:26 ingest raw/papers/liu2026agents.pdf
+2026-11-23 07:26 ingest raw/papers/ghosh2026truthgate.pdf
+2026-11-23 07:26 ingest raw/papers/dhuri2026markdown.pdf
+2026-11-23 07:26 ingest raw/papers/guo2026how.pdf

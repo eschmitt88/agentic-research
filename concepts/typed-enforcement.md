@@ -47,6 +47,7 @@ sources:
   - "[[literature/papers/voria2026do]]"
   - "[[literature/papers/mehtiyev2026when]]"
   - "[[literature/papers/sun2026keeping]]"
+  - "[[literature/papers/dhuri2026markdown]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -867,6 +868,63 @@ long run could take, and confirm a check closes each one.
 
 Limits: one SOP task, 3 Sonnet seeds, code promised but not released;
 a todo/ledger scaffold without gates (the cheap middle option) is untested.
+
+## Prose has a reader: one line read strictly cost one CLI 31 points, and its own tests passed (2026-11-23)
+
+The prose-floor sections above measure how often a rule is *missed*:
+[[literature/papers/mcmillan2026instruction]] at 55–68% on one checkable
+marker, and [[literature/papers/voria2026do]] bimodal per rule in the
+field. [[literature/papers/dhuri2026markdown]] measures the opposite
+failure, a rule *over-applied*, under a pre-registered three-arm design
+(no file / 278-word rules file / 280-word neutral file). Four CLIs ran
+on author-built Flask repositories, scored by hidden tests the agent
+could not read.
+
+- **The cost sat in one reader.** On hidden tests Codex CLI scored 99.0%
+  without the file, 67.7% with it, and 100.0% with the neutral file
+  (B−A −31.2, [−53.2, −11.3], 12 pairs). Claude Code, Gemini CLI and
+  OpenCode moved by less than 2.5 points. Pooled without Codex, the
+  change is −1.3 [−3.9, 0.6].
+- **Mechanism.** Two lines combined: "any handler that can be retried is
+  idempotent: it requires … a caller-supplied idempotency key", and "if a
+  requirement is ambiguous, choose the strictest reading". On 6 of 12
+  repositories Codex added a required Idempotency-Key header to routes
+  the task did not name. The hidden tests, written to the task, never
+  send it.
+- **Its own tests passed.** In 11 of 36 rules-file steps (4 independent
+  chains) Codex reported completion with all tests passing while under
+  half of the hidden tests passed. The tests it wrote encoded the
+  requirement it had added. Its rules also cost +24,328 tokens per chain
+  over the neutral file ([6,457, 42,138]).
+- **A replication of sorts.** In [[literature/papers/xu2026stale]], the
+  same Codex CLI version rewrote existing modules toward a stale AGENTS.md
+  in 20 of 80 runs and broke the original tests in 17. Claude Code did
+  neither in either paper.
+
+Rule (our inference): a prose rule's meaning is set by its reader, so
+its effect cannot be validated on one agent and assumed for others.
+Moving a rule into code also removes that reader variance, not just the
+miss rate. For prose that stays prose:
+- give requirement-adding rules a trigger ("routes the task names as
+  retriable"), not a class ("any handler that can be retried");
+- treat scope-amplifying meta-rules ("choose the strictest reading",
+  "always", "every") as a risk to task fidelity, not as free safety
+  margin. The box's user-level CLAUDE.md uses absolute phrasings
+  throughout; an audit for unconditioned requirement-adding lines is
+  cheap;
+- an agent's own passing tests are not evidence that it did not widen
+  the task ([[concepts/evidence-gated-completion]]).
+
+Limits:
+- One agent, one line, 12 pairs, one run per cell. The served model was
+  gpt-6.1-sol, not the registered pin.
+- The author wrote the file, the tasks and the hidden tests, and the
+  tests take the loose reading of an ambiguous line. Another test
+  writer could have scored Codex right.
+- The rules file is a role-play security spec, not a typical
+  AGENTS.md. The primary outcome (defects) was null at the floor: 0
+  real bugs in every arm. So the file's benefit side is unmeasured,
+  not zero.
 
 ## Connections
 

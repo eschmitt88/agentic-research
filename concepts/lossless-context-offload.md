@@ -23,6 +23,7 @@ sources:
   - "[[literature/papers/salle2026benchmarks]]"
   - "[[literature/papers/busch2026ctxagent]]"
   - "[[literature/papers/sheshanarayana2026do]]"
+  - "[[literature/papers/liu2026agents]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -456,6 +457,46 @@ Limits:
 - Restore here is an oracle (the native view again), with no token cost reported.
 - No native rerun baseline, so part of the "failure" is verdict instability.
 - Verifiers are mid-tier, and the markers are synthetic, not compaction summaries.
+
+## Hand the record to the writer, not the reader: a fresh agent with the raw record matched the one that lived it, and a writer forced to read it recovered most of a chain's loss (2026-11-23)
+
+Four sections above find an offered address rarely used: 56% of settings
+never recalled in [[literature/papers/fan2026empirical]], three calls in
+[[literature/papers/busch2026ctxagent]], a 37% page-in rate in
+[[literature/papers/sheshanarayana2026do]]. [[literature/papers/liu2026agents]]
+tests the other placement. The raw record is *given* to whoever needs it,
+by construction, and is never an option the agent may skip. The record is
+screens and actions only, without the agent's reasoning.
+
+- **The record is a full substitute for having lived it.** A fresh agent
+  given the raw record of earlier lives scores like the agent that kept
+  its whole history: Memory − Record relay is −0.49 [−1.00, −0.01]
+  (astra; the fresh agent is better), −0.05 (sol) and +0.30 (terra), the
+  last two with intervals spanning zero (10 worst worlds per model).
+- **A writer with the record compresses far better at the same size.** A
+  300-char note written with every earlier record in view recovers 70% and
+  82% of the handoff loss for the two strongest models on their worst
+  worlds, 61% for sol across all 56. Its notes state twice as many of a
+  world's facts as notes written from the previous note (47% vs 24% for
+  sol).
+- **Telling the writer what to keep is not a substitute.** Ledger,
+  verify-and-record and revise requests did not recover any of it.
+
+The paper's recommendation is this concept's invariant, moved to the
+write step: "keep the raw record outside the working context and give it
+to whoever writes the next summary: this costs storage, not context."
+
+Rule for this project (our inference): when a pipeline writes a successor
+summary (a subagent brief, a hand-off, a wrap entry), make the raw record
+an input the writer step always reads, in the skill or hook, rather than
+an address the writer may follow. That is the placement the
+"offered, rarely used" results leave open, and the one measured here.
+
+Limits:
+- The record fits the writer's window (eight short lives). At overflow it
+  would not, and the paper has no arm where the writer must page it in.
+- Toy worlds with checkable rules; no code or worlds released.
+- Record relay was run on 10 outcome-selected worlds for three models only.
 
 ## Open questions
 

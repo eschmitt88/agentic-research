@@ -69,6 +69,8 @@ sources:
   - "[[literature/papers/gao2026trustworthy]]"
   - "[[literature/papers/zhang2026rsi]]"
   - "[[literature/papers/mehtiyev2026when]]"
+  - "[[literature/papers/zeng2026resolution]]"
+  - "[[literature/papers/guo2026how]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -1663,3 +1665,121 @@ Limits:
   author.
 - All evaluated changes target environment problems (test runner,
   pre-existing failures). No removal or revision arm.
+
+## An LLM judge reading the trajectory admitted no better skills than a coin, and a pool's "best shared skill" sits where the best of 100 identical skills would (2026-11-23)
+
+The admission gate above asks for "positive estimated gain, not merely
+occurred" ([[literature/papers/tang2026memory]]), and the testable rule asks
+for a prospective paired run of S against S ∪ {candidate}
+([[literature/papers/shang2026hypothesis]]). [[literature/papers/zeng2026resolution]]
+measures what the cheaper admission signals are worth. 100 Terminal-Bench
+skills were each run 8 times per task on 11 tasks. Admission was decided
+from one rollout and judged against the held-out rollouts.
+
+- **Judges did not help.** DeepSeek-V4-Flash judged the trajectory
+  pointwise, pairwise (both orders) or with an ACE-Reflector template.
+  Pairwise accuracy was 45.4–49.0% (random 50). False acceptance, the
+  share of admitted replacements that are worse than no skill, was
+  39.0–57.6%, against 30.5% for random admission. Execution score on one
+  rollout was 49.7%. The authors' reading is that the judge's own noise
+  adds to the outcome noise rather than cancelling it.
+- **Keeping everything is the degenerate gate.** Trace2Skill and
+  ReasoningBank admit every patch or memory on three of the four
+  benchmarks, which the paper notes "accepts regressions along with
+  improvements" like a noisy selector. In the variance grid, both sit
+  below both score-selecting text methods (SkillOpt-Lite, GEPA) in 14 of
+  21 model–benchmark cells (our count from Table 6). The methods differ
+  in more than the gate, so this is a pattern, not a test.
+- **The pool's best skill needs a max-of-identical null.** The paper
+  reports the strongest shared skill at 57.5% against a pool mean of
+  49.2% and a worst of 41.9%, as evidence that skills differ. Our
+  arithmetic: at 160 rollouts over these tasks a skill's mean has SD ≈ 3.1
+  pp, so the best and worst of 100 *identical* skills land about ±7.7 pp
+  from the mean. The observed spread (+8.3, −7.3) is what equal skills
+  would show. The paper's own Quality@K test, with a proper null, finds
+  +3.4 pp of real per-task headroom.
+- **Nearly any skill beat no skill.** A randomly chosen skill sat
+  roughly +8.6 pp over the no-skill baseline (read from Fig. 4b), and all
+  three printed skills open with the same six generic software-engineering
+  bullets. Without [[literature/papers/mitra2026agent]]'s neutral-text
+  arm, the generic preamble and the specific content cannot be separated.
+
+This fits [[literature/papers/nakayashiki2026lessons]] (11-03): the insert
+step lets noise in, there from a chance failure, here from a chance
+rollout.
+
+Rule for this project (our inference): an LLM's reading of a run is not
+admission evidence for a skill or rule. Admission needs repeated paired
+runs with and without the candidate, on tasks it was not written from.
+"Best in the pool" is reported against the expected max of an
+equal-quality pool of the same size and rollout count. A neutral text of
+similar length is the comparison for a generic gain.
+
+Limits:
+- Terminal-Bench only; one proposer and one judge model
+  (DeepSeek-V4-Flash).
+- Our max-of-identical figure assumes independent Bernoulli rollouts and
+  per-task rates read from Fig. 10; it is arithmetic, not a reported test.
+- The +8.6 pp random-skill figure is read from a plot axis.
+- False-acceptance intervals are wide (± 14 to ± 46 points).
+
+## A feedback-free rewrite drops first what only the author supplied, and deleting what the model would write cost nothing (2026-11-23)
+
+The "update" operation in this concept has always been scored against
+something: a validation set, a gate, a run
+([[literature/papers/zhou2026does]], 11-02). [[literature/papers/guo2026how]]
+removes the score. Six models each rewrite expert skills 30 times
+("identify problems and improve the skill"; no task, run or judge), then
+use them as agents. Each model's *prior* for a skill is sampled as ten
+skills it writes from the one-sentence topic. A judge marks each original
+item 0/10 (no sample states it) through 10/10.
+- **Every rewrite chain lost, mostly in round 1.**
+  - SkillsBench (87 tasks): −7.1 points after round 1, −14.6 after round
+    30. All 18 model × benchmark cells are negative at round 30.
+  - LogicBench's round-30 skills score what no skill does (71.4%).
+- **The loss is selective.** In round 1, 49.5% of 0/10 items are lost
+  against 23.0% of the rest. By round 30, 23.1% of 0/10 items survive
+  against 84.2% of 10/10 items. Lost 0/10 items come back 6% of the time
+  (others 30%). The gap holds within every item kind and under three
+  judges (κ 0.64–0.84).
+- **That content is the value.**
+  - Restoring only the lost 0/10 items recovers 8.8 of 14.6 points;
+    restoring the other lost items recovers 4.4.
+  - A word-matched deletion of ~23% of the original body (two models,
+    one run) costs −4.6 from 0/10 items and **+0.6 from ≥1/10 items**.
+
+This adds a third failure to the removal gate's list. The 11-02
+so2026masked section found that cost-driven proposers mostly *rewrote*
+clauses, and that 7 of 10 accepted rewrites weakened a check. The
+11-17 mehtiyev2026when section found that deleting a stale line
+let agents rebuild the old structure. Here, rewording without a score
+loses the author-only items first: of lost 0/10 items, 53% are dropped
+outright, 29% weakened and ~18% changed. It also complements
+[[literature/papers/wang2026beyond]]'s "internalized" state (10-27). A
+≥1/10 item is one the model *writes* unprompted. Deleting such items is
+the one edit here that cost nothing, which is the textual cousin of
+retiring an internalized skill.
+
+Rule for this project (our inference): treat *delete* and *reword* as
+different operations in any update or removal gate. Deleting text the
+reader's model writes from the topic alone is low-risk on this evidence.
+Rewording or consolidating text it does not write is where the loss
+happens. So a model-proposed edit should show its deletions verbatim and
+leave author-only items untouched unless a run says otherwise. The 0/10
+set can be found without a run: K self-written samples plus one judge
+pass per file. Labels were stable across samples (κ 0.76), and 0/10 sets
+overlap 82% across models.
+
+Limits:
+- Curated expert skills only. Rewriting a *bad* skill without feedback
+  is untested.
+- One run per cell in the main text, no intervals. A full evaluation's
+  SD is ~4 points (two GPT models), and the deletion contrast (−5.2) is
+  about 1 SD.
+- "Outside the prior" is confounded with "specific": paths, parameters
+  and numbers only count as stated when the content matches.
+- The rewriters are mostly mid-tier (Haiku 5.5 is the only Claude), the
+  rewrite holds length near the original, and only skill documents are
+  rewritten, one skill per task.
+- SkillDiff (tag the 0/10 items, +4.8) has no neutral-note control and no
+  repeats. Luna's +12.6 carries the mean; four of six models gain ≤ +3.4.

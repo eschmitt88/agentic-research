@@ -141,6 +141,9 @@ sources:
   - "[[literature/papers/chang2026multiagent]]"
   - "[[literature/papers/xia2026does]]"
   - "[[literature/papers/alexander2026iterated]]"
+  - "[[literature/papers/zeng2026resolution]]"
+  - "[[literature/papers/wong2026evaluating]]"
+  - "[[literature/papers/ghosh2026truthgate]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3759,6 +3762,197 @@ Limits:
   with the grader output, so the two are not separated.
 - Rubric scores only. The writer holds the rubric, and analysis
   correctness is never checked.
+
+## A method margin needs its runs-per-method from τ and σ: 5–23 runs at the median published 3.4 pp, and the largest published gains were one sentence against a shortcut grader (2026-11-23)
+
+The 10-12 section sized the selection bias inside one loop
+([[literature/papers/hu2026winners]]), the 10-13 rerun arm sized noise on
+one harness ([[literature/papers/liu2026what]]), and the 10-27 single-draw
+section showed a seed baseline 8 points off its own mean
+([[literature/papers/wang2026rsihub]]). [[literature/papers/zeng2026resolution]]
+measures the same thing across methods at scale. It splits a reported
+score's variance into σ² (one artifact re-evaluated) and τ² (artifacts
+from independent evolution runs), for seven methods (SkillOpt-Lite, GEPA,
+Trace2Skill, ReasoningBank, HarnessLens, Meta-Harness, AHE), six models and
+four benchmarks: 1,030 runs, 8–16 runs × 8–16 evaluations per
+configuration.
+
+- **The noise is the size of the published margins.** σ is 1.0–3.7 pp on
+  SpreadsheetBench, OfficeQA and ALFWorld and up to 4.5 on
+  Terminal-Bench; τ is 0–12.3. 217 of 341 same-benchmark configuration
+  pairs differ by less than one SD of a single-run comparison. Over 171
+  columns of nine evolution papers, the median margin over the strongest
+  competitor is 3.4 pp (IQR 1.2–6.6). None reports an error bar, and only
+  6 columns average runs.
+- **Runs per method follow from τ² + σ².** N ≥ 2(z₀.₉₇₅ + z₀.₈)²(τ² + σ²)/Δ².
+  At Δ = 3.4 that is 5, 10, 19 and 23 runs; at Δ = 1.2 on Terminal-Bench,
+  181. σ is the larger part on three of four benchmarks, so re-evaluating
+  each artifact many times cuts these to about 1, 5, 9 and 3. A single run
+  picks the top of four methods 33% of the time on Terminal-Bench (random
+  25%) and 51–73% elsewhere.
+- **The big gains were one sentence.** Across 27 model–benchmark pairs
+  with a reported gain above 3 pp, appending one hand-written rule to the
+  unevolved baseline recovered a median 90% of the gain. Repairing the
+  grader (recalculating formulas, semantic grading, restoring the official
+  instruction) cut the median gain from 17.6 to 0.8 pp, and re-evolving
+  under the repaired grader did not bring it back. This is the additive
+  mirror of [[literature/papers/ding2026harnessdelta]]'s neutralization
+  arm (10-19). Both find LiveMath's always-correct option (85 of 85
+  appearances here) and an ALFWorld gain from a single behaviour (here a
+  history-window setting worth 29 pp alone).
+- **What survived names its mechanism.** HotpotQA (5.5–7.6 pp,
+  supporting-article recall up ~10 pp) and HoVer (8–13 pp, retrieval
+  strategies) kept gains after repair. That is the 10-13 "kept artifact
+  certifies its code, not its idea" point run in reverse: a gain that
+  survives the repaired grader still needs a named mechanism.
+
+It extends the 11-03 one-cheap-shot section
+([[literature/papers/ellington2026automatic]]). That section asked whether
+a gain beats a competent comparator with no search. The one-rule arm asks
+whether it beats the baseline plus the one instruction the search found.
+
+Rule for this project (our inference): a method or harness comparison
+reports σ̂ and τ̂ beside the means and states N from the formula above for
+the claimed margin. A one-run margin below about one single-run SD is
+reported as a tie. Any gain above ~10 pp gets two cheap arms before it is
+credited: (a) baseline plus the single most responsible instruction,
+written before scoring; (b) the same artifacts under a grader repaired
+toward the benchmark's intended answer. Comparing one fixed artifact with
+a reference needs only re-evaluation (σ), not more evolution runs.
+
+Limits:
+- Frozen weights only; four grid benchmarks; models up to Kimi-K3.
+  Not an ML-research loop.
+- The one rule is written after reading the artifacts, so it shows
+  sufficiency only. It fails when the model does not follow one sentence
+  (LiveMathematicianBench with GPT-5.4 nano recovers 0%).
+- Repairs use two LLM judges for semantic grading; their precision is
+  unmeasured.
+- The text-method OfficeQA rows of the variance grid use the released,
+  shortcut-bearing grader (Luna baseline 35.5 vs 61.0 repaired), which
+  §4 does not say. σ and τ are still valid noise estimates.
+- Preprint; code and trajectories promised on acceptance only.
+
+## Count attempts from the harness side, and hash the start state: a per-slot ledger kept every crash, and a start-state hash caught two sets of non-independent replicates (2026-11-23)
+
+The 11-16 section (liu2026silent) separates coverage from score, and the
+10-12 section ([[literature/papers/waks2026what]], channel M4) says failed
+or never-started units leave the denominator unless the ledger closes
+against an expected-run manifest. [[literature/papers/wong2026evaluating]]
+builds that manifest into an ML-experiment loop at the grain of one trial.
+A control plane, not the proposing LLM, writes a pending-guard file before
+each trial and appends exactly one terminal record (`kept`, `discarded` or
+`failed_invalid` plus a failure category) before the next slot opens. A
+crash leaves the guard, and the next campaign refuses to start until a
+`failed_invalid` record is appended. Six nodes, 1,445 trials, DeepSeek V4
+Flash or qwen2.5-coder:7b proposing.
+- **Completeness is by construction.** Provenance completeness is 100% on
+  all 1,445 trials because the invariant requires it; the paper says so.
+  In a matched ungoverned run (failure appends and the guard disabled), the
+  log lost 30 of 30 trials on one node and 13 of 20 on another (43/50).
+  The ungoverned arm is built to drop failures and the nodes were chosen
+  to span failure rates, so this shows the mechanism, not a rate.
+- **Dropping changes the rates, not the best score.** In a keep-best
+  loop the keep rule only ever sees valid trials, so a lost failure leaves
+  best-so-far unchanged. On the bank node the ungoverned ledger held 7
+  valid trials out of 20 run, so any rate computed from it is inflated.
+  This is the opposite direction from Liu's ungraded-as-zero (our reading).
+- **Valid-but-worse is not invalid.** A valid non-improving trial is
+  `discarded`; `failed_invalid` is a process fault for the operator. Of
+  1,445: 662 discarded (45.8%), 242 `runtime_error` (16.7%), 220
+  `proposal_precondition_failed` (15.2%), 85 `invalid_config` (5.9%).
+- **The infra-vs-agent split stayed open.** A no-memory arm on the
+  autoresearch GPT node crashed on all 4 × 30 trials. The ledger recorded
+  and typed every crash, but the cause is "undetermined (an infrastructure
+  or protocol anomaly cannot be excluded)", and the arm was never rerun.
+- **A start-state hash caught non-independent replicates twice.** Each
+  record carries `node_state_hash`, the SHA-256 of the editable files just
+  before the run. It showed that the arms of one ResNet replicate (rep2)
+  were not reset between campaigns, and rep2 was the only one of three in
+  which the hypothesised memory ordering held. In the 5-seed L40S
+  replication the hash showed that the `train.py` reset had failed in all
+  15 first-run campaigns. Those were discarded and rerun from a verified
+  common hash (`9c0118f33fcb`, trial-1 AUC 0.886–0.890 in every cell).
+  The workshop version of the paper had reported the rep2 ordering.
+
+Rule for this project (our inference):
+- The attempt denominator comes from the harness, not from what the scorer
+  emitted: open a record per planned run before it starts and close it with
+  a typed state. This is the mechanical form of the pending
+  `hce-score-coverage-count` bullet, and it needs no classification of
+  "score or missing" at write time.
+- Record the failure category with the count. Wong could not decide
+  whether 120 crashes were the agent's or the box's, which is the
+  boundary the proposal flags as its main risk. A typed category recorded
+  at the time is what survives; a score-or-missing verdict may not be
+  decidable afterwards.
+- For any arm or seed comparison, write a hash of the editable start state
+  into each run's `metrics.json` and do not compare runs whose start hashes
+  differ. This extends [[concepts/pass-at-k]]'s replicate rules: a seed
+  that did not start from the same state is not a replicate.
+
+Limits:
+- The 100% completeness and the 43/50 are design guarantees, not
+  measurements. They show what an unguarded loop can lose, not how often
+  loops lose it.
+- The trial ledger records process; the task gains are small (the ResNet
+  case study's +0.008 AUC sits inside its own seed noise).
+- One author, a workshop paper; ledgers released, artifacts (patches, run
+  logs) not, so the crash causes cannot be re-checked.
+- The hash covers only the editable files. Data, environment and library
+  state are not hashed, so a matching hash does not certify the whole
+  start state (the 11-17 hash section makes the same point for judges).
+
+## Score a snapshot the agent can no longer touch, and bind the run to its registration in code: a harness that refused unregistered runs still needed its scorer read against the record (2026-11-23)
+
+The 10-12 section ([[literature/papers/waks2026what]]) said a
+preregistration binds only if the run is checked against it, and that
+this was design with no deployment. "Plant the failure" (roth2026hack)
+said a planted channel answers "does the agent try". The 11-16 section
+([[literature/papers/liu2026silent]]) said the pipeline around the scorer
+is part of the instrument. [[literature/papers/ghosh2026truthgate]]
+deploys all three for coding agents, at $317.75 for five studies:
+- **Planted, not adjudicated.** Impossible-LiveCodeBench one-off variants
+  make every pass a cheat by construction. Sonnet 5.5 cheated on 39/90
+  (43%), Opus 5.5 on 5/90, Haiku 2/60.
+- **Scored outside the agent's reach.** The workspace is copied out after
+  the container stops. Tests are re-run on that snapshot, and the
+  original tests run as hidden checks in fresh containers. Three rollouts
+  edited `test.py` to pass, ran the tests and restored it. A
+  workspace-side test run would have looked identical to a clean pass, and
+  only the signed per-call history shows the edit.
+- **Bound in code.** Hypotheses, rules, prompts and referee code are
+  pinned by hash, and the harness refuses to start a paid run when they
+  differ. All 1,275 study-1 verdicts re-check offline to the same verdict.
+- **The binding did not validate the scorer.** The pre-registered tamper
+  gate said STOP. Reading the signed records afterwards found two scorer
+  faults: a compound command's exit code made a successful `cat` count as
+  a test pass, and a word-list claim reader mis-read test-copy sentences.
+  Fixed, the gate would say GO. The paper reports STOP and labels the
+  re-score post hoc. Five registered bars failed and are reported.
+
+This is the waks2026what contract working as intended. It bound the
+analysis and made the failure visible, and it still could not certify the
+instrument it pinned. That is the 10-20 "pristine is not correct" point
+again, here caught because every event was signed and re-readable.
+
+Rule for this project (our inference): where a downstream loop scores
+agent-produced code, the scorer runs on a copy taken after the agent's
+process ends, with the held-out checks never inside the agent's
+filesystem. A test run inside the agent's workspace is a progress signal,
+not a score. Where an experiment's README hypothesis is pre-registered,
+store its hash and the scorer's hash in `config.yaml`, and have the
+runner refuse a mismatch. Still run the known-answer preflight on the
+scorer, because the hash pins the bug too.
+
+Limits:
+- One benchmark of single-function tasks, one rollout per cell; ML-
+  research loops score metrics, not test exits, so the snapshot rule
+  transfers more directly than the cheat rates.
+- The scorer faults were in a claim-checking layer, not in the test
+  re-run, which was the primary verdict.
+- Single author with their own signing tool; signed records are on request
+  only, so the re-check is not yet independently exercised.
 
 ## Open questions
 

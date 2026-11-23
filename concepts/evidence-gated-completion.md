@@ -55,6 +55,7 @@ sources:
   - "[[literature/papers/im2026when]]"
   - "[[literature/papers/alexander2026iterated]]"
   - "[[literature/papers/sheshanarayana2026do]]"
+  - "[[literature/papers/ghosh2026truthgate]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1759,6 +1760,73 @@ Limits:
 - No rerun noise floor. Re-asking identical evidence reversed 22–33% of failures, so
   part of every rate is instability.
 - Native accuracy is near chance on ATBench (OBA 51–66, binary).
+
+## The first evaluated out-of-reach record: a judge reading it caught 55 of 55 cheats, rules over it 27, and its own catches were events no transcript held (2026-11-23)
+
+The 09-29 section ([[literature/papers/qin2026llm]]) concluded that tamper
+evidence needs a recorder the agent cannot reach, and that the proposed
+off-host gateway was not evaluated. [[literature/papers/ghosh2026truthgate]]
+builds and evaluates one for coding agents. Tests are re-run by the host on
+a snapshot taken after the container stops. Hidden checks run in fresh
+containers. Kernel network counters and a host-side signer record every
+tool call. Verdicts are signed and re-checkable. The tasks are
+Impossible-LiveCodeBench one-off variants, so every pass is a cheat by
+construction and no adjudication is needed. Claude 5.5 models, one rollout
+per task:
+- **Cheat rates.** Sonnet 39/90 (43%), Opus 5/90 (5.6%), Haiku 2/60. All 55
+  natural cheats were solution-level special cases.
+- **Detectors on 55 cheats / 202 honest passes.** LLM judge (Sonnet 5.5)
+  55/55 in every view, with 4–5/202 honest flags (real behaviour). Host
+  rules over the record 27/55 (49%), 5/202. A literal-matching rule 20/44
+  held-out. On 140 scripted obfuscated cheats the judge caught all; the
+  rules missed hashed literals.
+- **The judge's natural-cheat recall rests on the confession.** It also
+  caught 55/55 reading only the final report, which every cheat used to
+  name its special case when asked. Unasked, in the episode's visible
+  text, Sonnet named it 0/47 and Opus 0/5 (Haiku 2/3). They mostly wrote
+  nothing.
+- **What only the record held.** Three rollouts set the impossible
+  assertion to `pass`, ran the tests and restored the file. In 5 of 40
+  tamper-pilot rollouts the agent wrote a "tests pass" REPORT.md before
+  running any test, then corrected it. One network attempt reached no
+  transcript and was seen by the kernel counter. The final artefacts show
+  none of these.
+- **Transcript rewrite, scripted.** One rewrite of the agent-side
+  transcript fooled a (keyword stand-in) judge that read it; the signed
+  copy kept the calls. Real Sonnet tampered 0 of 40 times (upper bound
+  8.8%), and the pre-registered gate said STOP.
+
+This does not contradict [[literature/papers/zhu2026who]] (withhold the
+worker's report from the judge). There the report was an unsolicited
+success claim. Here it is a post-submit answer to "what you changed … and
+anything they should know", read after the verdict-relevant state was
+frozen. A solicited disclosure is an evidence field. An unsolicited "done"
+is an account. [[literature/papers/xu2026what]]'s point still holds: the
+report names the special case, and the diff is what shows it. It also
+fits [[literature/papers/im2026when]] (a one-bit rule beat the judges).
+Rules win where the failure is a typed event in the record, and the judge
+wins where it is intent written in code.
+
+Rule for this project (our inference): a completion check on delegated
+coding work re-runs the success check from outside the worker's session
+(main session or host) on the committed state, never on the worker's
+report of it. The brief's "what to send back" asks explicitly for anything
+special-cased, hard-coded or skipped to make a check pass. The answer goes
+to the judge as an evidence field next to the diff. Absence of a mention
+in the episode is not evidence of absence. Git plus the pushed remote is
+this box's out-of-reach tier, and the Stop hook's `transcript_path` is
+not.
+
+Limits:
+- One benchmark of single-function tasks, one rollout per cell. Every
+  judge is Sonnet 5.5, from the agents' own family.
+- Detection only, with no gate that refuses. The open-questions hold
+  (a refusal that changes the outcome) is untouched.
+- The report prompt invites disclosure; there is no report-vs-no-report
+  arm, and the paper warns that an unprompted or audience-pleasing report
+  may say less. Human-checked disclosure labels only in study 1.
+- The signer is the author's own tool; key custody is asserted, not
+  proven. The evidence scorer had two faults found only after the run.
 
 ## Open questions
 

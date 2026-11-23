@@ -48,6 +48,7 @@ sources:
   - "[[literature/papers/kanke2026rtaste]]"
   - "[[literature/papers/wang2026paretorsigym]]"
   - "[[literature/papers/wang2026beneath]]"
+  - "[[literature/papers/zeng2026resolution]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -817,6 +818,67 @@ Limits:
 - One lineage per cell. AGE was designed on the same benchmarks and run
   once, with no transfer test or matched-spend sampling arm.
 - Select study: 4 pools × 4 Parents, 20–27 task Test panels.
+
+## On a frozen pool, one-rollout selection picked the better skill 49.7% of the time; in-loop gains of 6.9–9.0 pp re-scored at +0.4 to −3.2, and 16 rollouts per candidate was the one fix tested (2026-11-23)
+
+The 11-17 section re-scored one lineage per cell at eight passes and
+found that the native select rules hit the best parent at or below chance
+on τ³ ([[literature/papers/wang2026beneath]]). [[literature/papers/zeng2026resolution]]
+isolates the select step on a frozen pool, so proposal and selection are
+measured apart. 100 skills written from Terminal-Bench and DeepSWE
+trajectories run 8 times on each of 11 Terminal-Bench tasks. Each
+selector sees one rollout (two for the native rules), and quality is the
+posterior on the rollouts it did not see.
+
+- **Every selector is at chance.** Pairwise accuracy: execution score
+  49.7 ± 1.9%, native SkillOpt-Lite and GEPA 48.6 ± 2.6, three
+  DeepSeek-V4-Flash trajectory judges 45.4–49.0 (random 50). A single
+  execution score correlates 0.054 with posterior quality. Regressions
+  are 30.5% of the pool and 62.1% of execution-accepted replacements
+  (± 42.9, so possibly no worse than random). An oracle reaches every
+  selector's K = 100 quality within K < 5. More candidates bought
+  nothing, which is [[literature/papers/chen2026auditing]]'s Prop. 1 (see
+  [[concepts/evolutionary-search-grain]], 10-26) from the selector's side.
+- **Proposals did carry headroom, but small.** On a separate pool, the
+  best of K skills per task beats an equal-quality null by +3.3 to +3.4 pp
+  at K = 100 (+2.2, intervals overlapping, under a tighter prior). That
+  is per-task routing, not one shared skill.
+- **In-loop gains are the winner's curse.** Eight SkillOpt-Lite and eight
+  GEPA runs × two models report in-loop gains of 6.9–9.0 pp on the 18
+  validation tasks. Re-run at eight rollouts, the same artifacts sit at
+  +0.4 to −3.2 pp. This is [[literature/papers/hu2026winners]]'s inflation
+  on an agentic benchmark.
+- **Repeated validation was the one intervention.** 16 validation
+  rollouts per candidate instead of 1 (SkillOpt-Lite, 16 runs, ≤ 8 rounds)
+  raised mean final test 61.4% → 64.4% and the best run 64.8% → 72.7%.
+  With one rollout, a lucky incumbent (e.g. 80% on validation) blocked
+  every later candidate and the loop stalled within four rounds.
+
+The run-to-run picture is less clean than the paper's P3 chain. On the
+validation tasks, noise-corrected τ̂² grows from 0 to 4.2–24.5 pp². On the
+53 held-out test tasks, the same method–model pairs show τ̂ of 0.0–1.5 pp,
+except GEPA-Luna (6.0) (our comparison of Fig. 6 with Table 6). Runs
+drift apart on the tasks they were selected on, and most of that drift
+does not transfer. Ranking flips on Terminal-Bench test come mainly from
+σ (3.5–4.0 pp), the final evaluation's own noise.
+
+Rule for this project (our inference): this confirms the 11-17 rule
+(score incumbent and candidate on k ≥ 4 draws before a keep decision), and
+on this evidence k = 16 is the only tested setting that helped. Do not
+replace repeated draws with an LLM judge of the trajectory. A judge added
+noise rather than resolution here. A selector is credited only on a
+frozen pool with held-out rollouts as ground truth, by pairwise accuracy
+against 50% and by false acceptance against the pool's regression share.
+
+Limits:
+- Terminal-Bench v2.1 only; proposer and judge are both
+  DeepSeek-V4-Flash. Six of 11 Selection Pool tasks are the skills' source
+  tasks.
+- About half of the 11 tasks sit above 96% or below 6% (read from Fig. 12
+  axes), which pulls pairwise accuracy toward 50% mechanically.
+- The 16-rollout result has no interval, model or benchmark stated, and no
+  matched-compute arm (16× the candidates at one rollout).
+- No statistical gate (TRUST, PACE) was tested as a selector.
 
 ## Open questions
 
