@@ -925,3 +925,33 @@ All corrections, plus four suggestions for `/elevate` (none applied), are in the
 Commits: `3687b96` (candidates), `4cbf075` (PDFs), `d6ed063` (ingest), `df062bb` (logs and curation).
 
 The timer stopped a leftover background job. It was still waiting on the abandoned OAI-PMH harvest, which the arXiv API pull had already replaced. No harvest processes are still running, and the digest results above are unchanged.
+I added a `## 2026-11-23` weekly rollup to `NOTES.md` covering 11-17 → 11-23, committed it as `5aaf20b` and pushed it. The push also sent the earlier session commit `80636d9`, which hadn't reached GitHub yet, so `main` now matches `origin/main`.
+
+**Did**
+- **11-17 /curate:** closed the 11-16 digest. It ingested 18 papers and declined 4, and papers went from 330 to 348.
+- **11-22 /elevate:** raised one proposal out of 7 candidates, `hce-score-coverage-count`: every score should show how many items were actually graded, because an ungraded item isn't a zero. The control check passed, and the other ideas were held with reasons.
+- **11-23 digest:** ingested its top 6 of 20 candidates, taking papers from 348 to 354. The concept count stayed at 36, and /promote-moc declined both times it ran.
+
+**Findings**
+- Digest abstracts keep overstating the papers: 8 of 18 came in below their summary on 11-17 and 3 of 6 on 11-23, with none above.
+- One of the new papers, `wong2026evaluating`, only partly supports the 11-22 proposal.
+- `dhuri2026markdown` is not evidence that gates beat prose, because a script error removed the comparison.
+- Two ingest commits said there are 37 concepts; the real count is 36. The count includes `_README.md`.
+- The 11-20 auto-push failed because github.com couldn't be resolved; later pushes caught up.
+- The cron digests ran on time, but `~/.claude/.env` still has no long-lived login token.
+
+**Next.** I dropped items that are now closed:
+- the `chu2026when` amendment, which went to /elevate and was held;
+- the suggested-concepts decision, which was deferred until each concept has a second source.
+
+New items:
+- decide the 11-22 proposal;
+- curate items 7–20 and the near misses in the 11-23 digest;
+- route the three /elevate candidates raised in the 11-23 digest's curation notes.
+
+Still open from before:
+- the cron login token;
+- documenting how /digest harvests arXiv;
+- the three long-standing items.
+
+The entry is 34 lines with headings and blank lines, a little over your ~30.
