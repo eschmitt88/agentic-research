@@ -24,6 +24,7 @@ sources:
   - "[[literature/papers/busch2026ctxagent]]"
   - "[[literature/papers/sheshanarayana2026do]]"
   - "[[literature/papers/liu2026agents]]"
+  - "[[literature/papers/chen2026compactbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/context-eviction-policy]]"
@@ -497,6 +498,80 @@ Limits:
   would not, and the paper has no arm where the writer must page it in.
 - Toy worlds with checkable rules; no code or worlds released.
 - Record relay was run on 10 outcome-selected worlds for three models only.
+
+## The environment's share, measured across twelve compactors: a restored repository alone carried most of a coding run, and a re-derivable omission still cost actions (2026-11-24)
+
+This page's scope condition says an explicit address pays only where the
+environment cannot re-show the evicted content
+([[literature/papers/fan2026empirical]],
+[[literature/papers/lencevicius2026when]],
+[[literature/papers/salle2026benchmarks]]).
+[[literature/papers/chen2026compactbench]] measures the environment's share
+directly. Its "without H_b" arm resumes from the replayed boundary state
+with the task only: no history and no summary. Executor (Claude Opus 4.8)
+and action budget are the same as for twelve compactors' 10% summaries.
+
+| | 25% | 50% | 75% |
+|---|---|---|---|
+| Coding, initial repo, no history | 48.5 | 35.5 | 15.6 |
+| Coding, boundary repo, no history | 66.7 | 58.1 | 71.9 |
+| Coding, boundary repo + summary (12-model mean) | 64.0 | 72.7 | 86.1 |
+| Search (open web keeps no task state), no history | 26.9 | 15.4 | 7.4 |
+| Search + summary | 52.9 | 42.6 | 34.6 |
+
+- **Once work is written to the workspace, the workspace is the larger
+  carrier.** At the 75% Coding cut, the repository alone gives +56.3
+  points over starting fresh, and the summary adds +14.2 on top. At 25%,
+  where little has been edited, the summary adds nothing (−2.7). In
+  Search, where nothing persists, the summary is the only carrier. It adds
+  +26.0 to +27.2 at every cut.
+- **Whether the work has been written to the environment predicts
+  survival, not the domain.**
+  - Coding tasks with a file edit before the cut score 86.9% against 53.0%
+    without. This is observational: the share of tasks with an edit also
+    rises with the cut (30% → 88%).
+  - Prior test runs add nothing once an edit exists (86.5% vs 87.2%).
+  - Case G marks the edge. A SWE-bench run had located the helper it
+    needed (`dmp_diff_in`) but edited nothing. The four summaries that
+    omit the name all fail, spending 4 of 8 actions re-finding it with the
+    same grep-and-read the source used. Four of the eight that name it
+    succeed.
+- **Re-derivable is not free under a budget.** 92.0% of failed Coding
+  continuations ran out of actions. Across domains, the executor tried to
+  recover information in 95.1% of applicable failures. The environment
+  made the omission recoverable, and the step budget made recovering it
+  the failure.
+
+This refines the 2026-10-27 advice to ask the re-derivability question per
+item type. Ask it per item *state*. Even inside a coding workspace, these
+live only in the context:
+- a resource that was located but not yet written;
+- a rejected candidate;
+- an unverified lead;
+- a verification plan.
+
+A finished edit lives in the environment.
+
+It also qualifies [[literature/papers/nguyen2026cliffcompaction]]'s "the
+address can be the action". Re-issuing the calls works, but it costs
+actions that a tight budget may not cover. A path or symbol name kept in
+the summary is the cheaper address.
+
+Rule for this project (our inference): before a compaction or a hand-off,
+write work in progress to a file, rather than leaving it as a finding in
+chat. That covers an edit, an experiment result, a located path. The
+PreCompact hook already asks for this. The edit contrast is observational
+support, and it comes from code edits, not notes.
+
+Limits:
+- The no-history arms cover Search and Coding only, with one executor.
+  The summary arm is a 12-model mean at one generic prompt and a 10%
+  ratio.
+- The edit indicator is observational and confounded with stage. Late
+  Coding runs are also nearly done: 41% of successes finish within two
+  actions.
+- There is no explicit archive or recall arm, so this measures the
+  environment as the store, not an addressable offload.
 
 ## Open questions
 

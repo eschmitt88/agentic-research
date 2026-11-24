@@ -149,6 +149,7 @@ sources:
   - "[[literature/papers/du2026critic]]"
   - "[[literature/papers/houlamy2026who]]"
   - "[[literature/papers/wang2026harness]]"
+  - "[[literature/papers/passos2026one]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -4320,6 +4321,70 @@ Limits:
   describes where scores come from. It is not an unbiased alternative.
 - Each agent run is scored once. This is not an ML loop with a validation
   split, and the quiet-stop rate is for small models.
+
+## Before a paired harness test: the reference fix passed on 37 of 129 tasks as shipped, a replay showed the control's requests unchanged by the treatment's plumbing, and a hypothesis found at p = 0.0088 on one backend failed on the next (2026-11-24)
+
+The 10-20 known-answer preflight ([[literature/papers/chen2026when]]) asks
+that a known-good submission pass. The 10-27 cads section
+([[literature/papers/chen2026cads]]) asks that a component's delivery be
+counted, not its quota. [[literature/papers/passos2026one]] runs both,
+plus two checks this page has not recorded, before a paired memory-vs-none
+test on a Gemma 4 coding agent.
+- **Gold patches as the known-good probe.** In the shipped environment the
+  reference fix passed on 37 of 129 tasks. Adding missing test dependencies
+  raised this to 68. Pinning, per snapshot, the newest wheel its pyproject
+  allows raised it to 105. That step fixed 44 fastapi failures from a
+  too-new starlette. 24 tasks were excluded by written rules. Without the
+  check, 71% of tasks could not be passed by any patch, and both arms would
+  have been scored on them.
+- **Control-arm invariance.** The baseline build is byte-identical at every
+  code pin, and a test rebuilds and compares it. A CPU replay after masking
+  sandbox ids showed the no-memory arm sending 33 of 33 model requests
+  identical before and after the memory plumbing landed. The same replay
+  caught an interpreter path that would have failed every task in a fresh
+  session.
+- **Smoke gates on the treatment.** Three bugs would have produced plausible
+  wrong results. A skill write was flagged as path traversal. Host paths
+  under the subprocess sandbox made memory report itself unavailable and
+  would have shared notes across concurrent tasks. Agents that skipped
+  recall would have run the arm "as memory with nothing in it". Delivery
+  then became a registered outcome: 47% and 65% of compactions.
+- **A hypothesis holdout across backends.** Two hypotheses found on Modal
+  were frozen as code and tested on Kaggle before any Kaggle treatment row
+  was read. H-b ("memory makes the model leak raw thought text") was 6/0 of
+  16 on Modal, Fisher p = 0.0088. On Kaggle it was 5/5 of 32, p = 0.63.
+  Kaggle's control already leaked in 5 and 3 of 32 runs against 0 of 16 on
+  Modal, which was recorded before the replication, so a serving stack is
+  the likelier cause. Of 23 post-hoc tests, none survives Bonferroni.
+
+For this concept: the gold-patch funnel is the known-good half of the
+preflight failing at scale on a public benchmark, with no tampering
+involved. Clause 4's pristine scorer would have run faithfully on 92
+unpassable tasks. The control-arm replay is a check this page lacked. A
+treatment's plumbing can change the arm meant to stay fixed, and comparing
+the control's request bytes before and after the change shows whether it
+did. The hypothesis holdout is HCE's split applied to findings: a stratum
+that discovers a hypothesis spends itself for that hypothesis, as a
+validation split does for a score.
+
+Rule (our inference), for a downstream paired harness comparison:
+- Run the reference solution under the scoring environment on every task
+  before either arm runs. Exclude by written rule and report the funnel.
+- When the treatment adds code to a shared harness, replay the control arm
+  before and after and require identical model inputs (after masking ids),
+  or report the difference.
+- Register a delivery count for the treatment per opportunity.
+- A pattern found in one stratum or backend is frozen as code and tested on
+  another before it is quoted.
+
+Limits:
+- One harness, one small model, SWE-style Python tasks. The funnel's
+  exclusions skew toward fastapi tasks that error on their base commit.
+- The replay compares 33 requests from one setting.
+- The scorer is a scorer-like subprocess environment, not the official
+  Docker scorer, so "valid" means valid there.
+- The replication backend also differs in repository mix (all `requests`
+  tasks on Modal).
 
 ## Open questions
 

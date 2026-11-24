@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/tsuchida2026do]]"
   - "[[literature/papers/mehtiyev2026when]]"
   - "[[literature/papers/sun2026keeping]]"
+  - "[[literature/papers/chen2026compactbench]]"
 used_by:
   - project_slug: intent-briefing
     imported_on: "2026-11-13"
@@ -866,6 +867,61 @@ On this box that would be a ledger `/curate` writes per item and a
 
 Limits: one task; Sys and Remind have no CIs against Plain. The "pin
 progress" step is ours: the paper pins it *and* gates it, unseparated.
+
+## A verbatim-pinned task did not stop twelve frontier summarizers from carrying the agent's own assumption as part of it (2026-11-24)
+
+The 2026-11-16 chu2026when section ends with "Whether Opus-class
+summarizers invent policy is unmeasured." [[literature/papers/chen2026compactbench]]
+gives one frontier case, not a rate. Its compaction keeps the system prompt
+and task statement verbatim, outside the summary, which works as a pinned
+head. Twelve frontier compactors each summarize the rest of the history:
+Claude Opus 5, GPT-5.6-Sol, Gemini 3.8 Flash and nine others.
+
+- **Case C (BrowseComp).** The question asks for a school formed in the
+  1990s by merging two schools, with a Latin name, in a town with
+  19th-century history.
+  - In round 2 the source agent added "gold rush town" to its own queries
+    and kept it there.
+  - All twelve summaries carried the gold-rush framing as part of the
+    task. The pinned question beside them never said it.
+  - Nine continuations converged on a gold-rush-town candidate that failed
+    the question's two-school clue. Accuracy was about 16.7%, with 83.3%
+    early failure.
+- **The rate, with caveats.** An LLM annotator labels constraint/goal
+  distortion in 25.4% of early failures and 24.3% of budget-exhausted
+  ones. That is a target or criterion changed or lost in what the
+  executor sees. An omission is not counted when the pinned task still
+  states the rule, so these are mostly changed or added constraints. The
+  label goes with +10.5 points more unverified commitment. There is no
+  rate for successful continuations and no agreement figure.
+- **Case D: a rule nobody stated cannot be pinned.** The source agent
+  tested each candidate against the one discriminating clue before
+  answering, but never wrote that down as a rule, and no summary carried
+  it. Continuations from 11 of 12 compactors' summaries submitted wrong
+  answers early, with more than 80 of 140 actions unused.
+
+For this concept: pinning the task text fixes the authoritative copy, but
+the summary still sits beside it, can add requirements, and is what the
+reader follows. The same thing appears in two earlier results:
+- chu2026when's development split: 46 of 64 invented restrictions came
+  from the agent's own earlier guess.
+- [[literature/papers/sun2026scipivot]]: a self-imposed restriction was
+  later read as "human-authorized".
+
+What is new is frontier summarizers, Opus 5 included, and a search
+constraint rather than a permission. It supports the candidate PreCompact
+amendment from the 2026-11-16 section ("the summary states no requirement
+the user did not give"), extended to requirements the agent introduced
+itself. One case is not gate-grade evidence for that amendment.
+
+Limits:
+- The mechanism rests on one selected case. The rate is LLM-labelled and
+  covers failures only.
+- The executor is not Claude Code and there is no CLAUDE.md re-injection.
+  The "pin" is the retained task head.
+- The invented item is a search assumption, not a permission or a
+  prohibition. Whether frontier summarizers turn agent-introduced
+  *permissions* into rules is still unmeasured.
 
 ## Open questions
 

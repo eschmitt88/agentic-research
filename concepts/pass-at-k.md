@@ -46,6 +46,7 @@ sources:
   - "[[literature/papers/wang2026beneath]]"
   - "[[literature/papers/srivastava2026appscibench]]"
   - "[[literature/papers/wang2026harness]]"
+  - "[[literature/papers/passos2026one]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -909,6 +910,59 @@ Limits:
   rules that differ by collection) are not separated.
 - 18 tasks. Agent runs, not seeded training runs, whose noise this does
   not measure.
+
+## A same-arm rerun flipped 9 of 48 tasks and moved as far as the treatment, a post-result extension reversed +8.3 to −10.0, and every treatment win was a task the control solved on its own rerun (2026-11-24)
+
+The 10-13 flip-rate section ([[literature/papers/liu2026what]]) asks for a
+same-configuration pair next to any treatment pair at k = 2.
+[[literature/papers/passos2026one]] registers that pair in advance for a
+single harness change. The change carries a sub-agent's last finding across
+compaction in a Gemma 4 31B (4-bit) coding agent, on paired SWE-bench-family
+tasks, one run per arm as primary.
+- **The A/A moved as far as the effect.** The no-memory arm, run 2 against
+  run 1, changed outcome on 9 of 48 tasks (18.75%; Wilson about 10–32%, our
+  arithmetic). On Modal it moved +6.3 points, exactly the Modal treatment
+  effect. At that churn the paired SE over 48 is about 0.063, so 80% power
+  needs about ±18 points. At 98 pairs it needs about ±12.
+- **The direction did not survive fresh tasks.** Primary, 48 pairs: 29 vs 25,
+  +8.3 [−2.1, +18.3], McNemar p = 0.22. An extension on 50 new tasks,
+  pre-registered after that result: 18 vs 23, −10.0 [−20.2, +0.7], p = 0.125.
+  Combined: 47 vs 48, −1.0 [−8.3, +6.3]. Neither set exceeds its MDE, and no
+  heterogeneity test was registered, so the paper claims no reversal either.
+- **The discordant pairs were control noise.** The treatment's 5 primary wins
+  were all tasks the no-memory arm solved on its own run 2. The control's one
+  win was a treatment run caught in a submit loop. Treatment-vs-control
+  discordance was 6/48 (12.5%) and 13/98 (13%) combined, below the A/A's 19%
+  (our arithmetic). Arms differed less than one arm differed from itself.
+
+This is the 11-17 "seed-vs-seed placebo" rule
+([[literature/papers/wang2026beneath]]) applied pair by pair at k = 2. It is
+also the first case in this graph where a promising first set (+8.3,
+bootstrap lower bound exactly 0) was followed by a pre-registered fresh set
+and flipped sign. The A/A rate is close to liu2026what's 13–16% on a
+different model and harness. That suggests rerun churn of one task in six or
+seven on SWE-style tasks. It does not establish a constant.
+
+Rule for this project (our inference):
+- Before a paired harness, skill or prompt comparison, run or reuse a
+  same-configuration A/A at the same k on the same tasks. Compute the MDE
+  from its discordance. At 15–19% churn, ±10 points at 80% power needs about
+  110–150 paired tasks, and ±5 needs about 450–600. Below that, label the
+  comparison a pilot.
+- For every discordant pair, check whether the losing arm solves the task on
+  its own rerun. A win the control reproduces alone is not counted as an
+  effect.
+- A favourable first set is followed by fresh tasks, not by a pooled
+  headline. Report each set's own estimate beside the pool.
+
+Limits:
+- The A/A covers the no-memory arm only, on 48 tasks and two backends. The
+  treatment arm's own rerun exists only on Kaggle.
+- One quantized 31B model. Backend is confounded with repository (all
+  `requests` tasks on Modal). The extension ran on a third backend with a
+  different repo mix.
+- k = 1 per arm in the extension. The replicate runs of every task (Phase R)
+  are reported elsewhere.
 
 ## Open questions
 

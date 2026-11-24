@@ -68,6 +68,8 @@ sources:
   - "[[literature/papers/zha2026do]]"
   - "[[literature/papers/chu2026when]]"
   - "[[literature/papers/liu2026agents]]"
+  - "[[literature/papers/passos2026one]]"
+  - "[[literature/papers/chen2026compactbench]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -1257,6 +1259,164 @@ Limits:
   selection runs. The all-worlds sol figure (61%) is the safer number.
 - Single author, no code, worlds or prompts released. Variant and length
   results are one model, 10 worlds, no intervals. No Claude model.
+
+## A harness slot carrying the explorer's last finding across compaction tied no memory (47 vs 48 of 98), cost about 2,000 tokens a request, raised compactions, and was filled at only 47–65% of compactions (2026-11-24)
+
+Implementation guidance item 2 anchors a structural prefix across
+compactions. The 2026-09-29 note records a state-gated injection that
+[[literature/papers/srikanth2026recursive]]'s evolved harness kept.
+[[literature/papers/passos2026one]] is the first pre-registered paired test
+in this graph of a harness-side carry-over slot. In the Gemma 4 Developer
+Agent harness (Gemma 4 31B QAT, compaction at a 14,336-token previous
+prompt, 32k limit), two slots fill on every coder call after a compaction:
+- the explorer sub-agent's latest answer (≤15 lines);
+- a notes page the agent writes through a notes tool (≤1,500 tokens). The
+  agent is asked to write after each explorer answer and each edit.
+
+The arm began as agent-requested recall. Six smoke runs wrote no notes, so
+before any result it became automatic, the pre-registered fallback.
+- **No resolve-rate effect.** 98 paired SWE-bench-family tasks: 47 vs 48,
+  −1.0 [−8.3, +6.3]. The first 48 gave +8.3 [−2.1, +18.3] and 50 fresh ones
+  −10.0 (see [[concepts/pass-at-k]]). The registered secondary, repeated
+  actions per compaction, was also null: +0.30 [−4.50, +5.98].
+- **The agent did not write memory.** Notes appeared in 2 of 16 Modal and 4
+  of 32 Kaggle runs. All 11 `plumbing_failed` Modal runs were adherence
+  failures: 4 never ran the first recall, and 7 had nothing to inject.
+- **Delivery was partial even when automatic.** Something was injected at 21
+  of 45 compactions (Modal) and 50 of 77 (Kaggle). Nothing can be injected
+  before the first explorer call.
+- **The slot has a context price.** The plumbing adds about 2,000 tokens to
+  every request (median first request 3,966 vs 2,311). Compactions rose from
+  23 to 45 on Modal (post hoc, +1.38 per task [+0.31, +2.69]) and from 71 to
+  77 on Kaggle. Kaggle overflows were 7 vs 5. The trigger reads the previous
+  prompt's size, so one large step can overflow before compaction runs.
+
+For this concept: a slot holding the last sub-agent answer is not the
+content this page's evidence says summaries lose. That content is stated-once
+constraints, failures, rejected options and non-re-derivable observations
+(2026-10-20, 10-27 and 11-16 sections). So the null does not count against
+carrying those. It does say three things about any carry-over. A slot filled
+from agent output is empty wherever the agent produced nothing. A fixed
+addition to every request moves a size-based trigger earlier and raises
+overflow risk. And an intention-to-treat comparison then measures "feature
+on", not "state carried". The adherence result is a fifth "offered, rarely
+used" case after the [[concepts/lossless-context-offload]] series, here on
+writes rather than reads, and on a small model. Opus-class models do write
+hand-offs when asked ([[literature/papers/busch2026ctxagent]]). The paper's
+own next step is the 11-23 rule from the other side: build the recap from
+the harness's tool history, so it needs no cooperation and is present at
+every compaction.
+
+Rule for this project (our inference):
+- A carry-over slot logs, per compaction, whether it was filled. Report the
+  delivered share beside the outcome.
+- Fill carry-over from the harness record (tool calls, diffs, failures), not
+  from content the agent is asked to write, unless the backbone is shown to
+  write it.
+- Price the slot against the compaction trigger: report compactions and
+  overflows per arm, and compare with a token-matched filler arm before
+  attributing a result to the content.
+
+Limits:
+- One quantized 31B model, a 32k window, Python repository tasks, a
+  subprocess sandbox rather than the official scorer.
+- The design resolves only effects above about ±12 points combined.
+- With delivery under 70%, per-protocol is 26 pairs (13 vs 11) and
+  conditions on a post-treatment variable.
+- No filler arm, so the content's value and the extra compactions' cost are
+  not separated. The misleading-memory control was dropped for budget.
+
+## Twelve frontier compactors at a 10% budget kept a successful run alive 46–69% of the time; most failures were omissions paid for in actions, and a carried fact's status mattered as much as its presence (2026-11-24)
+
+The "Compaction fidelity" open question asks how much a compaction step
+loses. The sections above answer it on recall probes
+([[literature/papers/xu2026what]]), planted rules
+([[literature/papers/zha2026do]]), invented policy
+([[literature/papers/chu2026when]]) and toy-world handoffs
+([[literature/papers/liu2026agents]]).
+[[literature/papers/chen2026compactbench]] (CompAct-Bench) scores it on
+whether real execution survives.
+
+- **The design.**
+  - Successful runs on BrowseComp, SWE-bench Verified and an internal
+    workspace suite (200 instances) are cut at 25/50/75% of their actions.
+  - Twelve frontier models compress the history before the cut to 10% of
+    its characters, all with one shared prompt. An iterative calibration
+    loop matches lengths: 86.7% of compactions land within ±3%.
+  - A fixed executor resumes from the replayed environment, with exactly
+    the actions the source run had left. It is Opus 4.8, or GPT-5.5 Codex
+    for the workspace suite.
+- **Survival is 46.0–68.5%, mean 56.7%.** Claude Opus 5 is best (68.5
+  [62.0, 74.5]), and the top and bottom intervals do not overlap. Every
+  source task had passed 3 of 3 screens. But **no full-history
+  continuation under the same budget was run**, so the gap to 100% is an
+  upper bound on what compaction costs, not a measurement of it.
+- **Most failures are omission, then re-acquisition, then no actions
+  left.**
+  - 91.6–97.7% of failed continuations used up the budget. Early stops
+    are about 2–8%.
+  - An LLM annotator labels 25.3% of the units needed to continue as
+    omitted and 5.6% as distorted.
+  - Critical omission goes with +18.2 points more repeated work. The
+    executor tries to recover lost state in 95.1% of applicable failures.
+
+  This is the failure side of [[literature/papers/bai2026how]]'s redundant
+  re-reading. A lossy summary turns into re-work, and under a fixed step
+  budget the re-work is the failure.
+- **A fact's status carries weight, not only its content.** "Premature
+  commitment" (an unresolved hypothesis written as settled) is in 56.7% of
+  early failures and 46.0% of budget exhaustions. Two case studies are the
+  cleaner evidence.
+  - Case F: all twelve summaries state the same disqualifying fact (8
+    authors, 7 required). The three that write it as a decision all
+    succeed, and so does one that lists it with no next step. Five of the
+    eight that keep it open use up a 39-action budget re-checking it.
+  - Case C: summaries that assert a half-matching candidate lead to
+    two-round wrong submissions. Only the two that keep alternatives alive
+    succeed.
+
+  A fact-retention score would rate each set of twelve alike.
+- **History length does not predict difficulty.** Within a domain,
+  |ρ| ≤ 0.03. In Case E a 7-round, 35.8k-character prefix fails for every
+  compactor. The answer sat only in results the agent had labelled spam,
+  and nine summaries cut it along with the spam. That is
+  [[literature/papers/lencevicius2026when]]'s observed-once fact, dropped
+  here because the agent's own label marked it as noise.
+
+What this supports:
+- The 2026-10-20 rule (fixed fields for failures and rejected options)
+  gets its first execution-level evidence with frontier compactors, from
+  Case F. A rejection carried with its reason cost the reader nothing. The
+  same fact carried as a question cost up to the whole budget.
+- It agrees in direction with liu2026agents. It does not contradict that
+  paper's null for a confirmed / ruled-out / open ledger instruction,
+  because no prompt variant is tested here.
+
+What it does not support: a loss rate for any production harness.
+- The prompt is a generic "summarize concisely" at 10% of characters. That
+  is far harsher than Claude Code's structured compaction prompt.
+- The calibration loop's first stage re-compresses the model's own
+  previous output before a full-history refinement stage. Calls per
+  compaction differ by model (4.6–11.8).
+
+Rules (ours, extending the 2026-11-16 "count what the summary adds"). When
+evaluating a compaction change:
+1. Run a full-history arm under the same action budget.
+2. Score each carried candidate's status (confirmed, rejected with its
+   reason, or open), not only whether it is present.
+3. Report early stops and budget exhaustion separately. They have
+   different causes.
+
+Limits:
+- No full-history arm. Budgets are set by one successful rollout, and can
+  be as small as 3 actions.
+- The error labels come from one LLM annotator (GPT-5.6-Sol), computed
+  over failed continuations only. There is no rate for successes, and the
+  human review is not quantified. The status contrasts are single selected
+  cases.
+- One prompt, one ratio, and one executor per domain. Opus 4.8 executes
+  and Opus 5 is the best compactor, so a same-family match is possible.
+  The workspace suite is internal, n = 25.
 
 ## Open questions
 
