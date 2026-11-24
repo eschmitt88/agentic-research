@@ -47,6 +47,7 @@ sources:
   - "[[literature/papers/srivastava2026appscibench]]"
   - "[[literature/papers/wang2026harness]]"
   - "[[literature/papers/passos2026one]]"
+  - "[[literature/papers/chen2026pro2]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -963,6 +964,56 @@ Limits:
   different repo mix.
 - k = 1 per arm in the extension. The replicate runs of every task (Phase R)
   are reported elsewhere.
+
+## An MLE-bench "tie for best" was one run beside multi-run means, and node-indexed curves scored the best node in hindsight (2026-11-24)
+
+The Open questions below note that MLE-bench medal rates "may not be
+directly comparable" for want of seed protocols.
+[[literature/papers/chen2026pro2]] (Pro²) shows how a leaderboard claim
+gets built from mixed run counts. It reports 70.7% any-medal on all 75
+tasks at 24 h and 76.0% at 48 h, **one run per budget**. That is 53 and
+57 tasks.
+- **The rate's denominator gives the run count away.** A single 75-task
+  run yields multiples of 1/75 (1.33 points). Seven rows in the same
+  table are not multiples, so they are means over runs (our arithmetic):
+  ScienceFlow 70.2, Iris 64.9, AIBuildAI 63.1, ML-Master 2.0 56.4, Famou
+  43.6, InternAgent 36.4, R&D-Agent 35.1. The "tie" is with AIBuildAI-2's
+  70.7, which is also an exact 53/75. ScienceFlow is less than one task
+  behind.
+- **Budgets aren't matched either.** The rows span 12 h and 24 h, A100,
+  2×H100 and H200, and seven model families. The "highest reported" 76.0
+  uses 48 h against everyone's ≤ 24 h. Its gain over 24 h is 4 tasks,
+  with above-median unchanged at 63. The paper doesn't say whether it is
+  the same run continued.
+- **On a split it did repeat, the noise is the size of these gaps.**
+  MLE-bench Lite at 3 runs gives SEs of 1.5–3.0, so a per-run SD of
+  about 2.6–5.2 points (our arithmetic). The full method medalled 20, 20
+  and 19 of 22.
+- **Medal@3, Medal@5, Node AUC and the ablation's "Final Medal" take the
+  best node so far.** That is the oracle term of the 10-27
+  exploration/selection split ([[literature/papers/karim2026explore]]),
+  not the submitted artifact. The paper doesn't say whether the node is
+  scored on validation or test. Its trajectory figure plots validation
+  scores against Kaggle test thresholds, and one case shows validation
+  1.7257 against test 1.8860. A "node" also costs different amounts
+  across methods: MARS evaluates over 70 variants per task, Pro² a
+  handful of hypothesis runs.
+
+Rule for this project (our inference):
+- When a note cites an MLE-bench rate, record its run count beside it.
+  If the paper doesn't state it, check whether the rate is a multiple of
+  1/75 (or 1/22 per run on Lite). Also record budget, GPU and model.
+- A one-run margin under about one per-run SD (≈ 3–5 points on Lite,
+  from this paper's own SEs) is a tie, per the 11-23 runs-per-method
+  rule in [[concepts/hce-evaluation]].
+- Do not read Medal@k or a "best reached" curve as a submission rate.
+  Ask for the submitted pick's score beside it.
+
+Limits:
+- The multiple-of-1/75 test assumes a 75-task denominator. A row
+  computed over fewer valid tasks would fail it without being a mean.
+- The per-run SD comes from 22 Lite tasks near ceiling, not from 75
+  full tasks.
 
 ## Open questions
 

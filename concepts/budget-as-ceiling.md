@@ -86,6 +86,7 @@ sources:
   - "[[literature/papers/zhang2026rsi]]"
   - "[[literature/papers/qin2026autoresearch]]"
   - "[[literature/papers/wang2026between]]"
+  - "[[literature/papers/weston2026sciresearcheval]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -2457,6 +2458,69 @@ Limits:
   metric they report.
 - The logs may allow [[literature/papers/jain2026monitor]]'s q and p to be
   estimated per action, if the repo ships them (not checked).
+
+## A uniform input-token cap censored only the high-effort arms, and half the Opus episodes it stopped said they had submitted (2026-11-24)
+
+The "censoring instrument" section above found that a cap correlated with
+the condition biases the arm that spends more (hickey2026saltbench).
+[[literature/papers/weston2026sciresearcheval]] finds the same with the cap
+identical for every model and effort setting. It adds a forced-submit
+final turn and a rerun specified before it ran.
+- **The unit made a uniform cap unequal.**
+  - Every episode had 600k cumulative input tokens. The conversation is
+    re-sent each turn, so reasoning kept in it is re-read, and input grows
+    with turns × retained reasoning (besanson2026green's State-Snowball).
+  - Opus at xhigh and Astra at max stayed inside the cap. Opus at max did
+    not, and Fable 5.2 at max hit it in 60 of 66 episodes.
+- **The forced final turn did not reliably recover.** At the cap the
+  harness allowed one more turn with only `submit`.
+  - 33 of 198 Opus-max episodes did not call it (submission rate 83%).
+  - **16 of the 33 said "I've submitted the results" or similar** with no
+    call.
+  - Fable used the final turn in all 60.
+- **The censoring reversed a conclusion until the rerun.**
+  - Counting the 33 as misses, Opus's coverage at max (0.93) fell below
+    xhigh (0.97), which reads as "more effort hurts".
+  - The 33 were rerun at twice the budget, as specified before the rerun.
+    22 submitted, the submission rate rose to 94% and coverage to 0.99.
+    Max vs xhigh showed no detectable difference [0.58–1.28×].
+  - The primary result held either way: 23× better, or 17× with each
+    unsubmitted episode scored as the model's worst default task.
+  - Fable at max ("1.4× worse than default") was not rerun.
+- **The mask had to be re-implemented per model.** Removing tools from
+  the list at the final turn broke on Fable 5.2, which rejects a changed
+  tool list once its reasoning is in context. The harness kept the full
+  list and refused every call but `submit`: "the same rule, enforced
+  differently".
+- **The failing models were not bound by the experiment cap.** At
+  default, Opus used 2.1 of 4 allowed experiments and Sonnet and Haiku
+  2.6. The calibrated models used all 4.
+
+For this concept:
+- A ceiling in a unit that grows with the condition (here, retained
+  reasoning × turns) censors that condition, even when its value is the
+  same for every arm.
+- Ceiling-plus-one-call has a second failure besides overshoot: the final
+  call may not be made, and the agent may report that it was. Read the
+  outcome from the harness (did `submit` fire), never from the agent's
+  last message.
+- zhang2026judged's "enforce by masking" holds, but the form of the mask
+  is model-specific. A refusal at call time, the form a PreToolUse hook
+  takes, carried across both models here.
+
+Rule for this project (our inference): any comparison of models or effort
+settings under one token cap reports, per arm, how many runs reached the
+cap. Rerun the capped runs at a higher cap before reading a dip at the top
+setting.
+
+Limits:
+- One benchmark and one cap value. The 16 false claims come from one
+  model at one setting, at a forced stop.
+- The rerun covered only Opus at max. Sonnet and Haiku at max also hit the
+  cap in some episodes, none of them on physics-wrong tasks.
+- The cap is cumulative input. Whether `max_tokens` here measures the
+  same thing is unchecked, and Claude Code's compaction changes how input
+  grows.
 
 ## Open questions
 

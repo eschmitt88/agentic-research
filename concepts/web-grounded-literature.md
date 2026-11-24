@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/singharoy2026quantifying]]"
   - "[[literature/papers/yao2026openfrontiers]]"
   - "[[literature/papers/chang2026multiagent]]"
+  - "[[literature/papers/chen2026pro2]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -306,6 +307,53 @@ audit sizes assume ~17 relevant accepted per digest and stable recall
 across weeks. `/curate`'s standard depends on the graph's state ("a
 stronger in-graph source exists"), which the paper's fixed assessor does
 not allow. Papers outside the harvest are outside every stratum.
+
+## An MLE-bench agent searched the open web on public Kaggle tasks with no reported blocklist, and its technique-recall metric counts overlap with the winners' write-ups (2026-11-24)
+
+The section "The same channel is a contamination vector when there is a
+score" says never to pair unsandboxed retrieval with scoring on a public
+benchmark. [[literature/papers/chen2026pro2]] (Pro²) is a current
+MLE-bench system that does exactly that, as its method. Its
+initialization maps each diagnosed bottleneck to "targeted web and
+academic search queries". The retrieved fixes seed the first solution.
+MLE-bench tasks are past Kaggle competitions whose winning write-ups,
+notebooks and discussions are public.
+- **Retrieval is a large measured step.** In matched 3-run arms on
+  MLE-bench Lite, first-solution medals go from 12.1% (Direct Coding
+  Loop) to 28.8% (Search-Augmented, which retrieves methods without
+  organizing them). In the paper's ablation, "grounding" adds a further
+  9.1 points at the first solution and 6.0 at the end. That increment
+  bundles profiling evidence with literature, and the paper doesn't
+  separate them.
+- **The paper's diagnostic metric can't tell diagnosis from retrieval.**
+  "Expert technique recall" scores overlap with techniques taken from
+  Kaggle winning solutions. Pro² reaches about 0.8–0.9 on some of the 5
+  hardest tasks by 48 h (read off Fig. 5). A run that found the winners'
+  write-up would score the same.
+- **Nothing in the paper excludes it.** It reports no domain blocklist,
+  no query log and no plagiarism or rule check. The grading service sits
+  outside the sandbox, but that firewall covers labels, not the web.
+
+What this does and doesn't support: there is no evidence of leakage. The
+claim is narrower: the retrieval-driven part of a web-grounded MLE-bench
+gain is unidentified until queries are logged and competition pages are
+blocked. That is the inflation mechanism [[literature/papers/wang2026search]]
+measured on deep-research benchmarks. Other web-grounded MLE-bench agents
+in this graph ([[literature/papers/nam2025mle]]) and AIBuildAI-2 (not yet
+ingested) are in the same position.
+
+Rule for downstream projects (our inference): when an MLE-bench-style run
+uses web search, block the competition's own pages (Kaggle discussion,
+code, write-ups) and GitHub repositories named for it. Also log every
+query and fetched URL, so the gain can be audited later. When a hub
+note credits a web-grounded MLE-bench result, it says whether the paper
+did either.
+
+Limits:
+- One paper. The concern comes from absent controls, not from an
+  observed leak.
+- The paper's searches may have hit only general literature. Without
+  logs, neither direction can be shown.
 
 ## Open questions
 

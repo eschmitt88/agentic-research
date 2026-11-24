@@ -30,6 +30,7 @@ sources:
   - "[[literature/papers/vats2026good]]"
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
   - "[[literature/papers/zhang2026rethinking]]"
+  - "[[literature/papers/weston2026sciresearcheval]]"
 used_by: []
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
@@ -360,6 +361,70 @@ Limits:
   28–29 tasks per agent.
 - No agent is a model this box runs. On a Max plan with Opus in both
   roles, the price gap that made this cheap does not exist.
+
+## The effort setting is part of the backend: between medium and xhigh, Opus 5.5 went from tied with Sonnet to matching GPT-6 Astra's default, and older and open-weight models gained nothing (2026-11-24)
+
+Every section above treats a backend as a model name.
+[[literature/papers/weston2026sciresearcheval]] varies the reasoning-effort
+setting on a judgment task: estimating physical properties with
+calibrated 95% intervals from a simulator that lacks real physics. It uses
+38 tasks, a judge-free interval score, and a pre-registered test for Opus
+at max. Each row is paired against the model's own default:
+
+| Model | Setting | Interval score vs default | Coverage | Tokens/ep | $/ep |
+|---|---|---|---|---|---|
+| Opus 5.5 | default (medium) | – | 0.62 | 3.5k | 0.14 |
+| Opus 5.5 | high | 2.9× better | 0.76 | 5.1k | 0.28 |
+| Opus 5.5 | xhigh | 28× better | 0.97 | 47.2k | 1.54 |
+| Opus 5.5 | max | 23× better | 0.93 | 75.7k | 2.96 |
+| Sonnet 5.5 | max | 7.7× better | 0.89 | 86.1k | 1.61 |
+| Haiku 5.5 | max | 11× better | 0.90 | 95.8k | 0.09 |
+| GPT-6 Astra | max | 2.1× better | 1.00 | 19.2k | 3.10 |
+| Fable 5.2 | low / medium | 12× / 5.5× worse | 0.80 / 0.85 | 2.8k / 4.1k | 0.24 / 0.35 |
+| Sonnet 4.5, Gemma 4, Muse | highest | no detectable change | 0.45 / 0.21 / 0.17 | 12–20k | – |
+
+- **The effort level moved the ranking more than the model did.**
+  - At default, Opus 5.5 and Sonnet 5.5 cannot be separated (0.77 vs
+    0.75), and both are about 20× behind Astra.
+  - Opus at xhigh or max is not detectably different from Astra's
+    default. This is not an equivalence test; Astra could be up to about
+    1.3× better.
+  - Haiku 5.5 at max (0.12, $0.09) beats Opus 5.5 at default (0.77,
+    $0.14) by about 6× (our arithmetic).
+- **The response is a step, not a slope.** Opus gains 2.9× from medium
+  to high and about 10× more from high to xhigh, where its output grows
+  from 5.1k to 47k tokens.
+- **"Default" names different settings.** On Bedrock, Opus and Haiku 5.5
+  default to medium, Sonnet 5.5 to high and Sonnet 4.5 to no thinking. A
+  comparison at defaults ranks model–default pairs, the effort analogue of
+  gao2026agentic's prompt–model pairs.
+- **Tokens are not the skill.** Qwen3.8 writes 70k tokens by default,
+  about as many as Opus at max, and covers 38%. Sonnet 4.5 and Muse barely
+  reasoned more when allowed to. Only the Claude 5.5 generation turned
+  effort into the correction. This extends bai2026how: how much a model
+  gains from more tokens is also a model property.
+- **Per token and per dollar disagree.** Astra is the most efficient per
+  token (3.3k for 0.94). Fable 5.2 is the most accurate at default (20.8k).
+  Astra's bill is about 80% cache writes and Fable's about 70% output, so
+  dollar ratios depend on the platform's cache pricing
+  (kumar2026turncost).
+
+For this page (our inference): a role assignment that names a model but
+not an effort level is under-specified when the role's work is
+judgment-heavy. `budget.yaml` names `opus` for both roles and says nothing
+about effort. On this evidence, record the effort each role runs at, and
+run backend comparisons at matched or stated effort.
+
+Limits:
+- One task family, and it rewards deliberation by design. Mechanical
+  implementer work may not respond this way.
+- Rows other than Opus default/high/max and Haiku max are one run per task
+  against three-run defaults. Effort controls are not equivalent across
+  vendors.
+- Opus at max and Fable at max were censored by the shared input-token cap
+  (see budget-as-ceiling, same date). The Opus row was rerun; the Fable
+  row was not.
+- These are Bedrock defaults. Claude Code may set different ones.
 
 ## Open questions
 

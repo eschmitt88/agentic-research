@@ -14,6 +14,7 @@ sources:
   - "[[literature/papers/xie2026do]]"
   - "[[literature/papers/gunsilius2026inference]]"
   - "[[literature/papers/yang2026ai]]"
+  - "[[literature/papers/weston2026sciresearcheval]]"
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/constraint-pinning]]"
@@ -528,6 +529,79 @@ Limits:
   instruction is written.
 - OSS repository instruction files, not delegation briefs or skills
   written for a strong reader. Unreviewed preprint, no released data.
+
+## "Widen your ranges" did nothing on three Claude 5.5 models; naming the missing action improved scores 1.6–2.5× (replicated) but barely moved coverage, and raising Opus's effort did ten times more (2026-11-24)
+
+The sections above test whether a brief sentence states what the reader
+would not do by default. [[literature/papers/weston2026sciresearcheval]]
+tests three one-paragraph hints on the Claude 5.5 family this box runs, and
+re-tests the strongest on a fresh, pre-registered split. The task is to
+estimate a sample's physical properties with 95% intervals from a supplied
+simulator that, unknown to the agent, lacks real physics. The base prompt
+already says "too narrow intervals that miss the truth are penalized
+heavily". Opus, Sonnet and Haiku 5.5 run at default effort on 38
+physics-wrong tasks, 3 runs each, scored against exact truth with no judge.
+- **The restated caution did nothing.** H: "the ranges reported by
+  fit_parameters assume the supplied model is exactly right … widen your
+  intervals accordingly." No detectable change in interval score for any
+  of the three. Coverage moved −1 to +1 points.
+- **General practice did little.** B covers identifiability, structured
+  residuals as a sign of missing physics, converging before blaming
+  physics, and when to stop. It gave 1.4× better [1.2–1.8×] for Opus and
+  no detectable change for Sonnet or Haiku.
+- **The named missing action was adopted and improved the estimate.** S:
+  "look for experimental conditions in which it is nonetheless accurate
+  (for example weaker heating, shorter times, or sensors away from where
+  the model fails), confirm that the model fits those data to within the
+  noise, and base your property estimates on those data".
+  - Interval score 2.5×, 1.6× and 1.8× better.
+  - On the fresh pre-registered split: 2.2×, 1.7× and 1.7×.
+  - Opus's low-power experiments went from 6% to 93% of episodes.
+- **It fixed only what it fully specified.** Coverage moved +0 to +7
+  points (+0 to +4 on the fresh split). Estimates improved, and the
+  ranges narrowed with them. Opus's coverage by mechanism:
+  - temperature-dependent conductivity, where "heat gently" is one
+    action: 0.73 → 0.98;
+  - glued joint: 0.77 → 0.80;
+  - side heat loss: 0.35 → 0.32.
+
+  The last two need a spatial or timing argument that the sentence only
+  gestures at.
+- **Effort beat every brief.** On the same tasks with no hint, Opus at
+  high effort was 2.9× better (coverage 0.76) for 1.5× the tokens. At
+  xhigh it was 28× better (0.97). GPT-6 Astra and Claude Fable 5.2 were
+  calibrated with no hint at their defaults.
+
+This is P2 evidence on Claude 5.5. The sentence that restated the
+prompt's own scoring rule, with its reason, bought nothing, as
+wang2026beneath's generic reminder did. The sentence that named the action
+the reader lacked worked, as ghosh2026truthgate's named shortcut did. Two
+boundaries are new:
+- **A stated method is followed almost everywhere, but it fixes only the
+  failure it fully specifies.** Where the right action depends on the case
+  (where is the joint?), the reader followed the letter and stayed wrong.
+- **The gap was not a briefing gap.** The same models closed most of it
+  with more deliberation and no extra words. P1's "leave the method to the
+  reader" assumes the reader spends enough on it.
+
+Rule for this project (our inference, untested here):
+- When a Claude reader fails a judgment-heavy delegated task at default
+  effort, raise its effort before adding method to the brief.
+- When a brief does add method, name the concrete action (the S form)
+  rather than the caution (the H form). Check it on cases the action does
+  not fit.
+- Cut any caution that the brief's scoring or reply shape already states.
+
+Limits:
+- One physical domain and one wording per hint. There is no length-matched
+  neutral paragraph; B is the nearest active control.
+- S was written after the authors watched Astra on the test split. It
+  replicated on fresh tasks, but it is a supplied strategy, not a brief
+  written blind.
+- Hints were not crossed with effort, so whether S adds anything at xhigh
+  is untested. Fable 5.2 was not hinted.
+- These are Bedrock defaults (Opus and Haiku medium, Sonnet high). Claude
+  Code may set different ones.
 
 ## Connections
 

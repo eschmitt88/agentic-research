@@ -19,6 +19,7 @@ sources:
   - "[[literature/papers/wang2026language]]"
   - "[[literature/papers/xu2026replaylens]]"
   - "[[literature/papers/wang2026between]]"
+  - "[[literature/papers/chen2026pro2]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -254,3 +255,64 @@ Limits:
 - No arm isolates which part of the log matters, and the facts-only
   lesson rule is not ablated.
 - Histories are at most ten rounds long.
+
+## A bottleneck-indexed state on MLE-bench Lite: building it before the first code moved first solutions from 7 to 31 of 66 medals, and updating it in the loop added 4 at the end (2026-11-24)
+
+[[literature/papers/chen2026pro2]] (Pro²) indexes the state by diagnosed
+*problem*, not by hypothesis. Each entry is a performance bottleneck with
+its profiling evidence. Under it sit candidate fixes, each with a belief
+in [0, 1] and literature or run evidence. The state is built before any
+solution code, from probe scripts run on the raw data and from web and
+academic search keyed to each bottleneck. It seeds the first solution.
+Single-variable tests then raise or lower beliefs. A next-hypothesis
+priority of b / (N(P) + 1) penalises repeated attempts on one bottleneck.
+Every state version maps one-to-one to a git snapshot, so the state sits
+beside the code, not in place of it.
+
+Its ablation is the first in this graph to separate building, grounding
+and updating a research state. MLE-bench Lite has 22 tasks; the ablation
+runs 24 h, 3 runs, with the same models and wall clock. Medalled
+task-runs out of 66:
+
+| Variant | First solution | End of budget |
+|---|---|---|
+| Codebase state | 7 | 37 |
+| State, no grounding | 31 | 51 |
+| Static state (grounded, never updated) | 37 | 55 |
+| Full (grounded, updated) | 38 | 59 |
+
+For this concept:
+- **Supports:** an explicit diagnosis written before the first experiment
+  is a large lever on MLE-bench-style tasks. Removing the state costs
+  about 33 points at the end of the budget. That is the same size as
+  [[literature/papers/chen2026toward]]'s File-as-Bus ablation (−31.82 on
+  Lite).
+- **Weak support for in-loop revision as the main value.** Updating adds
+  4 of 66, about 1.3 tasks per run, with SEs of 1.5–3.0. A grounded static
+  plan already reaches 83.3%. On this evidence the state works mainly as
+  a front-loaded plan. The loop's spine it is claimed to be shows up as
+  the smaller increment.
+- **New schema point:** key entries by the bottleneck and nest the
+  candidate fixes under it, plus an attempt counter per bottleneck. The
+  hypothesis-keyed ledgers above ([[literature/papers/wang2026pear]],
+  [[literature/papers/woo2026youra]], [[literature/papers/jin2026toward]])
+  have no field that says *which limitation* a hypothesis targets.
+  Neither the keying nor the counter is ablated.
+
+Our inference for guidance #4 and `/iterate`: `/iterate` already seeds
+from the latest Diagnostics, which is near the static-plan rung. This
+paper argues more for a diagnosis written before cycle 0 than for a
+persistent state read every cycle. It does not overturn the 11-24 BRED
+section's "too thin to change it".
+
+Limits:
+- The "Codebase State" arm is not described. Its first-solution rate
+  (10.6%) differs from the described Direct Coding Loop (12.1%), so it is
+  unknown whether it lost only the state or also profiling, the PI agent
+  and the engineering MCTS.
+- Matched on wall clock, not on tokens. No arm reports cost, and the
+  state arms add a Gemini 3.1 Pro PI that inspects every 10 steps.
+- "End of budget" is the best node reached, not necessarily the
+  submitted one (see [[concepts/pass-at-k]], same date).
+- One benchmark split, one model pair (Gemini 3.1 Pro PI with Gemini 3.5
+  Flash implementer), no code, belief-update constants unreported.
