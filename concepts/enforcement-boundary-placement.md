@@ -57,6 +57,7 @@ sources:
   - "[[literature/papers/wong2026evaluating]]"
   - "[[literature/papers/dhuri2026markdown]]"
   - "[[literature/papers/lee2026dont]]"
+  - "[[literature/papers/dip2026invariantaware]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1502,6 +1503,83 @@ Limits:
 - Neither placement's cost on solvable work is measured, except a null
   for the checkpoint question on OPT-BENCH (76.5 vs 76.0, three open
   models). No Claude model, three tasks, workshop paper.
+
+## One correct check, five harness actions: advice left 70% wrong, permission to abstain 18%, withholding the value 1.7%, and blocking without the check's evidence did nothing (2026-11-24)
+
+The 10-12 sections put one rule in the prompt and in the harness
+([[literature/papers/zhang2026judged]]) and split objection, verdict and
+enforcement ([[literature/papers/waks2026what]]).
+[[literature/papers/dip2026invariantaware]] holds a correct detector fixed
+and varies only who acts on it and how. The setting is 7 open-weight
+models on 36 count tasks. A catalog API silently ignores part of a filter,
+returns HTTP 200, and repeats the fault on every call. The check is an
+exact invariant that the harness tests with extra queries (count with a
+condition + count with its negation = count without it). It cannot fire
+on a correct API. Code was frozen by hash and predictions written first.
+
+- **Evidence and enforcement are each necessary (one judge, % wrong).**
+
+  | | Advises | Blocks |
+  |---|---|---|
+  | Judge without the check's queries | 71.7 | 70.8 |
+  | Judge with them | 71.2 | **6.1** |
+
+  The prediction that only the evidence-and-blocking cell drops 40+
+  points was registered and held.
+- **The same check, acted on five ways (% wrong, range over models).**
+  - Warning: 70.1 (19–87).
+  - Warning + recovery tip: 37.2.
+  - Warning + one line permitting "cannot be determined": **18.2 (0–59)**.
+  - Enforce (only checked counts accepted, failed value left in view):
+    8.8 (0.5–24.8).
+  - Withhold the value: **1.7 (0.0–3.7)**.
+  - The same permission line with no evidence (caution prompt): 73.3.
+- **Advice is noticed and overridden.** The judge with evidence flags
+  82.4% of faulted runs. The agent reports the flagged count anyway in
+  77.4% of them, its stated confidence falls from 1.00 to 0.43, and 40% of
+  wrong answers mention the warning. This is
+  [[literature/papers/zhang2026are]]'s noticing-without-acting gap
+  ([[concepts/evidence-gated-completion]]) on seven models.
+- **What crosses the boundary decides the leak.** Enforce gates the answer
+  but leaves the failed number in context. 130 of its 266 wrong answers
+  came from agents re-querying until a *looser* query passed and
+  reporting that. SilentGuard removes the value and accepts a count only
+  from a query with at least as many conditions as any other in the run
+  (13 of 52). This is [[literature/papers/sun2026keeping]]'s "a gate must
+  name the item, not only the tool", applied to data.
+- **Who runs the check is a placement too.** Told to run the same check
+  themselves, three GPT-5.6 models gave 4.5% wrong answers. Their
+  fault-free accuracy fell from 92.1% to 20.4%, which suggests they
+  mostly refused. Run by the harness, the same check left 0.5% wrong at
+  98.1% fault-free accuracy. A harness warning was enough for Sol (11.3%)
+  and not for Terra or Luna (54–63%).
+
+For this concept, this is the first matched evidence that the harness
+*acting* removes the model from the outcome. Advice is the objection in
+waks2026what's terms, withholding is enforcement, and the model spread
+shrinks from 0–59 to 0–4 points. It also bounds the 2026-09-28 li2026where
+exception ("enforcement can live in the model when the predicate is
+observable"). Here the evidence was put in front of the model, and that
+was not enough without permission or a harness action.
+
+Rule (our inference): when code can prove a tool result wrong, the code
+withholds it and says so. It does not hand the model a warning to weigh.
+A permission-to-abstain line is the prose fallback where the harness
+cannot act, and it helps only when the evidence comes with it.
+
+Limits:
+- It works only where an exact check exists. On ToolMaze, where only
+  learned contracts are available, the harness can only warn. Its gain
+  there is +3.3 points [+1.8, +4.9], and blind retry beats it (43.7 vs
+  36.0) because half the faults clear on retry.
+- The 1.7% is partly by construction on the six fault types the check was
+  built for. On six types written after the freeze, run with no model,
+  wrong answers fall only from 61.1% to 24.5%.
+- The main benchmark is the authors' own and returns only counts, so
+  retry and record-reading are useless by design.
+- The frontier arms are post hoc, one vendor, with no logs. Enforce's
+  frontier result (33.9% vs 8.8% on open models) is unexplained. No
+  Claude model is tested.
 
 ## Connections
 

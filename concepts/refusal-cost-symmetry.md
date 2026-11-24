@@ -20,6 +20,7 @@ sources:
   - "[[literature/papers/gomez2026can]]"
   - "[[literature/papers/zhang2026are]]"
   - "[[literature/papers/chen2026knowing]]"
+  - "[[literature/papers/dip2026invariantaware]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -395,6 +396,76 @@ responsive to the exit's instruction. Caveats: one run per cell; the tool
 and its "stopping is acceptable" instruction are bundled; and on the
 monitor follow-up (one model, 149 clean pairs) the clean non-inferiority
 criterion failed, with a lower bound of −10.71 pp.
+
+## A withholding gate with a measured clean twin and a two-sided break-even cost: zero cost on fault-free tasks, a large one on recoverable answers (2026-11-24)
+
+[[literature/papers/dip2026invariantaware]] runs every arm on the same
+tasks with and without a silent API fault. Its gate withholds a tool
+result that fails an exact invariant and then answers "cannot be
+determined". The setting is 7 open-weight models and 36 count tasks.
+
+- **The clean twin shows no cost.** Fault-free accuracy is 84.9% under
+  the gate and 84.9% unguarded. A judge with blocking gives 81.7%, and
+  the model running the same check itself gives 76.6%. For an exact check
+  this zero is partly by construction, since the identity holds on any
+  correct API with two-valued filters. Where it isn't, the zero breaks.
+  On a real API whose live total drifted between request and check, four
+  wrong answers passed. One injected fault (ignore NOT) makes the check
+  fire on runs whose count may be right.
+- **The cost sits where the clean twin does not look.** Under faults,
+  correct answers fall from 16.4% to 2.4%. On list tasks with unseen
+  faults they fall from 56.7% to 7.1%. On one real API with a misdocumented
+  date format the gate gives 2.9% correct and 77.1% unknown. Auto-repair
+  recovers 57.3% of the count cases, so many of those answers were
+  recoverable.
+- **The first break-even weighting in this graph that prices both
+  errors.** Score = correct − λ × wrong, and λ* is the cost of a wrong
+  answer, relative to a correct one, above which withholding wins:
+  - against no guard: 0.2 (counts), 0.6 / 1.9 (lists, seen / unseen
+    faults);
+  - against auto-repair: **43.6** on the fault types repair was built for,
+    **0.8** on new ones.
+
+  [[literature/papers/zhang2026how]]'s form priced only false passes.
+  Here the withheld-correct answers are in the score. The answer turns on
+  fault novelty as much as on liability.
+- **The block-all corner appears when the model runs the check.** Told to
+  run the same check themselves, three GPT-5.6 models give 4.5% wrong
+  answers and 20.4% fault-free accuracy. That is
+  [[literature/papers/ho2026soundnessbench]]'s aggressive-prompt pattern.
+  Run by the harness, the same check leaves 0.5% wrong at 98.1%.
+- **Risk and coverage are on one plot with the answer-everything
+  baseline.** At a 25% fault rate the gate answers 67% of tasks at 3.3%
+  risk, against 90% at 24.6% unguarded. Abstaining on everything has zero
+  risk and zero coverage, so the gate is not the constant policy in
+  disguise, which was the [[literature/papers/guo2026groundability]]
+  hazard.
+- **Blocking is qualified by a counted false-alarm bound.** A learned
+  check may block only if 1/(n+2) ≤ 1%. None qualified, so learned checks
+  only warn. They still cost 4.6 points of fault-free success on ToolMaze
+  against the published monitor. This gives the open question's "admit
+  only qualified validators" remedy ([[literature/papers/li2026who]]) a
+  numeric admission rule.
+
+For this concept, a refusal channel triggered by an exact check can have
+a near-zero cost on the clean twin and still a large cost on faulted
+cases that were recoverable. The clean twin alone does not measure the
+second. The paired control therefore needs three versions:
+- fault-free;
+- faulted and unrecoverable (abstaining is right);
+- faulted but recoverable by another route (abstaining loses an answer).
+
+That is [[literature/papers/zhang2026are]]'s intact / withdrawn / flipped
+triple in a tool setting.
+
+Limits:
+- The main benchmark makes most faults unrecoverable by design
+  (count-only responses, repeating faults). On ToolMaze, where half the
+  faults clear, blind retry beats the gate (43.7 vs 36.0).
+- Per-model fault-free cost is in the appendix only for the open models.
+  The frontier fault-free figures come from runs with no released logs.
+- λ* is computed from means over seven models. No interval is given for
+  it.
 
 ## Open questions
 

@@ -49,6 +49,7 @@ sources:
   - "[[literature/papers/sun2026keeping]]"
   - "[[literature/papers/dhuri2026markdown]]"
   - "[[literature/papers/yang2026ai]]"
+  - "[[literature/papers/dip2026invariantaware]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -974,6 +975,83 @@ Limits:
   changed code. They were not asked to check instruction-file
   references. One run each, Sonnet rather than Opus, unreviewed
   preprint with no artifacts.
+
+## What the checker does on violation, ablated with the detector fixed: withholding beat warning and repair, and the action is keyed to the check's false-alarm bound (2026-11-24)
+
+The "One spec, three uses" paragraph above
+([[literature/papers/elkoussy2026agentltl]]) left *what the checker does
+on violation* (log, warn-and-retry, block, kill, roll back) open, with
+evidence that the harshest response is usually wrong.
+[[literature/papers/dip2026invariantaware]] ablates that action with one
+exact check fixed. The check is a count identity tested by extra queries,
+with no false alarms possible on a correct API. The setting is 7
+open-weight models on 36 count tasks where an API silently ignores a
+filter on every call.
+
+- **Harness action after a failed check (% wrong / % correct under
+  faults).** Fault-free accuracy is 82.5–86.3 for every row.
+
+  | Action | Wrong | Correct |
+  |---|---|---|
+  | Warning | 70.1 | 14.1 |
+  | Warning + recovery tip | 37.2 | 9.8 |
+  | Answer gate (last condition only) | 32.9 | 5.2 |
+  | Enforce (only checked counts accepted) | 8.8 | 3.0 |
+  | Auto-repair (harness recounts by another route) | 3.0 | 57.3 |
+  | **Withhold the failed value** | **1.7** | 2.4 |
+
+- **Here the harshest action wins, the reverse of elkoussy2026agentltl.**
+  The regime explains it. The fault repeats, so nothing the agent does
+  with the same call recovers it, and the exact check certifies itself.
+  In elkoussy's tasks violations were locally recoverable, and blocking
+  cut off the recovery.
+- **Repair is where the guarantee leaks.** Auto-repair has the most
+  correct answers on its design faults (57.3%). On six fault types written
+  after the freeze, run with no model, it released 102 wrong answers
+  against 53 for withholding, and **49 of its repairs were wrong and
+  marked verified**. This is the bhardwaj2026agent refinement above (keep
+  the checker deterministic, treat remediation as best-effort), now with
+  a count.
+- **The action is keyed to how certain the check is.** Each check gets
+  α̂ = 1/(n+2) from the n clean cases it held on; exact checks get 0. The
+  harness withholds if α̂ ≤ 1% and warns otherwise. No learned contract
+  reached the needed 98 cases (the maximum was 52), so in practice the
+  rule is exact → withhold, learned → warn. Withholding on learned checks
+  instead gave 32.1% vs 33.5% task success on ToolMaze. This is
+  [[literature/papers/li2026who]]'s "qualify before blocking" with a
+  counted bound in place of a test suite.
+- **The cheapest typed check carried the real-API result.** On 9 public
+  research APIs with one filter name misdocumented, the full method left
+  21.3% wrong (89.8% unguarded). Rejecting any parameter outside the API's
+  published list did as well alone (21.0%; difference +0.3 [−2.5, +3.2]).
+  Strict typed tool calls did worse (28.6%), against the authors'
+  prediction. Our reading, not isolated by any arm: the allowlist's
+  rejection names the allowed parameters, which is a discharge path in
+  [[literature/papers/wang2026research]]'s sense, and the agent rewrites
+  the query. An unknown parameter is the "refers to a thing that does not
+  exist" class from the section above, and code catches it.
+
+The skeleton has its own hatch, as the honest-limit section predicts. An
+API that lies consistently across the checker's queries passes the count
+identity 97% of the time. Prefix matching passes it entirely. Filters
+written inside a query string (NCBI, UniProt, Europe PMC, arXiv) are
+invisible to both the allowlist and the value-swap check, and most of the
+real-API residual sits there.
+
+Rule (our inference): when a deterministic check fails on a tool result,
+withhold the value. Don't warn. Repair only fault classes the repair's
+own check can confirm, and never label a repaired value as verified
+otherwise. Keep the action tied to a measured false-alarm bound rather
+than to the check's name.
+
+Limits:
+- Count and list answers on an author-built catalog that returns only
+  counts. Exact invariants exist for 61 of 84 documented operations in 13
+  public APIs, but for 0 of 5 writes.
+- Open-weight models in the ablation. The frontier arms did not run auto-
+  repair or the tip variant.
+- The 1% cutoff was chosen after version 2 of the method. Every cutoff
+  below 1.85% gives the same decisions.
 
 ## Connections
 

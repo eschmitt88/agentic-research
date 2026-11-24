@@ -84,6 +84,7 @@ sources:
   - "[[literature/papers/alexander2026iterated]]"
   - "[[literature/papers/du2026critic]]"
   - "[[literature/papers/houlamy2026who]]"
+  - "[[literature/papers/zhu2026benchmarks]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -1231,6 +1232,111 @@ Limits:
   properties of how a computation ran are excluded, so a metric that
   depends on a compute budget is out of scope.
 - No artifact released yet.
+
+## Eight benchmark audits found more graders rejecting valid work than passing shortcuts, about 58 to 42 on agent harnesses, and a do-nothing probe would pass most of both (2026-11-24)
+
+The probes this page has collected mostly test the permissive direction.
+Do-nothing fails (10-20), a constructed wrong answer fails (11-24) and
+staged labels fail (10-27). Three sections measured the other direction
+on single benchmarks:
+- gomez2026can's defective checkers hid about two in five real solves;
+- ding2026reexecuting's gold-bound cache rejected 6 of 15 correct
+  alternative patches;
+- passos2026one's reference fix passed on only 37 of 129 tasks as shipped
+  (see hce-evaluation).
+
+[[literature/papers/zhu2026benchmarks]] pools its authors' own reviews of
+749 tasks across eight 2026 benchmark releases under one rubric. Each
+Refused task gets one primary class:
+- C1, wrong reference or scoring logic;
+- C2, a requirement the prompt never states;
+- C3, an assertion that misses a broken solution;
+- C4, a bypass or leak;
+- C5, a harness collision or infeasible constraint.
+
+C1, C2 and C5 withhold credit from valid work. C3 and C4 pay for
+incomplete work.
+
+- **Both directions are common, and how they split depends on the
+  grader.** Pooled, 241 of 336 Refused tasks penalize valid work (71.7%).
+  That pool includes two rubric suites, which cannot leak at run time and
+  are about 96% penalizing. On the four agent-harness suites the split is
+  about 122 penalizing to 90 permissive of 212 (58% / 42%, our arithmetic
+  from Fig. 4b and §4.2). AutomationBench's mutable mock API leans
+  permissive (37 vs 34 of 100 tasks).
+- **The defects are concrete, and mostly invisible to a no-op.**
+  - Penalizing:
+    - a test that compares Python `id()` pointers, so allocator reuse
+      fails a correct fix;
+    - a rubric coding a 100 bp change as 1,000 bp;
+    - a pipeline that forwards only one of two allowed deliverables to
+      the judge;
+    - an undisclosed array-order check on a symmetric physical result.
+  - Permissive: swapping every debit and credit passes all eight
+    AutomationBench assertions.
+
+  An empty submission fails correctly in every one of these cases. The
+  permissive ones need the constructed wrong answer this page already
+  asks for. The penalizing ones need a correct answer that differs from
+  the reference.
+- **A mechanism this page lacked: hidden tests collide with the agent's
+  code.** In four DeepSWE Go tasks, the mounted hidden test files declare
+  identifiers that the agent's own self-tests also declare. A correct
+  patch then fails to compile before any check runs. DeepSWE's three
+  residual leaks come from submitted code that keeps running across
+  consecutive test rounds while the test files are not reset between
+  rounds. Both happen *inside* an isolated scorer, so isolation does not
+  prevent them.
+- **A known-good probe that needs no reference.** The paper proposes
+  blind solving. Before a rubric or test is frozen, a second contributor
+  or agent solves the task from the public prompt and inputs alone, and
+  every check it fails is reviewed against primary sources. The proposal
+  bears on why the 10-25 preflight proposal dropped the known-good half:
+  "ML-research tasks usually have no reference solution". The paper does
+  not run the check, so its catch rate is unknown.
+
+What this supports:
+- The direction of grader error is a property of the grader's design
+  (rubric, assertion set, shared container), not a constant. A preflight
+  that probes only "does nothing pass?" tests the direction this audit
+  found less often on every suite but one.
+- In a keep-best loop, a penalizing defect in the validation evaluator
+  discards valid candidates without a trace. A permissive defect is
+  amplified by selection (the "compromised score is amplified" section
+  above). The leaderboard reading "defects mostly push scores down" does
+  not carry over to a loop, where the permissive share does the damage.
+
+What it does not support:
+- A prevalence for ML-research graders. The suites are coding, terminal,
+  legal, finance and business-API tasks. TB-Science, with its scientific
+  workflows, is the nearest (34 of 70 Refused, 31 / 17).
+- Any score effect. These are counts of tasks, by primary class only.
+  The paper says rank changes "await re-running model cohorts on patched
+  harnesses".
+
+Rule (our inference), for a downstream evaluator that gates a loop:
+- Add one correct-but-different submission to the preflight beside the
+  do-nothing and constructed-wrong ones. Where no reference exists, use
+  the blind-solve form: an agent that never sees the evaluator solves one
+  or two tasks from the task statement alone. Every check it fails is
+  read against the specification before the chain starts.
+- Where hidden tests are mounted into the agent's code tree, give them a
+  reserved name prefix or directory, mount them only after the agent's
+  process ends, and reset them between scoring rounds.
+
+Limits:
+- Adjudication is undocumented: no reviewer count, no split between
+  human and model reviewers, no agreement statistic and no maintainer
+  confirmation. "Confirmed" means confirmed by the authors' own earlier
+  reports, and these are the paper's only data source.
+- Shortcut defects are probably harder to find than false negatives,
+  which show up in any failed log of a correct solution (our inference).
+  houlamy2026who's informed attacker found weak-test passes on 29 of 68
+  Terminal-Bench 2.0 tasks. So the 42% may be a floor.
+- One primary class per task, and secondary defects are not counted.
+- Unidentified authorship, unreviewed preprint, cred 2. The direction
+  split is attested by one group's reviews. The two mechanisms are
+  attested by named, inspectable tasks.
 
 ## Open questions
 
