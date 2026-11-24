@@ -34,6 +34,8 @@ sources:
   - "[[literature/papers/kanke2026rtaste]]"
   - "[[literature/papers/li2026aligning]]"
   - "[[literature/papers/chen2026signed]]"
+  - "[[literature/papers/xie2026do]]"
+  - "[[literature/papers/srivastava2026appscibench]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -253,6 +255,129 @@ Limits:
   12 tasks, descriptive.
 - Delegation here is a fixed pipeline, not a research agent's open-ended
   subtask.
+
+## The parent's synthesis is a failure point of its own: limits dropped from 0.20–0.65 of relayed claims, and a second tier ratified the first in 933 of 944 (2026-11-24)
+
+The sections above test the child's side (piriyakulkij2026subagents) and the
+handoff format (chen2026signed). [[literature/papers/xie2026do]] (RI-Bench)
+tests the parent's step. The child material is fixed and written in advance,
+one property of it is changed, and the parent's own output is read. Eight
+models run as senior agents in a read-only `pi` harness, over 12,392 episodes.
+Every file in the case is available, and the median episode opens all of
+them.
+- **Relaying loses qualifiers.** A committee-chair agent writes a report
+  citing two witnesses, each with a headline claim carrying two stated
+  limitations. Among cited claims, **0.47** kept neither limitation (pooled,
+  Vanilla). Claude Opus 5 had the lowest rate (**0.20**) and GLM-5.3-Flash
+  the highest (0.65). A duty list did not move Opus (0.20 → 0.20).
+- **Majority pull is mostly a weaker-model effect.** A generic 3:1 review
+  majority against the historical decision carried the program chair in
+  0.48 of papers. Shown the paper alone, the same models would have
+  disagreed with history 0.31 of the time, so the excess pull is **+0.17**,
+  from **0.00 (Opus 5)** to +0.47 (GLM-5.3). With scores removed, following
+  barely changed (−0.03), so the pull is the reviews' stance. It grew with
+  majority size: 0.28 / 0.53 / 0.62 at 2:1 / 3:1 / 4:1.
+- **A second tier over the same sources added almost no independent
+  check.** The program chair saw the paper, reviews, rebuttal and the area
+  chair's meta-review. It matched the area chair in **933 of 944**
+  adversarial episodes. Told to "override an Area Chair recommendation when
+  its reasoning … merely tallies votes", it still matched in 891 of 939.
+- **A checkable planted error rarely got through** (2.9% of rulings). The
+  authors note that this cannot separate checking the record from recalling
+  the real case.
+
+For this concept: guidance 4 names the manager's *context* as the
+bottleneck. This adds the manager's *synthesis*: the step fails even when
+every child report fits and has been read. It is the
+chen2026signed finding ("the parent's reading is the residual") with the
+parent's input as the manipulated variable. For an Opus-class parent the
+measured risk is the relay, not the vote. Opus 5 showed no excess majority
+pull but dropped both limitations on one cited claim in five.
+
+Rule for this project (our inference, untested):
+- A parent should carry a child's stated limits with the claim, verbatim,
+  rather than re-synthesize them. The hub's `/curate` already does this for
+  concept sections, since readers draft them and the main agent applies them
+  insert-only. The exposed steps are the main agent's own summaries of
+  reader reports: the curation table, NOTES Findings and the journal.
+- A review tier that reads the first tier's verdict next to the same sources
+  should not be counted as an independent check. The paper has no arm where
+  the program chair sees no meta-review, so whether hiding the verdict helps
+  is open.
+
+Limits:
+- One step, fixed material. Subordinates are not agents and cannot be
+  questioned. No matched non-hierarchical control, so hierarchy is not
+  isolated as the cause (authors' limitation).
+- The relay rate is reader-dependent: 0.14–0.83 across three human
+  annotators. It only counts loss of *both* limitations among *cited*
+  claims.
+- "Following" is scored against the historical ICLR decision. The authors'
+  pilot relabel did not show the lone dissenter to be the better-supported
+  side.
+- Opus 5, not 5.5. Claude Sonnet 5 wrote all the reviews. Unreviewed,
+  credibility 3.
+
+## An orchestrator dropped the artifact's I/O field name in 10% of builds and the native harness in none; a full up-front spec beat elicitation in all four arms (2026-11-24)
+
+The 11-17 section found that for a capable parent with no adversary, the
+residual risk is the parent's own extraction.
+[[literature/papers/srivastava2026appscibench]] (AppSci-Bench) counts a
+second parent error: omitting a literal the parent held. Its harness splits
+each build between an orchestrator and a bash-only coding sub-agent. The
+sub-agent receives two free-text arguments (`task`, `context`) and starts a
+fresh conversation on every call. The orchestrator's system prompt states
+the attachment schema (`file_type`, `file_name`, base64 `file_data`). The
+delegation guidance is generic: "Provide clear, specific task descriptions",
+"Include relevant context". Nothing asks for the interface to be copied
+verbatim.
+
+- **Hand-off loss: 29 of 292 builds (9.9%).** In each, the orchestrator had
+  the field name and no sub-agent call contained it. On attachment tasks
+  the rate is 29 of 126 (23%). 24 of the 29 are on Compliance, the one
+  attachment task whose spec has no interface section. Calls, whose spec
+  says "decode file_data", lost it once in 42. On Compliance, hand-off-loss
+  builds average 0.18 against 0.44. Matching is on literal names, so this
+  is a lower bound.
+- **It tracks the parent model.** Per model, over 18 attachment-task
+  builds: Opus 5 0, Kimi K3 0, Opus 4.8 4, GPT-5.5 4, Sonnet 4.6 6, Haiku
+  4.5 7, GPT-OSS-120B 8.
+- **No hand-off, no loss.** In Claude Code and Codex, the same agent reads
+  the task's contract file and writes the code. None of the three models
+  failed to read attachments there (0 of 18 each). Their only contract
+  failures were two O2C builds that never asked for the response fields.
+- **What the parent hands over up front beat asking for it.** With the
+  simulated stakeholder removed and every specification placed in the task
+  description, MMS@3 rose in all four arms. Opus 5 +17.8 (optimization on)
+  and +6.9 (off); Opus 4.8 +6.8 and +19.8. Builders elicited 29–65% of the
+  requirement rubric, AI-assisted humans 83%. Humans went back to the
+  stakeholder a median of more than 20 times; agents asked up front, then
+  built.
+
+For this concept: it supports the 11-17 rule ("handoffs need a checked
+contract") from the omission side. A machine-read interface passed as
+paraphrase cannot be recovered by the child. Reading it from a file removed
+the measurable failure in the native harnesses. The paper plans the same fix
+for its own harness but has not tested it. It agrees with
+[[literature/papers/piriyakulkij2026subagents]] (delegation needs stated
+I/O) and [[literature/papers/li2026aligning]] (a detailed spec did the
+work). For an Opus 5 parent the measured rate is zero, so the lesson for
+this box is narrow. Where a brief carries a machine-read contract (a return
+shape, field names, a path), put the literal in a file or a quoted block
+the child reads, not in paraphrase (see [[concepts/file-as-bus]],
+[[concepts/intent-level-briefing]]). That matters most when the parent is
+Sonnet- or Haiku-class.
+
+Limits:
+- An observational audit, not an arm. No run in the paper's harness passes
+  the contract as a file. The native and AppSci harnesses also differ in
+  tools, prompts and budgets.
+- Only one contract element is measured. The paper says other context lost
+  in hand-off likely explains more of the harness gap, unmeasured.
+- The no-user ablation has three builds per arm, one trial each, and no
+  test.
+- The human comparison is a human using Claude Code with Opus 4.8, n = 2
+  per task.
 
 ## Open questions
 

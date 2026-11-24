@@ -71,6 +71,7 @@ sources:
   - "[[literature/papers/mehtiyev2026when]]"
   - "[[literature/papers/zeng2026resolution]]"
   - "[[literature/papers/guo2026how]]"
+  - "[[literature/papers/yang2026ai]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -1783,3 +1784,69 @@ Limits:
   rewritten, one skill per task.
 - SkillDiff (tag the 0/10 items, +4.8) has no neutral-note control and no
   repeats. Luna's +12.6 carries the mean; four of six models gain ≤ +3.4.
+
+## Model review of an instruction-file change is not an admission gate: product reviewers recovered 1.3–3.9% of maintainers' concerns and almost never asked whether a rule should exist (2026-11-24)
+
+The admission sections above ask whether a candidate should enter at all
+([[literature/papers/tang2026memory]]: "positive estimated gain, not
+merely occurred"). The 11-23 zeng2026resolution section found that an
+LLM judge reading a trajectory admitted skills no better than a coin.
+[[literature/papers/yang2026ai]] measures the cheapest gate in practice,
+review of the change itself, on 2,870 GitHub PRs that change AGENTS.md,
+CLAUDE.md, .cursorrules or SKILL.md files.
+
+- **In the field the gate is mostly absent.**
+  - 67.1% of PRs only add instruction content, so there is no prior
+    version to diff against.
+  - 69.0% ride along with other files (median 4).
+  - Only 27.6% draw a substantive comment on the instruction file.
+  - 33.1% were reviewed on their code only.
+
+  This is mehtiyev2026when's "an edit is not a review" (11-17) one step
+  further: a review of the PR is not a review of the instruction file.
+- **Product reviewers given the repository recovered almost none of it.**
+  Codex, OpenCode and Claude Code `/review` (Sonnet 4.6) each ran once on
+  446 PRs, scored by quote-backed recall of 1,912 human concerns: 1.3%,
+  3.9% and 3.2%. All three pooled reach 6.9%, and 77.8% of PRs got
+  nothing from any of them.
+- **The admission questions were the emptiest cells.**
+  - Triviality / low-value ("does this rule do anything?"): 0, 1 and 0
+    of 146.
+  - Audience fit: 0 of 32. Scope / placement: 3, 0 and 0 of 94.
+  - Overreach ("should this rule exist?"): 5, 5 and 1 of 98.
+  - Stale content was the relative best: 4–5 of 69.
+- **What was missed mattered.** 71% of concerns all three reviewers
+  missed were later acted on by the author, against 55% of those an AI
+  caught. This is partly by construction, because author action helped
+  validate the gold.
+- **In-the-wild AI review is often review-shaped.** 39.5% of AI review
+  comments were walkthroughs or summaries with no evaluative judgment.
+
+For this concept, the 11-23 zeng2026resolution result now extends from
+reading a run to reading the text. A model's default review of an
+inserted or updated rule says little about whether the rule should
+exist, which is the question admission asks. A library whose
+insert step is "the change passed review" has, where the reviewer is a
+model, passed none of this concept's gates.
+
+It does not show that a model *cannot* judge necessity:
+- the reviewers ran their default PR review, not an admission rubric;
+- web tools were off, while the gold's validators used the web;
+- there is no human-vs-human arm, so we don't know how much of one
+  maintainer's concerns another would raise.
+
+Rule (our inference): on this box, a model's review of an edit to a
+skill, rule or CLAUDE.md is a screen for checkable defects (paths,
+commands, consistency with the code). It is not admission evidence. The
+necessity question goes to the human who accepts the change, stated as
+a question, as in the paper's untested "autonomous with escalation"
+sketch. Admission evidence remains a paired with/without run (see the
+sections above).
+
+Limits:
+- OSS software repositories, popular ones only (>100 stars), and
+  maintainers' comments as gold. Per-category counts are single digits
+  with no intervals.
+- One run per product. Claude Code ran Sonnet 4.6. No data or code
+  release, and an unreviewed preprint with internal arithmetic
+  inconsistencies (e.g. 71.9% vs 72.4% by its own counts).

@@ -144,6 +144,8 @@ sources:
   - "[[literature/papers/zeng2026resolution]]"
   - "[[literature/papers/wong2026evaluating]]"
   - "[[literature/papers/ghosh2026truthgate]]"
+  - "[[literature/papers/gunsilius2026inference]]"
+  - "[[literature/papers/srivastava2026appscibench]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -3953,6 +3955,158 @@ Limits:
   re-run, which was the primary verdict.
 - Single author with their own signing tool; signed records are on request
   only, so the re-check is not yet independently exercised.
+
+## With no holdout, the agent's choice of analysis is the selection step: on null data the lead finding was significant 52–97 times in ~100, and a replay on subsamples corrects one p-value for hundreds of runs (2026-11-24)
+
+This concept protects a holdout from a loop that reads its own score.
+[[literature/papers/gunsilius2026inference]] shows the same failure inside
+one agent run, with no loop and no holdout. The agent inspects the data,
+tries specifications and reports one, and the reported p-value is tested on
+the same data that chose it. `evaluation.md` exempts "analysis one-shots".
+That is right for its four clauses, since there is no split to hide. It
+leaves this selection uncovered.
+
+- **Sound code, selected choice.** On 100 simulated RCTs with every
+  effect zero, the lead finding was significant for 97/99 GPT-6-Luna,
+  88/100 GPT-6.1-Sol, 74/100 Claude Sonnet 5.5 and 52/97 Claude Opus 5.5
+  reports. The same emitted programs, re-run on 4,000 fresh null
+  datasets, reject 4.1–5.9%. Reviewers passed 98.5–99.5% of
+  Card–Krueger analyses as methodologically sound. So a methodology
+  review does not catch this, because the selection happens among sound
+  analyses.
+- **The correction needs replayability, not a split.** Draw subsamples
+  without replacement and run the agent's own code on each. Sort them by
+  whether that code's p-value is at least as small as the reported one.
+  Replay a fresh agent with the same prompt on each subsample, and record
+  whether it commits to the same model and null. The ratio λ of tail to
+  overall reselection rescales the p-value. False rejections are 4.2%
+  with a known selector, 5.1% on simulated data and 5.9% on three real
+  studies with placebo treatments, all with GPT-6-Luna. Power falls from
+  78.8% to 49.5% at the smaller effect.
+- **The agent's own multiplicity correction is not a fix.** Its family is
+  data-dependent. Sol counted 26 tests on the full data (Holm 0.027 →
+  0.70). It counted 6–194 on subsamples and 12–1,252 on full-data
+  placebos. On 49 datasets with a true effect, the agent's own
+  corrections kept 30 effects. A conditional correction kept 39 (9 gains,
+  0 losses).
+- **Bootstrap is the wrong resampler for an agent.** An n-out-of-n
+  bootstrap sample is at total-variation distance → 1 from a fresh
+  dataset, and agents react to duplicated rows. This is the 11-17
+  "resampling unit decided the closest call" point from the other side.
+  The unit must be the i.i.d. sampling unit, drawn without replacement.
+
+Where it sits in this concept: ning2026closedloop's two remedy families
+are constrain-during-search and certify-after-search. This is a third,
+*correct-after-selection*. It is a different null from the 11-02 BiPA
+selection replay. BiPA simulates unchanged candidates through a known
+gate, cheaply. This re-runs the black-box agent on real resampled data,
+for hundreds to thousands of sessions per corrected p-value. The 11-16
+section's "the two do not substitute" applies here too.
+
+Rule for this project (our inference): when a downstream agent reports a
+significance claim from data it explored, treat that data as a
+validation split the agent has spent. The claim is exploratory unless
+(a) the outcome, population and test were fixed in the brief before the
+agent saw the data, or (b) it is confirmed on data the agent never read
+(HCE's own split, which the paper sets aside only because it limits the
+agent's flexibility). Do not accept an agent-stated "corrected over N
+tests" as either. Reserve replay correction for a single headline claim
+whose analysis the agent re-picks often enough to estimate λ.
+
+Limits:
+- Econometric hypothesis tests on i.i.d. units. An ML benchmark claim
+  would need a test framing and a resampling unit (tasks, seeds); the
+  paper does not try this.
+- The corrected test was run on GPT-6-Luna only. The other three agents
+  have raw rates only.
+- No prompt ablation. Every null condition asked the agent to explore
+  and pick a lead, so the rate is under instructed search.
+- Recurrence fails under open prompts. Two-thirds of the open-ended
+  corrections are p = 1 or unavailable.
+- Match decisions are LLM-judged with no human audit. No cost in money;
+  preprint.
+
+## An agent that wrote its own validation cases hit the ceiling by round 2.5, a fifth of them before any change, and its self-grade ran about five times ahead of held-out (2026-11-24)
+
+Every section above assumes the validation split is given and asks how the
+loop can misuse it. [[literature/papers/srivastava2026appscibench]]
+(AppSci-Bench) measures the case where the agent *writes* it. Seven models
+each build a business agent from development data and a simulated
+stakeholder. With optimization on, the builder writes an internal benchmark
+(cases, metrics, scoring script) and keeps a new artifact version only if
+its internal score rises. The held-out suite lives in an evaluation
+environment that is started only after the builder's container is halted.
+The agent gets an allowlist spec with a fail-closed marker scan, and a leak
+detector's 348 hits were adjudicated to zero real leaks. The test side is
+clean by construction; what fails is the validation side.
+
+- **The suites gave no signal.** 86 of 132 optimization-enabled builds reach
+  ≥0.99 internally, at a mean round of 2.5 ± 1.7. **26 score ≥0.99 on the
+  first evaluation, before any change** (Opus 4.8: 10 of 21). The median
+  suite has 7.5 cases (per-model medians 2–12). GPT-5.5 saturates 18 of 21
+  builds and scores 10.1 MMS@3 held-out.
+- **When it moved, the self-grade moved the right way and much too far.** On
+  24 optimization steps from 13 Opus 4.8 builds, the two scores agreed in
+  direction 10 of 11 times when both changed. Six steps were accepted on a
+  self-grade rise with a flat held-out score. Mean gain per build: **+16.9
+  self-grade vs +3.2 held-out**.
+- **The loop's held-out effect was null.** Optimization on − off over 252
+  builds (MMS@1 per build, permutation test stratified by task, Holm): every
+  adjusted p ≥ 0.16. Opus 5 in the paper's harness −9.4 [−21.0, +2.2];
+  Opus 4.8 in Claude Code −1.4 [−14.6, +11.7]. Without the O2C builds that
+  broke the output contract, every effect is within about ±7.
+- **One trace shows the fit-to-a-wrong-oracle path.** A GPT-5.5 Banking
+  build wrote one synthetic case that rewarded a wrong assumption.
+  Optimization hardcoded a refusal; the internal score went 0.785 → 0.976
+  → 1.0 and the optimizer reported `nothing_to_fix`. Externally the
+  artifact solved 5 of 97 cases. Of 75 low-scoring builds, 26 carry
+  "internal–external eval mismatch" as primary label (manual plus LLM
+  review).
+- **Asked to skip validation, builders complied.** A stakeholder line "skip
+  the eval set, if it runs, we'll trust it" was resisted 0 of the 6 times
+  it fired (one adversarial trace per task).
+
+For this concept: the measured failure is earlier and plainer than
+overfitting. Most self-written suites were too small and too easy to rank
+candidates, often from round 1. The loop had nothing to climb, and the
+held-out effect of climbing was indistinguishable from zero. This fits
+[[literature/papers/lehmann2026can]] (+8.4 dev, +2.8 held-out, CI spans
+zero) and [[literature/papers/alexander2026iterated]]. It is the
+validation-side twin of the 2026-11-03 point that "a held-out set that every
+candidate saturates is not a holdout". It also extends
+[[literature/papers/huang2026reward]]'s "the risk tracks who owns the
+evaluation" from hacking to plain weakness: no exploit is needed for an
+agent-written suite to certify nothing.
+
+`evaluation.md`'s four clauses protect a given split and a given evaluator.
+None addresses the quality of validation cases the agent writes. Where a
+loop authors its own cases, three checks follow (our inference, untested
+here):
+- Log the unimproved artifact's first internal score and the suite size. A
+  first score at ceiling means the loop has no search signal, not that the
+  artifact passes.
+- Extend the pending `hce-known-bad-preflight` to the self-written suite: a
+  deliberately degraded artifact must score below the first draft, or the
+  suite cannot rank candidates.
+- Never cite a rise on a self-written suite as a held-out gain. Report the
+  two side by side (16.9 vs 3.2 here).
+
+Limits:
+- Saturation is never paired with held-out score build by build. The
+  contrast is with aggregate held-out scores.
+- The self-grade table is one model, 13 builds and 24 steps. "Direction
+  right" rests on 11 steps.
+- Three builds per cell, so the optimization null has wide intervals
+  (Opus 4.8's spans about ±15). It is absence of evidence, not evidence the
+  loop is harmless.
+- Business agent-building, not ML research. CRM is scored entirely by LLM
+  judges, and only 56% of Compliance and 68% of Calls gold labels follow
+  from the policy the builder gets, so part of the internal–external gap is
+  unattainable score.
+- In the paper's harness the suite comes from a fixed `eval_generator` tool
+  the orchestrator calls with free-text context. Table 8 covers only those
+  builds; the native harnesses got prompt guidance instead.
+- One industry group, unreviewed.
 
 ## Open questions
 

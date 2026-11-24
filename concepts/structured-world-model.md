@@ -18,6 +18,7 @@ sources:
   - "[[literature/papers/wang2026pear]]"
   - "[[literature/papers/wang2026language]]"
   - "[[literature/papers/xu2026replaylens]]"
+  - "[[literature/papers/wang2026between]]"
 used_by: []
 related_concepts:
   - "[[concepts/citation-anchoring]]"
@@ -211,3 +212,45 @@ Renaming or renumbering experiments without carrying their scores is the
 risky migration: key-slot reassignment changed 0.77 of decisions. The
 designed histories are short (24 records, 4 actions), so long-log behaviour
 is untested.
+
+## A round log read by the deciding call: the full log beat last-round-only on 2 of 2 tasks at one run each, and the no-log arm also lost its incumbent (2026-11-24)
+
+The 10-13 section read the iteration log as state that an agent consults
+([[literature/papers/xu2026replaylens]]). [[literature/papers/wang2026between]]
+(BRED) varies how much of such a log the per-round decision reads. The
+log has one entry per round. It holds the decision, every candidate's
+metric or failure diagnosis, the round's best and a lesson. The lesson
+may state only what was measured, never a cause. Each solution is
+recorded by a ≤ 12-word mechanism signature that an LLM writes from the
+actual code, not from the proposal. The prompt shows one line per round
+plus the last five rounds in full. Best verified result, one run per
+setting:
+
+| Decision step reads | ETTh1 MAE ↓ | CIFAR-100 ↑ |
+|---|---|---|
+| Nothing (and restarts every round) | 0.4299 | 83.71 |
+| Last round only | 0.4244 | 84.01 |
+| Best solution + full log | 0.4172 | 84.63 |
+
+The bottom rung is the confounded one. "Nothing" also removes building on
+the best solution. The cleaner comparison is last round vs full log:
+1.7% MAE and 0.62 points. The paper doesn't say whether the last-round
+arm's extensions still start from the best solution.
+
+For this concept: it is the first ablation in the graph of how much of a
+research loop's own history the deciding step should read, and the
+direction favours the whole log. It also enacts two points from earlier
+sections without testing them: failures go in as first-class records
+([[literature/papers/wang2026language]]), and the final best is
+re-measured, not read from its logged score. On DAIC the re-run on fresh
+seeds gave 0.6164 against a logged 0.6019. Our inference for guidance #4:
+`/iterate` decides from the latest experiment's Diagnostics. That is
+closer to the last-round rung than the full one, but this evidence is too
+thin to change it.
+
+Limits:
+- One run per rung, two tasks, one controller model. The idea generator
+  reads the full ledger in every setting.
+- No arm isolates which part of the log matters, and the facts-only
+  lesson rule is not ablated.
+- Histories are at most ten rounds long.

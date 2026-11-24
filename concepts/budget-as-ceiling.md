@@ -85,6 +85,7 @@ sources:
   - "[[literature/papers/thang2026contain]]"
   - "[[literature/papers/zhang2026rsi]]"
   - "[[literature/papers/qin2026autoresearch]]"
+  - "[[literature/papers/wang2026between]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -2409,6 +2410,53 @@ Limits:
 - One run per agent × stream. GPT-5.6-Sol's repeats varied by up to 7.14
   time-convergence points, as large as two of the five headline gains.
 - Wall-clock on a shared host with reported contention; no token costs.
+
+## Restart pivots beat the incumbent in 1 of 8 rounds; an LLM controller left a lineage after one stall every time, and its stops saved at most one round (2026-11-24)
+
+The 10-20 and 11-02 sections ([[literature/papers/zhou2026athanor]],
+[[literature/papers/srinivasan2026continue]]) found that restart pivots
+lose to the matured lineage, which is why the 11-14 forced pivot keeps the
+chain's state. [[literature/papers/wang2026between]] (BRED) gives a third,
+descriptive source. One deepseek-v4-pro call per round reads the best
+verified solution (the Champion) and a log of past rounds. It then picks
+one of four actions: a new line from the clean baseline, extend the
+Champion with a retrieved mechanism, refine it, or stop. There are 3–5
+candidates per round and ten-round budgets on four ML tasks. Code forces
+refine-or-stop in the last 30% of rounds and turns an extension into a new
+line after three stalled extensions. Tabulated from the per-round tables
+(App. E; our arithmetic), for rounds after the first Champion:
+- **New line from baseline: 1 of 8 beat the Champion** (SST-2 R3, +0.34,
+  when the lineage was two rounds old).
+- **Extend the Champion: 6 of 10.** **Refine it: 6 of 11**, two of them by
+  0.00003 MAE and 0.003 macro-F1 points.
+- **The controller redirected readily.** All four switches from extending
+  to a new line came after a single failed extension. The prompt names
+  the actions, shows a stall count and says to switch after about two.
+  So the three-stall code backstop never fired. On CIFAR-100 it then ran
+  three losing new lines in a row. It returned to the Champion only at
+  R8, the first round where the guardrail allows refine or stop alone.
+  Those forced refinements produced all of the gain after R3
+  (83.91 → 84.63).
+- **The LLM's stops saved at most one round**: R9 on ETTh1, R10 on SST-2
+  and DAIC, never on CIFAR-100. There is no run-to-budget arm.
+
+What this supports: pivots should build on the chain's best, not restart
+from scratch. In this loop a named action menu elicited redirects, where
+[[literature/papers/yan2026traceml]] found prompt nudges inert, but the
+restart kind seldom paid. It does not test redirect against halt. The
+paper's context ablation varies what the controller reads, not whether
+it stops. Its strict-improvement keep promoted two noise-sized "new
+bests". On DAIC the per-seed SD is 1.66 points, so these are `band=none`
+keeps of the kind the noise-band rule exists to block.
+
+Limits:
+- One run per task, and the counts are confounded with timing: new lines
+  follow a stall and mostly fall in mid-run, while refinements cluster
+  in the forced end phase.
+- Eight restart rounds over four runs. Candidates are selected on the
+  metric they report.
+- The logs may allow [[literature/papers/jain2026monitor]]'s q and p to be
+  estimated per action, if the repo ships them (not checked).
 
 ## Open questions
 

@@ -29,6 +29,7 @@ sources:
   - "[[literature/papers/kim2026into]]"
   - "[[literature/papers/alfaqeeh2026beyond]]"
   - "[[literature/papers/singharoy2026quantifying]]"
+  - "[[literature/papers/xie2026do]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -384,6 +385,56 @@ Limits:
   models on 61 questions, and its instructions echo the judge's rubric.
 - Claude systems' search results are encrypted, so their "opened" counts
   only web-fetch calls. Exposure may be higher.
+
+## A citation can resolve to an opened source and still drop the source's own limits: 0.20 (Opus 5) to 0.65 of relayed claims kept neither (2026-11-24)
+
+The 2026-11-03 section above found that conclusions can be broader than the
+cited set allows, and that agents often cited pages they never opened
+([[literature/papers/singharoy2026quantifying]]).
+[[literature/papers/xie2026do]] shows the failure at the level of one claim,
+with the source opened. A committee-chair agent writes a report from a UK
+select-committee inquiry's written evidence. Two witnesses' headline claims
+each carry two limitations in the witness's own sentence: a time period,
+scope, certainty, source or sample size. The median episode opens every file.
+- **Among cited claims, 0.47 kept neither limitation** (pooled, eight
+  models, Vanilla; 0.33 under a duty list). Per model: Claude Opus 5
+  **0.20**, the GPT-5.6 variants 0.34–0.45, GLM and Qwen 0.57–0.65.
+- **The citation is real in every one of these cases.** The claim is the
+  witness's, from a file the agent read, so an anchor check passes by
+  construction.
+- **Selection is separate from loss.** Under Vanilla, reports cited only
+  the witness on the side of the recorded outcome more often than only the
+  opposed one (251 vs 164; difference 0.091, CI 0.016–0.164). Once a claim
+  was cited, loss did not depend on side (0.49 vs 0.44, CI spans zero).
+- **A duty list helped weaker models, not Opus.** One of the committee
+  chair's duties was "Distinguish contested evidence and uncertainty from
+  established findings". Pooled loss fell by 0.14 (0.08 under the human
+  majority reading). Opus 5 stayed at 0.20, and Qwen rose slightly.
+
+For this concept: singharoy2026quantifying showed that opening the source
+matters. This shows that opening it is not enough. A resolved anchor
+certifies where the claim came from. It does not certify that the claim kept
+the scope its source gave it. That is the same gap as the 11-02 section's
+"a value that resolves is not a value that belongs", applied to qualifiers
+rather than numbers.
+
+For this box (our inference): literature notes and concept sections relay
+papers' claims, and the house `Limits:` block is the structural counter. The
+weak point is the bolded headline number in a section's evidence bullets,
+which can travel without its scope (for example "0.20" without "machine
+label; 0.14–0.83 across human readers"). A cheap `/lint` or reader check:
+for each bolded number in a section, confirm that the paper's own scope for
+it appears in the same bullet or in that section's `Limits:`.
+
+Limits:
+- The limitations are constructed: a model rewrote each headline claim to
+  carry two. Real hedges may be dropped less, or more.
+- The absolute rate depends on who reads the label: 0.14–0.83 across three
+  annotators, 0.43 by their majority. Use it to compare, not as a level.
+- Counts loss of both limitations among cited claims only. Dropping one, or
+  omitting the claim, is not scored.
+- Parliamentary reports, not research notes. Opus 5, not 5.5. Unreviewed,
+  credibility 3.
 
 ## Open questions
 

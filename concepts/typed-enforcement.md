@@ -48,6 +48,7 @@ sources:
   - "[[literature/papers/mehtiyev2026when]]"
   - "[[literature/papers/sun2026keeping]]"
   - "[[literature/papers/dhuri2026markdown]]"
+  - "[[literature/papers/yang2026ai]]"
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
   - "[[concepts/budget-as-ceiling]]"
@@ -925,6 +926,54 @@ Limits:
   AGENTS.md. The primary outcome (defects) was null at the floor: 0
   real bugs in every arm. So the file's benefit side is unmeasured,
   not zero.
+
+## Model reviewers with the whole repository caught 0 of 38 references to things that never existed: the existence check has to be code (2026-11-24)
+
+The 11-17 section above ([[literature/papers/mehtiyev2026when]]) proposes
+an existence check for path and command lines in instruction files,
+because a missing path is wrong whichever side moved. That leaves open
+whether a model review pass already covers it. [[literature/papers/yang2026ai]]
+measures it. Three product-native PR reviewers each ran once on 446 real
+instruction-file PRs: Codex review (GPT-5.5 high), OpenCode review
+(DeepSeek-v4-pro max) and Claude Code `/review` (Sonnet 4.6 high). Each
+had the full repository at base and head, with web tools off. They were
+scored by strict, quote-backed recall of 1,912 human concerns.
+
+- **Fabricated references: 0 of 38, for every reviewer.** The category is
+  "refers to a file, command, or practice that never existed here". It is
+  the most repository-checkable category in the taxonomy.
+- **Unresolvable references: 6, 9 and 9 of 134** (4.5–6.7%). The category
+  is a command, path or link that "will not resolve or run as written".
+- **Confidently wrong, not silent.** On one PR the human flagged a
+  nonexistent `services/` directory. OpenCode listed it as a *positive*
+  finding ("Correct folder structure"). Codex and Claude both told an
+  author with a correct file that "Java 25 is the latest LTS". These are
+  three hand-picked cases, not a rate.
+- **Reviewers rarely ask for code instead of prose.** "This should be a
+  hook, linter or CI check" is 0.8% of human review comments and 0.1% of
+  AI ones in the wild. The products recovered 1 of 20 such concerns.
+
+For this concept, this adds the model-review arm the existence-check
+proposal lacked. A model review pass, even with the repository open,
+did not catch references to things that do not exist. In one case it
+endorsed one. The deterministic check is the only route in evidence with
+recall on this class. Field reviewers almost never raise the
+prose-vs-code question, so P3 ("a rule that must hold goes in code") is
+applied by the writer or not at all.
+
+Rule (our inference): build the existence check for paths and commands
+in CLAUDE.md, `.claude/rules/` and skills as a script. Don't count a
+model review, including `/lint`'s judgment layer, as covering it.
+
+Limits:
+- The paper never runs a deterministic checker, so its yield on real
+  files is still unmeasured.
+- "Hallucinated" also covers invented *practices*, which a path check
+  cannot see, and it is not split by kind. N = 38.
+- The reviewers ran their default PR review on PRs that mostly also
+  changed code. They were not asked to check instruction-file
+  references. One run each, Sonnet rather than Opus, unreviewed
+  preprint with no artifacts.
 
 ## Connections
 

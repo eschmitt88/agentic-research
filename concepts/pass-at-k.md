@@ -44,6 +44,7 @@ sources:
   - "[[literature/papers/ellington2026automatic]]"
   - "[[literature/papers/shi2026hard]]"
   - "[[literature/papers/wang2026beneath]]"
+  - "[[literature/papers/srivastava2026appscibench]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -823,6 +824,44 @@ Limits:
   other 14 were not tallied.
 - No intervals on any turnover count.
 - One lineage per cell, so between-run churn is also unmeasured.
+
+## When the agent builds the artifact, k counts builds: a worst-of-three metric zeroes a task on one broken build, and the 11-point setting gap in the headline table sat inside the paper's own per-build test (2026-11-24)
+
+[[literature/papers/srivastava2026appscibench]] (AppSci-Bench) repeats the
+*build*, not the run. Each model builds three independent artifacts per
+task, and each artifact is scored in three trials. MMS@3 takes the per-case
+minimum over the three builds (one trial each). It averages over cases and
+over the 27 trial combinations. It is a continuous, build-level relative of
+passᵏ and of [[literature/papers/zhang2026double]]'s worst case.
+- **One broken build zeroes the task.** Opus 5 in the paper's harness
+  scores 26 on O2C with optimization on and 97 with it off. Two of the three
+  opt-on builds broke the output contract. Opus 4.8 in Claude Code scores
+  0.0 on Airline from one failed build.
+- **It changes the gaps.** MMS@3 vs mean accuracy: Opus 5 44.7 vs 58.3,
+  GPT-5.5 10.1 vs 24.4. The Opus 5 – Opus 4.8 gap is 9.8 on MMS@3 and 4.6
+  on accuracy. This is [[literature/papers/li2026beyond]]'s avg@k-vs-best@k
+  point on the other tail.
+- **The setting ranking is not resolved.** In the paper's harness, Opus 5
+  scores 44.7 (optimization on) against 55.7 (off) on MMS@3. The paper's
+  own test (MMS@1 per build, permutation stratified by task, Holm) gives
+  −9.4 [−21.0, +2.2], adjusted p = 0.37. Opus 4.8's interval spans about
+  ±15. The 59.1% headline is the best of four Opus 5 configurations, each
+  at three builds.
+
+For this concept: worst-of-k is the right metric when the deployer gets one
+build and cannot choose. It is also very sensitive to the build-failure
+rate, which ranged here from 0% (Opus 5) to 67% (GPT-OSS-120B). So it needs
+the failure rate and the mean beside it. At k = 3, the per-build test is
+how to read a setting difference, not the MMS@3 table.
+
+Rule (our inference): when an agent builds an artifact that is evaluated
+afterwards, the build is the unit of repetition and k counts builds. Report
+worst-of-k beside the mean and the build-failure rate. Test setting
+differences per build, within task.
+
+Limits:
+- k = 3 builds and seven tasks.
+- No cross-model test is reported, though the top-to-bottom gaps are large.
 
 ## Open questions
 

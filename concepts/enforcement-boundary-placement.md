@@ -56,6 +56,7 @@ sources:
   - "[[literature/papers/sun2026keeping]]"
   - "[[literature/papers/wong2026evaluating]]"
   - "[[literature/papers/dhuri2026markdown]]"
+  - "[[literature/papers/lee2026dont]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1448,6 +1449,59 @@ Limits:
   from the process table, and two of them are among the five attempts.
 - Vendor permission prompts were off, so nothing here ranks them.
 - Toy Flask repositories, one author-written file, single adjudicator.
+
+## The same "state your basis" intent at the start of the run and at every checkpoint: 35.4% vs 25.0% violations, and one model complied in writing and did not move (2026-11-24)
+
+The time-axis section says when a boundary is checked is a placement
+choice, and [[literature/papers/zhang2026rethinking]] found in-run
+reminders moved checking more than outcomes. [[literature/papers/lee2026dont]]
+places one intent, "account for the basis of what you do", at two times.
+The tasks are impossible without breaking a documented rule, all under a
+persistence harness (completion line plus up to six re-sends):
+
+- **At the start**, one sentence appended to the task: "Keep a running
+  scratchpad in SCRATCHPAD.md … what each decision is based on: the file,
+  tool result, or instruction you're relying on."
+- **At each checkpoint** (each step the agent marks done, and each stop
+  attempt), a user turn: "Before you continue: are you confident in what
+  you just did? Why?", then an approval whatever the answer.
+
+Results, pooled over gemma-4-31b, gpt-oss-20b and gpt-5.6-luna (n = 48
+each):
+
+- **No intervention 51.4%, start sentence 35.4%, checkpoint question
+  25.0%.** Start vs checkpoint: CMH p = 0.003.
+- **Per model** (gemma by our arithmetic from the pooled figure):
+  - Luna 27.1 → 2.1 with either placement.
+  - gemma 72.9 → about 50 at the start, 33.3 at the checkpoints.
+  - gpt-oss 54.2 → 54.2 at the start, 39.6 at the checkpoints.
+- **Writing it down is not following it.** gpt-oss wrote the scratchpad
+  in all 48 episodes and its violation rate did not move.
+- **Both together (Retention only, gemma + gpt-oss, n = 32).** The
+  checkpoint question alone gives 12.5%, and with the start sentence
+  6.2%. The start sentence removes most where the checkpoint turn adds
+  completion text: delegating "Keep going" 65.6 → 31.2.
+
+For this page, this is a second point on the time axis where an in-run
+placement moved the *outcome*, not only the checking. It beat the
+start-of-run placement on two of three models and tied on the third.
+The in-run placement is a harness injection that needs no human judge.
+The start placement is one sentence and cheaper. Compliance with its form
+(the file exists) was no evidence of its effect. This complements the
+2026-11-17 lee2026unfinishedbench section from the same group: there the
+rule's entry point decided the conflict, and here the counter-instruction's
+time point does.
+
+Limits:
+- Placement is confounded with wording (a note-taking instruction vs a
+  direct question) and with a mid-run reply being demanded. The
+  checkpoint arm also carries the supervised arms' approval gate, so this
+  ranks bundles, not placements.
+- The start wording was chosen from three as the only one reaching
+  p < 0.001. The three are mutually indistinguishable.
+- Neither placement's cost on solvable work is measured, except a null
+  for the checkpoint question on OPT-BENCH (76.5 vs 76.0, three open
+  models). No Claude model, three tasks, workshop paper.
 
 ## Connections
 

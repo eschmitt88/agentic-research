@@ -11,6 +11,9 @@ sources:
   - "[[literature/papers/tsuchida2026do]]"
   - "[[literature/papers/ghosh2026truthgate]]"
   - "[[literature/papers/guo2026how]]"
+  - "[[literature/papers/xie2026do]]"
+  - "[[literature/papers/gunsilius2026inference]]"
+  - "[[literature/papers/yang2026ai]]"
 related_concepts:
   - "[[concepts/hierarchical-delegation]]"
   - "[[concepts/constraint-pinning]]"
@@ -368,6 +371,163 @@ Limits:
 - Mostly mid-tier readers (Haiku 5.5 is the only Claude), on curated
   skills. No goal-directed or compressing rewrite was tested; the paper
   lists a preserve-outside-prior rewrite as future work.
+
+## A duty list moved Opus 5's naming of an input error from 0.53 to 0.84 but not its weighing or relaying; mid-tier models cut failures and over-corrected (2026-11-24)
+
+[[literature/papers/xie2026do]] (RI-Bench) appends one numbered duty list to
+a role prompt. It has 3–7 items per role, for example "Synthesize all
+reviewer arguments by evidential quality, not by counting votes" and "Decide
+independently; override an Area Chair recommendation when its reasoning …
+merely tallies votes". Eight models run in a read-only `pi` harness, Vanilla
+(role and task) vs Obligation (plus duties).
+- **Opus 5: no change where it already did the job.** Majority following
+  0.20 → 0.19 (it had no excess pull over its paper-only reading to begin
+  with). Limitation loss 0.20 → 0.20.
+- **Opus 5: a large change in what it says.** Rulings that name counsel's
+  planted error and reject it rose from **0.53 to 0.84**. Rulings that only
+  state the true fact fell from 0.41 to 0.11. Adoption stayed at 0.01–0.02.
+- **Pooled: real but partial gains.** Majority following fell 0.48 → 0.28,
+  limitation loss 0.47 → 0.33, and corrections rose 0.09 → 0.25. Under the
+  human majority reading the relay gain is 0.08, not 0.14.
+- **Side effect: over-correction.** Agreement with a *correct*, specific
+  majority fell from 0.99 to 0.91 pooled (GPT-5.6 Sol 0.99 → 0.84). Sol and
+  Qwen now followed the generic majority 0.19 and 0.18 *less* than their
+  paper-only reading would give. A duty phrased as resisting the majority
+  also made them resist right majorities.
+- **The effect depends on the harness.** On a hard subset, the duty list
+  raised DeepSeek-V4.1-Flash's composite score by +0.26 in its own harness
+  and by +0.02 in `pi`.
+
+This is P2 evidence ("state what the reader won't do by default; leave out
+what it would do anyway") on Opus. The duties Opus already met bought
+nothing. That matches the 11-17 wang2026beneath finding, though here they
+did no harm. The one behaviour the list did move on Opus was output-side:
+saying out loud that an input was wrong instead of silently using the right
+fact. That is the ghosh2026truthgate pattern (disclosure needs asking) in a
+different task. For mid-tier readers it is a P7 data point. The list helped
+on average and also moved the decision boundary past the target.
+
+Rule for this project (our inference):
+- In an Opus-facing brief, spend words on the reply shape ("name any error
+  or conflict you found in the input and say what the source shows") rather
+  than on duties the reader already performs.
+- In a Sonnet- or Haiku-facing brief, a "don't defer to X" duty should state
+  the condition under which deferring is wrong. Check it on a case where
+  deferring is right, because the measured cost of the unconditioned form
+  is contrarianism.
+
+Limits:
+- No length-matched neutral addition, so duty content and prompt length are
+  not separated. One wording per role.
+- Opus 5, not 5.5. Machine labels, with human agreement κ ≈ 0.63–0.68. One
+  annotator's reading erases both Obligation effects.
+- The harness dependence is shown for one model on a 20-case-per-scenario
+  subset selected on other models' failures.
+
+## When the deliverable is a test result, the analysis is a constraint, not method: a well-formed goal-level brief drew significant leads on 52–97 of ~100 null datasets, and its caveat request mostly missed the opening (2026-11-24)
+
+[[literature/papers/gunsilius2026inference]]'s open-ended prompt is a
+textbook brief by this page's definition. It states:
+- a goal: "one compelling, defensible finding to motivate its next
+  study";
+- a constraint, through the codebook: OLS with site indicators, HC2,
+  two-sided t-test, supplied observations only;
+- open method: "Explore the data as you see fit, comparing outcomes,
+  follow-up points and participant groups";
+- a reply shape: "explain your choice, and discuss the exploratory
+  nature of the finding and the alternatives you considered".
+
+On 100 simulated RCTs with every effect zero, the lead was significant
+for 97/99 GPT-6-Luna, 88/100 GPT-6.1-Sol, 74/100 Sonnet 5.5 and 52/97
+Opus 5.5 reports.
+
+- **The method left open was part of the claim.** Choosing the outcome,
+  follow-up and subgroup after looking is what makes the p-value
+  invalid. In a fixed-menu design, a brief that named the specification
+  in advance gave λ = 1.00 and an exact p-value. That holds by
+  construction, but it marks the boundary. For an inferential
+  deliverable, P1's "leave the method to the reader" cannot cover the
+  analysis choice.
+- **A requested caveat is not a prominent one.** This qualifies the
+  11-23 section, where a report request drew disclosure from every
+  cheat. Here the brief asked for the exploratory nature and the
+  alternatives. Report openings still gave no concrete reason to doubt
+  in 85% (Luna), 70% (Sol), 35% (Opus) and 31% (Sonnet). The corrected
+  p-value reached the opening for only 7–25% of significant leads.
+  Asking for disclosure did not decide where it appears.
+- **Readers override the goal, by model.** Sonnet 5.5 declined "select
+  the most statistically compelling finding" in 97.1% of Card–Krueger
+  replays and showed no selection there. GPT-6-Luna declined in 3 of
+  3,000. Persona framing no longer moved Sonnet 5.5's or GPT-6-Luna's
+  analyses (0 of 40 runs per model significant in the persona's
+  direction). Under the softer "compelling, defensible" wording, Sonnet
+  still led with p ≤ 0.05 in 74%. Another P7 data point.
+
+Rule for this project (our inference, untested): a brief that delegates
+an analysis whose result will be read as evidence does one of two
+things. It names the outcome, population and test before the reader
+sees the data. Or it labels the task exploratory and puts the reporting
+requirement in the reply shape's first line: "state how many analyses
+you ran and that the result is exploratory before any estimate". The
+must-hold version is not prose (P3). Pin the analysis spec in a file the
+runner hashes, as in hce-evaluation's 11-23 binding rule.
+
+Limits:
+- No prompt ablation. Every null condition used a brief asking for a
+  lead after exploration, so the brief's share of the rate is unknown.
+- Brief style is not the manipulated variable. GPT models dominate, on
+  econometric tasks.
+- Opening labels come from one GPT-6.1-Sol blind read with no human
+  check. One run per dataset per agent.
+
+## What maintainers flag in instruction-file changes: missing content ten times as often as verbosity, and about one comment in ten asks whether a rule should exist (2026-11-24)
+
+The sections above test P2 ("state what the reader won't do by default;
+leave out what it would do anyway") with controlled runs.
+[[literature/papers/yang2026ai]] gives the field view: what human
+reviewers object to in real changes to AGENTS.md, CLAUDE.md,
+.cursorrules and SKILL.md files. The data are 2,687 substantive human
+review comments on 1,200 GitHub PRs, coded identity-blind into 16
+concerns (substantive vs not κ .918; per-concern macro κ .72). Shares
+of human comments:
+- **Missing content dominates.** Completeness, "a rule, command,
+  prerequisite, or example the agent needs is missing", is **24.6%**,
+  the largest category. Specificity ("too vague for an agent to act
+  on") is 4.6%. Conciseness ("duplicated or verbose") is **2.5%**.
+- **Warrant is the second theme.** Triviality ("has no actionable value
+  … obvious or empty") 5.6% plus Overreach ("whether the rule should
+  exist at all") 3.9% make **9.5%**. Scope / placement (right content,
+  wrong file or layer) adds 3.6%.
+- **Two checks this page doesn't name.**
+  - Audience fit, 1.2%: the line is true but aimed at a human
+    maintainer, not the agent ("it's not for Claude, it's for the
+    maintainer").
+  - Discoverability / loading, 3.2%: whether the rule will load at all
+    ("make this an on-demand rule, not alwaysApply").
+- **P3 is almost never raised.** "Should be a hook, linter or CI check"
+  is 0.8% of human comments.
+
+For this concept, this is descriptive support for both halves of P2,
+weighted toward the first. Practitioners mostly object that the agent
+was *not told* something it needs. Their second complaint is that a
+line tells it nothing. Length alone is rarely the objection. That is
+consistent with "Open boundaries: intent vs procedure is a different
+axis from terse vs verbose". Audience fit and loading are cheap
+reader-side checks worth adding to a writing checklist: who reads this
+line, and will it be in context when it matters. The warrant judgment
+is also the one product model reviewers almost never made: Triviality 0–1
+of 146, Overreach 1–5 of 98. So P2's cut test should not be delegated to
+a model review pass (see skill-library-lifecycle, same date).
+
+Limits:
+- These are what reviewers *say*, not what changes agent behaviour. No
+  outcome is measured. The gold kept concerns validated by author action,
+  discourse or fact (1.26% dropped).
+- 67% of the PRs add new files, so "missing" may partly reflect first
+  drafts. Completeness often turns on project intent, not on how the
+  instruction is written.
+- OSS repository instruction files, not delegation briefs or skills
+  written for a strong reader. Unreviewed preprint, no released data.
 
 ## Connections
 

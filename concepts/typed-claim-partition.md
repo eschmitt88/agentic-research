@@ -27,6 +27,7 @@ sources:
   - "[[literature/papers/khezresmaeilzadeh2026claim]]"
   - "[[literature/papers/alfaqeeh2026beyond]]"
   - "[[literature/papers/singharoy2026quantifying]]"
+  - "[[literature/papers/gunsilius2026inference]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -478,3 +479,47 @@ Limits:
   per-item tags, only the final score.
 - The evidence pool is the cited set only, so the type is relative to what
   the writer chose to cite.
+
+## A reproducible claim can still be a selected one: type whether the analysis was fixed before the data, and the agent's own account cannot set the type (2026-11-24)
+
+The 11-03 section separates grounded from calibrated.
+[[literature/papers/gunsilius2026inference]] gives a case where a claim
+passes every grounding check and is still wrong in strength. The agents'
+lead findings are hard-grounded in the ng2026agent sense. The emitted
+program re-runs and reproduces the reported p-value. The same program
+rejects 4.1–5.9% of fresh null datasets, and 98.5–99.5% of analyses
+pass methodological review. Yet on null data the lead is significant for
+52/97 to 97/99 agents' reports. Grounding checks a claim against its
+evidence. It does not check how the claim was chosen.
+
+- **The missing field is selection provenance:** *pre-specified*
+  (analysis fixed before the data), *selected* (chosen after looking),
+  or *selected, corrected* (confirmed on unread data, or λ estimated by
+  replay). The repair follows the type, as in the 11-03 section. A
+  selected claim is recast as exploratory or sent for confirmation. A
+  caveat alone is not the repair.
+- **The agent's account is soft evidence about its own selection.**
+  - GPT-6-Luna logged its search as "a breadth check, not a
+    result-driven decision". It re-picked that analysis 2.42× as often
+    when it was significant.
+  - Claude Sonnet 5.5 wrote that it would not lead with the smallest of
+    "about 30 looks".
+  - Agent-stated test counts vary with the data (6–194 across
+    subsamples, 12–1,252 on full-data placebos).
+  - The corrected p-value reached the report's opening for only 7–25%
+    of significant leads. Openings gave no concrete reason to doubt in
+    85% (Luna), 70% (Sol), 35% (Opus 5.5) and 31% (Sonnet 5.5).
+  - Selection is measured behaviourally, by replay or by design, not
+    read from the report.
+- **The cheap evidence for the type is the brief.** Whether the analysis
+  was named before the agent saw the data can be checked from the brief
+  and a hash. It needs no replay. This is waks2026what's approved scope
+  ceiling (10-12) applied to the analysis choice.
+
+Limits:
+- Econometric p-values only. The type's analogue for ML claims (metric,
+  split or seed chosen after a look) is our extension.
+- The 52–97 rates come from a prompt that asked the agent to explore and
+  pick a lead. Opening-disclaimer labels come from a GPT-6.1-Sol blind
+  read with no human check.
+- One original run per dataset per agent; preprint.

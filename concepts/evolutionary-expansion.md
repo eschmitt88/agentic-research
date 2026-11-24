@@ -49,6 +49,7 @@ sources:
   - "[[literature/papers/wang2026paretorsigym]]"
   - "[[literature/papers/wang2026beneath]]"
   - "[[literature/papers/zeng2026resolution]]"
+  - "[[literature/papers/wang2026between]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -879,6 +880,45 @@ Limits:
 - The 16-rollout result has no interval, model or benchmark stated, and no
   matched-compute arm (16× the candidates at one rollout).
 - No statistical gate (TRUST, PACE) was tested as a selector.
+
+## A one-incumbent LLM loop beat repeated restarts on 2 of 2 tasks and a same-model idea-evolution system on 3 of 3, at one run each and about ten times that system's executions (2026-11-24)
+
+The 11-03 section found a one-incumbent loop ranked second among search
+harnesses ([[literature/papers/chen2026autoresearch]]).
+[[literature/papers/wang2026between]] (BRED) has no population, tree or
+score. It keeps one Champion, replaced only on strict improvement, and a
+round log, and one LLM call per round picks restart, extend, refine or
+stop.
+- **Against repeated restarts at matched candidates.** In the
+  "no-history" arm every round restarts from the baseline, with the same
+  10 rounds and 3–4 candidates per round. This is close to a
+  fresh-sampling arm, except that the idea generator still reads the
+  ledger of tried directions. Best verified result, one run each:
+  - ETTh1 MAE **0.4299** vs **0.4172** for the full loop. The no-history
+    arm makes no gain after R4.
+  - CIFAR-100 **83.71** vs **84.63**.
+- **Against InternAgent re-run with the same models and coding agent:**
+  0.4245 vs 0.4172, 92.78 vs 95.07, 83.44 vs 84.63. InternAgent iterates
+  on ideas before execution and then **runs three**. BRED runs 24–40
+  candidates. The restart arm loses to that re-run on ETTh1, so the
+  margin there is not just more executions. On CIFAR-100 the restart arm
+  beats it, so there it may be.
+
+What this adds: a second ML-task data point that an incumbent-plus-log
+loop is competitive without population machinery. It is also the
+cheapest form of [[literature/papers/oved2026llm]]'s question (does the
+task reward building on earlier candidates at all?), answered yes on two
+tasks at n = 1. The gains over the restart arm are small (2.95% MAE, 0.92
+points). Part of the CIFAR-100 gap is the refine-only end phase, which
+the restart arm cannot use.
+
+Limits:
+- One run per cell, selected and reported on the same evaluation for
+  three of four tasks, with no held-out re-score. Compare the 6.9–9.0 pp
+  in-loop gains that re-scored near zero in the 11-23 section.
+- No token, dollar or wall-clock totals, so nothing is compute-matched.
+- No population or tree arm under the same models, so this is not a test
+  of evolution against one incumbent.
 
 ## Open questions
 

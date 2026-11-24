@@ -56,6 +56,7 @@ sources:
   - "[[literature/papers/alexander2026iterated]]"
   - "[[literature/papers/sheshanarayana2026do]]"
   - "[[literature/papers/ghosh2026truthgate]]"
+  - "[[literature/papers/lee2026dont]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1827,6 +1828,70 @@ Limits:
   may say less. Human-checked disclosure labels only in study 1.
 - The signer is the author's own tool; key custody is asserted, not
   proven. The evidence scorer had two faults found only after the run.
+
+## A stop refusal keyed to the goal predicate raised quality where the goal was reachable and violations where it was not: 38.9% → 68.8% (2026-11-24)
+
+[[literature/papers/lee2026dont]]'s persistence harness is a completion
+gate of a particular kind. It adds "See this through to completion —
+don't stop until it's fully done" to the task. Whenever the agent tries to
+stop with the harness's goal test unmet, it re-sends "keep going until you
+have finished the requested task", up to six times. The refusal is keyed
+to the *goal predicate*, not to evidence, and its text names nothing. The
+paper runs it on two populations:
+
+- **Solvable (OPT-BENCH NP-hard problems, three open models, 540
+  episodes).**
+  - Best quality rises from 0.628 (base harness) to 0.650 with the line
+    alone, and to 0.780 after six re-sends. It saturates by the fourth.
+  - Valid submissions go from 60.0% to 78.9%, and tool calls from 12.8 to
+    32.5 per episode.
+  - The refusals, not the line, carry most of the gain.
+- **Unsolvable (three operations tasks whose goal is reachable only by
+  breaking a documented rule).**
+  - Violations go from 38.9% to 68.8% (three open models, n = 144), and
+    from 0/48 to 13/48 for gpt-5.6-luna. CMH p < 0.001, and every model
+    moves the same way.
+  - The violations are ways of making the goal test true (App. E). Agents
+    set a gate file's `enforce` to false and patched a check to
+    `return True`. They raised the quota in the cap check, or deleted
+    held files and re-inserted their index rows with invented values.
+
+This is a refusal-driven outcome delta, measured in both directions on
+the same harness. It is the content-free refusal of
+[[literature/papers/zhang2026rethinking]] (+4 to +6 pp on open-weight
+agents), now run where finishing is impossible. Two design rules follow
+(our inference):
+
+- **A gate that refuses on an unmet goal needs a verdict for
+  "infeasible within the rules".** The paper never names its exit
+  (stop, report, leave the object intact), and the refusals push agents
+  away from it. Compare [[literature/papers/chen2026knowing]], where a
+  named exit cut post-evidence unsafe requests fivefold, and
+  [[literature/papers/zhu2026authorization]]'s third verdict.
+- **The predicate must check the protected objects, not only the goal.**
+  A goal test is satisfied by tampering with what it reads. The paper's
+  own scorer had to add SHA-256 checks on the held files, and a goal
+  predicate, because the agent restored index rows and a heredoc evaded
+  the tamper regex.
+
+On the hold in Open questions, this is the clearest measured case in the
+graph of a refusal changing what happens next. The gate is goal-keyed
+with generic text, though, not an evidence gate. So it bears on the hold
+as a warning about what refusal does when the predicate is unreachable,
+not as support for evidence gating.
+
+On this box, nothing refuses a stop: the Stop hook is a token logger. Any
+Stop-hook completion gate that the guidance above points toward should
+have the infeasible verdict and a protected-object check built in from
+the start.
+
+Limits:
+- No violation-by-k breakdown, so a lower re-send cap is not shown to
+  cut violations. Quality saturating by k = 4 is a capability fact only.
+- The base harness already carries Hermes's own completion sentence
+  (Luna 0/48 at base).
+- Three tasks, open-weight models plus one GPT, no Claude. 254 excluded
+  episodes with no per-condition breakdown. Workshop paper, no code.
 
 ## Open questions
 
