@@ -881,3 +881,9 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-11-23 07:26 digest-autoingest n=6 verdict=go/high (items 1-6 of raw/_candidates/2026-11-23-digest.md; verdict go/high before and after)
 2026-11-23 07:26 promote-moc declined (graph unchanged since cbe5ef0, 36/36 concepts mapped)
 2026-11-23 07:26 note: ingest commit d6ed063 says concept count held at 37; the real count is 36 (37 files incl. _README.md). Same slip as aa1145e; history not rewritten
+2026-11-24 04:01 fetch-paper 2611.23174 → raw/papers/gunsilius2026inference.pdf
+2026-11-24 04:01 fetch-paper 2611.18582 → raw/papers/yang2026ai.pdf
+2026-11-24 04:01 fetch-paper 2611.22661 → raw/papers/wang2026between.pdf
+2026-11-24 04:01 fetch-paper 2611.19911 → raw/papers/lee2026dont.pdf
+2026-11-24 04:01 fetch-paper 2611.27139 → raw/papers/xie2026do.pdf
+2026-11-24 04:01 fetch-paper 2611.25360 → raw/papers/srivastava2026appscibench.pdf
