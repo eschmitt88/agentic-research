@@ -38,6 +38,7 @@ sources:
   - "[[literature/papers/nakayashiki2026lessons]]"
   - "[[literature/papers/mitra2026agent]]"
   - "[[literature/papers/liang2026memory]]"
+  - "[[literature/papers/khan2026surfacing]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -301,6 +302,76 @@ Limits:
   arm tests a stated **Why:**.
 - Not this box's models; per-model trends run opposite ways in autonomy vs
   cheating. One model judge; intervals exclude formation-note variance.
+
+## A groundedness gate scored the lie above a true first mention, and its harm came from superseding true claims: 123 invalidations against 3 rejections (2026-11-24)
+
+The attestations above argue that content-scoring gates cannot be sound
+against an adaptive writer ([[literature/papers/louck2026securing]]) and
+that any per-record gate has a ceiling
+([[literature/papers/gao2026mempoison]]).
+[[literature/papers/khan2026surfacing]] measures a content gate against
+the plainest attack there is: one edge on the same subject and relation
+as the truth, with a type-consistent wrong object taken from elsewhere in
+the corpus, from one non-debating writer, dated 30 days later. The gate
+is a no-LLM plausibility score (endpoint groundedness, path
+compatibility, relation compatibility, writer credibility, a
+contradiction penalty) that commits a write if it clears the running
+median of committed scores. The reader is a three-agent gpt-oss-120b
+debate over LoCoMo memory.
+
+- **The prior points the wrong way.** All poison objects are entities
+  already in the graph, against **53%** of gold objects. So groundedness
+  scores the lie above a truthful first mention, and below only a
+  restatement of a known triple. As specified, the gate rejects **0 of
+  122** poisoned writes. Three repairs, including a penalty proportional
+  to the incumbent's trust, reach **3 of 122**.
+- **Inert where the conflict was unreachable, harmful where it was
+  not.** At the pre-declared retrieval cap, where 12 of 51 planted
+  contradictions were ever retrieved, the gate costs −0.019 F1 (CI spans
+  zero) and changes attack success by 0.000. At cap 200 it costs
+  **−0.075 F1 (CI [−0.133, −0.018])** and moves attacks the wrong way, 7
+  → 9 of 122.
+- **The harm is supersession, not admission.** The same switch governs
+  invalidate-on-supersede. Over the 122 items it fired **123
+  invalidations against 3 rejections**. A gate that could not tell
+  poison from truth still acted, by marking true incumbents superseded.
+  The reader saw that status and followed it.
+
+What this adds to the Definition's triad:
+- **Preservation is where a weak gate does its damage.** Superseding an
+  incumbent is a write on the incumbent. Here the gate's admission
+  decisions were nearly no-ops and its supersession decisions broke
+  preservation. A gate should be judged on what it does to existing
+  records, not only on what it lets in.
+- **The discriminating signal is relative.** The authors' diagnosis is
+  that what separates lie from truth is candidate against incumbent on
+  the same key, which a global scalar threshold discards. That matches
+  Meng et al.'s global-state calibration, cited but not yet in this
+  graph.
+- **It qualifies "not left to retrieval-time filtering" for conflicts
+  on one key.** The paper's best arm resolved nothing at write time. It
+  kept both claims and showed the reader the ranked set (see
+  [[concepts/selective-memory-retrieval]], same date). Per
+  li2026benchmark above, Mem0-style folding is also a store adjudicating
+  on write. This is a second source that the store should not pick a
+  winner silently.
+
+Rule (our inference): no write path should mark an incumbent superseded
+or invalid on a heuristic score alone. Keep both records, record the
+conflict, and let supersession come from an origin-bound or re-observed
+source. On this box, appending a dated section that names the
+disagreement, rather than rewriting the earlier claim, is that rule
+already. An automated `status: retired` or "superseded" mark would not
+be.
+
+Limits:
+- One gate design, of the malleable content-scoring class. No
+  origin-bound, corroboration or verifier-model gate was tested.
+- Template-generated, single-writer attacks on the 20.2% of items with
+  a single-valued answer. The 100% overlap holds by construction of the
+  attack.
+- The harmful regime (cap 200) was chosen after the pre-declared run.
+- One model family, one sample per configuration, workshop paper.
 
 ## Connections
 

@@ -148,6 +148,7 @@ sources:
   - "[[literature/papers/srivastava2026appscibench]]"
   - "[[literature/papers/du2026critic]]"
   - "[[literature/papers/houlamy2026who]]"
+  - "[[literature/papers/wang2026harness]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -4247,6 +4248,78 @@ Limits:
 - 87 of 112 DeepSWE conversions accept regression-test outcomes as
   upstream's runner reports them. Those parts can be forged, as they can
   natively.
+
+## Exit status, the error line and the artifact are three signals, and only the artifact is the outcome; scoring a timed-out run as 0 or from its files decided a pre-registered verdict (2026-11-24)
+
+The 11-16 section ([[literature/papers/liu2026silent]]) found ungraded
+episodes stored as zero. [[literature/papers/wang2026harness]] measures
+two neighbouring failures on 357 agent runs. It uses five harnesses, four
+models from 0.75B to 4.7B, and a deterministic checker that reads only the
+working directory, never the transcript.
+
+1. **A clean exit is not an outcome.** 127 runs left none of their
+   declared artifacts. 85 of those exited normally, and 40 of the 85 had
+   no error line. By harness, the rate runs from 4 of 70 to 34 of 72. A
+   scorer that read exit status would credit all 85. That part holds by
+   definition. The measured part is how common it is: 24% of runs (our
+   arithmetic). It is liu2026silent's error in the opposite direction.
+   There, a process event (episode end) hid work that existed. Here, one
+   would credit work that does not exist. Clause 4's pristine evaluator
+   protects the outcome only if what it reads is the artifact.
+2. **A run that hits its budget can be scored two ways.** 58 runs hit
+   the wall budget with work on disk. The deployment reading scores them
+   as 0. The rescored reading scores the files they left.
+   - Precision ladder (one model at four bit widths, Mingbird vs pi): the
+     gap at 4.85 bits goes from +0.329 [+0.131, +0.544] to +0.023
+     [−0.167, +0.203]; at 6.50 bits from +0.292 to +0.004. The
+     pre-registered slope goes from +0.139 [+0.037, +0.235] (Holm 0.048,
+     contradicting the registered direction) to −0.030 [−0.152, +0.098].
+   - Ladder: the 1.9B contrast with goose, the pre-registered comparator,
+     goes from +0.221 [−0.002, +0.436] to +0.360 [+0.131, +0.566]. The
+     3.7B contrast with pi changes sign (+0.005 to −0.020). 36 of the 58
+     runs are at that rung.
+
+   The paper keeps the deployment reading primary, since that is what a
+   fixed overnight schedule sees. It reports both at every contrast and
+   never ranks on the rescored reading alone, because finishing by the
+   deadline is part of what a harness does. This is the "Identical code
+   is not identical measurement" rule (report every reasonable treatment
+   of the missing cells) with a registered verdict at stake. For the
+   pending `hce-score-coverage-count` proposal, whose main open risk is
+   whether an agent's own timeout is a bad submission or a missing grade:
+   it is a failure for the estimand "finished in time" and a partial
+   result for "work present". The 85 quiet stops are not a coverage case.
+   They were graded, correctly, as zero.
+3. **A presence checker gives an empty output zero and a fabricated one
+   full marks.** Of the 117 checks, 38% are `exists` and 21%
+   `contains_any`. An artifact with 22 of 28 DOIs invented scored 1.000.
+   In a blind audit of 60 runs, both reviewers marked 8 of the 34
+   perfect-scored runs wrong, and human scores swapped the top two
+   harnesses (intervals overlap). A do-nothing preflight passes this
+   checker on every task, because an empty output fails `exists`. This is
+   the second source, after houlamy2026who (11-24 section), for adding a
+   constructed wrong answer to the preflight.
+
+Rules (our inference):
+- An evaluator scores the artifact a run left, never the exit code or an
+  episode-end event. A run that exits 0 without its artifact is a scored
+  failure. It is not a success, and it is not a missing item.
+- Where arms run under wall budgets, write `n_budget_hit` per arm beside
+  `n_scored`. If it differs across arms, report the score with budget-hit
+  runs at 0 and scored from their output, and say before the run which
+  reading is primary.
+- The known-bad preflight carries one empty submission and one
+  fabricated but well-formed one.
+
+Limits:
+- The authors' own suite and scorer, and one of the five harnesses is
+  theirs. Windows host, small models.
+- The timeout effect sits mostly at one rung and on the precision ladder,
+  which ran on a second host.
+- The rescored reading depends on an outcome of the harness itself, so it
+  describes where scores come from. It is not an unbiased alternative.
+- Each agent run is scored once. This is not an ML loop with a validation
+  split, and the quiet-stop rate is for small models.
 
 ## Open questions
 

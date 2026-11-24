@@ -17,6 +17,7 @@ sources:
   - "[[literature/papers/singh2026churnbench]]"
   - "[[literature/papers/suresh2026grounding]]"
   - "[[literature/papers/wang2026research]]"
+  - "[[literature/papers/khan2026surfacing]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -190,6 +191,59 @@ Limits: these are uncontrolled internal numbers, and promotion's downstream
 effect "has not been separated from a ceiling effect". The one replay also
 promoted three cards "taken verbatim" from the source project, so the
 rewriting step itself went unexercised.
+
+## A recency-first reconciliation is the arm that lost: surfacing the conflict beat collapsing it, so a reconciliation pass should mark conflicts, not pick winners (2026-11-24)
+
+The maintenance checklist above lists gap (2), automatic contradiction
+reconciliation ("recency × authority × confidence; losing claims
+archived, not deleted"), as missing here. The open question proposes
+trialling a weekly reconciliation pass. [[literature/papers/khan2026surfacing]]
+measures that design as its collapse arm, on knowledge-graph memory read
+by a three-agent gpt-oss-120b debate. Nothing is deleted: supersession
+sets an invalid-from time and both versions persist, like archiving the
+loser. Competing claims on one key are ranked by (not invalidated,
+newest, trust, number of writers), and the reader gets the top one.
+
+- **Collapse handed the reader the lie.** With one planted same-key lie
+  dated 30 days later, and conflicts reachable, collapse scored F1
+  **0.116**. Showing the reader the whole ranked set with provenance
+  scored **0.456**, and attacks fell **22 → 7 of 122**, at equal token
+  cost. Archiving the loser preserved the audit trail but kept the
+  loser out of the reader's view, and the reader is what got the
+  answer wrong.
+- **A heuristic supersession step made it worse.** A write-time gate
+  that marks incumbents superseded fired 123 invalidations against 3
+  rejections and cost −0.075 F1. A reconciliation pass that writes
+  "superseded" from a recency or confidence heuristic is that step run
+  in batch.
+- **Bi-temporal records helped audit, not adjudication.** Recency in
+  the ranking was the attack vector, and removing it from the ranking
+  changed nothing once the conflict was surfaced. The bi-temporal facts
+  in `obsidian-second-brain` above give reconciliation an audit trail.
+  This paper gives no reason to let them choose the winner when a writer
+  can set the date.
+
+For the open question, the evidence-supported half of gap (2) is
+*detection and marking*: find claims that genuinely conflict, and put
+both, with provenance, in front of the reader. The paper's false-positive
+controls are worth copying. Only single-valued relations can conflict,
+judged on source data alone, and claims made at the same time are
+elaborations, not disagreements. The hub's dated sections already do
+the marking by hand: a later section names the earlier one it contradicts
+and leaves both standing. A trial should test that, not a winner-picking
+pass.
+
+Limits before leaning on it:
+- The reader is a gpt-oss debate over dialogue triples. A Claude
+  session over Markdown concepts, whose conflicts are often scope
+  differences rather than contradictions, is untested.
+- The lie's displayed provenance is weaker by construction (one writer,
+  lower trust), so the reader may have used those fields more than
+  content.
+- Collapse was always recency-first. A trust-first or support-first
+  collapse was not run.
+- The headline is from a retrieval cap chosen after the first run (+0.043
+  at the pre-declared cap). One model family, workshop paper.
 
 ## Open questions
 

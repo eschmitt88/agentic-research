@@ -44,6 +44,7 @@ sources:
   - "[[literature/papers/li2026beyond]]"
   - "[[literature/papers/nakayashiki2026lessons]]"
   - "[[literature/papers/liang2026memory]]"
+  - "[[literature/papers/khan2026surfacing]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -314,6 +315,78 @@ Limits:
   design. Prevalence in real stores is unmeasured.
 - No retrieval policy was tested; whether scoped retrieval avoids it is open.
 - Why transcripts matched notes on batch tasks is unexplained (authors' caveat).
+
+## When retrieved records conflict, pass the ranked set with its provenance, not the winner: +0.340 F1 against a recency-first collapse, and the order inside the set did not matter (2026-11-24)
+
+The axes above decide *whether* and *when* to read. EvoMem
+([[literature/papers/xu2026evoarena]]) adds a trigger for conflicting
+evidence. [[literature/papers/khan2026surfacing]] tests what the read
+should *return* once a conflict is found. A resolver groups retrieved
+edges by subject and relation and ranks competing objects by (not
+invalidated, newest, trust, number of writers). **Collapse** passes the
+top claim. **Surface** passes the whole ranked set with writer, trust,
+evidence count and supersession status. Everything else is fixed: the
+retrieved set, the 1,500-token budget, three gpt-oss-120b agents, two
+rounds and a judge. The attack plants one same-key lie dated 30 days
+later, so recency-first collapse hands it to the debate whenever the
+conflict is retrieved.
+
+- **At the regime where conflicts reach the prompt** (retrieval cap 200;
+  109 of 122 poisoned items exposed): F1 **0.116 → 0.456 (+0.340, CI
+  [+0.267, +0.414])**, attack success **22 → 7 of 122** (16 vs 1
+  discordant, McNemar p = 0.0003). Tokens per query are within 2%.
+- **At the pre-declared cap of 40 edges**, only 12 of 51 contradictions
+  were retrieved, because k-hop truncation ordered candidates by hop
+  distance, not relevance. Surfacing gained **+0.043** overall and
+  +0.084 on poisoned items. Attacks fell 5 → 3 of 51, not significant.
+  Per exposed item, the effect was already **+0.329** (13 items), so the
+  cap governed exposure, not effect size.
+- **Ranking order inside the surfaced set was inert.** Taking recency
+  out of the ranking changed F1 by −0.004 at cap 200 and −0.001 at cap
+  40, though it lifted the resolver's own pick from 0.000 to 0.387
+  correct. What the reader was shown mattered; which claim came first
+  did not.
+- **Second corpus, direction only.** On HotpotQA, +0.111 (CI [+0.010,
+  +0.232]) on the 33 items where a conflict reached the prompt. The full
+  sample's interval spans zero.
+
+This is the controlled version of li2026benchmark's observation in
+[[concepts/shared-substrate-contagion]]: a consumer with an uncontested
+false belief asserts it in 0.97–0.99 of probes, and a competing true
+belief cuts that to 0.15. It also sits beside
+[[literature/papers/hu2026memory]], where a recency cue fooled stronger
+models reading one note. Here recency ordering did nothing once both
+claims and their provenance were in view. The models and tasks differ,
+so treat this as a contrast to test, not a contradiction.
+
+What it does not show:
+- **That the reader adjudicated on content.** The lie's displayed
+  provenance is weaker by construction: one non-speaker writer, lower
+  trust. When a write-time heuristic falsely marked true claims
+  superseded, accuracy fell by 0.075 (see
+  [[concepts/verified-memory-writes]], same date). The router's
+  provenance features also cost 0.096. The evidence supports "show both
+  claims with honest provenance". It does not support "show both and
+  the reader will work it out". No arm strips the provenance fields or
+  forges multi-writer support for the lie.
+- **That it needs debate, or that it beats a sane collapse.** There is
+  no single-reader arm. Collapse was always recency-first, the ranking
+  an adversary who sets timestamps can exploit. No arm ranks by trust
+  or support first.
+- **The overflow regime.** Every partition fit in 32K tokens, and full
+  context beat every retrieval arm (0.609 vs 0.384 on the conflict
+  slice).
+
+Measurement note, consistent with [[literature/papers/shen2026what]]'s
+point that a retrieval result needs its retention budget: a read-side
+mechanism has to be scored on the items where its trigger reached the
+context. At the pre-declared cap, 94 of 100 pairs were tied by
+construction. Wilcoxon gave p = 0.26 with ties kept and p = 0.026 with
+ties dropped, on the same data.
+
+Limits: one model family, one sample per configuration, template
+attacks on 20.2% of items, the headline from a post-hoc cap, workshop
+paper.
 
 ## Open questions
 

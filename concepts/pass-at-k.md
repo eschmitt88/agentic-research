@@ -45,6 +45,7 @@ sources:
   - "[[literature/papers/shi2026hard]]"
   - "[[literature/papers/wang2026beneath]]"
   - "[[literature/papers/srivastava2026appscibench]]"
+  - "[[literature/papers/wang2026harness]]"
 used_by:
   - project_slug: mle-bench
     imported_on: 2026-04-24
@@ -862,6 +863,52 @@ differences per build, within task.
 Limits:
 - k = 3 builds and seven tasks.
 - No cross-model test is reported, though the top-to-bottom gaps are large.
+
+## At temperature 0, one configuration's mean moved 0.23 between collections and 29 of 67 rerun cells changed score, while the paired contrast held: compare arms inside one interleaved collection (2026-11-24)
+
+[[literature/papers/wang2026harness]] runs agent harnesses on local
+0.75B–4.7B models at temperature 0, with thinking off, a fixed context and
+identical budgets. It runs one cell per (task, arm, model) and
+re-collects some configurations.
+- **Levels move.** Mingbird at 0.75B scored 0.664, 0.503 and 0.431 in
+  three collections of one configuration (17, 14 and 18 usable cells).
+  Between two collections the same arm differed by 0.233, 0.229, 0.148
+  and 0.012 at the four rungs. pi at 3.7B scored 0.714, then 0.493.
+- **Cells change by whole points.** A 72-cell rerun disagreed on 29 of 67
+  comparable cells, with a median absolute difference of 0. A task
+  usually repeats to the digit and sometimes lands a whole point away.
+  At 4.7B, 15 of 18 Mingbird cells repeated exactly.
+- **The paired contrast held where both arms were re-collected.**
+  Mingbird minus goose was +0.508, then +0.476 at 0.75B, and +0.250,
+  then +0.256 at 4.7B. Under the other exclusion rule the 0.75B repeat is
+  +0.315 [+0.061, +0.541]: still positive, at a different size.
+
+This extends zhang2026double's solve-or-fail split at T = 0 (above).
+Deterministic decoding does not make an agent run a replicate, and the
+variation is near-binary per task, so a mean over 18 tasks moves in steps
+of whole tasks. The paper's design is the k = 1 remedy:
+- interleave arms within one collection (harness order alternates by
+  task);
+- compute only paired contrasts within a collection;
+- re-collect the decisive pair, and use that drift as the scale below
+  which no cross-collection level difference is read.
+
+It re-collected only one pair. The other three baselines rest on one
+collection each.
+
+Rule (our inference): where k = 1 cannot be avoided, the arms being
+compared run in one interleaved collection, and a level from an earlier
+collection is not a baseline. An agent-run arm scored against a baseline
+from an earlier session is a cross-collection comparison. Re-run the
+baseline in the same batch, or report the re-collection drift beside the
+delta.
+
+Limits:
+- Small local models on one Ollama server.
+- The causes of the drift (server restarts, calendar time, exclusion
+  rules that differ by collection) are not separated.
+- 18 tasks. Agent runs, not seeded training runs, whose noise this does
+  not measure.
 
 ## Open questions
 

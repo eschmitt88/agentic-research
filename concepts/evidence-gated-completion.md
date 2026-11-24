@@ -57,6 +57,7 @@ sources:
   - "[[literature/papers/sheshanarayana2026do]]"
   - "[[literature/papers/ghosh2026truthgate]]"
   - "[[literature/papers/lee2026dont]]"
+  - "[[literature/papers/wang2026harness]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1892,6 +1893,83 @@ Limits:
   (Luna 0/48 at base).
 - Three tasks, open-weight models plus one GPT, no Claude. 254 excluded
   episodes with no per-condition breakdown. Workshop paper, no code.
+
+## Removing a six-check completion gate from its own harness moved no rung beyond its interval; its one clear effect was 3 empty runs at 1.9B, and a repeat-call bound carried what the gate did not (2026-11-24)
+
+[[literature/papers/wang2026harness]] ablates an executable completion
+gate inside the harness built around it (Mingbird), with model, prompt,
+window, budgets and scorer fixed and the slope pre-registered. Before
+Mingbird accepts "done", six checks run on the working directory: a
+no-work refusal, a test guard, a finish-claim artifact check, a
+plan-completeness gate, an artifact-content check and a post-finish
+summary request. The setup is four local open-weight models (0.75B–4.7B),
+18 held-out tasks per arm, a deterministic checker that reads only files,
+and one run per cell:
+
+| Rung | Full | Gate off | Δ [95% CI] | Empty runs, full / off |
+|---|---|---|---|---|
+| 0.75B | 0.431 | 0.351 | +0.080 [−0.18, +0.32] | 7 / 6 |
+| 1.9B | 0.822 | 0.705 | +0.117 [−0.05, +0.30] | 0 / 3 |
+| 3.7B | 0.910 | 0.907 | +0.003 [−0.03, +0.04] | 1 / 1 |
+| 4.7B | 0.980 | 0.984 | −0.004 [−0.05, +0.04] | 0 / 0 |
+
+- **Unresolved where it could act, zero where nothing was left.** The
+  design's minimum detectable effect is 0.22–0.39, so the two small-rung
+  estimates are non-detections. The tight zeros are at the ceiling.
+- **The one clear effect is this concept's target.** At 1.9B the gate
+  prevents 3 runs that would otherwise stop with nothing on disk. At
+  0.75B it leaves as many empty runs as with it off. A refusal cannot
+  make a model that loops produce an artifact.
+- **What carried the harness's lead was progress.** Removing only a
+  streak rule (it blocks the same call 8 times in a row, or the same
+  signature 4 times) costs +0.411 [+0.218, +0.608] at 0.75B. On 8 tasks
+  only the full arm writes any artifact, and the reverse never occurs
+  (p = 0.0078). The baselines' empty runs are mostly one failing shell
+  command repeated until the 32K window fills: 273 of 274 calls were
+  byte-identical in one cell.
+- **A new row for the hiding-proxy table.** The four baseline harnesses
+  stop when the model says so. Of 127 runs with no declared artifact, 85
+  exited normally, and 40 of those had no error line (Mingbird 4 of 70,
+  mini-swe-agent 34 of 72). **Failure mode:** quiet stop. **Hidden by:**
+  a normal process exit and an error-free transcript. **Minimum
+  evidence:** the declared artifacts present in the working directory.
+
+On the hold in Open questions: this is a gate-removal arm, pre-registered,
+on task instances held out from development (the families mirror the
+development set). The result runs against the authors' own design
+hypothesis, so their stake in the runtime does not favour it. Its outcome
+delta is small to unresolved. Read with [[literature/papers/li2026who]]
+(the gate's refusal was worth about 3.5 pp, most of the gain came from
+feedback) and [[literature/papers/vats2026good]] (a check on a
+mostly-right agent is pure cost). Our reading: a completion gate's outcome
+value is bounded by the rate of false "done" that the rest of the harness
+leaves, and here the rest of the harness had already removed most of it.
+
+Rules (our inference):
+- Before adding a completion gate, count quiet stops under the current
+  harness: runs that end normally with a required artifact missing. That
+  count is the gate's ceiling. It is vats2026good's finish-precision rule
+  in artifact terms.
+- A completion gate does not cover failure to make progress. A run that
+  repeats a failing action until the budget or the window runs out makes
+  no false claim for the gate to refuse. That needs an action-level bound
+  on repeats.
+- Check that the required artifacts are present at stop anyway. Its cost
+  was not measurable here (4.7B: −0.004 [−0.05, +0.04]).
+
+Limits:
+- Models from 0.75B to 4.7B on a Windows host. The authors wrote the
+  harness, the 18 tasks and the scorer.
+- One run per cell. A configuration's mean moved by up to 0.233 between
+  collections, so only within-collection contrasts carry. A repeat of the
+  3.7B gradient gives −0.020.
+- The six checks are switched off together, so which of them matter is
+  not separable.
+- The gate's checks test what the scorer tests (file presence, required
+  strings). This is a gate aligned with its scorer. A gate on a looser
+  criterion might move more or less.
+- The loop-guard ablation is one batch at one rung, and its mean is near
+  the per-cell rerun noise. The 8–0 artifact split is the firmer number.
 
 ## Open questions
 
