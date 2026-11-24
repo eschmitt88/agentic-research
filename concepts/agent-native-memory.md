@@ -47,6 +47,7 @@ sources:
   - "[[literature/papers/das2026selfpropagating]]"
   - "[[literature/papers/pham2026reliable]]"
   - "[[literature/papers/qin2026autoresearch]]"
+  - "[[literature/papers/jayaram2026how]]"
 used_by: []
 related_concepts:
   - "[[concepts/llm-wiki-pattern]]"
@@ -387,3 +388,58 @@ Limits:
   session, so it cannot say whether insights or carried code and
   transcript drove the main stateful effect.
 - The overapplied-lesson case is one run, on a stream with host contention.
+
+## A lossless self-written store served whole stayed at or above no memory for five models, and a 12-rule compression kept a third of the gain (2026-11-24)
+
+The 10-19 section ([[literature/papers/pham2026reliable]]) found ACE
+playbooks grown online scoring below no playbook in 14 of 33 runs.
+[[literature/papers/jayaram2026how]] serves a differently built store
+whole. Each model's own trajectories on AppWorld train/dev yield 1–3
+lessons each. Success or failure is labelled by the evaluator, not by
+the model. Near-duplicates are merged into guidelines that each carry a
+support count, and nothing the merge misses is dropped. The store is
+built once and frozen. The same model writes, merges and reads.
+
+- **Served whole, it never fell below none.** Under the rule fixed
+  before any test run (inject everything), TGC on 168 tasks moved +9.5
+  (DeepSeek-V3.2, 191 guidelines), +11.3 (gpt-oss-120b, 199), +2.9
+  (GPT-5.5), +1.2 (Gemma-4-31B) and 0.0 (GLM-5). DeepSeek's gain holds
+  on the 417-task hard split (60.4 → 72.9). In a second scaffold,
+  GLM-5.3-Flash went 87.8 → 93.2 over two runs per arm, with
+  non-overlapping ranges.
+- **Compression lost most of the gain.** A consolidation prompt asking
+  for "a small set of highly relevant rules" gave 12 rules and +2.9 for
+  DeepSeek, against +9.5 for the lossless 191. That is 11 tasks apart.
+  The 47 guidelines with support ≥ 2 gave +5.9, so the 144 support-one
+  guidelines added about 6 tasks in one run (our arithmetic). The
+  direction is consistent with [[literature/papers/guo2026how]]: a
+  model's rewrite drops first what it would not write itself.
+- **More memory cost input tokens, not steps.** The full set cost +78%
+  tokens per task, re-sent every step. The support ≥ 2 set cost +27%.
+
+What it does and doesn't support:
+- **It narrows the 10-19 warning rather than contradicting it.** The
+  stores differ on three axes at once: offline batch mining versus
+  online growth, outcome labels from the evaluator versus Reflector
+  tags, and lossless merging versus incremental edits. Any of them could
+  explain why this store was safe to serve whole. The paper tests none
+  separately. pham2026reliable's tags-versus-effect result (rank
+  correlation 0.21) points at the label source as one candidate.
+- **It does not show "keep everything" is right for every reader.** The
+  only Claude model, Opus 4.6, was run with the 12-rule set alone
+  (+4.1), so "do not compress" is untested on the strongest model in
+  the study.
+- **For this box (our inference):** the auto-loaded set (CLAUDE.md,
+  NOTES.md, imported concepts) is a store served whole that has never
+  been compared with no memory. This paper is weak evidence that a
+  lossless, outcome-labelled store served whole is not the dangerous
+  case. It is not evidence for this box's prose stores, which are
+  rewritten and summarised.
+
+Limits:
+- Single runs, no intervals, configurations compared on test. The fixed
+  rule is the cleanest number. Identical DeepSeek runs flipped ~32 of
+  168 tasks.
+- AppWorld tasks recur and have an authoritative verdict. A store mined
+  from a train split has no direct analogue for one-off research tasks.
+- Deployment report from the library's authors; peer review unknown.

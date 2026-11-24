@@ -36,6 +36,7 @@ sources:
   - "[[literature/papers/chen2026signed]]"
   - "[[literature/papers/xie2026do]]"
   - "[[literature/papers/srivastava2026appscibench]]"
+  - "[[literature/papers/zhang2026multiagent]]"
 used_by: []
 related_concepts:
   - "[[concepts/hybrid-model-backends]]"
@@ -378,6 +379,79 @@ Limits:
   test.
 - The human comparison is a human using Claude Code with Opus 4.8, n = 2
   per task.
+
+## Partitioned workers reported both sides of a conflict for 35% of the pairs they had read, and a lead handed the two sides by different workers flagged 17% (2026-11-24)
+
+The 11-24 xie2026do section tests the parent's synthesis with the child
+material fixed, and has no non-hierarchical control.
+[[literature/papers/zhang2026multiagent]] has live workers and a
+single-agent arm at matched dollar spend. 73 numerical conflicts are
+planted in 11 legal due-diligence corpora (value A replaced by B in some
+directories). Agents get the ordinary red-flags prompt. Three policies run:
+**None** (one agent), **Optional** (the lead may read and may spawn
+workers, overlap allowed) and **Required** (the lead must delegate, workers
+read assigned partitions, and the lead reads no sources). GPT-5.6 Luna and
+GPT-6 Luna (Codex SDK), Claude Haiku 5.5 (Claude Code SDK), two runs each.
+A proxy-based profiler tracks both claims of each conflict through four
+stages.
+
+- **The child's report is where the pair is lost.** Under Required,
+  workers collectively read both claims in 301 of 438 observations. Only
+  **106 (35.2%)** reached any worker's outgoing messages. Worker Reports
+  and Lead Evidence carry identical labels, so nothing was lost in
+  transit. Workers left a figure out because, within their partition, it
+  looked unremarkable.
+- **Split provenance defeats the parent too.** With both claims in the
+  lead's evidence, detection was **72.2%** when one worker supplied both
+  (n = 72) and **17.1%** when separate workers did (n = 35). Under Split
+  the lead put both values in the final report only 34.3% of the time.
+- **One focused worker is no better than one agent; the penalty is all
+  Split** (our arithmetic). A pass needs both values in the report.
+  Conditioned on having read both, None detects about 32% and 37% in the
+  matched Same (n = 111) and Split (n = 190) cohorts. Required detects 34%
+  and **10%**. The paper's "Required wins on Same" (34.2% vs 22.5%) is
+  Required's retrieval advantage.
+- **Discretionary delegation scored highest for every model**, but only
+  Haiku tests it. Optional Judge Pass is GPT-5.6 23.3% (None 15.8%,
+  Required 10.3%), GPT-6 19.2% (17.1%, 11.6%) and Haiku **30.1%** (15.8%,
+  17.8%). The GPT models spawned workers in 9/22 and 10/22 Optional runs,
+  and their workers' reports held both claims for 0.7% of conflicts.
+- **The single agent also loses most of what it read, at writing.** Under
+  None, both claims were read for 50.2% of conflicts and reported for
+  18.3%. Detection is 13–24% pooled in every arm.
+
+For this concept: xie2026do puts the failure in the parent's relay. This
+puts a second one upstream, in the child's choice of what to report, and
+shows the parent failing when two halves arrive from different children.
+Guidance 2's "structured messages" does not address either, since what
+the child omitted never enters the structure. It also bears on the
+Agent-as-Tool open question. Selective delegation with overlap and a lead
+that can read was the best arm, and a lead barred from the sources was
+the worst. It agrees with [[literature/papers/hu2026analyzing]]
+(summaries, not retrieved content, come back). Here the parent cannot
+re-read to recover.
+
+Rule for this project (our inference, untested):
+- When the parent must compare across children (contradictions,
+  duplicates, a figure that should match), the child's brief asks for
+  every in-scope value with its path, not "notable findings". Otherwise
+  the child's local judgment of relevance is the filter.
+- Where the comparison matters, put both sides in one context: give one
+  child both sources, or have the parent read the pair itself. The
+  paper's Same cohort is that design.
+- The paper never tests a reporting contract. A Required arm with one
+  would separate a brief fix from a topology fix.
+
+Limits:
+- Required bundles mandatory delegation, partitioned sources and a
+  source-blind lead, and the partition rule is not described. If
+  partitions follow the directories where B was planted, many Split cases
+  are built in.
+- 11 tasks, two runs, conflicts clustered within reports, no intervals.
+  The pooled 16.2% → 13.2% is 13 of 438 observations. The GPT-5.6
+  Required checkpoints were selected retrospectively.
+- Small, cheap models only. One judge (Sonnet 5) with three known false
+  passes and no agreement figure. No code released; credibility 2.
 
 ## Open questions
 

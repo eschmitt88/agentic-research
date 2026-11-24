@@ -39,6 +39,7 @@ sources:
   - "[[literature/papers/ren2026coral]]"
   - "[[literature/papers/sanko2026when]]"
   - "[[literature/papers/abrahamsson2026unprompted]]"
+  - "[[literature/papers/zhang2026multiagent]]"
 related_concepts:
   - "[[concepts/shared-skill-namespace]]"
   - "[[concepts/skill-library-lifecycle]]"
@@ -1039,6 +1040,56 @@ Limits: toy task (4 agents, 20 steps) whose text names both halves' keys;
 benign values only, so evidence for the channel, not for contagion; the
 recheck contrast is clean for one model; one group built both
 implementations, and reference cells were locked late.
+
+## Partitioned reads lost cross-partition detection: split conflicts were flagged 10% of the time against 19% for one agent on the same instances, because the integration channel carried each worker's selection (2026-11-24)
+
+This concept's symmetric half says closing the shared channel also closes
+detection. ArcticSwarm's answer was to isolate while gathering and share
+while integrating. [[literature/papers/zhang2026multiagent]] runs that
+schedule on a detection task with no adversary and a one-context control.
+Numerical conflicts are planted across legal document sets. In
+**Required**, workers read disjoint partitions and share only through
+messages, peer messages and a shared report draft, and the lead reads no
+sources. In **None**, one agent reads everything. In **Optional**, reads
+may overlap and the lead may read. Spend is matched.
+
+- **Isolation cost detection on exactly the cross-partition cases.** In
+  instances where Required's workers read the two claims separately (n =
+  190), Required flagged **10.0%**. A single agent flagged **18.9%** of the
+  same instances, despite reading both claims only 51.6% of the time.
+  Where one worker read both (n = 111), Required and the single agent were
+  about equal once retrieval is equalized (our arithmetic: ~34% vs ~32%).
+- **The integration channel was open and still carried little.** Workers
+  put both claims in their messages for **35.2%** of the pairs they had
+  collectively read. Transport lost nothing. What crossed was each
+  worker's judgment of what mattered, and in a partition with only one
+  side a planted figure looks normal.
+- **Overlap was the best arm for every model.** Optional was 24.2% pooled
+  against 16.2% (None) and 13.2% (Required). For the GPT models few
+  workers were spawned, so only Haiku (30.1% vs 15.8% and 17.8%) actually
+  tests overlapping delegation.
+
+For this concept: this measures the detection half at instance level,
+which paglieri2026case showed only as an outcome. It also bounds the
+ArcticSwarm schedule. Sharing at integration recovers detection only if
+the integration channel carries the evidence (values with addresses), not
+a summary of each partition. It is the mirror of shen2026revoked. There,
+a review drawn from the same store is not independent. Here, a merge
+drawn only from the children's summaries cannot see what a child dropped.
+
+For the sibling watch: this is not a contagion-axis sighting. Nothing
+propagates, the agents are benign, and the result is about detection
+lost to isolation. It strengthens the symmetric section and the
+[[concepts/information-firewall]] constraint ("isolation trades detection
+for containment"). It does not count toward the contagion siblings.
+
+Limits:
+- The partitioned arm also bars the lead from sources, and the partition
+  rule is not stated. Corpus layout may build in the Split cases.
+- 11 tasks, two runs, no intervals, small cheap models, an LLM judge with
+  three known false passes, no released code; credibility 2.
+- One task type (planted numerical conflicts in legal documents). Whether
+  a reporting contract restores detection is untested.
 
 ## Connections
 

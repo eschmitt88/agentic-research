@@ -40,6 +40,7 @@ sources:
   - "[[literature/papers/liang2026memory]]"
   - "[[literature/papers/khan2026surfacing]]"
   - "[[literature/papers/xu2026experience]]"
+  - "[[literature/papers/jayaram2026how]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -444,6 +445,64 @@ Limits:
   tested.
 - Six small or unidentified models, three synthetic services, final tasks
   built to require the memory.
+
+## A support count is recurrence, not correctness, and the fields a later stage ranks on were silently dropped by consolidation (2026-11-24)
+
+"Admission to a shared tier" above ([[literature/papers/li2026benchmark]])
+found that counting independent sources is a copy filter, not a truth
+test. [[literature/papers/jayaram2026how]] reports the same failure in a
+deployed single-writer store, where the count is the store's own ranking
+signal. altk-evolve merges near-duplicate lessons into guidelines and
+records how many lessons each absorbed (support). A core of support ≥ 3
+is always injected. Success or failure polarity comes from the
+evaluator's verdict, never from the writer's self-report.
+
+- **A popular wrong lesson ranked highest.** A high-support pagination
+  guideline read "loop until fewer than the page limit are returned".
+  The agent assumed a limit of 20; the API default was 5. It stopped
+  after page one and regressed a task the baseline had passed. A human
+  rewrote it ("pass an explicit page limit and loop until a page comes
+  back empty"). The pipeline has no contradicted, stale or harmful
+  signal, and the authors would not run it unattended without one.
+- **The ranking field did not survive consolidation.** One version
+  rebuilt merged metadata from a fixed field list. It silently dropped
+  support and a generation-method tag another team relied on. Another
+  double-counted a lesson when the LLM repeated an index in one merge;
+  an automated code reviewer caught it first. The fix is an enforced
+  invariant with a regression test: total support out equals lessons
+  in, and lessons the merge misses pass through verbatim.
+- **A write path that never ran looked like a null result.** In the
+  CUGA integration, memory writes were never invoked on one code path.
+  A 50-task evaluation reported "no statistically significant effect"
+  with the store stuck at its seed.
+
+What this adds to the Definition's triad:
+- **A count of derivations is evidence of generality, not
+  faithfulness.** Many episodes by the same writer re-deriving a lesson
+  is closer to li2026benchmark's copy regime than to independent
+  sources. A support-weighted core amplifies whatever error the writer
+  makes consistently.
+- **Preservation applies to metadata, not only to claims.** Any field a
+  later stage filters or ranks on (support, source task, scope, the
+  "Certified for where?" scope tag) needs the same preservation check as
+  content. A merge that keeps the text and drops the field is a silent
+  preservation failure.
+- **Evaluator-labelled polarity is the remedy pham2026reliable implied
+  for invented validators.** It labels the episode, not the lesson, so
+  it did not stop the pagination error.
+
+Rule (our inference): if a downstream stage ranks on a field, the
+upstream writer must carry it as a tested invariant. On this box that
+means `used_by:`, `sources:`, `relevance:` and `credibility:` must
+survive any skill or subagent edit that rewrites a note's frontmatter.
+A store that should be growing should also be checked for growth.
+
+Limits:
+- Incident reports, not measurements: one harmful guideline, two
+  provenance bugs, one dead write path.
+- The pagination fix was a hand edit after a test-split regression; the
+  73.0 hard-tier figure after it is not clean.
+- Deployment report by the library's authors; peer review unknown.
 
 ## Connections
 

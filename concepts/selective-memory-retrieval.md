@@ -45,6 +45,7 @@ sources:
   - "[[literature/papers/nakayashiki2026lessons]]"
   - "[[literature/papers/liang2026memory]]"
   - "[[literature/papers/khan2026surfacing]]"
+  - "[[literature/papers/jayaram2026how]]"
 used_by: []
 related_concepts:
   - "[[concepts/agent-native-memory]]"
@@ -387,6 +388,59 @@ ties dropped, on the same data.
 Limits: one model family, one sample per configuration, template
 attacks on 20.2% of items, the headline from a post-hoc cap, workshop
 paper.
+
+## Selecting a subset beat serving the whole store only for the weakest model, by about one noise SD, and similarity did not predict which tasks it helped (2026-11-24)
+
+This concept's case against always-on injection is that irrelevant
+memory distracts the reader (zhao2026expweaver;
+[[literature/papers/wu2026remember]]).
+[[literature/papers/jayaram2026how]] tests it as a dose sweep on one
+self-written guideline store per model, on AppWorld `test_normal` (168
+tasks). Three delivery modes are compared: everything; a
+support-thresholded subset; or a core of support ≥ 3 plus top-k
+retrieved by similarity of source task to current task.
+
+- **The strong-headroom model wanted everything.** DeepSeek-V3.2 TGC
+  went 79.8 → 82.7 → 83.9 → 85.7 → 89.3 as the set grew from 0 to 12,
+  19, 47 and 191. Adjacent steps are 2–4 tasks; the endpoints are 16.
+  GLM-5.3-Flash in a second scaffold matched it: a 29-guideline subset
+  stayed within noise of none, and the full 164 gave +5.4.
+- **The weakest model did better with a subset, by little.**
+  gpt-oss-120b scored 39.9 with none, 53.6 with a 24-guideline core,
+  55.4 with ~29 retrieved (mean of 56.0 and 54.8), and 51.2 with all
+  199 (one run). Retrieval kept tokens at 116K against 110K baseline;
+  the full set cost 166K.
+- **Retrieval similarity did not predict benefit.** Improved and
+  regressed tasks had mean task–guideline cosine 0.463 and 0.468.
+
+What it does and doesn't support:
+- **Selection as a cost lever is supported.** For the weak model,
+  retrieval matched the best accuracy at about baseline token cost.
+  Whole-serving's overhead is input-side and is paid every step.
+- **"Weak readers need selection" is not established.** The 7-task gap
+  over the full set is one run against two, picked from four
+  configurations on test. With ~32 of 168 tasks flipping between
+  identical runs, a net 7-task difference is about 1.2 SD of noise (our
+  arithmetic, √32 ≈ 5.7 tasks). Only two models were swept, and the
+  full set never fell below no memory for any model.
+- **Writer and reader are confounded.** Each model wrote and merged its
+  own set, so "the weak model drowns in its full set" and "the weak
+  model wrote a worse long tail" predict the same curve. No arm gives
+  one model another's guidelines. [[literature/papers/razmara2026one]]
+  found a model merging for itself scores 5–25 points below a strong
+  merger.
+- **The null similarity result fits shen2026what.** Similarity-ranked
+  retrieval does not track which items the reader uses. It is one
+  reading of one statistic, with no per-item counterfactual.
+
+Rule (our inference): treat dose as a per-reader setting to be
+measured, with "everything" and "none" both as arms. Don't assume the
+retrieval default is safer. The authors' shipped default (retrieval
+with a high-support core) rests on the weak-model gap above.
+
+Limits: single runs, no intervals, configuration chosen on test,
+AppWorld only for the sweeps, deployment report by the library's
+authors.
 
 ## Open questions
 
