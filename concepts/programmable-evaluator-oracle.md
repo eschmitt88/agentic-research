@@ -82,6 +82,8 @@ sources:
   - "[[literature/papers/im2026when]]"
   - "[[literature/papers/xia2026does]]"
   - "[[literature/papers/alexander2026iterated]]"
+  - "[[literature/papers/du2026critic]]"
+  - "[[literature/papers/houlamy2026who]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -1098,6 +1100,137 @@ Limits:
 - One pipeline. The mutation cases were written by the checkers' auditors,
   so "a fault suite rewards its own design" (hce-evaluation 10-20) applies.
 - The transfer study to independent pipelines is planned, not run.
+
+## Keep-best on a correct oracle makes undirected proposer noise free and directed bias costly: it protects the incumbent, not the budget (2026-11-24)
+
+Why-it-matters credits FunSearch's evaluator with letting "the LLM be free to
+be noisy": invalid programs never enter the population.
+[[literature/papers/du2026critic]] measures how far that freedom goes in a
+keep-best loop with a correct validation oracle (cached tabular frontier,
+96 configurations, T = 8).
+- **Undirected noise is free, by construction.** If every pick is uniform over
+  the untried set, the final incumbent has the random-search distribution
+  whatever share of rounds is "corrupted" (Prop. 1, exchangeability).
+  Measured: RANDOM corruption at p = 1 cost ≤0.005 AUC on all nine datasets.
+- **Directed noise has a finite envelope.** WORST and MISLEAD picks (the
+  worst untried, or the worst neighbour of the incumbent) cost more than
+  0.01 only at p* = 0.6–0.9. The bound in Prop. 2 is p* ≈ 1 − Tsat/T, where
+  Tsat is the number of good rounds random search needs to reach the best.
+  Tsat ≈ 1–3 here predicts 0.63–0.88. 90.5% of adversarial picks failed to
+  raise the incumbent.
+- **A real model is directed.** Llama-3.1-8B fell below random search on 7
+  of 8 datasets (to −0.245). Its picks drifted away from the best family
+  while its text endorsed it.
+
+What this changes: the oracle filters what enters the record, but not where
+the budget goes. Keep-best turns a bad proposer's cost from "a worse
+champion" into "evaluations a uniform draw would have spent better". That
+cost is small only when Tsat is small relative to T. In a modeled
+adversarial setting with real headroom (1.7–5.6%), harm grew with space
+size on all five datasets. Our inference: an ML-research loop with large
+headroom and few rounds sits at the narrow end of this envelope.
+
+The oracle can also gate the proposer. The paper's simple gate drops the
+critique for the next round when the last critique-steered pick fails
+against the incumbent. It averaged +0.00046 AUC against uniform, versus
+−0.00541 for the raw critic, on six unnamed datasets. Fine-tuning on oracle
+picks did no better than that floor (within ±0.003). Neither beat the floor,
+which on these menus could gain only about 0.005.
+
+Limits:
+- Propositions 1–3 assume i.i.d. scores and independent round types.
+  q(m−1) > β is necessary, not sufficient, and its parameters are not
+  estimated for real critics.
+- Tabular menus with under 0.01 AUC headroom, T = 8. The adversarial modes
+  use privileged cached scores.
+- The gated rerun's datasets and critic are not named, and its raw harm is
+  about a tenth of the main audit's.
+
+## Instruments report, the oracle judges, under attack: a fully compromised adapter forged no pass, three candidates passed by computing the values another way, and the oracle needed bounds against its own evidence (2026-11-24)
+
+The 09-28 section (qu2026propose) drew the agent/oracle line at "the
+agent may write instruments, not verdicts". ng2026agent's access
+restriction (above) says an oracle reads external reference state, not
+the agent's account. [[literature/papers/houlamy2026who]] (SplitBench)
+builds that split for coding-agent benchmarks and assumes the worst about
+the instrument. Each test becomes two parts:
+- an **adapter**, which runs the candidate on a challenge and reports the
+  values it produced;
+- an **Oracle** with two functions: `plan(hidden data, seed)` makes the
+  cases, and `judge(evidence, context)` returns a deterministic verdict.
+
+The adapter holds no expected value and decides nothing. It is assumed to
+be controlled by the candidate.
+
+- **The forged-observation class is closed.** Opus 5.5 attacked 180
+  converted tasks at two knowledge levels. None of the 307 completed
+  attempts passed through the framework.
+  - A candidate that adds a test file printing a pass for every test
+    passes the native grader and fails SplitBench.
+  - A forged observation can pass only if it holds the correct values for
+    a challenge the candidate first sees during evaluation.
+- **The oracle is an attack surface.** In one conversion the Oracle sized
+  a memory allocation from a number the candidate reported, so a huge
+  number could exhaust the host's memory. The reviewer found it. Now:
+  - every Oracle runs in its own host process under time and memory
+    limits;
+  - it has an import allowlist, which guards against author mistakes, not
+    against a hostile Oracle;
+  - an observation must be one strict JSON value within a size limit,
+    checked against SplitBench's own copy of the schema;
+  - an observation never names its own case, so a compromised adapter
+    cannot present one case's evidence as another's.
+
+  The converter's rule is "Never compute an expected value from a value
+  the candidate reports". That is zhang2026double's self-consistent
+  metadata failure (above), written as a construction rule.
+- **Fail closed, with a third outcome.** An adapter crash, timeout,
+  memory kill or malformed observation fails the case. Only an
+  infrastructure error makes an attempt invalid, and an invalid attempt
+  never counts as a pass. One design carries both benchshield's
+  fail-closed clause and the 11-16 rule that "not graded" is its own
+  value.
+- **The value check cannot see the derivation, now confirmed by a second
+  group.** 3 of the 42 full-knowledge passes faked the implementation
+  from inside the adapter's process:
+  - the calls were handed to pandas;
+  - the adapter's function was replaced with a line-break detector;
+  - the observation was written directly.
+
+  A further 47 passed through the tasks' own weak tests. So 50 of the 64
+  passes are what "a correct oracle scores the artifact, not its
+  derivation" (zheng2026benchshield) calls semantic adequacy. No
+  isolation mechanism removed that class there either. SplitBench's
+  answer is a record kept beside the verdict. The relay keeps a trusted
+  log of every model request, and the transcript is kept as untrusted
+  data. A review of them "should inform a human decision and not change
+  the verdict automatically".
+- **Agent-built oracles, with a price.** This bears on the open question
+  that evaluator design is unautomated. Opus 5.5 converter/reviewer pairs
+  wrote 180 Oracles and adapters from existing tests. Per task, the
+  median was just under two hours, more than 18 M tokens and about $10
+  at API prices (4.8 B tokens in all, 92% cached). The reviewer returned
+  findings on 173 of 180 and a security problem on 67. Two errors still
+  reached the attack campaign (see [[concepts/hce-evaluation]], same
+  date). Like NatureGym (Open questions), this builds the evaluator from
+  an existing specification. It does not invent the metric.
+
+Rule (our inference), where an evaluator must run candidate code:
+- Split it into a reporting step that holds no expected values and a
+  comparing step that never runs candidate code.
+- Bound everything the comparing step reads from the candidate: its
+  size, its schema, and which case it belongs to.
+- Never derive an expected value from a reported one.
+
+Limits:
+- The attacker was told not to attack the container, relay, proxy or
+  host. Those layers were reviewed, not attacked.
+- One attempt per task per knowledge level. One attacker model, which
+  also wrote the conversions.
+- Coding tasks whose outputs can be checked by value. Speed targets and
+  properties of how a computation ran are excluded, so a metric that
+  depends on a compute budget is out of scope.
+- No artifact released yet.
 
 ## Open questions
 

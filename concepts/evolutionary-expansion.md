@@ -50,6 +50,7 @@ sources:
   - "[[literature/papers/wang2026beneath]]"
   - "[[literature/papers/zeng2026resolution]]"
   - "[[literature/papers/wang2026between]]"
+  - "[[literature/papers/du2026critic]]"
 used_by: []
 related_concepts:
   - "[[concepts/budget-as-ceiling]]"
@@ -919,6 +920,57 @@ Limits:
 - No token, dollar or wall-clock totals, so nothing is compute-matched.
 - No population or tree arm under the same models, so this is not a test
   of evolution against one incumbent.
+
+## On a saturated tabular menu, a Llama-3.1-8B selector fell below same-budget random search on 7 of 8 datasets; stronger critics tied it, and none gained more than 0.006 (2026-11-24)
+
+The 10-27 section ([[literature/papers/chen2026cads]]) said random is the
+floor, not the baseline: every small LLM proposer cleared it, and a domain
+prior beat them all. [[literature/papers/du2026critic]] shows the floor can
+bind from below. One LLM call per round reads the history (configuration
+names and validation AUCs) and the untried menu, critiques, and names the
+next pick. Keep-best on validation. The menu is 96 cached tabular
+configurations, T = 8, and the control is uniform random over the same menu
+at the same budget.
+- **Below the floor, unevenly.** Llama-3.1-8B: ADULT −0.245 AUC (CI −0.27 to
+  −0.22), JM1 −0.080, ELECTRICITY −0.072, KC1 −0.028, and three under 0.01.
+  CREDIT-G +0.006. Suite sign-flip p < 0.05.
+- **Not "8B critics".** Ministral-3-8B (2025) sits within −0.012 to +0.001
+  on six datasets. Llama-3.3-70B is mildly negative on 5 of 6 (to −0.031).
+  Haiku 4.5 is within ±0.006 everywhere: no harm and no help.
+- **The setting decides the sign.** With 250 configurations and T = 20 the
+  same 8B goes −0.245 → +0.0003 on ADULT (size and horizon confounded). On
+  five non-tabular or in-domain settings it is neutral or slightly positive.
+- **The fallback pulls a weak selector toward the floor.** CREDIT-G had the
+  most parse failures (18 of 64 rounds, each a uniform draw) and was the one
+  dataset not harmed. ADULT had none. This is chen2026cads's displacement
+  point seen from the other side: whatever share of slots the random path
+  fills sets how close to random the loop scores.
+
+What it adds here:
+- **The random arm is a test, not a formality**, when the search space is
+  enumerable (a sweep grid, a fixed recipe menu). A loop that reports gains
+  only over its seed cannot see a selector that is worse than uniform.
+- **Keep-best protects the incumbent, not the budget.** In the one trajectory
+  shown, the 8B praised LightGBM every round while picking worse
+  configurations, 0.930 → 0.651. The incumbent held. The cost is the
+  configurations a uniform draw would have reached in those rounds.
+- **Breadth as a hedge, modeled only.** Under a modeled adversarial critic
+  (privileged argmin picks), parallel k-wide search fell below floor on 1 of
+  12 datasets against 9 of 12 for sequential, UCB1 tree and multi-agent. k
+  and evaluation matching are not stated.
+
+What it does not show: that a frontier proposer on an open-ended ML-research
+space can go below random. The only frontier-class critic tied the floor, on
+menus where the oracle beats random by just 0.0013–0.0077.
+
+Limits:
+- Critique and pick are one call, so critique content and selection are not
+  separated. The "random feedback" arm is a second random search, not a
+  shuffled-critique placebo.
+- The headroom is under 0.01 AUC and random search needs only 1–3 good rounds
+  of 8. The bounded upside and the large downside ratio follow from that.
+- 8 seeds per cell. The ladder's six datasets were chosen partly on the 8B's
+  result. No artifacts released yet.
 
 ## Open questions
 

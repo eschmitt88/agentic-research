@@ -32,6 +32,7 @@ sources:
   - "[[literature/papers/ganesan2026infinity]]"
   - "[[literature/papers/yao2026openfrontiers]]"
   - "[[literature/papers/gui2026coding]]"
+  - "[[literature/papers/houlamy2026who]]"
 related_concepts:
   - "[[concepts/hce-evaluation]]"
   - "[[concepts/programmable-evaluator-oracle]]"
@@ -597,6 +598,103 @@ Limits:
 - SWE tasks in plan mode, not ML research. The domain gap in Connections
   stands.
 - claude-opus-4.8 attempted nothing beyond one reclassified hit.
+
+## The candidate's runtime is outside the firewall: split each test into an untrusted run and a trusted comparison, and an informed attacker then passed only through the tasks' own tests (2026-11-24)
+
+The feedback-channel section (10-13,
+[[literature/papers/farahbakhsh2026agentdiscover]]) gave the rule:
+whatever the scorer's process can see, the candidate can see. The seventh
+boundary (11-03) said that for an exact checker the firewall to keep is
+"verifier code and scoring run outside the agent's sandbox".
+[[literature/papers/houlamy2026who]] (SplitBench) shows that outside the
+agent's sandbox is not far enough when the verifier executes the
+candidate. It then builds the boundary that is far enough, for 180 of 202
+Terminal-Bench 2.0 and DeepSWE v1.1 tasks.
+
+- **Where the line goes.** Each test is split in two.
+  - An untrusted adapter runs the candidate on a challenge (the inputs
+    only), in a fresh, network-less environment per case, and reports
+    the values it got.
+  - A trusted Oracle on the host holds the expected answers and a secret
+    seed, and does the comparison.
+  - The framework assumes the candidate controls the whole evaluation
+    environment, adapter included.
+  - Only the candidate's in-scope files cross in. Test files and
+    convention-loaded files are excluded. Only a schema-checked JSON
+    observation and the output files the task declares cross out.
+- **What stays secret.** Only the hidden data and the seed. Grading code,
+  adapters and the framework may be public.
+- **Measured.** Opus 5.5 at high effort was told to pass without
+  solving. 307 of 360 attempts completed, and none passed through a flaw
+  in SplitBench. 64 passed anyway:
+  - 47 through weak upstream tests;
+  - 12 on public answers;
+  - 2 through conversion errors;
+  - 3 by faking the implementation inside the adapter's process.
+
+  On the unconverted tasks, 71 of 96 completed attacks passed the native
+  grader, and SplitBench rejected 55 of those 71.
+- **A separate verifier is not this boundary.** DeepSWE's native grader
+  already runs its tests in a separate verifier. But it first applies the
+  agent's patch there, so any file the patch adds is present. 12 of the
+  18 native/SplitBench disagreements were agents that had edited or added
+  test files, which the native grader then ran.
+
+What it adds to the concept:
+1. **The firewall goes around the answers and the verdict, not the
+   grader's code.** The hce-evaluation 11-03 section found that a
+   readable grader is a readable holdout. That was because those graders
+   embedded the labels ([[literature/papers/deeb2026towards]]).
+   SplitBench takes the labels out, but readable grading code still cost
+   something.
+   - Full knowledge of the evaluation files and the Oracle's code raised
+     passes from 22 to 42 (15.8% → 25.0% of completed attempts, our
+     arithmetic). Nearly all of the rise came through weak tests
+     (14 → 33).
+   - One Oracle stated an expected answer in a code comment, and the
+     full-knowledge attacker read it.
+
+   Publishing the logic is safe only where the tests are strong and the
+   code has been scrubbed of answers.
+2. **Provider-hosted tools route around an egress firewall.** The relay
+   holds the credentials and by default forwards only model inference.
+   Web search, code execution and file storage run on the provider's
+   side, so their traffic never passes the proxy. A destination allowlist
+   also cannot control what the agent does on a service it is allowed to
+   reach. This is the retrieval-space boundary (wang2026search) at the
+   network layer. A downstream project that enforces HCE clause 1 with
+   egress rules has not closed provider-side web search (our inference;
+   the paper states the mechanism).
+3. **The boundary costs a little capability.** Tasks passed:
+   - Sonnet: 121 and 120 natively, 118 and 125 under SplitBench.
+   - GPT: 142 and 142 natively, 140 and 134 under SplitBench.
+
+   A pass can be lost to the allowlist, to having no provider web search,
+   or because software installed outside the task's files is not kept.
+
+Rule (our inference), for a downstream project that scores agent-written
+code by running it:
+- The candidate produces outputs for the held-out inputs in a process
+  that cannot read the labels.
+- A different process, which never executes candidate code, computes the
+  score.
+- A held-out check that runs inside the candidate's runtime is inside
+  the zone the candidate controls, however clean the agent's own sandbox
+  is.
+
+Limits:
+- The attacker was told not to escape the container, attack the relay or
+  proxy, send data out or escalate privileges. The authors reviewed the
+  isolation and network layers rather than attacking them, and report no
+  method. The zero covers the capture, adapter, evidence and Oracle path.
+- One attempt per task per knowledge level, and one attacker model
+  (Opus 5.5), which also wrote and reviewed the conversions. The 53
+  attempts stopped by safeguards are excluded.
+- Coding benchmarks. Tasks that need a running service, a speed target or
+  a property of how a computation ran are excluded by design. A compute
+  or training-time budget is a speed target, so many ML-research tasks
+  fall outside (our inference). The domain gap in Connections stands.
+- No code released yet.
 
 ## Connections
 

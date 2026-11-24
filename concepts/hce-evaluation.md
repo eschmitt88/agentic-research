@@ -146,6 +146,8 @@ sources:
   - "[[literature/papers/ghosh2026truthgate]]"
   - "[[literature/papers/gunsilius2026inference]]"
   - "[[literature/papers/srivastava2026appscibench]]"
+  - "[[literature/papers/du2026critic]]"
+  - "[[literature/papers/houlamy2026who]]"
 used_by:
   - project_slug: _scratch
     imported_on: 2026-04-24
@@ -4107,6 +4109,144 @@ Limits:
   the orchestrator calls with free-text context. Table 8 covers only those
   builds; the native harnesses got prompt guidance instead.
 - One industry group, unreviewed.
+
+## A critic stage needs its no-critic arm at the intended budget: one critic's −0.245 became +0.0003 when frontier and horizon grew, and a second random seed is not a placebo (2026-11-24)
+
+The 11-17 section ([[literature/papers/alexander2026iterated]]) credits a
+critic or judge-feedback stage only against the same agent at the stage's
+budget with no feedback. The 10-27 section ([[literature/papers/chen2026cads]])
+asks for the loop with the proposer removed. [[literature/papers/du2026critic]]
+runs both as one four-arm design on a cached tabular frontier: no critic
+(uniform random), a second random draw, the real critic, and an oracle. It
+adds four points about how such an arm must be run.
+- **The arm's result depends on the budget.** Llama-3.1-8B is −0.245 AUC
+  against no critic at 96 configurations and T = 8, and +0.0003 at 250
+  configurations and T = 20 (ADULT; size and horizon changed together).
+  Across seven critics the sign varies by dataset, and the arm is cheap
+  because every outcome is cached. Our inference: a no-critic arm counts
+  only at the budget and search space the chain will use. An arm borrowed
+  from a pilot or a different budget does not.
+- **A second random seed is not a content placebo.** The paper's "random
+  feedback" arm is an independently seeded random search, so ∆RF repeats
+  ∆NC. Critique and pick are also one call. The design therefore credits
+  the whole selection policy and cannot say whether the critique *text*
+  helped. That would need a shuffled or other-task critique fed to the same
+  picker.
+- **Offline detector AUC did not certify the online filter.** This is the
+  second source after the 10-26 controller section. A harmful-feedback
+  detector scored LODO AUC 0.95–0.99, largely by construction: its labels
+  are low-score picks and its first feature is the pick's score. Online it
+  averaged −0.00015 AUC against uniform.
+- **A pilot screen failed on a low-headroom frontier.** Flagging a critic
+  whose first few picks fall below the incumbent did not separate good
+  from bad. A strong critic reaches a high incumbent early, after which
+  almost every pick is below it.
+
+Rule (our inference): when a chain step's search space is enumerable, its
+no-critic arm is a uniform pick over that space at the chain's own budget,
+through the pinned evaluator. Report the critic's paired net against it.
+Report a mitigation as non-inferiority to that arm (margin stated) and
+separately as gain over it. On this paper's frontiers every mitigation
+reached the first and none the second.
+
+Limits:
+- Tabular, under 0.01 AUC headroom, 8 seeds per cell, unreviewed, no
+  artifacts yet.
+- The capability ladder's datasets were chosen partly on the 8B's result.
+
+## A secure grader exposes the acceptance conditions rather than fixing them: an informed attacker passed 34 of 180 tasks on their own tests, and a reviewed known-answer battery admitted two grading errors that an attack pass found (2026-11-24)
+
+The 11-23 section ([[literature/papers/ghosh2026truthgate]]) set a rule:
+the scorer runs on a copy taken after the agent's process ends, and the
+held-out checks are never inside the agent's filesystem.
+[[literature/papers/houlamy2026who]] (SplitBench) builds that rule into a
+framework for 180 Terminal-Bench 2.0 and DeepSWE tasks, then attacks it
+with Opus 5.5. Three results bear on clause 4 and the known-answer
+preflight.
+
+1. **The copy must exclude the tests.** SplitBench and the native graders
+   were compared on 1,374 same-file pairs and disagreed on 18. In 12, the
+   agent had changed test files to fit its code or added tests that do
+   not compile (GPT 6.1 Sol 10, Sonnet 5.5 2). The native graders ran
+   whatever test files the agent left. In 5 more, the native grader
+   counted crashed tests as passed. SplitBench's capture scope excludes
+   test files and convention-loaded files (`conftest.py`, `_test.go`,
+   package initializers). A post-run snapshot that keeps them still lets
+   the agent rewrite the specification.
+
+2. **Clause 4 protects the instrument, and the instrument can still
+   accept unsolved work.** No attack passed through the framework. Even
+   so, 47 of 64 attacker passes came through the tasks' own tests, on at
+   least 34 of 180 tasks: 29 of 68 Terminal-Bench tasks (43%) and 5 of
+   112 DeepSWE (our arithmetic). Re-graded natively, the native grader
+   passed 40 of the 47. Examples:
+   - `count-dataset-tokens`: a file holding every number below ten
+     million;
+   - `path-tracing`: a one-pixel image;
+   - `sqlite-db-truncate`: thousands of guessed rows, with no penalty for
+     wrong ones;
+   - `pytorch-model-recovery`: a model that returns its own target, so
+     the loss is zero.
+
+   This is "a pristine evaluator is unchanged, not correct" (10-20),
+   measured across two benchmarks.
+   - Each conversion was admitted only if a no-op candidate failed it, so
+     the do-nothing check passed on every one of these tasks. The passes
+     are constructed wrong answers, not empty ones.
+   - 20 of the 34 tasks fell only to the attacker that had read the
+     grading code.
+
+3. **A known-answer battery plus a review loop still let two grading
+   errors through.** A conversion was admitted only after qualification:
+   - the reference solution passes both graders;
+   - a no-op candidate fails both;
+   - mutants get the same verdict from both;
+   - attacks fail SplitBench.
+
+   A separate reviewer, told "your job is to find what is wrong, not to
+   confirm that it is right", returned findings on 173 of 180
+   conversions, including a security problem on 67. Two errors survived
+   both checks, and only the attack campaign found them:
+   - `pypi-server` did not grade the server the agent set up;
+   - `chess-best-move`'s Oracle code stated the answer in a comment.
+
+   The authors: a benchmark that adopts SplitBench without such a
+   campaign "should have a person review each conversion".
+
+Two numbers hold partly by construction. "Native graders accepted 230 of
+429 attacks, SplitBench none": the zero is the admission rule, so only
+the 230 is a measurement. "SplitBench blocked 75%": that is of completed
+full-knowledge attempts, and the 25% that passed mostly measures the
+tasks' tests.
+
+The paper also qualifies the MAC finding above that "you cannot red-team
+an aligned agent by instructing it to cheat". Opus 5.5 completed 307 of
+360 attacks on the converted tasks. It had an "authorized adversarial
+test" notice, an explicit out-of-scope list, and the Defense Access tier
+of Anthropic's Cyber Verification Program. Against the native tasks,
+safeguards stopped 264 of 360 attempts. The paper does not explain the
+gap. A project without that access tier should not expect the first rate.
+
+Rule (our inference), for a downstream loop that scores agent-written
+code:
+- Exclude test files and convention-loaded files from what is copied
+  into scoring.
+- Extend the known-bad preflight with at least one constructed wrong
+  answer per evaluator. Aim it where the check is loosest: a substring
+  match, a tolerance, a similarity score. A do-nothing submission failed
+  correctly on every weak task above.
+- Run one informed attack pass on a new evaluator before trusting it.
+  The review loop and the battery together missed what that pass found.
+
+Limits:
+- Coding tasks with test-based acceptance, not ML metrics. The weak-test
+  count is a lower bound: one attempt per task per knowledge level.
+- The attacks, mutants and reviews were all written by Opus 5.5, which
+  was also the attacker.
+- The 98.7% agreement has no κ. Pass rates are 66–79%.
+- 87 of 112 DeepSWE conversions accept regression-test outcomes as
+  upstream's runner reports them. Those parts can be forged, as they can
+  natively.
 
 ## Open questions
 
