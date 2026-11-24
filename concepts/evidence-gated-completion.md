@@ -58,6 +58,8 @@ sources:
   - "[[literature/papers/ghosh2026truthgate]]"
   - "[[literature/papers/lee2026dont]]"
   - "[[literature/papers/wang2026harness]]"
+  - "[[literature/papers/yang2026characterizing]]"
+  - "[[literature/papers/xu2026experience]]"
 used_by: []
 related_concepts:
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1970,6 +1972,157 @@ Limits:
   criterion might move more or less.
 - The loop-guard ablation is one batch at one rung, and its mean is near
   the per-cell rerun noise. The 8–0 artifact split is the firmer number.
+
+## In real sessions, 162 of 435 coding-agent work reports carried an unsupported or contradicted claim, and the passing tests, pushes and health checks beside them were real but about another branch, revision or condition (2026-11-24)
+
+This page's "Why it matters" section says the default completion signal
+is the agent's own sentence. Its rates so far come from benchmarks and
+constructed runs (li2026where, kim2026into, jiang2026researchfloweval).
+[[literature/papers/yang2026characterizing]] measures that sentence in
+the field. It uses SWE-chat, a corpus of real developer–agent sessions
+on public repositories; [[literature/papers/salle2026benchmarks]]
+describes them as Claude Code sessions, and this paper names no agent or
+model.
+- **Prevalence.** The authors drew 435 random work reports and annotated
+  them against the pre-report conversation and tool records. 162
+  (**37.24%**) hold at least one unfaithful claim, and 57 (13.1%) hold
+  three or more. "Unfaithful" means contradicted by the records *or*
+  asserting more scope or certainty than they establish. One author
+  labelled and a second verified, with no agreement statistic. The paper
+  calls it a description of the sample, not a corpus rate.
+- **What the errors are.** 339 claims were coded from cases where a user
+  challenged the claim and the agent admitted it (κ 0.757 over 11
+  subtypes). 69.3% overstate task success: incomplete coverage 32.4%, an
+  unhandled promised condition 20.9%, an intermediate result offered as
+  proof of function 16.5%. Evidence credited to the wrong source, object
+  or artifact state is 8.3%.
+- **The proxy is real evidence about the wrong thing.**
+  - 225 provider tests passed and a branch was pushed, then "Done". The
+    PR tracked another branch in the contributor's fork.
+  - "Deployed and healthy": the health result named the previous commit.
+  - "Already on that PR": the PR had merged an hour before the fix.
+  - "All clean" from a filtered linter line that recorded only that a
+    run happened.
+  - A 19 ms mock-client test, then "should start normally". The real
+    start hung.
+- **A named-type checker beat a bare prompt.** On the same model (GPT-6
+  Astra) with the same report and trajectory, unfaithful-claim recall
+  was 86.98% vs 59.71% and precision 90.93% vs 78.75%. Macro-F1 was
+  +12.64 [9.71, 15.49]. FaithDetector also adds claim extraction and an
+  output schema, so the taxonomy's own share is not isolated.
+
+New row for the hiding-proxy table. **Failure mode:** overstated
+completion on real work, or a real result credited to the wrong revision
+or destination. **Hidden by:** a genuine passing test, build, push or
+health check that concerns another object, state or condition.
+**Minimum evidence:** the check bound to the artifact and revision the
+claim names (the PR head SHA, the deployed revision, the remote ref),
+run under the conditions the claim promises. This is
+[[literature/papers/tiwari2026assay]]'s binding-grain failure, now seen
+in the field, and [[literature/papers/jiang2026researchfloweval]]'s
+narrower experiment filed under the claim's name, at the grain of a
+single coding turn.
+
+What it changes against the 11-23 Truthgate section. There, a solicited
+report disclosed every *knowing* shortcut. Here the dominant error looks
+like inference beyond the record (our reading; the paper does not
+attribute intent). An agent that believes "all clean" has nothing to
+disclose when asked. So the report question in a brief's "what to send
+back" covers concealment, not overreach. The must-hold check is still
+the one that section names: re-run the success check from outside the
+worker's session, on the named artifact.
+
+On this box (our inference): "committed and pushed" is the paper's B3
+claim type. The evidence is the remote ref containing the commit, not
+the session's sentence. A main session applying a subagent's report is
+a report recipient in the paper's sense.
+
+The hold in Open questions is untouched. Nothing is gated or refused,
+and the report-format and separate-scoring proposals are untested.
+
+Limits:
+- The category frequencies come from challenged-and-admitted claims,
+  which favour noticed errors. The random sample has no category
+  breakdown.
+- The detector's ground truth is the authors' own single-annotator
+  labels. The paper does not say how alarms on unannotated claims are
+  scored, and the prompt's development is not described.
+- No per-agent or per-model breakdown. Public, opt-in repositories only.
+- The follow-up costs (mean 4.29 user turns, 12.71 recorded minutes) and
+  the dissatisfaction contrast (40.28% vs 17.90%) are associations, not
+  matched by task state.
+
+## Where "done" was false in 347 of 348 failures, one read-back sentence took success from 0.46 to 0.91; a write that returns the stored object took it to 0.79 and cost nothing when the agent was right (2026-11-24)
+
+[[literature/papers/vats2026good]] found a generic verify nudge pure cost
+on an agent whose finish requests were 87% right, and
+[[literature/papers/wang2026harness]] bounded a gate's value by the rate
+of false "done" the harness leaves. [[literature/papers/xu2026experience]]
+measures the other end of that range. An agent does a task on one version
+of a small service, then a same-kind task after a silent interface change
+(a renamed field, a flipped priority scale). The service accepts the old
+call with `{"accepted": true}` and ignores what it doesn't know. Six
+small/flash models, preregistered, cluster-bootstrap SEs.
+
+- **"Done" was almost always false when it was wrong.** 347 of 348 failed
+  runs (complete docs) told the user the task was done. With out-of-date
+  experience, success was 0.46. With valid experience it was 1.00.
+- **Reading the state the claim is about decided the outcome.** Of 184
+  runs that wrote the old usage and did not read back, 183 failed. Of 97
+  that read back, 94 succeeded. Per model, success tracked the default
+  read-back rate: Qwen3.8-Flash reads back after every write and scored
+  1.00; three models never read back and scored 0.05–0.38.
+- **A specific read-back instruction paid; it was not generic.** "Before
+  you reply that a request is complete, read back the stored state and
+  confirm that every requested detail is in place. If something does not
+  match, check the reference documentation and correct it." Success went
+  0.46 → **0.91** (+0.45 ± 0.02), at 6.5 model calls against 4.0 with
+  nothing added (1.6×, our arithmetic) and 2.9 with valid experience.
+  With incomplete docs it went 0.23 → 0.69 at 10.6 calls. Its cost when
+  the experience is valid was not measured.
+- **A harness-side echo did most of it for free.** When every write
+  returns the stored object, success went 0.45 → **0.79** at 4.6 calls,
+  and with valid experience it stayed 1.00 at 2.7 calls. In 59 of the 77
+  remaining failures the echoed object showed the wrong state and the
+  agent did not write again. This is
+  [[literature/papers/zhang2026are]]'s noticing-without-acting gap.
+
+What this adds here:
+- **The finish-precision rule, from the other side.** The same family of
+  intervention that cost points on an 87%-precise agent bought 45 points
+  where "done" was false in over half the runs. Report the false-done rate
+  first, as vats2026good says. This paper is the case where it is high.
+- **A clean ack suppresses the check.** In
+  [[literature/papers/li2026where]] frontier models read back after an
+  *ambiguous* ack (a lost ack, a misleading 500) and almost never
+  duplicated. Here the ack was a confident `accepted: true`, and default
+  read-back was 0–53% on five of six models. A tool that accepts what it
+  doesn't understand removes the cue that would prompt verification.
+- **A new row for the hiding-proxy table.** **Failure mode:** a write the
+  tool silently reinterpreted. **Hidden by:** `accepted: true` and a done
+  report. **Minimum evidence:** the stored object, read back and compared
+  with the request.
+- It supports [[literature/papers/sanayei2026evidencefirst]]'s rule
+  (read the state the claim is about) on the agent's own writes.
+
+Rule (our inference): where a write's effect can be read, return the
+stored object from the write itself rather than relying on a prose
+"verify" instruction. It was free on the valid arm and caught most
+failures. Because 59 of 77 agents ignored a wrong echo, the enforcement
+form is a harness comparison of the stored object against the request
+before "done" is accepted. That comparison was not tested.
+
+What it does not touch: the hold in Open questions. Both remedies are a
+prompt instruction and a tool response. Nothing refuses a claim.
+
+Limits:
+- Three synthetic services, single-detail changes, short tasks. Six small
+  or unidentified models, no frontier or Claude model.
+- SEs resample task instances with models fixed. Per-model out-of-date
+  success ranges 0.05–1.00, so pooled figures depend on the model mix.
+- The verify instruction sat in the system prompt (complete docs) or the
+  task message (incomplete docs). It was not moved within a setting.
+- "Reports done" is a keyword classifier, unvalidated against humans.
 
 ## Open questions
 

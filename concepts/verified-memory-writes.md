@@ -39,6 +39,7 @@ sources:
   - "[[literature/papers/mitra2026agent]]"
   - "[[literature/papers/liang2026memory]]"
   - "[[literature/papers/khan2026surfacing]]"
+  - "[[literature/papers/xu2026experience]]"
 related_concepts:
   - "[[concepts/multi-granularity-memory]]"
   - "[[concepts/selective-memory-retrieval]]"
@@ -372,6 +373,77 @@ Limits:
   attack.
 - The harmful regime (cap 200) was chosen after the pre-declared run.
 - One model family, one sample per configuration, workshop paper.
+
+## Every write was correct and the store still misled: notes recorded the old interface in 60–92% of cases, a version tag cut the cost 0.27 → 0.20, and the current docs beside the note cut it to 0.10 (2026-11-24)
+
+"Trusted too much, and stale by dependency" above
+([[literature/papers/hu2026memory]], [[literature/papers/chen2026fresh]])
+covers stored *facts* the world has moved past.
+[[literature/papers/xu2026experience]] covers stored *usage*: how to call
+a tool. The note is correct when written and the tool's interface changes
+silently afterwards. The agent writes memory after an earlier task. A
+final task that needs that memory then runs on the same interface or a
+changed one. Six small/flash models, five single-detail changes,
+preregistered.
+
+- **The writes would pass every check in the triad.** Content carried
+  over correctly in 95–100% of first writes (the right participants, the
+  right task). What failed was the interface. 60–73% of memory files, and
+  92% of the notes saved with a self-written script, recorded the earlier
+  version's field or value. These records were faithful, covering and
+  preserving at write time.
+- **Every store form paid, and conversation paid most.** Cost (valid
+  minus out-of-date success): conversation 0.53, memory file 0.27, top-3
+  retrieved entries 0.20, script plus note 0.30. Out-of-date success
+  stayed well above none (0.61–0.76 vs 0.03–0.10), because the content
+  was still needed and right. More experience, more cost: with 1/3/10
+  earlier tasks in the conversation, out-of-date success was 0.46, 0.33
+  and 0.26.
+- **A label that made the staleness inferable barely helped.** The memory
+  header said "written when the service was at version 2.2". The tool
+  description said "Service version 2.3. The service was updated on
+  2026-03-01". Cost went from 0.27 to **0.20** (−0.07 ± 0.03), and old
+  usage only from 0.37 to 0.29.
+- **The current source beside the note did most of it.** The running
+  version's docs appended to the memory file: cost **0.10**, old usage
+  0.18, out-of-date success 0.89.
+
+What this adds:
+- **A third case of the read-side gap, with the writer blameless.**
+  shen2026revoked had authorized records revoked, and hu2026memory had
+  stale values. Here the record is the agent's own correct observation of
+  a dependency, the interface, that changed. No write-time gate could
+  have refused it.
+- **It prices the cheapest mitigation shen2026revoked left open,
+  "validity metadata in context", in its weakest form.** A version
+  mismatch the agent must infer is not a validity flag, and agents mostly
+  did not infer it. With hu2026memory (removing a label amplifies
+  over-trust), the reading is: labels are necessary, and a label the
+  agent must compare against something else is not enough.
+- **Revalidation by re-attaching the source worked.** This is
+  chen2026fresh's dependency-scoped revalidation in its simplest form:
+  re-attach the current source of truth at read time, rather than trust
+  the record or its date.
+
+Rule (our inference): a memory entry that records how to use an
+interface depends on that interface's version, the way a claim depends
+on its cone ([[literature/papers/tiwari2026assay]]). Bind the entry to an
+identifier of the interface (a schema hash, a CLI `--version`). Let the
+harness, not the reader, compare it on load, and attach the current
+definition on a mismatch. On this box, the usage lines in CLAUDE.md,
+auto-memory and NOTES.md (e.g. `$J window --gpu-gb …`) are such entries.
+argparse-style CLIs reject unknown flags, so the silent-acceptance
+precondition mostly fails here. What remains exposed is a flag whose
+*meaning* changes.
+
+Limits:
+- One note-writing prompt, retrieval from that same note, one self-written
+  script as "skill". Why note designs lost less (more lookups: 24–34% vs
+  2%) is not tested.
+- The version tag is one wording. A tag the harness checks was not
+  tested.
+- Six small or unidentified models, three synthetic services, final tasks
+  built to require the memory.
 
 ## Connections
 

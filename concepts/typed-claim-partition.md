@@ -28,6 +28,7 @@ sources:
   - "[[literature/papers/alfaqeeh2026beyond]]"
   - "[[literature/papers/singharoy2026quantifying]]"
   - "[[literature/papers/gunsilius2026inference]]"
+  - "[[literature/papers/yang2026characterizing]]"
 used_by: []
 related_concepts:
   - "[[concepts/evidence-gated-completion]]"
@@ -523,3 +524,58 @@ Limits:
   pick a lead. Opening-disclaimer labels come from a GPT-6.1-Sol blind
   read with no human check.
 - One original run per dataset per agent; preprint.
+
+## A field taxonomy of 339 admitted report errors fits this concept's existing types: scope overreach, not contradiction, is most of it, and the repair keeps the supported part (2026-11-24)
+
+[[literature/papers/yang2026characterizing]] coded 339 claims from real
+coding-agent sessions. In each, a user challenged a work-report claim and
+the agent admitted it. Two coders worked from an open codebook (macro κ
+0.757 over 11 subtypes). The codebook was built bottom-up, not from this
+concept, and it maps onto types already here (our mapping):
+
+| Paper category (share of 339) | Type in this concept |
+|---|---|
+| A. Misreported observation: wrong count, action or check verdict (13.3%) | *contradicted* |
+| B. Credited to wrong source, object or artifact state (8.3%) | *wrong source* (11-02), extended from numbers to UI components, branches and revisions |
+| C1/C2. Completeness or condition handling overstated (53.3%) | *admissible at narrower scope* (10-12) |
+| C3. Intermediate result taken as functional proof (16.5%) | attempt vs effect (10-27); the (evidence, claim) pair (09-29) |
+| D1. Hypothesis stated as established cause (7.4%) | grounded is not calibrated (11-03) |
+| D2. Incorrect technical rule (5.0%) | *contradicted* |
+
+Three points for this concept:
+- **No new type was needed, and the scope types dominate.** About
+  seven in ten admitted errors are claims that are true at a narrower
+  scope or a weaker strength. Only a minority are contradicted
+  outright. A partition that offers only supported / contradicted files
+  most of these as supported, because a real passing check sits beside
+  them.
+- **Contradiction and support gap are kept apart, and unresolved stays
+  out.** "A support gap does not by itself establish factual falsity."
+  56 of 395 claims stayed unresolved because the records could not
+  establish the state, and they are excluded from the frequencies. That
+  is a fourth group using this concept's ternary rule, after
+  wang2026making, zhu2026claimreceipt and alfaqeeh2026beyond.
+- **The repair narrows the claim, and it is not withdrawal.** The
+  proposed faithful report names the artifact or revision, the
+  conditions checked, the supporting record and what remains unverified.
+  ("Standalone initialization with a mock client completed in 19 ms.
+  Startup in OpenCode remains to be checked.") In r7024, six of seven
+  claimed tooltip locations were real. The faithful correction flags the
+  seventh and keeps the six. The proposed evaluation adds an over-hedged
+  arm, because "rewarding only the absence of false claims favors
+  omission" (cf. [[concepts/refusal-cost-symmetry]]). This is the
+  11-03 rule that the repair follows the type. Both proposals are
+  untested.
+
+Weak support for "partition before scoring". A checker that extracts
+claims and checks them by category recalled 86.98% of annotated
+unfaithful claims. The same model given one open question recalled
+59.71%. Extraction, the categories and the output schema come together,
+so the partition's own share is unknown.
+
+Limits:
+- The frequencies are over challenged-and-admitted claims. The paper's
+  random sample (162 of 435 reports with an unfaithful claim) gives no
+  per-type breakdown.
+- Coding agents in public repositories. No per-model split.
+- Codebook coverage is not shown to be saturated.

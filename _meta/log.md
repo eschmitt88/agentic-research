@@ -915,3 +915,5 @@ The `shared-substrate-contagion` watch axis is NOT resolved — it gained source
 2026-11-24 04:32 ingest raw/papers/chen2026compactbench.pdf
 2026-11-24 04:40 ingest raw/papers/zhu2026benchmarks.pdf
 2026-11-24 04:40 ingest raw/papers/dip2026invariantaware.pdf
+2026-11-24 04:47 ingest raw/papers/yang2026characterizing.pdf
+2026-11-24 04:47 ingest raw/papers/xu2026experience.pdf

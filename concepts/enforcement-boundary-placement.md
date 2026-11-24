@@ -58,6 +58,7 @@ sources:
   - "[[literature/papers/dhuri2026markdown]]"
   - "[[literature/papers/lee2026dont]]"
   - "[[literature/papers/dip2026invariantaware]]"
+  - "[[literature/papers/xu2026experience]]"
 related_concepts:
   - "[[concepts/typed-enforcement]]"
   - "[[concepts/permission-gate-as-architecture]]"
@@ -1580,6 +1581,63 @@ Limits:
 - The frontier arms are post hoc, one vendor, with no logs. Enforce's
   frontier result (33.9% vs 8.8% on open models) is unexplained. No
   Claude model is tested.
+
+## The same sentence bound at 0.99 appended to the request and at 0.29 in the system prompt, below nothing added; an always-present "check before writing" was obeyed the first time and not the second (2026-11-24)
+
+[[literature/papers/lee2026unfinishedbench]] moved a correct rule between
+a document and the instruction, and [[literature/papers/laddha2026position]]
+moved one line between seats against a rival line. In
+[[literature/papers/xu2026experience]] no instruction conflicts with
+another. The rival is the agent's own earlier call to a tool whose
+interface has since changed silently. Six small/flash models, out-of-date
+experience in the conversation, preregistered contrasts (P3).
+
+- **The documentation's seat decided whether it was used.** Current docs
+  in the final task message: **0.99**. In the tool description: 0.55. In
+  the system prompt: 0.54. Nothing added: 0.46. Old usage in the first
+  write fell to 1% only in the task-message seat (62–63% elsewhere).
+- **The same instruction reversed sign with its seat.** "Before your first
+  tool call that changes data in this request, check the reference
+  documentation for the exact fields and values to use":
+  - appended to the final task message: **0.99**, lookups 100%;
+  - in the system prompt: **0.29**, below nothing added (−0.17 ± 0.02, a
+    contrast preregistered as "none").
+  Agents followed the system-prompt copy in the earlier task (98% looked
+  up) and not in the final one (4%). Typical: "I could search docs again,
+  but I already know the format from the previous search."
+- **One system-prompt instruction did bind.** "Read back the stored state
+  before you reply that a request is complete" gave 0.91 from the system
+  prompt.
+- **Beside the memory also counts.** The current docs placed in the
+  memory file cut the cost of stale memory from 0.27 to 0.10.
+
+What this adds to the time axis: an always-present instruction keyed to a
+*recurring* event ("before your first write in a request") bound at the
+event's first occurrence and was treated as discharged after it. Our
+reading, untested: following it in the earlier task also put the old
+version's docs into the context, and old usage rose from 0.80 to 0.96.
+The verify instruction is keyed to the end of each request, a step that
+recurs and that earlier compliance cannot satisfy, and it held. So the
+seat is not the whole lever. What the trigger is, and whether earlier
+compliance seems to satisfy it, matter too. Wording and trigger are
+confounded with the seat here.
+
+Rule (our inference) for this box: CLAUDE.md and `.claude/rules/` load
+once, near the start of a session. A rule meant to fire at every
+occurrence of an event, such as each GPU launch, each write to a shared
+file or each CLI call after an upgrade, should be checked against this
+failure. The safer delivery is text injected at the event (a hook, or the
+request itself), or a rule phrased so that it cannot be discharged once
+("each time …, even if done earlier").
+
+Limits:
+- No Claude, GPT or Gemini model. Read-back habits differ sharply by
+  model.
+- One wording per instruction. The verify instruction was never placed
+  in the task message with complete docs, so the two seats are not
+  compared for it.
+- Experience is one same-kind earlier task in the same conversation.
+- Three synthetic services. SEs resample instances with models fixed.
 
 ## Connections
 
